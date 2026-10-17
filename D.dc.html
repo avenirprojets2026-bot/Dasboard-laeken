@@ -141,6 +141,36 @@
 </section>
 </div>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div><h2 style="margin:0; font-size:18px">Voitures de leasing du cabinet</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{carDesc}}</div></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid #DCE5E2">
+<sc-for list="{{carTabs}}" as="t" hint-placeholder-count="3">
+<button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}} <b>{{t.amount}}</b></button>
+</sc-for>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-for list="{{carSubs}}" as="t" hint-placeholder-count="7">
+<button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}} <b>{{t.amount}}</b></button>
+</sc-for>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
+<sc-for list="{{carKpis}}" as="k" hint-placeholder-count="3">
+<div style="{{k.style}}"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
+</sc-for>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Voiture</th><th style="padding:8px">Poste</th><th style="padding:8px">Remarque</th><th style="padding:8px; text-align:right">Par mois</th><th style="padding:8px; text-align:right">Par an</th></tr></thead>
+<tbody>
+<sc-for list="{{carRows}}" as="r" hint-placeholder-count="6">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; white-space:nowrap"><b>{{r.car}}</b></td><td style="padding:10px 8px">{{r.item}}</td><td style="padding:10px 8px; font-size:13px; color:#4A5B57">{{r.note}}</td><td style="padding:10px 8px; text-align:right; font-weight:700">{{r.month}}</td><td style="padding:10px 8px; text-align:right">{{r.year}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Montants fictifs et estimés. À confirmer avec les contrats de leasing : loyers, franchises, avantage de toute nature, déductibilité fiscale et taxe de circulation du véhicule électrique selon la Région.</div>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
 <div><h2 style="margin:0; font-size:18px">Indicateurs de pilotage</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Les mêmes données que les autres pages, octobre 2026. Les repères viennent de sources étrangères : à adapter à la Belgique.</div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px">
@@ -167,7 +197,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
 class Component extends DCLogic {
-  state = { ct: 'all', st: 'all' };
+  state = { ct: 'all', st: 'all', vt: 'all', vs: 'all' };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
@@ -265,6 +295,26 @@ class Component extends DCLogic {
     const tOff = tabBase + 'background:#EFEAF8; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
     const catCards = CAT.map((c) => ({ title: c.short, desc: c.desc, total: eur(sumCat(c.id)), share: pc(sumCat(c.id) / TOT * 100) + ' des charges', bar: 'height:10px; border-radius:999px; background:' + c.color + '; width:' + (sumCat(c.id) / TOT * 100) + '%;', style: 'border:1px solid #DCE5E2; border-top:5px solid ' + c.color + '; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:6px;' }));
+    const carSel = (S && S.vt) || 'all';
+    const carSub = (S && S.vs) || 'all';
+    const carKind = (l) => l[1].indexOf('Leasing') === 0 ? 'lea' : l[1].indexOf('Assurance') === 0 ? 'ass' : l[1].indexOf('Réparations') === 0 ? 'rep' : l[1].indexOf('Entretien') === 0 ? 'ent' : l[1].indexOf('Taxe') === 0 ? 'tax' : 'car';
+    const CARS = [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']];
+    const KINDS = [['lea', 'Leasing'], ['ass', 'Assurance'], ['rep', 'Réparations'], ['ent', 'Entretien'], ['tax', 'Taxe de circulation'], ['car', 'Carburant et recharge']];
+    const VL = LINES.filter((l) => l[0] === 'veh');
+    const vSum = (c, k) => VL.filter((l) => (c === 'all' || l[4] === c) && (k === 'all' || carKind(l) === k)).reduce((a, l) => a + l[2], 0);
+    const vTabBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:12px 12px 0 0; padding:8px 14px; font-size:14px; cursor:pointer; ';
+    const vSubBase = 'display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:999px; padding:4px 12px; font-size:13px; cursor:pointer; ';
+    const carTabs = [['all', 'Les deux voitures']].concat(CARS).map((c) => ({ label: c[1], amount: eur(vSum(c[0], 'all')) + ' / mois', style: vTabBase + (carSel === c[0] ? 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #2F6DB5; font-weight:700;' : 'background:#E8F0FA; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;'), pick: () => setState({ vt: c[0], vs: 'all' }) }));
+    const carSubs = [['all', 'Tout']].concat(KINDS).map((k) => ({ label: k[1], amount: eur(vSum(carSel, k[0])), style: vSubBase + (carSub === k[0] ? 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;' : 'background:#fff; color:#33433F; border:1px solid #C9D6D2; font-weight:500;'), pick: () => setState({ vs: k[0] }) }));
+    const carRowsRaw = VL.filter((l) => (carSel === 'all' || l[4] === carSel) && (carSub === 'all' || carKind(l) === carSub));
+    const carRows = carRowsRaw.map((l) => ({ car: l[4] === 'b7' ? 'Série 7 hybride' : 'Série 5 électrique', item: KINDS.filter((k) => k[0] === carKind(l))[0][1], note: l[3], month: eur(l[2]), year: eur(l[2] * 12) }));
+    const carMonth = carRowsRaw.reduce((a, l) => a + l[2], 0);
+    const carKpis = [
+      { label: 'Par mois', value: eur(carMonth), note: carSub === 'all' ? 'tous les postes' : KINDS.filter((k) => k[0] === carSub)[0][1].toLowerCase(), style: 'border:1px solid #DCE5E2; border-top:5px solid #2F6DB5; border-radius:12px; padding:14px 16px;' },
+      { label: 'Par an', value: eur(carMonth * 12), note: 'douze mois de charges', style: 'border:1px solid #DCE5E2; border-top:5px solid #5B3FA8; border-radius:12px; padding:14px 16px;' },
+      { label: 'Part des charges du cabinet', value: pc(carMonth / TOT * 100), note: 'sur 38 720 € de charges mensuelles', style: 'border:1px solid #DCE5E2; border-top:5px solid #B45309; border-radius:12px; padding:14px 16px;' }
+    ];
+    const carDesc = carSel === 'all' ? 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique. Choisissez une voiture, puis un poste de dépense.' : 'Détail de la ' + CARS.filter((c) => c[0] === carSel)[0][1] + ' par poste de dépense.';
     const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4 };
     const stab = (S && S.st) || 'all';
     const subDefs = ctab === 'all' ? [] : SUBS[ctab];
@@ -277,6 +327,7 @@ class Component extends DCLogic {
     const curCat = CAT.filter((c) => c.id === ctab)[0];
     const charges = shownLines.map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
     return {
+      carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
         { label: "Chiffre d'affaires", value: '173 100 €', note: '1 329 patients vus', style: tile('#0F766E') },
