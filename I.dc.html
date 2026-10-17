@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Actes par praticien</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:28px; min-height:2100px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Actes par praticien</span>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Un mois d'activité</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Actes par praticien</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:460px; line-height:1.5">Deux sections : blanchiment et détartrage, puis panoramiques. Pour chacune : le pourcentage de chaque praticien et la liste des patients, identifiés par un numéro de dossier et leur date de naissance.</div>
+</header>
+
+<section style="display:flex; flex-direction:column; gap:16px">
+<div>
+<h2 style="margin:0; font-size:22px">Blanchiment et détartrage</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px">Détartrage au tarif INAMI (71,92 €), blanchiment libre (prix du cabinet). Le praticien reçoit 60 % de chaque acte. Octobre 2026.</div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpiA}}" as="k" hint-placeholder-count="4">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Pourcentage de chaque praticien</h3>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">« % de ses patients » : part des patients du praticien qui ont eu cet acte. « Part du cabinet » : poids du praticien dans le chiffre d'affaires de ces deux actes.</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:980px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Patients vus</th><th style="padding:8px; text-align:right">Détartrages</th><th style="padding:8px; min-width:150px">% de ses patients</th><th style="padding:8px; text-align:right">Blanchiments</th><th style="padding:8px; min-width:150px">% de ses patients</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Part du cabinet</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{tabA}}" as="r" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{r.name}}</b><div style="font-size:12px; color:#4A5B57">{{r.spec}}</div></td>
+<td style="padding:12px 8px; text-align:right">{{r.patients}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.det}}</td>
+<td style="padding:12px 8px"><div style="background:#F3F6F5; border-radius:999px; height:10px; overflow:hidden"><div style="{{r.detBar}}"></div></div><div style="font-size:13px; font-weight:700; margin-top:4px">{{r.detPct}}</div></td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.blanc}}</td>
+<td style="padding:12px 8px"><div style="background:#F3F6F5; border-radius:999px; height:10px; overflow:hidden"><div style="{{r.blancBar}}"></div></div><div style="font-size:13px; font-weight:700; margin-top:4px">{{r.blancPct}}</div></td>
+<td style="padding:12px 8px; text-align:right">{{r.ca}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#0F766E">{{r.share}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#B45309">{{r.retro}}</td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 0">Total du cabinet</td><td style="padding:12px 8px; text-align:right">{{totA.patients}}</td><td style="padding:12px 8px; text-align:right">{{totA.det}}</td><td style="padding:12px 8px">{{totA.detPct}}</td><td style="padding:12px 8px; text-align:right">{{totA.blanc}}</td><td style="padding:12px 8px">{{totA.blancPct}}</td><td style="padding:12px 8px; text-align:right">{{totA.ca}}</td><td style="padding:12px 8px; text-align:right">100 %</td><td style="padding:12px 8px; text-align:right">{{totA.retro}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Patients : blanchiment et détartrage</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Date</th><th style="padding:8px">Patient</th><th style="padding:8px">Praticien</th><th style="padding:8px">Acte</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px; text-align:right">Part du praticien (60 %)</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{patA}}" as="p" hint-placeholder-count="9">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{p.date}}</td>
+<td style="padding:12px 8px; font-weight:700">{{p.patient}}</td>
+<td style="padding:12px 8px">{{p.dentist}}</td>
+<td style="padding:12px 8px"><span style="{{p.chip}}">{{p.act}}</span></td>
+<td style="padding:12px 8px; text-align:right">{{p.amount}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#B45309">{{p.retro}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section style="display:flex; flex-direction:column; gap:16px">
+<div>
+<h2 style="margin:0; font-size:22px">Panoramiques</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px">Panoramique au tarif INAMI (67,80 €). Le praticien reçoit 60 % de l'acte. Octobre 2026.</div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpiB}}" as="k" hint-placeholder-count="3">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Pourcentage de chaque praticien</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:860px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Patients vus</th><th style="padding:8px; text-align:right">Panoramiques</th><th style="padding:8px; min-width:160px">% de ses patients</th><th style="padding:8px; text-align:right">Part du cabinet</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{tabB}}" as="r" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{r.name}}</b><div style="font-size:12px; color:#4A5B57">{{r.spec}}</div></td>
+<td style="padding:12px 8px; text-align:right">{{r.patients}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.n}}</td>
+<td style="padding:12px 8px"><div style="background:#F3F6F5; border-radius:999px; height:10px; overflow:hidden"><div style="{{r.bar}}"></div></div><div style="font-size:13px; font-weight:700; margin-top:4px">{{r.pct}}</div></td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#1B3F73">{{r.share}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.ca}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#B45309">{{r.retro}}</td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 0">Total du cabinet</td><td style="padding:12px 8px; text-align:right">{{totB.patients}}</td><td style="padding:12px 8px; text-align:right">{{totB.n}}</td><td style="padding:12px 8px">{{totB.pct}}</td><td style="padding:12px 8px; text-align:right">100 %</td><td style="padding:12px 8px; text-align:right">{{totB.ca}}</td><td style="padding:12px 8px; text-align:right">{{totB.retro}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Patients : panoramiques</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:700px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Date</th><th style="padding:8px">Patient</th><th style="padding:8px">Praticien</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px; text-align:right">Part du praticien (60 %)</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{patB}}" as="p" hint-placeholder-count="8">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{p.date}}</td>
+<td style="padding:12px 8px; font-weight:700">{{p.patient}}</td>
+<td style="padding:12px 8px">{{p.dentist}}</td>
+<td style="padding:12px 8px; text-align:right">{{p.amount}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#B45309">{{p.retro}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : patients fictifs (numéros de dossier et dates de naissance), mais issus du même jeu de données que les pages Patients vus par praticien et Espace praticien (octobre 2026, 1 329 patients). Les vrais pourcentages viendront de l'export du logiciel de facturation.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const eur = (n) => (Math.round(n * 100) / 100).toFixed(n % 1 === 0 ? 0 : 2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const pc = (x) => (Math.round(x * 10) / 10).toFixed(1).replace('.', ',') + ' %';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+    const bar = (c, w) => 'background:' + c + '; height:10px; width:' + Math.min(100, w) + '%;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
+    const R = 0.6;
+    const D = window.LAEKEN;
+    if (!D) { return { kpiA: [], tabA: [], totA: {}, patA: [], kpiB: [], tabB: [], totB: {}, patB: [] }; }
+    const pr = D.PR.map((P) => {
+      const f = (k) => P.rows.filter((r) => r.key === k);
+      const fee = (a) => a.reduce((t, r) => t + r.fee, 0);
+      return { name: P.name, spec: P.spec, pat: P.visits.length, det: f('detart').length, bla: f('blanch').length, pan: f('pano').length, caDet: fee(f('detart')), caBla: fee(f('blanch')), caPan: fee(f('pano')) };
+    });
+    const sum = (k) => pr.reduce((a, x) => a + x[k], 0);
+    const T = { pat: sum('pat'), det: sum('det'), bla: sum('bla'), pan: sum('pan') };
+    const caA = (x) => x.caDet + x.caBla;
+    const sumC = (k) => pr.reduce((a, x) => a + x[k], 0);
+    const totCaA = sumC('caDet') + sumC('caBla');
+    const totCaB = sumC('caPan');
+
+    const tabA = pr.map((x) => ({
+      name: x.name, spec: x.spec, patients: String(x.pat), det: String(x.det), blanc: String(x.bla),
+      detPct: pc(x.det / x.pat * 100), blancPct: pc(x.bla / x.pat * 100),
+      detBar: bar('#2E8B57', x.det / x.pat * 100 * 2.5), blancBar: bar('#D9922B', x.bla / x.pat * 100 * 8),
+      ca: eur(caA(x)), share: pc(caA(x) / totCaA * 100), retro: eur(caA(x) * R)
+    }));
+    const totA = { patients: String(T.pat), det: String(T.det), blanc: String(T.bla), detPct: pc(T.det / T.pat * 100), blancPct: pc(T.bla / T.pat * 100), ca: eur(totCaA), retro: eur(totCaA * R) };
+    const kpiA = [
+      { label: 'Détartrages', value: String(T.det), note: eur(sumC('caDet')) + ' · ' + pc(T.det / T.pat * 100) + ' des patients', style: tile('#2E8B57') },
+      { label: 'Blanchiments', value: String(T.bla), note: eur(sumC('caBla')) + ' · ' + pc(T.bla / T.pat * 100) + ' des patients', style: tile('#D9922B') },
+      { label: 'Chiffre d\'affaires des deux actes', value: eur(totCaA), note: 'sur 173 100 € au total', style: tile('#0F766E') },
+      { label: 'Rétrocession aux praticiens', value: eur(totCaA * R), note: '60 % de ces deux actes', style: tile('#B45309') }
+    ];
+
+    const tabB = pr.map((x) => ({
+      name: x.name, spec: x.spec, patients: String(x.pat), n: String(x.pan), pct: pc(x.pan / x.pat * 100), bar: bar('#2F6DB5', x.pan / x.pat * 100 * 2),
+      share: pc(x.pan / T.pan * 100), ca: eur(x.caPan), retro: eur(x.caPan * R)
+    }));
+    const totB = { patients: String(T.pat), n: String(T.pan), pct: pc(T.pan / T.pat * 100), ca: eur(totCaB), retro: eur(totCaB * R) };
+    const top = pr.slice().sort((a, b) => b.pan - a.pan)[0];
+    const kpiB = [
+      { label: 'Panoramiques réalisés', value: String(T.pan), note: pc(T.pan / T.pat * 100) + ' des patients du cabinet', style: tile('#2F6DB5') },
+      { label: 'Chiffre d\'affaires', value: eur(totCaB), note: 'dont ' + eur(totCaB * R) + ' de rétrocession', style: tile('#0F766E') },
+      { label: 'Praticien qui en fait le plus', value: pc(top.pan / T.pan * 100), note: top.name + ', ' + top.pan + ' panoramiques', style: tile('#5B3FA8') }
+    ];
+
+    const actStyle = {
+      'Détartrage': chipBase + ' background:#D5F0DF; color:#1E5A3A;',
+      'Blanchiment': chipBase + ' background:#FDF0DC; color:#8A4B08;'
+    };
+    const latest = (keys, n) => D.rows.filter((r) => keys.indexOf(r.key) >= 0).sort((x, y) => (y.d - x.d) || y.time.localeCompare(x.time)).slice(0, n);
+    const patA = latest(['detart', 'blanch'], 10).map((r) => { const nm = r.key === 'blanch' ? 'Blanchiment' : 'Détartrage'; return { date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, act: nm, chip: actStyle[nm], amount: eur(r.fee), retro: eur(r.fee * R) }; });
+    const patB = latest(['pano'], 8).map((r) => ({ date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, amount: eur(r.fee), retro: eur(r.fee * R) }));
+
+    return { kpiA: kpiA, tabA: tabA, totA: totA, patA: patA, kpiB: kpiB, tabB: tabB, totB: totB, patB: patB };
+  }
+}
+</script>
+</body>
+</html>

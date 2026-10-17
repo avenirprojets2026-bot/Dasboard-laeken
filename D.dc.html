@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Résultat du gérant</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:3500px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Résultat du gérant</span>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Gérant : Dr Mohamed Bochouari</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Résultat du cabinet</h1>
+</div>
+<span style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500">Octobre 2026</span>
+</header>
+
+<section style="display:flex; flex-wrap:wrap; gap:20px; font-size:14px">
+<span style="display:flex; gap:8px; align-items:center"><span style="width:14px; height:14px; border-radius:4px; background:#0F766E"></span>Revenus</span>
+<span style="display:flex; gap:8px; align-items:center"><span style="width:14px; height:14px; border-radius:4px; background:#B45309"></span>Rétrocessions aux praticiens</span>
+<span style="display:flex; gap:8px; align-items:center"><span style="width:14px; height:14px; border-radius:4px; background:#5B3FA8"></span>Charges du cabinet</span>
+<span style="display:flex; gap:8px; align-items:center"><span style="width:14px; height:14px; border-radius:4px; background:#15803D"></span>Bénéfice</span>
+</section>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:32px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 38 890 €</h2>
+<sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
+<div style="display:grid; grid-template-columns:minmax(120px, 230px) 1fr minmax(84px, 110px); gap:12px; align-items:center; font-size:14px">
+<span style="font-weight:500">{{f.label}}</span>
+<div style="background:#F3F6F5; border-radius:8px; height:26px; position:relative"><div style="{{f.bar}}"></div></div>
+<b style="text-align:right; font-size:15px">{{f.value}}</b>
+</div>
+</sc-for>
+</section>
+
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
+
+<section style="flex:1 1 420px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h2 style="margin:0; font-size:18px">Charges du cabinet</h2>
+<sc-for list="{{charges}}" as="c" hint-placeholder-count="5">
+<div style="display:flex; flex-direction:column; gap:6px">
+<div style="display:flex; justify-content:space-between; gap:12px; font-size:14px"><span>{{c.label}}</span><b>{{c.value}}</b></div>
+<div style="background:#EFEAF8; border-radius:999px; height:10px; overflow:hidden"><div style="{{c.bar}}"></div></div>
+<div style="font-size:12px; color:#4A5B57">{{c.note}}</div>
+</div>
+</sc-for>
+<div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:16px; font-weight:700"><span>Total des charges</span><span>30 350 €</span></div>
+</section>
+
+<section style="flex:999 1 520px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h2 style="margin:0; font-size:18px">Ce que chaque praticien rapporte</h2>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:520px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th><th style="padding:8px; text-align:right">Part cabinet 40 %</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{dentists}}" as="d" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{d.name}}</b><div style="font-size:12px; color:#4A5B57">{{d.role}}</div>
+<span style="{{d.convStyle}}">{{d.conv}}</span></td>
+<td style="padding:12px 8px; text-align:right">{{d.billed}}</td>
+<td style="padding:12px 8px; text-align:right"><span style="background:#FDF0DC; color:#8A4B08; border-radius:6px; padding:3px 8px; font-weight:700">{{d.retro}}</span></td>
+<td style="padding:12px 8px; text-align:right"><span style="background:#E3F2EF; color:#0B5D56; border-radius:6px; padding:3px 8px; font-weight:700">{{d.share}}</span></td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">173 100 €</td><td style="padding:12px 8px; text-align:right">103 860 €</td><td style="padding:12px 8px; text-align:right">69 240 €</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div><h2 style="margin:0; font-size:18px">Indicateurs de pilotage</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Les mêmes données que les autres pages, octobre 2026. Les repères viennent de sources étrangères : à adapter à la Belgique.</div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px">
+<sc-for list="{{pilotKpis}}" as="k" hint-placeholder-count="9">
+<div style="{{k.style}}"><div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div><div style="font-size:28px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div><div style="font-size:13px; color:#4A5B57; margin-top:6px; line-height:1.4">{{k.note}}</div></div>
+</sc-for>
+</div>
+<h3 style="margin:8px 0 0; font-size:16px">Valeur moyenne par visite et par praticien</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Visites</th><th style="padding:8px; text-align:right">Actes par visite</th><th style="padding:8px; text-align:right">Honoraires</th><th style="padding:8px; text-align:right">Valeur moyenne</th></tr></thead>
+<tbody>
+<sc-for list="{{pilotRows}}" as="r" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0"><b>{{r.name}}</b></td><td style="padding:10px 8px; text-align:right">{{r.visits}}</td><td style="padding:10px 8px; text-align:right">{{r.acts}}</td><td style="padding:10px 8px; text-align:right">{{r.total}}</td><td style="padding:10px 8px; text-align:right; font-weight:700">{{r.avg}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="background:#FDF0DC; color:#5C3A06; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>À confirmer avec le comptable.</b> La TVA : les soins dentaires thérapeutiques sont exonérés en Belgique, mais les actes esthétiques (blanchiment, facettes) seraient taxés, ce qui dépend aussi du statut de chaque praticien. Les cotisations sociales des indépendants sont à la charge de chaque praticien, pas du cabinet. L'ONSS patronale concerne seulement les 3 secrétaires salariées (tous les dentistes sont indépendants).</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : tous les chiffres sont fictifs, notamment les charges (personnel avec ONSS, loyer, leasing, énergie, consommables, assurances, comptable, AFCN, logiciel, frais bancaires et autres). Hypothèses à confirmer : la rétrocession de 60 % est calculée sur le chiffre d'affaires facturé, la part restante de 40 % revient au cabinet, et les frais de laboratoire sont supportés par chaque praticien.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
+    const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+    const bar = (c, l, w) => 'position:absolute; top:0; height:26px; border-radius:8px; background:' + c + '; left:' + l + '%; width:' + w + '%;';
+    const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
+    const pc = (x) => (Math.round(x * 10) / 10).toString().replace('.', ',') + ' %';
+    const cbar = (w) => 'background:#5B3FA8; height:10px; width:' + w + '%;';
+    const D = window.LAEKEN; let pilotKpis = []; let pilotRows = [];
+    if (D) {
+      const nV = D.visits.length; const ca = D.rows.reduce((a, r) => a + r.fee, 0);
+      const past = D.visits.filter((v) => v.d >= 5 && v.d <= 16).length; const missed = 9;
+      const esth = D.rows.filter((r) => r.key === 'blanch' || r.key === 'facette'); const esthTot = esth.reduce((a, r) => a + r.fee, 0);
+      const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
+      pilotKpis = [
+        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(30350 / ca * 100), '30 350 € de charges sur ' + eur(ca)),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(30350 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
+        T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
+        T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
+        T('#15803D', 'Nouveaux patients', String(D.pilot.nouveaux), pc(D.pilot.nouveaux / D.pilot.actifs * 100) + ' des ' + D.pilot.actifs + ' patients actifs (chiffre fictif)'),
+        T('#15803D', 'Fidélisation à 12 mois', pc(D.pilot.retour * 100), 'des patients vus il y a un an sont revenus (chiffre fictif)'),
+        T('#B42318', 'Rendez-vous manqués', pc(missed / (past + missed) * 100), missed + ' manqués sur ' + (past + missed) + ' rendez-vous du 5 au 16 octobre. Repère étranger : moins de 8 %'),
+        T('#7A8A86', 'TVA incluse dans les actes esthétiques', eur(esthTot * 21 / 121), 'blanchiments et facettes (' + eur(esthTot) + ' TTC). Hypothèse 21 %, à confirmer avec le comptable')
+      ];
+      pilotRows = D.PR.map((P) => { const v = P.visits.length; const t = P.rows.reduce((a, r) => a + r.fee, 0); return { name: P.name, visits: String(v), acts: (P.rows.length / v).toFixed(2).replace('.', ','), total: eur(t), avg: eur(t / v) }; });
+    }
+    return {
+      pilotKpis: pilotKpis, pilotRows: pilotRows,
+      kpis: [
+        { label: "Chiffre d'affaires", value: '173 100 €', note: '1 329 patients vus', style: tile('#0F766E') },
+        { label: 'Rétrocessions (60 %)', value: '103 860 €', note: 'versées aux praticiens indépendants', style: tile('#B45309') },
+        { label: 'Charges du cabinet', value: '30 350 €', note: 'dont 11 700 € de personnel (3 secrétaires salariées, ONSS comprise) et 3 200 € de consommables', style: tile('#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '38 890 €', note: '22,5 % du chiffre d\'affaires', style: tile('#15803D') }
+      ],
+      flow: [
+        { label: "Chiffre d'affaires", value: '173 100 €', bar: bar('#0F766E', 0, 100) },
+        { label: 'Rétrocessions (60 %)', value: '− 103 860 €', bar: bar('#B45309', 40, 60) },
+        { label: 'Marge du cabinet (40 %)', value: '69 240 €', bar: bar('#0F766E', 0, 40) },
+        { label: 'Charges du cabinet', value: '− 30 350 €', bar: bar('#5B3FA8', 22.5, 17.5) },
+        { label: 'Bénéfice', value: '38 890 €', bar: bar('#15803D', 0, 22.5) }
+      ],
+      charges: [
+        ['Rémunération brute des 3 secrétaires salariées', 7200, 'Salariées sous contrat, réparties dans la journée'],
+        ['Cotisations patronales ONSS (environ 25 %)', 1800, 'Taux à confirmer avec le secrétariat social'],
+        ['Pécule de vacances et prime de fin d\'année (provision)', 1750, 'Provision mensuelle pour les montants versés une fois par an'],
+        ['Assurance accidents du travail, médecine du travail, secrétariat social', 450, 'Obligations de l\'employeur'],
+        ['Chèques-repas et frais de déplacement du personnel', 500, 'Selon les avantages accordés'],
+        ['Loyer des locaux', 6500, 'Charge fixe mensuelle'],
+        ['Leasing des 3 fauteuils dentaires', 1950, '3 contrats en cours, 650 € par fauteuil'],
+        ['Énergie : eau, chauffage, gaz', 1800, 'Varie selon la saison'],
+        ['Nettoyage des locaux', 1400, 'Charge fixe mensuelle'],
+        ['Matériaux consommables', 3200, 'Gants, anesthésiques, composites, empreintes, stérilisation'],
+        ['Catering', 600, 'Repas et boissons pour l\'équipe'],
+        ['Lavage des blouses de travail', 350, 'Blanchisserie des tenues du personnel et des praticiens'],
+        ['Assurances du cabinet', 450, 'Incendie, responsabilité du cabinet, accidents. La RC professionnelle de chaque praticien reste à sa charge'],
+        ['Comptable du cabinet', 450, 'Comptabilité, déclarations et bilan'],
+        ['Logiciel de gestion, facturation électronique et informatique', 380, 'Dossiers patients, e-attestations via MyCareNet, sauvegardes'],
+        ['Déchets médicaux et entretien de l\'autoclave', 320, 'Collecte agréée, stérilisation'],
+        ['Radioprotection (AFCN) et maintenance de la panoramique', 250, 'Contrôles périodiques de l\'appareil de radiographie, à confirmer'],
+        ['Télécom, internet, téléphone', 150, 'Abonnements du cabinet'],
+        ['Frais bancaires et terminaux de paiement par carte', 300, 'Commissions sur les paiements par carte'],
+        ['Publicité, site web et formation continue', 400, 'Communication du cabinet, formations du personnel'],
+        ['Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures']
+      ].map((c) => ({ label: c[0], value: eur(c[1]), bar: cbar(Math.round(c[1] / 234 * 10) / 10), note: c[2] })),
+      dentists: [
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '50 500 €', retro: '30 300 €', share: '20 200 €', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '19 200 €', retro: '11 520 €', share: '7 680 €', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', billed: '47 900 €', retro: '28 740 €', share: '19 160 €', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: '9 300 €', retro: '5 580 €', share: '3 720 €', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: '18 900 €', retro: '11 340 €', share: '7 560 €', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: '18 300 €', retro: '10 980 €', share: '7 320 €', conv: 'Conventionné', convStyle: cs },
+        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', billed: '9 000 €', retro: '5 400 €', share: '3 600 €', conv: 'Conventionné', convStyle: cs }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Rémunérations et paiements</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:3700px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Rémunérations et paiements</span>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Paiements par le gérant, Dr Mohamed Bochouari</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Rémunération des praticiens</h1>
+</div>
+<span style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500">Mai à octobre 2026</span>
+</header>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<h2 style="margin:0; font-size:18px">Tous les praticiens, mois par mois</h2>
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
+<div style="flex:999 1 520px; min-width:0">
+<div style="position:relative; width:100%; aspect-ratio:760 / 360">
+<svg viewBox="0 0 760 360" style="position:absolute; left:0; top:0; width:100%; height:100%" role="img" aria-label="Grille du graphique, rétrocession mensuelle en milliers d'euros">
+<g stroke="#DCE5E2" stroke-width="1">
+<line x1="60" y1="20" x2="740" y2="20"></line>
+<line x1="60" y1="95" x2="740" y2="95"></line>
+<line x1="60" y1="170" x2="740" y2="170"></line>
+<line x1="60" y1="245" x2="740" y2="245"></line>
+<line x1="60" y1="320" x2="740" y2="320" stroke="#4A5B57"></line>
+</g>
+<g fill="#4A5B57" font-size="13" font-family="DM Sans, sans-serif" text-anchor="end">
+<text x="50" y="25">32 000 €</text>
+<text x="50" y="100">24 000 €</text>
+<text x="50" y="175">16 000 €</text>
+<text x="50" y="250">8 000 €</text>
+<text x="50" y="325">0 €</text>
+</g>
+<g fill="#4A5B57" font-size="13" font-family="DM Sans, sans-serif" text-anchor="middle">
+<text x="60" y="345">Mai</text>
+<text x="196" y="345">Juin</text>
+<text x="332" y="345">Juillet</text>
+<text x="468" y="345">Août</text>
+<text x="604" y="345">Sept.</text>
+<text x="740" y="345">Oct.</text>
+</g>
+</svg>
+<sc-for list="{{series}}" as="s" hint-placeholder-count="7">
+<svg viewBox="0 0 760 360" style="position:absolute; left:0; top:0; width:100%; height:100%" aria-hidden="true">
+<polyline points="{{s.points}}" fill="none" stroke="{{s.color}}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></polyline>
+<circle cx="740" cy="{{s.cy}}" r="6" fill="{{s.color}}"></circle>
+</svg>
+</sc-for>
+</div>
+</div>
+<ul style="flex:1 1 240px; max-width:340px; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px">
+<sc-for list="{{series}}" as="s" hint-placeholder-count="7">
+<li style="display:flex; align-items:center; gap:10px; font-size:14px">
+<span style="width:14px; height:14px; border-radius:4px; background:{{s.color}}; flex:none"></span>
+<span style="flex:1 1 auto">{{s.name}}</span>
+<b>{{s.last}}</b>
+</li>
+</sc-for>
+</ul>
+</div>
+<div style="font-size:13px; color:#4A5B57">Rétrocession de 60 % due à chaque praticien pour les prestations du mois. Septembre et octobre sont provisoires, car les mutuelles n'ont pas encore tout remboursé.</div>
+</section>
+
+<section style="display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">Une courbe par praticien</h2>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); gap:16px">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="7">
+<article style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid {{c.color}}; border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:10px">
+<div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px">
+<div>
+<h3 style="margin:0; font-size:16px">{{c.name}}</h3>
+<div style="font-size:13px; color:#4A5B57">{{c.role}}</div>
+<span style="{{c.convStyle}}">{{c.conv}}</span>
+</div>
+<span style="background:#E3F4EA; color:#0B6B3A; border-radius:999px; padding:3px 10px; font-size:13px; font-weight:700; white-space:nowrap">{{c.delta}}</span>
+</div>
+<svg viewBox="0 0 300 110" style="width:100%; height:auto; display:block" role="img" aria-label="Évolution mensuelle de la rémunération">
+<polygon points="{{c.area}}" fill="{{c.color}}" fill-opacity="0.12"></polygon>
+<polyline points="{{c.points}}" fill="none" stroke="{{c.color}}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></polyline>
+<circle cx="290" cy="{{c.cy}}" r="5" fill="{{c.color}}"></circle>
+</svg>
+<div style="display:flex; justify-content:space-between; font-size:12px; color:#4A5B57"><span>Mai</span><span>Juin</span><span>Juil.</span><span>Août</span><span>Sept.</span><span>Oct.</span></div>
+<div style="font-size:14px; border-top:1px solid #E7EDEB; padding-top:10px; display:flex; flex-direction:column; gap:4px">
+<div style="display:flex; justify-content:space-between"><span style="color:#4A5B57">Octobre (en cours)</span><b>{{c.last}}</b></div>
+<div style="display:flex; justify-content:space-between; align-items:center; gap:8px"><span style="color:#4A5B57">Août <span style="display:inline-block; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:700; background:#E3F4EA; color:#0B6B3A">Payé</span></span><b>{{c.paid}}</b></div>
+<div style="display:flex; justify-content:space-between; align-items:center; gap:8px"><span style="color:#4A5B57">Septembre <span style="display:inline-block; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:700; background:#FDF0DC; color:#8A4B08">En attente</span></span><b>{{c.next}}</b></div>
+</div>
+</article>
+</sc-for>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Calcul de la rémunération de chaque praticien (octobre)</h2>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">Opération : chiffre d'affaires facturé × 60 % = rétrocession brute, puis − frais de laboratoire = rémunération nette versée par le gérant.</div>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">× 60 %</th><th style="padding:8px; text-align:right">− Frais de labo</th><th style="padding:8px; text-align:right">= Net à payer</th><th style="padding:8px; min-width:200px">Net et labo en part de la rétrocession</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{calc}}" as="c" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{c.name}}</b><div style="font-size:12px; color:#4A5B57">{{c.spec}}</div></td>
+<td style="padding:12px 8px; text-align:right">{{c.billed}}</td>
+<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{c.retro}}</td>
+<td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{c.labo}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; color:#0B6B3A; font-size:15px">{{c.net}}</td>
+<td style="padding:12px 8px"><div style="display:flex; height:14px; border-radius:999px; overflow:hidden; background:#F3F6F5"><div style="{{c.netBar}}"></div><div style="{{c.laboBar}}"></div></div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{c.pct}} net · {{c.pctLabo}} labo</div></td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 0">Total des 7 praticiens</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right; color:#B45309">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-size:15px">{{tot.net}}</td><td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Hypothèse à confirmer : les frais de laboratoire sont retirés de la rétrocession de 60 % de chaque praticien. Les montants du calendrier des paiements ci-dessous sont avant cette déduction.</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Calendrier des paiements par le gérant</h2>
+<div style="font-size:13px; color:#4A5B57">Chaque mois est payé aux praticiens par Dr Mohamed Bochouari, une fois les remboursements des mutuelles arrivés.</div>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Prestations de</th><th style="padding:8px">Remboursements reçus des mutuelles</th><th style="padding:8px">Date du paiement</th><th style="padding:8px; text-align:right">Total versé</th><th style="padding:8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{payments}}" as="p" hint-placeholder-count="6">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0; font-weight:700">{{p.month}}</td>
+<td style="padding:12px 8px">
+<div style="display:flex; align-items:center; gap:10px"><div style="background:#E7EDEB; border-radius:999px; height:8px; width:90px; overflow:hidden; flex:none"><div style="{{p.bar}}"></div></div><span>{{p.recv}}</span></div>
+</td>
+<td style="padding:12px 8px; font-weight:700">{{p.date}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{p.total}}</td>
+<td style="padding:12px 8px"><span style="{{p.chip}}">{{p.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Règle proposée : le gérant verse la rétrocession d'un mois quand au moins 95 % des remboursements de ce mois sont arrivés, ce qui donne un paiement vers le 15 du deuxième mois suivant. À confirmer avec ton frère.</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h3 style="margin:0; font-size:18px">Répartition des rémunérations nettes</h3>
+<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 75 260 € nets à payer (60 % de rétrocession moins les frais de laboratoire).</div>
+<div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
+<div style="position:relative; width:240px; height:240px; flex:0 0 240px"><svg viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Disque des rémunérations nettes par praticien">
+<sc-for list="{{donutSegs}}" as="s" hint-placeholder-count="7">
+<circle cx="100" cy="100" r="70" fill="none" stroke="{{s.color}}" stroke-width="36" stroke-dasharray="{{s.dash}}" stroke-dashoffset="{{s.off}}" transform="rotate(-90 100 100)"></circle>
+</sc-for>
+</svg><div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><span style="font-size:12px; color:#4A5B57">{{donutLabel}}</span><b style="font-size:20px">{{donutValue}}</b></div></div>
+<div style="display:flex; flex-direction:column; gap:8px; flex:1 1 280px; min-width:0">
+<sc-for list="{{donutLegend}}" as="g" hint-placeholder-count="7">
+<div style="display:grid; grid-template-columns:14px 1fr auto 56px; gap:10px; align-items:center; font-size:14px"><span style="{{g.sw}}"></span><span>{{g.name}}</span><b>{{g.value}}</b><span style="text-align:right; color:#4A5B57">{{g.pct}}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div><h2 style="margin:0; font-size:18px">Encaissements prévus mois par mois</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Ce qui devrait rentrer à la caisse du cabinet après octobre : part des mutuelles (75 % le mois suivant, 25 % le mois d'après) et mensualités des étalements en cours.</div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px">
+<sc-for list="{{cash}}" as="m" hint-placeholder-count="5">
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:6px">
+<div style="font-weight:700">{{m.label}}</div>
+<div style="font-size:24px; font-weight:700; color:#0F766E">{{m.total}}</div>
+<div style="height:10px; background:#EEF3F1; border-radius:5px; overflow:hidden"><div style="{{m.bar}}"></div></div>
+<div style="font-size:12px; color:#4A5B57; line-height:1.5">Mutuelles : {{m.mut}}<br>Étalements : {{m.plan}}</div>
+</div>
+</sc-for>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Le délai des mutuelles (1 à 1,5 mois) et la répartition 75 / 25 sont une hypothèse à confirmer avec l'historique réel. Les étalements viennent de la page Patients et paiements. Ne comprend pas les patients qui n'ont encore rien payé.</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : tous les montants et dates de paiement sont fictifs. Les vraies dates viendront des virements réellement effectués par le gérant.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1950}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
+    const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
+    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const data = [
+      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [28400, 27900, 25200, 22100, 29600, 30300] },
+      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', color: '#B45309', v: [27100, 26800, 24300, 21500, 28200, 28740] },
+      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [10900, 11200, 9800, 8100, 11000, 11520] },
+      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [10300, 10800, 9500, 8400, 10600, 10980] },
+      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [10600, 10400, 9700, 8600, 10900, 11340] },
+      { name: 'Dr Nabila Touil', role: '1 jour par semaine', color: '#B42318', v: [5200, 5400, 4700, 4100, 5400, 5580] },
+      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [5000, 5100, 4600, 4000, 5200, 5400] }
+    ];
+    const series = data.map((d) => {
+      const pts = d.v.map((v, i) => (60 + 136 * i) + ',' + Math.round((320 - v * 300 / 32000) * 10) / 10);
+      return { name: d.name, color: d.color, points: pts.join(' '), cy: Math.round((320 - d.v[5] * 300 / 32000) * 10) / 10, last: fmt(d.v[5]) };
+    });
+    const cards = data.map((d) => {
+      const min = Math.min.apply(null, d.v);
+      const max = Math.max.apply(null, d.v);
+      const pts = d.v.map((v, i) => [10 + 56 * i, Math.round((98 - (v - min) / (max - min) * 76) * 10) / 10]);
+      const line = pts.map((p) => p[0] + ',' + p[1]).join(' ');
+      const last = d.v[5];
+      const prev = d.v[4];
+      const pct = Math.round((last - prev) / prev * 100);
+      return {
+        name: d.name, role: d.role, color: d.color, points: line,
+        area: line + ' 290,106 10,106', cy: pts[5][1],
+        delta: (pct >= 0 ? '+' : '−') + Math.abs(pct) + ' % vs sept.',
+        last: fmt(last), paid: '15/10/2026 · ' + fmt(d.v[3]), next: '16/11/2026 · ' + fmt(d.v[4]), conv: d.name === 'Dr Mohamed Bochouari' ? 'Non conventionné' : 'Conventionné', convStyle: d.name === 'Dr Mohamed Bochouari' ? ns : cs
+      };
+    });
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
+    const ok = chipBase + ' background:#E3F4EA; color:#0B6B3A;';
+    const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
+    const bar = (w, c) => 'background:' + c + '; height:8px; width:' + w + '%;';
+    const payments = [
+      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/07/2026', total: '97 500 €', status: 'Payé', chip: ok },
+      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '14/08/2026', total: '97 600 €', status: 'Payé', chip: ok },
+      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/09/2026', total: '87 800 €', status: 'Payé', chip: ok },
+      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '15/10/2026', total: '76 800 €', status: 'Payé', chip: ok },
+      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 16/11/2026', total: '100 900 €', status: 'En attente des mutuelles', chip: wait },
+      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 15/12/2026', total: '103 860 €', status: 'En attente des mutuelles', chip: wait }
+    ];
+    const cd = [
+      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 50500, 30300, 7800],
+      ['Dr Mohamed Bochouari', 'Orthodontiste', 47900, 28740, 7500],
+      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 19200, 11520, 3100],
+      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 18300, 10980, 2900],
+      ['Dr Julien Cabaz', 'Implantologue', 18900, 11340, 3000],
+      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer)', 9300, 5580, 1600],
+      ['7e praticien (à confirmer)', 'jours à confirmer', 9000, 5400, 2700]
+    ];
+    const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const calc = cd.map((x) => {
+      const net = x[3] - x[4];
+      const pn = Math.round(net / x[3] * 100);
+      return { name: x[0], spec: x[1], billed: eur(x[2]), retro: eur(x[3]), labo: eur(x[4]), net: eur(net), pct: pn + ' %', pctLabo: (100 - pn) + ' %',
+        netBar: 'background:#2E8B57; width:' + pn + '%;', laboBar: 'background:#E9B872; width:' + (100 - pn) + '%;' };
+    });
+    const sum = (k) => cd.reduce((a, x) => a + x[k], 0);
+    const tot = { billed: eur(sum(2)), retro: eur(sum(3)), labo: eur(sum(4)), net: eur(sum(3) - sum(4)) };
+    const DCOL = ['#0F766E', '#B45309', '#5B3FA8', '#2F6DB5', '#15803D', '#B42318', '#7A8A86'];
+    const mkDonut = (items, fmtv, label, total) => {
+      const C = 2 * Math.PI * 70; const sumv = items.reduce((a, x) => a + x[1], 0); let acc = 0;
+      const segs = items.map((x, i) => { const len = x[1] / sumv * C; const o = { color: DCOL[i % DCOL.length], dash: (Math.max(0, len - 2)).toFixed(2) + ' ' + (C - Math.max(0, len - 2)).toFixed(2), off: (-acc).toFixed(2) }; acc += len; return o; });
+      const legend = items.map((x, i) => ({ sw: 'display:inline-block; width:14px; height:14px; border-radius:3px; background:' + DCOL[i % DCOL.length] + ';', name: x[0], value: fmtv(x[1]), pct: (Math.round(x[1] / sumv * 1000) / 10).toString().replace('.', ',') + ' %' }));
+      return { donutSegs: segs, donutLegend: legend, donutLabel: label, donutValue: total };
+    };
+    const donut = mkDonut(cd.map((x) => [x[0].replace('Dr ', ''), x[3] - x[4]]), (v) => eur(v), 'Total net', eur(sum(3) - sum(4)));
+    const LK = window.LAEKEN; let cash = [];
+    if (LK) {
+      const mu = LK.rows.reduce((x, r) => x + r.interv, 0);
+      const plans = [[0, 100, 100, 100, 100], [0, 115, 115, 115, 115], [86.25, 86.25, 86.25, 86.25, 86.25]];
+      const mo = ['Octobre (reste)', 'Novembre', 'Décembre', 'Janvier', 'Février'];
+      const vals = mo.map((m, i) => ({ m: m, mut: i === 1 ? mu * 0.75 : (i === 2 ? mu * 0.25 : 0), pl: plans.reduce((x, q) => x + q[i], 0) }));
+      const mx = Math.max.apply(null, vals.map((v) => v.mut + v.pl));
+      cash = vals.map((v) => ({ label: v.m, total: eur(v.mut + v.pl), mut: eur(v.mut), plan: eur(v.pl), bar: 'height:100%; background:#0F766E; width:' + Math.max(2, (v.mut + v.pl) / mx * 100) + '%' }));
+    }
+    return Object.assign({ series: series, cards: cards, payments: payments, calc: calc, tot: tot, cash: cash }, donut);
+  }
+}
+</script>
+</body>
+</html>

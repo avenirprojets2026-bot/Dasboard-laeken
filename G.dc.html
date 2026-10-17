@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Tableau de bord interactif</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2300px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Tableau interactif</span>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Gérant : Dr Mohamed Bochouari</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Tableau de bord interactif</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:420px; line-height:1.4">Clique sur un mois, un praticien ou un filtre : les chiffres, les courbes et les statuts se mettent à jour.</div>
+</header>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; flex-direction:column; gap:8px">
+<div style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em">Mois</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-for list="{{monthPills}}" as="m" hint-placeholder-count="6">
+<button onClick="{{m.pick}}" style="{{m.style}}">{{m.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px">
+<div style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em">Praticien</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<button onClick="{{allPick}}" style="{{allStyle}}">Tous les praticiens</button>
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
+<button onClick="{{c.pick}}" style="{{c.style}}"><span style="width:10px; height:10px; border-radius:50%; background:{{c.color}}; flex:none"></span>{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:8px">
+<div style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em">Conventionnement</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-for list="{{convPills}}" as="p" hint-placeholder-count="3">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<h2 style="margin:0; font-size:18px">{{chartTitle}}</h2>
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
+<div style="flex:999 1 520px; min-width:0">
+<div style="position:relative; width:100%; aspect-ratio:760 / 360">
+<div style="{{bandStyle}}"></div>
+<sc-for list="{{ticks}}" as="t" hint-placeholder-count="5">
+<div style="{{t.lineStyle}}"></div>
+<div style="{{t.labelStyle}}">{{t.label}}</div>
+</sc-for>
+<sc-for list="{{monthLabels}}" as="l" hint-placeholder-count="6">
+<div style="{{l.style}}">{{l.label}}</div>
+</sc-for>
+<sc-for list="{{lines}}" as="s" hint-placeholder-count="7">
+<svg viewBox="0 0 760 360" style="position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none" aria-hidden="true">
+<polyline points="{{s.points}}" fill="none" stroke="{{s.color}}" stroke-width="{{s.sw}}" stroke-linejoin="round" stroke-linecap="round"></polyline>
+<circle cx="{{s.cx}}" cy="{{s.cy}}" r="7" fill="{{s.color}}" stroke="#fff" stroke-width="2"></circle>
+</svg>
+</sc-for>
+</div>
+</div>
+<ul style="flex:1 1 240px; max-width:360px; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px">
+<sc-for list="{{legend}}" as="g" hint-placeholder-count="7">
+<li>
+<button onClick="{{g.pick}}" style="{{g.style}}">
+<span style="width:14px; height:14px; border-radius:4px; background:{{g.color}}; flex:none"></span>
+<span style="flex:1 1 auto; text-align:left">{{g.name}}</span>
+<b>{{g.value}}</b>
+</button>
+</li>
+</sc-for>
+</ul>
+</div>
+<div style="font-size:13px; color:#4A5B57">Rétrocession de 60 % due pour les prestations de chaque mois. La bande grise marque le mois choisi. Septembre et octobre sont provisoires.</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">{{tableTitle}}</h2>
+<div style="font-size:13px; color:#4A5B57">Clique sur un nom pour ouvrir son casier plus bas.</div>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 12px">Praticien</th><th style="padding:8px">Conventionnement</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th><th style="padding:8px; text-align:right">Part cabinet</th><th style="padding:8px">Paiement</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<tr style="{{r.trStyle}}">
+<td style="padding:12px 8px 12px 12px"><button onClick="{{r.pick}}" style="background:none; border:0; padding:6px 0; font-size:14px; font-weight:700; cursor:pointer; text-align:left; color:#0B5D56; text-decoration:underline">{{r.name}}</button><div style="font-size:12px; color:#4A5B57">{{r.days}}</div></td>
+<td style="padding:12px 8px"><span style="{{r.convStyle}}">{{r.conv}}</span></td>
+<td style="padding:12px 8px; text-align:right">{{r.billed}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.retro}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.share}}</td>
+<td style="padding:12px 8px"><span style="{{r.chip}}">{{r.status}}</span><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{r.date}}</div></td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 12px">Total</td><td style="padding:12px 8px"></td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right">{{tot.share}}</td><td style="padding:12px 8px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<sc-if value="{{showCasier}}" hint-placeholder-val="{{ true }}">
+<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid {{casierColor}}; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px">
+<h2 style="margin:0; font-size:20px">{{casierTitle}}</h2>
+<span style="{{casierConvStyle}}">{{casierConv}}</span>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; margin-right:4px">Prestations</span>
+<sc-for list="{{pfPills}}" as="p" hint-placeholder-count="4">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Date</th><th style="padding:8px">Patient</th><th style="padding:8px">Prestation</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">Mutuelle</th><th style="padding:8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{prestations}}" as="r" hint-placeholder-count="6">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{r.date}}</td>
+<td style="padding:12px 8px">{{r.patient}}</td>
+<td style="padding:12px 8px">{{r.label}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.amount}}</td>
+<td style="padding:12px 8px">{{r.mut}}</td>
+<td style="padding:12px 8px"><span style="{{r.chip}}">{{r.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div>
+<h3 style="margin:8px 0 8px; font-size:16px">Prothèses : devis et frais de laboratoire</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Travail</th><th style="padding:8px">Labo</th><th style="padding:8px; text-align:right">Devis</th><th style="padding:8px; text-align:right">Facture</th><th style="padding:8px; text-align:right">Écart</th><th style="padding:8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{labo}}" as="l" hint-placeholder-count="4">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{l.work}}</td>
+<td style="padding:12px 8px">{{l.lab}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.quote}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.invoice}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{l.gap}}</td>
+<td style="padding:12px 8px"><span style="{{l.chip}}">{{l.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</sc-if>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette interactive : tous les chiffres sont fictifs, à remplacer par l'export de facturation du cabinet. Les prestations et devis affichés dans un casier sont des exemples identiques pour chaque praticien.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
+class Component extends DCLogic {
+  state = { month: 5, dentist: -1, conv: 'all', pf: 'all' };
+
+  renderVals() {
+    const S = this.state;
+    const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const months = ['Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre'];
+    const monthsShort = ['Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.'];
+    const paidDates = ['15/07/2026', '14/08/2026', '15/09/2026', '15/10/2026', '16/11/2026', '15/12/2026'];
+    const D = [
+      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [28400, 27900, 25200, 22100, 29600, 30300], labo: 7800 },
+      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [10900, 11200, 9800, 8100, 11000, 11520], labo: 3100 },
+      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 5 jours par semaine', conv: false, color: '#B45309', v: [27100, 26800, 24300, 21500, 28200, 28740], labo: 7500 },
+      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine', conv: true, color: '#B42318', v: [5200, 5400, 4700, 4100, 5400, 5580], labo: 1600 },
+      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [10600, 10400, 9700, 8600, 10900, 11340], labo: 3000 },
+      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [10300, 10800, 9500, 8400, 10600, 10980], labo: 2900 },
+      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [5000, 5100, 4600, 4000, 5200, 5400], labo: 2700 }
+    ];
+
+    const pillBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
+    const pillOff = pillBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+    const pillOn = pillBase + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
+    const csC = chipBase + ' background:#E3F2EF; color:#0B5D56;';
+    const nsC = chipBase + ' background:#EFEAF8; color:#4B2F96;';
+    const okC = chipBase + ' background:#E3F4EA; color:#0B6B3A;';
+    const waitC = chipBase + ' background:#FDF0DC; color:#8A4B08;';
+    const badC = chipBase + ' background:#FBE7E5; color:#A3231A;';
+    const infoC = chipBase + ' background:#E7EDEB; color:#33433F;';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+
+    const m = S.month;
+    let idx = D.map((d, i) => i);
+    if (S.dentist >= 0) { idx = [S.dentist]; }
+    else if (S.conv === 'conv') { idx = idx.filter((i) => D[i].conv); }
+    else if (S.conv === 'non') { idx = idx.filter((i) => !D[i].conv); }
+
+    const setState = (o) => this.setState(o);
+    const monthPills = months.map((label, i) => ({ label: label, style: i === m ? pillOn : pillOff, pick: () => setState({ month: i }) }));
+    const chips = D.map((d, i) => ({ label: d.label, color: d.color, style: i === S.dentist ? pillOn : pillOff, pick: () => setState({ dentist: i, conv: 'all', pf: 'all' }) }));
+    const convDefs = [['all', 'Tous (7)'], ['conv', 'Conventionnés (6)'], ['non', 'Non conventionné (1)']];
+    const convPills = convDefs.map((c) => ({ label: c[1], style: (S.dentist < 0 && S.conv === c[0]) ? pillOn : pillOff, pick: () => setState({ conv: c[0], dentist: -1, pf: 'all' }) }));
+
+    const paid = m <= 3;
+    const billedOf = (d) => Math.round(d.v[m] / 0.6);
+    let sumBilled = 0; let sumRetro = 0;
+    idx.forEach((i) => { sumBilled += billedOf(D[i]); sumRetro += D[i].v[m]; });
+    const scope = S.dentist >= 0 ? D[S.dentist].name : (S.conv === 'conv' ? 'les praticiens conventionnés' : (S.conv === 'non' ? 'le praticien non conventionné' : 'tout le cabinet'));
+    const kpis = [
+      { label: "Chiffre d'affaires", value: fmt(sumBilled), note: months[m] + ' 2026', style: tile('#0F766E') },
+      { label: 'Rétrocession (60 %)', value: fmt(sumRetro), note: 'à verser aux praticiens', style: tile('#B45309') },
+      { label: 'Part du cabinet (40 %)', value: fmt(sumBilled - sumRetro), note: 'avant charges du cabinet', style: tile('#5B3FA8') },
+      { label: 'Paiement', value: paid ? 'Payé' : 'En attente', note: paid ? 'versé le ' + paidDates[m] : 'prévu le ' + paidDates[m] + ', après les mutuelles', style: tile(paid ? '#15803D' : '#B45309') }
+    ];
+
+    let maxV = 0;
+    idx.forEach((i) => D[i].v.forEach((x) => { if (x > maxV) maxV = x; }));
+    const top = Math.max(4000, Math.ceil(maxV * 1.1 / 4000) * 4000);
+    const ticks = [0, 1, 2, 3, 4].map((k) => {
+      const y = 320 - k * 75;
+      const pc = (y / 360 * 100) + '%';
+      return {
+        label: fmt(top * k / 4),
+        lineStyle: 'position:absolute; left:7.9%; right:2.6%; top:' + pc + '; height:1px; background:' + (k === 0 ? '#4A5B57' : '#DCE5E2') + ';',
+        labelStyle: 'position:absolute; left:0; width:7%; top:' + pc + '; transform:translateY(-50%); text-align:right; font-size:12px; color:#4A5B57;'
+      };
+    });
+    const monthLabels = monthsShort.map((label, j) => ({
+      label: label,
+      style: 'position:absolute; top:92.5%; left:' + ((60 + 136 * j) / 760 * 100) + '%; transform:translateX(-50%); font-size:12px; color:#4A5B57; font-weight:' + (j === m ? '700' : '400') + ';'
+    }));
+    const bandStyle = 'position:absolute; top:5.5%; height:83.5%; width:9%; left:' + (((60 + 136 * m) / 760 * 100) - 4.5) + '%; background:#14201D; opacity:0.07; border-radius:6px;';
+    const lines = idx.map((i) => {
+      const d = D[i];
+      const pts = d.v.map((x, j) => (60 + 136 * j) + ',' + Math.round((320 - x / top * 300) * 10) / 10);
+      return { color: d.color, points: pts.join(' '), sw: idx.length === 1 ? 4 : 3, cx: 60 + 136 * m, cy: Math.round((320 - d.v[m] / top * 300) * 10) / 10 };
+    });
+    const legendBase = 'display:flex; align-items:center; gap:10px; width:100%; min-height:44px; box-sizing:border-box; border-radius:10px; padding:8px 10px; font-size:14px; cursor:pointer; ';
+    const legend = idx.map((i) => ({
+      name: D[i].name, color: D[i].color, value: fmt(D[i].v[m]),
+      style: legendBase + (i === S.dentist ? 'background:#E3F2EF; border:2px solid #0F766E;' : 'background:#fff; border:1px solid #DCE5E2;'),
+      pick: () => setState({ dentist: i, conv: 'all', pf: 'all' })
+    }));
+
+    const rows = idx.map((i) => {
+      const d = D[i];
+      const b = billedOf(d);
+      return {
+        name: d.name, days: d.days, conv: d.conv ? 'Conventionné' : 'Non conventionné', convStyle: d.conv ? csC : nsC,
+        billed: fmt(b), retro: fmt(d.v[m]), share: fmt(b - d.v[m]),
+        status: paid ? 'Payé' : 'En attente', chip: paid ? okC : waitC,
+        date: paid ? 'le ' + paidDates[m] : 'prévu le ' + paidDates[m],
+        trStyle: 'border-top:1px solid #E7EDEB;' + (i === S.dentist ? ' background:#E3F2EF;' : ''),
+        pick: () => setState({ dentist: i, conv: 'all', pf: 'all' })
+      };
+    });
+    const tot = { billed: fmt(sumBilled), retro: fmt(sumRetro), share: fmt(sumBilled - sumRetro) };
+
+    const showCasier = S.dentist >= 0;
+    const cd = showCasier ? D[S.dentist] : D[0];
+    const base = [
+      { date: '14/10', id: 4821, label: 'Examen clinique', amount: '28 €', mut: 'Mutualités Chrétiennes', st: 'En attente' },
+      { date: '14/10', id: 4822, label: 'Panoramique', amount: '45 €', mut: 'Solidaris', st: 'En attente' },
+      { date: '13/10', id: 4790, label: 'Examen oro-buccal', amount: '32 €', mut: 'Partenamut', st: 'Remboursé' },
+      { date: '13/10', id: 4795, label: 'Couronne céramique', amount: '620 €', mut: 'Mutualité Libérale', st: 'En attente' },
+      { date: '10/10', id: 4712, label: 'Obturation', amount: '74 €', mut: 'Solidaris', st: 'Remboursé' },
+      { date: '09/10', id: 4688, label: 'Détartrage', amount: '48 €', mut: 'Mutualités Chrétiennes', st: 'Refusé' }
+    ];
+    const stChip = { 'Remboursé': okC, 'En attente': waitC, 'Refusé': badC };
+    const count = (s) => base.filter((r) => r.st === s).length;
+    const pfDefs = [['all', 'Toutes (' + base.length + ')'], ['Remboursé', 'Remboursées (' + count('Remboursé') + ')'], ['En attente', 'En attente (' + count('En attente') + ')'], ['Refusé', 'Refusées (' + count('Refusé') + ')']];
+    const pfPills = pfDefs.map((p) => ({ label: p[1], style: S.pf === p[0] ? pillOn : pillOff, pick: () => setState({ pf: p[0] }) }));
+    const off = 13 * Math.max(S.dentist, 0);
+    const prestations = base.filter((r) => S.pf === 'all' || r.st === S.pf).map((r) => ({ date: r.date, patient: '#' + (r.id + off), label: r.label, amount: r.amount, mut: r.mut, status: r.st, chip: stChip[r.st] }));
+    const labo = [
+      { work: 'Couronne céramique', lab: 'Labo 1', quote: '480 €', invoice: '510 €', gap: '+30 €', status: 'Facture reçue', chip: infoC },
+      { work: 'Bridge 3 éléments', lab: 'Labo 2', quote: '1 150 €', invoice: '—', gap: '—', status: 'Devis à valider', chip: waitC },
+      { work: 'Prothèse amovible', lab: 'Labo 1', quote: '720 €', invoice: '695 €', gap: '−25 €', status: 'Facturé', chip: okC },
+      { work: 'Gouttière', lab: 'Labo 3', quote: '190 €', invoice: '—', gap: '—', status: 'Non commandé', chip: badC }
+    ];
+
+    return {
+      monthPills: monthPills, chips: chips, convPills: convPills,
+      allPick: () => setState({ dentist: -1, conv: 'all', pf: 'all' }),
+      allStyle: (S.dentist < 0 && S.conv === 'all') ? pillOn : pillOff,
+      kpis: kpis,
+      chartTitle: 'Rémunération mensuelle · ' + scope,
+      ticks: ticks, monthLabels: monthLabels, bandStyle: bandStyle, lines: lines, legend: legend,
+      tableTitle: 'Détail de ' + months[m].toLowerCase() + ' 2026 · ' + scope,
+      rows: rows, tot: tot,
+      showCasier: showCasier,
+      casierTitle: 'Casier de ' + cd.name, casierColor: cd.color,
+      casierConv: cd.conv ? 'Conventionné' : 'Non conventionné', casierConvStyle: cd.conv ? csC : nsC,
+      pfPills: pfPills, prestations: prestations, labo: labo
+    };
+  }
+}
+</script>
+</body>
+</html>

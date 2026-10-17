@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Espace praticien</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:3300px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Espace praticien</span>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Accès individuel</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Espace praticien</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:500px; line-height:1.5">Chaque praticien ne voit que ses propres heures, ses patients, ses travaux et sa rémunération. Il ne voit ni les autres praticiens, ni les charges et le résultat du cabinet, réservés au gérant.</div>
+</header>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Connecté</span>
+<sc-for list="{{prPills}}" as="p" hint-placeholder-count="7">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Mois</span>
+<sc-for list="{{moPills}}" as="p" hint-placeholder-count="2">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between">
+<div>
+<h2 style="margin:0; font-size:22px">{{who}}</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px">{{spec}} · {{daysTxt}}</div>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<button onClick="{{onCsv}}" style="{{btnSide}}">Exporter mes patients en CSV</button>
+</div>
+</section>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}">
+<div style="{{msgStyle}}">{{msg}}</div>
+</sc-if>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="5">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:28px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h3 style="margin:0; font-size:18px">Répartition de mes actes</h3>
+<sc-for list="{{actBars}}" as="a" hint-placeholder-count="6">
+<div style="display:grid; grid-template-columns:minmax(150px, 280px) 1fr 60px; gap:12px; align-items:center; font-size:14px">
+<span>{{a.label}}</span>
+<div style="background:#F3F6F5; border-radius:999px; height:12px; overflow:hidden"><div style="{{a.bar}}"></div></div>
+<b style="text-align:right">{{a.n}}</b>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h3 style="margin:0; font-size:18px">Mes heures prestées</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:700px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Jour</th><th style="padding:8px">Horaire</th><th style="padding:8px; text-align:right">Heures</th><th style="padding:8px; text-align:right">Patients</th><th style="padding:8px">Remarque</th></tr></thead>
+<tbody>
+<sc-for list="{{hours}}" as="h" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0">{{h.day}}</td><td style="padding:10px 8px">{{h.span}}</td><td style="padding:10px 8px; text-align:right">{{h.h}}</td><td style="padding:10px 8px; text-align:right">{{h.n}}</td><td style="padding:10px 8px"><span style="{{h.chipStyle}}">{{h.chip}}</span></td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h3 style="margin:0; font-size:18px">Mes travaux avec le laboratoire</h3>
+<div style="font-size:13px; color:#4A5B57">Actes hors nomenclature avec frais de laboratoire. Les frais sont déduits de ma rétrocession.</div>
+<sc-if value="{{hasWorks}}" hint-placeholder-val="{{ true }}">
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:700px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Date</th><th style="padding:8px">Dossier</th><th style="padding:8px">Travail</th><th style="padding:8px; text-align:right">Honoraires</th><th style="padding:8px; text-align:right">Frais de labo</th></tr></thead>
+<tbody>
+<sc-for list="{{works}}" as="w" hint-placeholder-count="5">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0">{{w.when}}</td><td style="padding:10px 8px"><b>{{w.ini}}</b><div style="font-size:12px; color:#4A5B57">né(e) le {{w.dob}}</div></td><td style="padding:10px 8px">{{w.label}}</td><td style="padding:10px 8px; text-align:right">{{w.fee}}</td><td style="padding:10px 8px; text-align:right">{{w.labo}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+<sc-if value="{{noWorks}}" hint-placeholder-val="{{ false }}">
+<div style="font-size:14px; color:#4A5B57">Aucun travail de laboratoire ce mois.</div>
+</sc-if>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; align-items:center">
+<h3 style="margin:0; font-size:18px">Mes patients du mois</h3>
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<button onClick="{{onPrev}}" style="{{prevStyle}}">Précédent</button>
+<span style="font-size:14px; color:#4A5B57; min-width:130px; text-align:center">{{range}}</span>
+<button onClick="{{onNext}}" style="{{nextStyle}}">Suivant</button>
+</div>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1100px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Date et heure</th><th style="padding:8px">N° de dossier</th><th style="padding:8px">Actes (code INAMI)</th><th style="padding:8px; text-align:right">Honoraires par acte</th><th style="padding:8px; text-align:right">Total</th><th style="padding:8px">Mutuelle</th><th style="padding:8px; text-align:right">Part du patient</th><th style="padding:8px">Paiement</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="20">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:10px 8px 10px 0; white-space:nowrap">{{r.when}}<div style="{{r.suppStyle}}">{{r.suppLabel}}</div></td>
+<td style="padding:10px 8px"><b>{{r.ini}}</b><div style="font-size:12px; color:#4A5B57">né(e) le {{r.dob}} · {{r.age}} ans</div></td>
+<td style="padding:10px 8px"><div style="white-space:pre">{{r.acts}}</div><span style="{{r.nactStyle}}">{{r.nact}}</span></td>
+<td style="padding:10px 8px; text-align:right; font-variant-numeric:tabular-nums"><div style="white-space:pre">{{r.fees}}</div></td>
+<td style="padding:10px 8px; text-align:right; font-variant-numeric:tabular-nums; font-weight:700; white-space:nowrap">{{r.total}}</td>
+<td style="padding:10px 8px"><div style="font-size:13px; margin-bottom:4px">{{r.mut}}</div><span style="{{r.msChip}}">{{r.ms}}</span></td>
+<td style="padding:10px 8px; text-align:right; font-variant-numeric:tabular-nums; font-weight:700">{{r.share}}</td>
+<td style="padding:10px 8px"><span style="{{r.payChip}}">{{r.pay}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : patients, heures et paiements fictifs, mais les totaux de octobre 2026 sont ceux du modèle du cabinet. Dans la vraie version, l'accès individuel se règle par identifiant et rôle dans le logiciel de gestion : cette page montre ce que chaque praticien verrait, le sélecteur « Connecté » simule la connexion.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3300}}'>
+class Component extends DCLogic {
+  state = { pr: 0, page: 0, msg: '', msgKind: 'ok' };
+
+  renderVals() {
+    const S = this.state;
+    const setState = (o) => this.setState(o);
+    const D = window.LAEKEN;
+    if (!D) {
+      return { prPills: [], moPills: [], who: 'Données non chargées', spec: '', daysTxt: '', kpis: [], actBars: [], rows: [], hours: [], works: [], hasWorks: false, noWorks: false, onCsv: () => {}, btnSide: '', range: '', onPrev: () => {}, onNext: () => {}, prevStyle: '', nextStyle: '', hasMsg: true, msg: 'Le fichier de données data.js n\'est pas chargé.', msgStyle: 'padding:12px; background:#FDF0DC; color:#8A4B08; border-radius:10px;' };
+    }
+    const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
+    const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
+    const pillOff = pillBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+    const pillOn = pillBase + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const btnBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:10px; padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer; ';
+    const btnSide = btnBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+    const DAYSN = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const PR = D.PR; const pad = D.pad;
+    const chips = { cb: chipBase + 'background:#D6E6FA; color:#1B3F73;', cash: chipBase + 'background:#D5F0DF; color:#1E5A3A;', plan: chipBase + 'background:#E9DEF7; color:#4B2F96;', unpaid: chipBase + 'background:#FBE0DC; color:#A3231A;', zero: chipBase + 'background:#E7EDEB; color:#33433F;', planned: chipBase + 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' };
+    const msChips = { 'En ordre': chipBase + 'background:#E3F4EA; color:#0B6B3A;', 'À vérifier': chipBase + 'background:#FDF0DC; color:#8A4B08;', 'Non en ordre': chipBase + 'background:#FBE7E5; color:#A3231A;' };
+    const payLabel = { cb: 'Payé par carte', cash: 'Payé en liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
+    const pi = Math.min(S.pr, PR.length - 1);
+    const P = pi >= 0 ? PR[pi] : null;
+    const all = (P ? P.visits : D.visits).slice().sort((a, b) => (a.d - b.d) || a.time.localeCompare(b.time) || (a.p - b.p));
+    const sum = (f) => all.reduce((a, r) => a + f(r), 0);
+    const tF = sum((r) => r.fee); const tI = sum((r) => r.interv); const tS = sum((r) => r.share);
+    const unpaid = all.filter((r) => r.pay === 'unpaid');
+    const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const PAGE = 20;
+    const pages = Math.max(1, Math.ceil(all.length / PAGE));
+    const page = Math.min(S.page, pages - 1);
+    const rows = all.slice(page * PAGE, page * PAGE + PAGE).map((r) => ({
+      when: r.when + ' · ' + r.time, suppLabel: r.off ? '+ 50 € week-end ou férié' : '', suppStyle: r.off ? chipBase + 'background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
+      prat: PR[r.p].short, ini: r.doss, dob: r.dob, age: String(r.age), acts: r.lines.map((l) => l.label + ' · ' + l.code).join('\n'), fees: r.lines.map((l) => eur(l.fee)).join('\n'), nact: r.nact > 1 ? r.nact + ' actes' : '', nactStyle: r.nact > 1 ? chipBase + 'background:#E7EDEB; color:#33433F; margin-top:4px;' : 'display:none;', total: eur(r.fee),
+      mut: r.mut + (r.reg === 'bim' && !r.free ? ' · interv. majorée' : ''), ms: r.ms, msChip: msChips[r.ms],
+      share: eur(r.share), payChip: chips[r.pay], pay: payLabel[r.pay]
+    }));
+    const byAct = {};
+    all.forEach((v) => { v.lines.forEach((l) => { byAct[l.label] = (byAct[l.label] || 0) + 1; }); });
+    const nActs = all.reduce((a, v) => a + v.nact, 0);
+    const entries = Object.keys(byAct).map((k) => [k, byAct[k]]).sort((a, b) => b[1] - a[1]);
+    const mx = entries.length ? entries[0][1] : 1;
+    const actBars = entries.map((e) => ({ label: e[0], n: String(e[1]), bar: 'background:#2E8B57; height:12px; width:' + Math.round(e[1] / mx * 100) + '%;' }));
+    const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const onCsv = () => {
+      const head = ['Date', 'Heure', 'Praticien', 'N° de dossier', 'Date de naissance', 'Âge', 'Code INAMI', 'Acte', 'Honoraires', 'Remboursé mutuelle', 'Supplément', 'Part patient', 'Mutuelle', 'Statut mutuelle', 'Paiement'];
+      const lines = [head].concat(all.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/10/2026', v.time, PR[v.p].short, v.doss, v.dob, v.age, l.code, l.label, String(l.fee).replace('.', ','), String(l.interv).replace('.', ','), String(l.supp).replace('.', ','), String(l.share).replace('.', ','), v.mut, v.ms, payLabel[v.pay]])), []));
+      const csv = '\ufeff' + lines.map((l) => l.map(csvCell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+        if (!dl) { throw { code: 'unavailable' }; }
+        return dl.save({ filename: 'mes-patients-' + (P ? P.short.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'tous') + '-octobre-2026.csv', data: csv });
+      }).then(() => setState({ msg: 'Liste enregistrée.', msgKind: 'ok' }))
+        .catch((e) => setState({ msg: e && e.code === 'declined' ? 'Enregistrement annulé.' : 'Le téléchargement n\'est pas disponible dans cet affichage.', msgKind: 'bad' }));
+    };
+    const disabled = 'opacity:0.4; cursor:default;';
+    const moPills = [{ label: D.MONTH.label, style: pillOn, pick: () => {} }];
+
+    const prPills = PR.map((p, i) => ({ label: p.short + ' (' + p.visits.length + ')', style: i === pi ? pillOn : pillOff, pick: () => setState({ pr: i, page: 0, msg: '' }) }));
+    const works = all.reduce((a, v) => a.concat(v.lines), []).filter((r) => r.labo > 0).map((r) => ({ when: r.when, ini: r.doss, dob: r.dob, label: r.label, fee: eur(r.fee), labo: eur(r.labo) }));
+    const hours = []; const byDay = {};
+    all.forEach((r) => { byDay[r.d] = byDay[r.d] || { r: r, n: 0 }; byDay[r.d].n += 1; });
+    Object.keys(byDay).forEach((k) => { const x = byDay[k]; hours.push({ day: x.r.when, span: '10 h 00 à 18 h 30', h: '8,5 h', n: String(x.n), chip: x.r.future ? 'À venir' : (x.r.off ? 'Week-end ou férié' : 'Semaine'), chipStyle: chipBase + (x.r.future ? 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' : x.r.off ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E7EDEB; color:#33433F;') }); });
+    const laboTot = P.LAB;
+    const kpis = [
+      { label: 'Heures prestées', value: (P.dates.length * 8.5).toString().replace('.', ',') + ' h', note: P.dates.length + ' jours de 10 h à 18 h 30', style: tile('#0F766E') },
+      { label: 'Patients vus', value: String(all.length), note: nActs + ' actes, jusqu\'à ' + P.maxDay + ' patients par jour', style: tile('#2F6DB5') },
+      { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + all.length + ' visites', style: tile('#0F766E') },
+      { label: 'Ma rémunération nette', value: eur(P.net), note: 'honoraires ' + eur(tF) + ' × 60 % = ' + eur(P.retro) + ', moins ' + eur(laboTot) + ' de labo', style: tile('#B45309') },
+      { label: 'Honoraires pas encore encaissés', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }
+    ];
+    return {
+      prPills: prPills, moPills: moPills, who: P.name, spec: P.spec, daysTxt: 'présent le ' + P.days.map((d) => DAYSN[d]).join(', '),
+      kpis: kpis, actBars: actBars, hours: hours, works: works, hasWorks: works.length > 0, noWorks: works.length === 0, rows: rows, onCsv: onCsv, btnSide: btnSide,
+      range: (all.length ? (page * PAGE + 1) : 0) + ' à ' + Math.min(all.length, page * PAGE + PAGE) + ' sur ' + nf(all.length),
+      onPrev: () => { if (page > 0) { setState({ page: page - 1 }); } }, onNext: () => { if (page < pages - 1) { setState({ page: page + 1 }); } },
+      prevStyle: btnSide + (page === 0 ? disabled : ''), nextStyle: btnSide + (page >= pages - 1 ? disabled : ''),
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'border-radius:10px; padding:12px 14px; font-size:14px; ' + (S.msgKind === 'bad' ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E3F4EA; color:#0B6B3A;')
+    };
+  }
+}
+</script>
+</body>
+</html>

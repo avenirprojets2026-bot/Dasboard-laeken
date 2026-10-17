@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Import et export</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:28px; min-height:2000px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Import et export</span>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Vos vrais chiffres</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Import et export Excel / CSV</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:480px; line-height:1.5">Importez l'export du logiciel de facturation : les colonnes sont reconnues toutes seules et les montants sont recalculés par praticien (rétrocession de 60 %, frais de labo, net à payer).</div>
+</header>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div>
+<h2 style="margin:0; font-size:20px">1 · Exporter</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Le fichier s'ouvre dans Excel. Le modèle d'import montre les colonnes attendues, à remplir ou à faire correspondre avec votre logiciel.</div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px">
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:12px">
+<div><b style="font-size:16px">Synthèse par praticien</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Patients, facturé, rétrocession 60 %, frais de labo et net à payer des 7 praticiens.</div></div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<button onClick="{{onSynCsv}}" style="{{btnMain}}">Exporter en CSV</button>
+<button onClick="{{onSynXlsx}}" style="{{btnSide}}">Exporter en Excel</button>
+</div>
+</div>
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:12px">
+<div><b style="font-size:16px">Modèle d'import</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Les colonnes attendues : date, patient, praticien, acte, montant, frais de labo, mode de paiement, statut mutuelle.</div></div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<button onClick="{{onTplCsv}}" style="{{btnMain}}">Modèle en CSV</button>
+<button onClick="{{onTplXlsx}}" style="{{btnSide}}">Modèle en Excel</button>
+</div>
+</div>
+</div>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}">
+<div style="{{msgStyle}}">{{msg}}</div>
+</sc-if>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div>
+<h2 style="margin:0; font-size:20px">2 · Importer et recalculer</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Fichiers acceptés : .csv, .xlsx, .xls. Les noms de colonnes sont devinés (praticien, dentiste, montant, honoraires, labo...). Les données restent dans votre navigateur.</div>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center">
+<label style="{{btnMain}}">Choisir un fichier<input id="fileIn" type="file" accept=".csv,.txt,.xlsx,.xls" onChange="{{onFile}}" style="position:absolute; width:1px; height:1px; opacity:0"></label>
+<button onClick="{{onSample}}" style="{{btnSide}}">Charger octobre 2026 (exemple)</button>
+<sc-if value="{{hasData}}" hint-placeholder-val="{{ false }}">
+<button onClick="{{onClear}}" style="{{btnSide}}">Effacer</button>
+</sc-if>
+<sc-if value="{{hasFile}}" hint-placeholder-val="{{ false }}">
+<span style="font-size:14px; color:#4A5B57">Fichier : <b>{{fileName}}</b></span>
+</sc-if>
+</div>
+<sc-if value="{{hasErr}}" hint-placeholder-val="{{ false }}">
+<div style="background:#FBE7E5; color:#A3231A; border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.5">{{err}}</div>
+</sc-if>
+</section>
+
+<sc-if value="{{hasData}}" hint-placeholder-val="{{ true }}">
+<section style="display:flex; flex-direction:column; gap:16px">
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:10px">
+<h3 style="margin:0; font-size:16px">Colonnes reconnues</h3>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-for list="{{mapChips}}" as="m" hint-placeholder-count="6">
+<span style="{{m.style}}">{{m.label}}</span>
+</sc-for>
+</div>
+<div style="font-size:13px; color:#4A5B57">{{rowCount}} lignes lues. Vert : colonne trouvée. Gris : colonne absente, la valeur est ignorée.</div>
+</div>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:26px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Résultat par praticien</h3>
+<div style="font-size:13px; color:#4A5B57">Rétrocession = 60 % du facturé. Net à payer = rétrocession − frais de labo.</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1000px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Patients</th><th style="padding:8px; text-align:right">Actes</th><th style="padding:8px; text-align:right">Détartrages</th><th style="padding:8px; text-align:right">Blanchiments</th><th style="padding:8px; text-align:right">Panoramiques</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">× 60 %</th><th style="padding:8px; text-align:right">− Labo</th><th style="padding:8px; text-align:right">= Net à payer</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{table}}" as="r" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{r.name}}</b><div style="font-size:12px; color:#4A5B57">{{r.spec}}</div></td>
+<td style="padding:12px 8px; text-align:right">{{r.patients}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.acts}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.det}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.bla}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.pan}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.billed}}</td>
+<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{r.retro}}</td>
+<td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{r.labo}}</td>
+<td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-weight:700; font-size:15px">{{r.net}}</td>
+</tr>
+</sc-for>
+<tr style="border-top:2px solid #14201D; font-weight:700">
+<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">{{tot.patients}}</td><td style="padding:12px 8px; text-align:right">{{tot.acts}}</td><td style="padding:12px 8px; text-align:right">{{tot.det}}</td><td style="padding:12px 8px; text-align:right">{{tot.bla}}</td><td style="padding:12px 8px; text-align:right">{{tot.pan}}</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right; color:#0B6B3A">{{tot.net}}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<button onClick="{{onResCsv}}" style="{{btnMain}}">Exporter ce résultat en CSV</button>
+<button onClick="{{onResXlsx}}" style="{{btnSide}}">Exporter ce résultat en Excel</button>
+</div>
+</div>
+
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<h3 style="margin:0; font-size:18px">Aperçu des premières lignes du fichier</h3>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:13px; min-width:760px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<sc-for list="{{previewHead}}" as="h" hint-placeholder-count="6">
+<th style="padding:8px 8px 8px 0">{{h.label}}</th>
+</sc-for>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{preview}}" as="row" hint-placeholder-count="8">
+<tr style="border-top:1px solid #E7EDEB">
+<sc-for list="{{row.cells}}" as="c" hint-placeholder-count="6">
+<td style="padding:8px 8px 8px 0">{{c.v}}</td>
+</sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</sc-if>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Les chiffres des autres pages restent fictifs. Cette page recalcule uniquement à partir du fichier que vous importez ; le branchement permanent des autres pages sur vos données sera la prochaine étape.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
+class Component extends DCLogic {
+  state = { fileName: '', rows: null, err: '', msg: '', msgKind: 'ok' };
+
+  renderVals() {
+    const S = this.state;
+    const setState = (o) => this.setState(o);
+    const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const norm = (t) => String(t == null ? '' : t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+    const num = (v) => {
+      if (typeof v === 'number') return v;
+      let s = String(v == null ? '' : v).replace(/[€\s ]/g, '');
+      if (!s) return 0;
+      const c = s.lastIndexOf(','), d = s.lastIndexOf('.');
+      if (c >= 0 && d >= 0) { s = c > d ? s.replace(/\./g, '').replace(',', '.') : s.replace(/,/g, ''); }
+      else if (c >= 0) { s = s.replace(',', '.'); }
+      const x = parseFloat(s);
+      return isNaN(x) ? 0 : x;
+    };
+    const btnBase = 'position:relative; display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:10px; padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer; ';
+    const btnMain = btnBase + 'background:#14201D; color:#fff; border:1px solid #14201D;';
+    const btnSide = btnBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2;';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+
+    const PRACT = [
+      { name: 'Dr Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', keys: ['aya', 'turkieh'], pat: 370, billed: 50500, labo: 7800 },
+      { name: 'Dr Mohamed Bochouari', spec: 'Orthodontiste', keys: ['mohamed'], pat: 370, billed: 47900, labo: 7500 },
+      { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: 147, billed: 19200, labo: 3100 },
+      { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: 147, billed: 18300, labo: 2900 },
+      { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: 147, billed: 18900, labo: 3000 },
+      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 74, billed: 9300, labo: 1600 },
+      { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: 74, billed: 9000, labo: 2700 }
+    ];
+
+    const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const toCsv = (aoa) => '﻿' + aoa.map((r) => r.map(csvCell).join(';')).join('\r\n');
+    const loadXlsx = () => new Promise((res, rej) => {
+      if (window.XLSX) { res(window.XLSX); return; }
+      const sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      sc.onload = () => { if (window.XLSX) { res(window.XLSX); } else { rej(new Error('xlsx')); } };
+      sc.onerror = () => rej(new Error('xlsx'));
+      document.head.appendChild(sc);
+    });
+    const save = (filename, data) => window.claude.use('downloads').then((dl) => {
+      if (!dl) { throw { code: 'unavailable' }; }
+      return dl.save({ filename: filename, data: data });
+    }).then(() => setState({ msg: filename + ' : enregistrement accepté.', msgKind: 'ok' }))
+      .catch((e) => {
+        const c = e && e.code;
+        setState({ msg: c === 'declined' ? 'Enregistrement annulé.' : 'Le téléchargement n\'est pas disponible dans cet affichage. Ouvrez la maquette depuis votre espace Claude pour exporter.', msgKind: 'bad' });
+      });
+    const exportCsv = (name, aoa) => () => { save(name + '.csv', toCsv(aoa)); };
+    const exportXlsx = (name, aoa) => () => {
+      loadXlsx().then((X) => {
+        const ws = X.utils.aoa_to_sheet(aoa);
+        const wb = X.utils.book_new();
+        X.utils.book_append_sheet(wb, ws, 'Feuille1');
+        const buf = X.write(wb, { type: 'array', bookType: 'xlsx' });
+        return save(name + '.xlsx', buf);
+      }).catch(() => setState({ msg: 'Le module Excel n\'a pas pu être chargé. Utilisez l\'export CSV, qui s\'ouvre aussi dans Excel.', msgKind: 'bad' }));
+    };
+
+    const synAoa = [['Praticien', 'Spécialité', 'Patients', 'Facturé (€)', 'Rétrocession 60 % (€)', 'Frais de labo (€)', 'Net à payer (€)']]
+      .concat(PRACT.map((p) => [p.name, p.spec, p.pat, p.billed, Math.round(p.billed * 0.6), p.labo, Math.round(p.billed * 0.6) - p.labo]));
+    const tplAoa = [
+      ['Date', 'N° de dossier · naissance', 'Praticien', 'Acte', 'Montant', 'Frais de labo', 'Mode de paiement', 'Statut mutuelle'],
+      ['15/10/2026', 'D-19257 · 06/10/1986', 'Dr Aya Turkieh', 'Examen clinique', 28, 0, 'Carte bancaire', 'En ordre'],
+      ['15/10/2026', 'D-69107 · 07/11/1987', 'Dr Mohamed Bochouari', 'Panoramique', 45, 0, 'Liquide', 'En ordre'],
+      ['14/10/2026', 'D-53949 · 08/08/1960', 'Dr Daoud Bouchouari', 'Couronne céramique', 600, 150, 'Étalement', 'En ordre']
+    ];
+
+    // ---- parsing ----
+    const parseCsv = (text) => {
+      const first = text.split(/\r?\n/)[0] || '';
+      const cnt = (ch) => first.split(ch).length - 1;
+      const delim = cnt(';') >= cnt(',') && cnt(';') >= cnt('\t') ? ';' : (cnt('\t') > cnt(',') ? '\t' : ',');
+      const out = []; let row = []; let cur = ''; let q = false;
+      for (let i = 0; i < text.length; i += 1) {
+        const ch = text[i];
+        if (q) {
+          if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i += 1; } else { q = false; } } else { cur += ch; }
+        } else if (ch === '"') { q = true; }
+        else if (ch === delim) { row.push(cur); cur = ''; }
+        else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') { i += 1; } row.push(cur); out.push(row); row = []; cur = ''; }
+        else { cur += ch; }
+      }
+      if (cur !== '' || row.length) { row.push(cur); out.push(row); }
+      return out.filter((r) => r.some((c) => String(c).trim() !== ''));
+    };
+    const FIELDS = [
+      ['labo', 'Frais de labo', ['frais de labo', 'frais labo', 'laboratoire', 'labo', 'prothese']],
+      ['paymode', 'Mode de paiement', ['mode de paiement', 'moyen de paiement', 'mode paiement']],
+      ['mutuelle', 'Statut mutuelle', ['statut mutuelle', 'mutuelle']],
+      ['dentist', 'Praticien', ['praticien', 'dentiste', 'docteur', 'medecin', 'practitioner', 'dentist']],
+      ['patient', 'Patient', ['patient', 'dossier']],
+      ['date', 'Date', ['date']],
+      ['act', 'Acte', ['acte', 'prestation', 'soin', 'traitement', 'libelle', 'description', 'nature']],
+      ['amount', 'Montant', ['montant', 'honoraires', 'facture', 'total', 'prix', 'tarif', 'amount']]
+    ];
+    const detect = (head) => {
+      const hs = head.map(norm); const used = {}; const map = {};
+      FIELDS.forEach((f) => {
+        let idx = -1;
+        for (let a = 0; a < f[2].length && idx < 0; a += 1) { const i = hs.findIndex((h, k) => !used[k] && h === f[2][a]); if (i >= 0) { idx = i; } }
+        for (let a = 0; a < f[2].length && idx < 0; a += 1) { const i = hs.findIndex((h, k) => !used[k] && h.indexOf(f[2][a]) >= 0); if (i >= 0) { idx = i; } }
+        if (idx >= 0) { used[idx] = true; map[f[0]] = idx; }
+      });
+      return map;
+    };
+    const matchP = (raw) => {
+      const n = norm(raw);
+      for (let i = 0; i < PRACT.length; i += 1) { if (PRACT[i].keys.some((k) => n.split(' ').indexOf(k) >= 0 || n.indexOf(k) >= 0)) { return i; } }
+      return -1;
+    };
+
+    // ---- handlers ----
+    const loadRows = (rows, name) => {
+      if (!rows || rows.length < 2) { setState({ rows: null, fileName: name, err: 'Le fichier semble vide ou ne contient qu\'une ligne. Utilisez le modèle d\'import pour voir le format attendu.' }); return; }
+      const map = detect(rows[0]);
+      if (map.dentist === undefined || map.amount === undefined) {
+        setState({ rows: null, fileName: name, err: 'Colonnes introuvables : il faut au minimum une colonne « Praticien » (ou Dentiste) et une colonne « Montant » (ou Honoraires). Colonnes lues : ' + rows[0].join(', ') + '.' });
+        return;
+      }
+      setState({ rows: rows, fileName: name, err: '', msg: '' });
+    };
+    const onFile = (e) => {
+      const input = (e && e.target && e.target.files) ? e.target : document.getElementById('fileIn');
+      const f = input && input.files && input.files[0];
+      if (!f) { return; }
+      const lower = f.name.toLowerCase();
+      const rd = new FileReader();
+      if (/\.xlsx?$/.test(lower)) {
+        rd.onload = () => {
+          loadXlsx().then((X) => {
+            const wb = X.read(rd.result, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const aoa = X.utils.sheet_to_json(ws, { header: 1, raw: true, defval: '' });
+            loadRows(aoa.filter((r) => r.some((c) => String(c).trim() !== '')), f.name);
+          }).catch(() => setState({ rows: null, fileName: f.name, err: 'Le module Excel n\'a pas pu être chargé. Enregistrez le fichier au format CSV depuis Excel puis importez-le.' }));
+        };
+        rd.readAsArrayBuffer(f);
+      } else {
+        rd.onload = () => loadRows(parseCsv(String(rd.result)), f.name);
+        rd.readAsText(f, 'utf-8');
+      }
+    };
+    const onSample = () => {
+      const D = window.LAEKEN;
+      if (!D) { setState({ rows: null, fileName: '', err: 'Les données d\'exemple ne sont pas chargées.' }); return; }
+      const pl = { cb: 'Carte bancaire', cash: 'Liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
+      const rows = [['Date', 'N° de dossier · naissance', 'Praticien', 'Acte', 'Montant', 'Frais de labo', 'Mode de paiement', 'Statut mutuelle']];
+      D.rows.slice().sort((x, y) => (x.d - y.d) || x.time.localeCompare(y.time)).forEach((r) => {
+        rows.push([String(r.d).padStart(2, '0') + '/10/2026', r.doss + ' · ' + r.dob, D.PR[r.p].name, r.label, r.fee, r.labo, pl[r.pay], r.ms]);
+      });
+      setState({ rows: rows, fileName: 'octobre-2026-exemple.csv', err: '', msg: '' });
+    };
+    const onClear = () => setState({ rows: null, fileName: '', err: '', msg: '' });
+
+    // ---- aggregation ----
+    let hasData = false; let table = []; let tot = {}; let kpis = []; let mapChips = []; let preview = []; let previewHead = []; let rowCount = 0; let resAoa = [];
+    if (S.rows) {
+      hasData = true;
+      const head = S.rows[0]; const map = detect(head); const body = S.rows.slice(1);
+      rowCount = body.length;
+      const agg = {}; const order = [];
+      body.forEach((r) => {
+        const rawName = String(r[map.dentist] == null ? '' : r[map.dentist]).trim();
+        if (!rawName) { return; }
+        const pi = matchP(rawName);
+        const key = pi >= 0 ? 'p' + pi : 'x' + norm(rawName);
+        if (!agg[key]) { agg[key] = { name: pi >= 0 ? PRACT[pi].name : rawName, spec: pi >= 0 ? PRACT[pi].spec : 'Praticien non reconnu : ajouté à la liste', pats: {}, acts: 0, det: 0, bla: 0, pan: 0, billed: 0, labo: 0, ord: pi >= 0 ? pi : 100 + order.length }; order.push(key); }
+        const g = agg[key];
+        g.acts += 1;
+        g.billed += num(r[map.amount]);
+        if (map.labo !== undefined) { g.labo += num(r[map.labo]); }
+        if (map.patient !== undefined && String(r[map.patient]).trim() !== '') { g.pats[String(r[map.patient]).trim()] = true; }
+        if (map.act !== undefined) {
+          const a = norm(r[map.act]);
+          if (a.indexOf('tartr') >= 0) { g.det += 1; }
+          if (a.indexOf('blanch') >= 0) { g.bla += 1; }
+          if (a.indexOf('panoram') >= 0) { g.pan += 1; }
+        }
+      });
+      const list = order.map((k) => agg[k]).sort((a, b) => a.ord - b.ord);
+      const sum = (f) => list.reduce((a, x) => a + f(x), 0);
+      table = list.map((x) => {
+        const pc = map.patient !== undefined ? Object.keys(x.pats).length : x.acts;
+        return { name: x.name, spec: x.spec, patients: String(pc), acts: String(x.acts), det: String(x.det), bla: String(x.bla), pan: String(x.pan), billed: eur(x.billed), retro: eur(x.billed * 0.6), labo: eur(x.labo), net: eur(x.billed * 0.6 - x.labo) };
+      });
+      const tb = sum((x) => x.billed); const tl = sum((x) => x.labo);
+      tot = { patients: String(sum((x) => (map.patient !== undefined ? Object.keys(x.pats).length : x.acts))), acts: String(sum((x) => x.acts)), det: String(sum((x) => x.det)), bla: String(sum((x) => x.bla)), pan: String(sum((x) => x.pan)), billed: eur(tb), retro: eur(tb * 0.6), labo: eur(tl), net: eur(tb * 0.6 - tl) };
+      const CH = 30350;
+      kpis = [
+        { label: 'Chiffre d\'affaires facturé', value: eur(tb), note: rowCount + ' lignes', style: tile('#0F766E') },
+        { label: 'Rétrocessions (60 %)', value: eur(tb * 0.6), note: 'avant frais de labo', style: tile('#B45309') },
+        { label: 'Frais de labo', value: eur(tl), note: map.labo === undefined ? 'colonne absente' : 'retirés des rétrocessions', style: tile('#8A4B08') },
+        { label: 'Net à payer aux praticiens', value: eur(tb * 0.6 - tl), note: 'rétrocession − labo', style: tile('#15803D') },
+        { label: 'Part du cabinet (40 %)', value: eur(tb * 0.4), note: 'avant charges', style: tile('#5B3FA8') },
+        { label: 'Bénéfice estimé', value: eur(tb * 0.4 - CH), note: 'après 30 350 € de charges mensuelles', style: tile('#15803D') }
+      ];
+      mapChips = FIELDS.map((f) => {
+        const ok = map[f[0]] !== undefined;
+        return { label: f[1] + (ok ? ' ← « ' + head[map[f[0]]] + ' »' : ' : absente'), style: 'display:inline-block; border-radius:999px; padding:5px 12px; font-size:13px; font-weight:700; ' + (ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#E7EDEB; color:#33433F;') };
+      });
+      previewHead = head.map((h) => ({ label: String(h) }));
+      preview = body.slice(0, 8).map((r) => ({ cells: head.map((h, i) => ({ v: String(r[i] == null ? '' : r[i]) })) }));
+      resAoa = [['Praticien', 'Patients', 'Actes', 'Détartrages', 'Blanchiments', 'Panoramiques', 'Facturé (€)', 'Rétrocession 60 % (€)', 'Frais de labo (€)', 'Net à payer (€)']]
+        .concat(list.map((x) => [x.name, map.patient !== undefined ? Object.keys(x.pats).length : x.acts, x.acts, x.det, x.bla, x.pan, Math.round(x.billed), Math.round(x.billed * 0.6), Math.round(x.labo), Math.round(x.billed * 0.6 - x.labo)]));
+    }
+
+    return {
+      btnMain: btnMain, btnSide: btnSide,
+      onSynCsv: exportCsv('synthese-praticiens', synAoa), onSynXlsx: exportXlsx('synthese-praticiens', synAoa),
+      onTplCsv: exportCsv('modele-import', tplAoa), onTplXlsx: exportXlsx('modele-import', tplAoa),
+      onResCsv: exportCsv('resultat-import', resAoa), onResXlsx: exportXlsx('resultat-import', resAoa),
+      hasMsg: !!S.msg, msg: S.msg,
+      msgStyle: 'border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.5; ' + (S.msgKind === 'bad' ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E3F4EA; color:#0B6B3A;'),
+      onFile: onFile, onSample: onSample, onClear: onClear,
+      hasFile: !!S.fileName, fileName: S.fileName, hasErr: !!S.err, err: S.err,
+      hasData: hasData, rowCount: rowCount, mapChips: mapChips, kpis: kpis, table: table, tot: tot, previewHead: previewHead, preview: preview
+    };
+  }
+}
+</script>
+</body>
+</html>

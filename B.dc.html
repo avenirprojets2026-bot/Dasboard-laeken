@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Casier comptable par praticien</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:1500px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Casier praticien</span>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Casiers</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Casier de Dr Mohamed Bochouari</h1>
+<span style="display:inline-block; margin-top:8px; border-radius:999px; padding:4px 12px; font-size:13px; font-weight:700; background:#EFEAF8; color:#4B2F96">Non conventionné · gérant du cabinet</span>
+</div>
+<span style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500">Octobre 2026</span>
+</header>
+
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
+
+<nav aria-label="Praticiens" style="flex:1 1 240px; max-width:300px; display:flex; flex-direction:column; gap:8px">
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="7">
+<div style="{{n.style}}">
+<div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700"><span>{{n.name}}</span><span>{{n.billed}}</span></div>
+<div style="font-size:13px; color:#4A5B57">{{n.role}} · {{n.pending}} en attente</div>
+<span style="{{n.convStyle}}">{{n.conv}}</span>
+</div>
+</sc-for>
+</nav>
+
+<main style="flex:999 1 560px; min-width:0; display:flex; flex-direction:column; gap:20px">
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:16px">
+<div style="font-size:13px; color:#4A5B57; font-weight:500">{{k.label}}</div>
+<div style="font-size:26px; font-weight:700; margin-top:4px">{{k.value}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
+<h2 style="margin:0 0 12px; font-size:18px">Prestations récentes et remboursements</h2>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:620px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Date</th><th style="padding:8px">Patient</th><th style="padding:8px">Prestation</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">Mutuelle</th><th style="padding:8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{prestations}}" as="r" hint-placeholder-count="6">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{r.date}}</td>
+<td style="padding:12px 8px">{{r.patient}}</td>
+<td style="padding:12px 8px">{{r.label}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.amount}}</td>
+<td style="padding:12px 8px">{{r.mutuelle}}</td>
+<td style="padding:12px 8px"><span style="{{r.chip}}">{{r.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
+<h2 style="margin:0 0 4px; font-size:18px">Prothèses : devis et frais de laboratoire</h2>
+<div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Devis estimé comparé à la facture réelle du labo</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:620px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Travail</th><th style="padding:8px">Patient</th><th style="padding:8px">Labo</th><th style="padding:8px; text-align:right">Devis</th><th style="padding:8px; text-align:right">Facture</th><th style="padding:8px; text-align:right">Écart</th><th style="padding:8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{labo}}" as="l" hint-placeholder-count="4">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0">{{l.work}}</td>
+<td style="padding:12px 8px">{{l.patient}}</td>
+<td style="padding:12px 8px">{{l.lab}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.quote}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.invoice}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{l.gap}}</td>
+<td style="padding:12px 8px"><span style="{{l.chip}}">{{l.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+</main>
+</div>
+<footer style="font-size:13px; color:#4A5B57">Maquette : chiffres, laboratoires et patients fictifs. Les patients sont identifiés par un numéro de dossier et leur date de naissance, pas par leur nom.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
+    const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
+    const idle = 'background:#fff; border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px;';
+    const active = 'background:#E3F2EF; border:2px solid #0F766E; border-radius:12px; padding:11px 13px;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
+    const ok = chipBase + ' background:#E3F4EA; color:#0B6B3A;';
+    const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
+    const bad = chipBase + ' background:#FBE7E5; color:#A3231A;';
+    const info = chipBase + ' background:#E7EDEB; color:#33433F;';
+    return {
+      nav: [
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 j/sem', billed: '50 500 €', pending: '12 400 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 j/sem', billed: '19 200 €', pending: '4 700 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 j/sem', billed: '47 900 €', pending: '11 800 €', conv: 'Non conventionné', convStyle: ns, style: active },
+        { name: 'Dr Nabila Touil', role: '1 j/sem', billed: '9 300 €', pending: '2 300 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 j/sem', billed: '18 900 €', pending: '4 600 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 j/sem', billed: '18 300 €', pending: '4 500 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: '7e praticien (à confirmer)', role: 'à confirmer', billed: '9 000 €', pending: '2 100 €', conv: 'Conventionné', convStyle: cs, style: idle }
+      ],
+      kpis: [
+        { label: 'Patients vus', value: '370' },
+        { label: 'Facturé', value: '47 900 €' },
+        { label: 'Remboursé', value: '36 100 €' },
+        { label: 'Frais de labo', value: '7 500 €' }
+      ],
+      prestations: [
+        { date: '14/10', patient: 'D-19257 · 06/10/1986', label: 'Examen clinique', amount: '28 €', mutuelle: 'Mutualités Chrétiennes', status: 'En attente', chip: wait },
+        { date: '14/10', patient: 'D-69107 · 07/11/1987', label: 'Panoramique', amount: '45 €', mutuelle: 'Solidaris', status: 'En attente', chip: wait },
+        { date: '13/10', patient: 'D-81890 · 03/03/1955', label: 'Examen oro-buccal', amount: '32 €', mutuelle: 'Partenamut', status: 'Remboursé', chip: ok },
+        { date: '13/10', patient: 'D-53949 · 08/08/1960', label: 'Couronne céramique', amount: '620 €', mutuelle: 'Mutualité Libérale', status: 'En attente', chip: wait },
+        { date: '10/10', patient: 'D-37963 · 09/09/1987', label: 'Obturation', amount: '74 €', mutuelle: 'Solidaris', status: 'Remboursé', chip: ok },
+        { date: '09/10', patient: 'D-27349 · 13/09/1963', label: 'Détartrage', amount: '48 €', mutuelle: 'Mutualités Chrétiennes', status: 'Refusé', chip: bad }
+      ],
+      labo: [
+        { work: 'Couronne céramique', patient: 'D-53949 · 08/08/1960', lab: 'Labo 1', quote: '480 €', invoice: '510 €', gap: '+30 €', status: 'Facture reçue', chip: info },
+        { work: 'Bridge 3 éléments', patient: 'D-60887 · 03/07/1980', lab: 'Labo 2', quote: '1 150 €', invoice: '—', gap: '—', status: 'Devis à valider', chip: wait },
+        { work: 'Prothèse amovible', patient: 'D-46204 · 10/06/1986', lab: 'Labo 1', quote: '720 €', invoice: '695 €', gap: '−25 €', status: 'Facturé', chip: ok },
+        { work: 'Gouttière', patient: 'D-74245 · 18/02/1997', lab: 'Labo 3', quote: '190 €', invoice: '—', gap: '—', status: 'Non commandé', chip: bad }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

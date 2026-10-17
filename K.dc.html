@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Nomenclature INAMI</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2400px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Nomenclature INAMI</span>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Tarifs en vigueur depuis le 1er juin 2026</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Nomenclature INAMI des soins dentaires</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:480px; line-height:1.5">Choisissez une famille de soins, le statut du patient et le trajet de soins buccaux : le montant remboursé et la part du patient se recalculent. Les actes non remboursés sont signalés.</div>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
+<sc-for list="{{rules}}" as="r" hint-placeholder-count="4">
+<div style="{{r.style}}">
+<div style="font-size:14px; font-weight:700">{{r.title}}</div>
+<div style="font-size:13px; line-height:1.5; color:#33433F; margin-top:6px">{{r.text}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Soins</span>
+<sc-for list="{{catPills}}" as="p" hint-placeholder-count="10">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Patient</span>
+<sc-for list="{{regPills}}" as="p" hint-placeholder-count="2">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+<span style="width:12px"></span>
+<sc-for list="{{trajPills}}" as="p" hint-placeholder-count="2">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+<span style="width:12px"></span>
+<sc-for list="{{agePills}}" as="p" hint-placeholder-count="3">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; align-items:baseline">
+<h2 style="margin:0; font-size:20px">{{catTitle}}</h2>
+<div style="font-size:13px; color:#4A5B57">{{count}} lignes · {{ctx}}</div>
+</div>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">{{catNote}}</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Code</th><th style="padding:8px">Soin</th><th style="padding:8px">Âge</th><th style="padding:8px; text-align:right">Honoraires</th><th style="padding:8px; text-align:right">Remboursé INAMI</th><th style="padding:8px; text-align:right">À charge du patient</th><th style="padding:8px">Remboursement</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0; font-variant-numeric:tabular-nums; color:#4A5B57; font-size:13px">{{r.code}}</td>
+<td style="padding:12px 8px"><b style="font-weight:500">{{r.label}}</b><div style="{{r.noteStyle}}">{{r.note}}</div></td>
+<td style="padding:12px 8px; white-space:nowrap; color:#4A5B57">{{r.age}}</td>
+<td style="padding:12px 8px; text-align:right; font-variant-numeric:tabular-nums">{{r.fee}}</td>
+<td style="padding:12px 8px; text-align:right; font-variant-numeric:tabular-nums; font-weight:700; color:#0B6B3A">{{r.interv}}</td>
+<td style="{{r.patStyle}}">{{r.patient}}</td>
+<td style="padding:12px 8px"><span style="{{r.chip}}">{{r.status}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:8px; font-size:13px; color:#4A5B57; line-height:1.6">
+<b style="font-size:14px; color:#14201D">Sources et limites</b>
+<div>Montants issus du tarif INAMI des dentistes applicable à partir du 1er juin 2026 (circulaire OA 2026/113), complétés par les affiches de l'INAMI pour les patients (assuré ordinaire et intervention majorée) et par la page INAMI sur le remboursement des panoramiques. La source consultée était tronquée avant la fin de la nomenclature et n'est pas exhaustive : près de 150 lignes sont listées, mais les codes d'orthodontie, d'anesthésie ou de sédation et la plupart des codes d'implants n'ont pas pu être lus. Les textes ont été lus sous forme aplatie : quelques lignes sont signalées « à confirmer » et les montants des panoramiques adultes reprennent ceux des codes enfants. Avant de facturer, vérifiez les lignes dans NomenSoft ou dans le fichier Excel officiel de l'INAMI. « Honoraires » = tarif conventionné ; un dentiste non conventionné peut facturer davantage.</div>
+<div>Liens : <a href="https://www.inami.fgov.be/SiteCollectionDocuments/tarif_dentistes_20260601.pdf">tarif des dentistes au 01/06/2026</a> · <a href="https://www.inami.fgov.be/SiteCollectionDocuments/dentistes_affiche_conventionne.pdf">affiche dentistes conventionnés</a> · <a href="https://www.inami.fgov.be/nl/thema-s/verzorging-kosten-en-terugbetaling/wat-het-ziekenfonds-terugbetaalt/individuele-verzorging/terugbetaling-van-panoramische-radiografieen">remboursement des panoramiques</a></div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2400}}'>
+class Component extends DCLogic {
+  state = { cat: 'consult', reg: 'ord', traj: 'in', age: 'all' };
+
+  renderVals() {
+    const S = this.state;
+    const setState = (o) => this.setState(o);
+    const eur = (n) => (Math.round(n * 100) / 100).toFixed(2).replace('.', ',') + ' €';
+    const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
+    const pillOff = pillBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+    const pillOn = pillBase + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ';
+    const chips = {
+      full: chipBase + 'background:#E3F4EA; color:#0B6B3A;',
+      part: chipBase + 'background:#FDF0DC; color:#8A4B08;',
+      none: chipBase + 'background:#FBE7E5; color:#A3231A;',
+      cond: chipBase + 'background:#E9DEF7; color:#4B2F96;'
+    };
+
+    // R(code, label, age, groupe, honoraires, BIM, ordinaire, options)
+    const R = (cat, code, label, age, g, fee, bim, ord, o) => Object.assign({ cat: cat, code: code, label: label, age: age, g: g, fee: fee, bim: bim, ord: ord }, o || {});
+    const U = (cat, code, label, age, fee, o) => R(cat, code, label, age, 'u', fee, fee, fee, o);
+    const CATS = [
+      ['consult', 'Consultation et anamnèse', 'L\'anamnèse n\'a pas de code propre : elle fait partie de la consultation ou de l\'examen buccal. Jusqu\'à 19 ans, tout est remboursé à 100 %.'],
+      ['exam', 'Examens buccaux', 'Depuis le 1er juin 2026, l\'indice parodontal (DPSI) est inclus dans l\'examen buccal annuel dès 18 ans, sauf s\'il est fait par un parodontologue.'],
+      ['rx', 'Radiographies et panoramique', 'Panoramique remboursé une fois par 3 années civiles dès 19 ans (depuis le 1er juin 2026) et une fois par 2 années civiles de 7 à 18 ans ; rien avant 7 ans. Après un traumatisme orofacial externe : pas de limite de fréquence.'],
+      ['extr', 'Extractions', 'Extraction simple dès 50 ans, ou de 19 à 50 ans si les critères de la nomenclature sont remplis. Pas de code séparé pour la dent de sagesse dans les tarifs consultés.'],
+      ['cons', 'Soins conservateurs adultes', 'Obturations selon le nombre de faces. « Hors trajet » : le remboursement baisse quand le patient n\'a pas eu de soins dentaires remboursés les années précédentes.'],
+      ['ped', 'Soins pédiatriques', 'Jusqu\'à 19 ans, ces soins sont remboursés à 100 % du tarif conventionné. Le fluor n\'apparaît pas dans les tarifs consultés.'],
+      ['endo', 'Endodontie', 'Traitement de canal selon le nombre de canaux, et retraitement. À partir de 19 ans, un ticket modérateur reste à charge de l\'assuré ordinaire ; jusqu\'à 19 ans, tout est remboursé.'],
+      ['impl', 'Implantologie', 'Les implants ne sont remboursés que dans des cas médicaux précis (article 6, §5ter) : très grande perte osseuse après tumeur, ostéoradionécrose, radiothérapie ou chimiothérapie avant 12 ans, réaction du greffon contre l\'hôte, ou agénésie d\'au moins 4 dents permanentes avant 19 ans (accord du Conseil technique dentaire). Les montants de ces codes n\'ont pas pu être lus. Pour tous les autres patients : honoraires libres.'],
+      ['paro', 'Détartrage et parodontologie', 'Détartrage remboursé par quadrant. Le détartrage sous-gingival est limité à une fois tous les 3 ans.'],
+      ['prot', 'Prothèses amovibles', 'Dès 19 ans, accord du Conseil technique dentaire ou du médecin-conseil entre 19 et 50 ans. Les couronnes, bridges et implants fixes sont à la rubrique « Non remboursés ».'],
+      ['non', 'Non remboursés ou cas particuliers', 'Honoraires libres fixés par le cabinet. Certaines mutuelles remboursent une partie via l\'assurance complémentaire.']
+    ];
+    const ROWS = [
+      U('consult', '371011', 'Consultation au cabinet', '< 19 ans', 31.84),
+      R('consult', '301011', 'Consultation au cabinet', '≥ 19 ans', 'a', 31.84, 31.84, 25.84),
+      U('consult', '371092 / 371114', 'Consultation chez l\'orthodontiste ou le parodontologue', '< 19 ans', 32.87),
+      R('consult', '301092 / 301114', 'Consultation chez l\'orthodontiste ou le parodontologue', '≥ 19 ans', 'a', 32.87, 32.87, 26.87),
+      U('consult', '371033', 'Visite à domicile', '< 19 ans', 38.52),
+      R('consult', '301033', 'Visite à domicile', '≥ 19 ans', 'a', 38.52, 38.52, 30.02),
+      R('consult', '301055', 'Supplément d\'urgence (niveau 1)', '≥ 19 ans', 'a', 11.81, 11.81, 8.31),
+      R('consult', '301070', 'Supplément d\'urgence (niveau 2)', '≥ 19 ans', 'a', 25.68, 25.68, 19.68),
+      U('consult', '379411', 'Avis par téléphone', '< 19 ans', 15.92),
+
+      U('exam', '371615 / 371571', 'Examen buccal préventif semestriel', '< 18 ans', 57.52),
+      U('exam', '371593', 'Examen buccal annuel, DPSI inclus', '18 à 19 ans', 82.00),
+      R('exam', '301593', 'Examen buccal annuel, DPSI inclus', '≥ 19 ans', 'a', 82.00, 82.00, 78.00),
+      U('exam', '371232 / 371254', 'DPSI seul, une fois par an', '15 à 19 ans', 21.57),
+      R('exam', '301254', 'DPSI seul, une fois par an', '≥ 19 ans', 'a', 21.57, 21.57, 17.07),
+      U('exam', '371372', 'Examen parodontal', '18 à 19 ans', 140.21),
+      R('exam', '301372', 'Examen parodontal', '19 à 65 ans', 'a', 140.21, 140.21, 130.21),
+
+      U('rx', '377031', 'Radio intra-orale, premier cliché', '< 19 ans', 15.92),
+      R('rx', '307031', 'Radio intra-orale, premier cliché', '≥ 19 ans', 'a', 15.92, 15.92, 12.42, { ordH: 10.92 }),
+      U('rx', '377296', 'Panoramique analogique, 1 fois par 2 années civiles', '7 à 18 ans', 50.85),
+      U('rx', '377311', 'Panoramique numérique, 1 fois par 2 années civiles', '7 à 18 ans', 67.80),
+      U('rx', '377333', 'Panoramique analogique après traumatisme orofacial', '7 à 18 ans', 50.85, { note: 'Sans limite de fréquence' }),
+      U('rx', '377355', 'Panoramique numérique après traumatisme orofacial', '7 à 18 ans', 67.80, { note: 'Sans limite de fréquence' }),
+      U('rx', '307296', 'Panoramique analogique, 1 fois par 3 années civiles', '≥ 19 ans', 50.85, { note: 'Montant à confirmer : repris des codes enfants' }),
+      U('rx', '307311', 'Panoramique numérique, 1 fois par 3 années civiles', '≥ 19 ans', 67.80, { note: 'Montant à confirmer : repris des codes enfants' }),
+      U('rx', '307333', 'Panoramique analogique après traumatisme orofacial', '≥ 19 ans', 50.85, { note: 'Sans limite de fréquence · montant à confirmer' }),
+      U('rx', '307355', 'Panoramique numérique après traumatisme orofacial', '≥ 19 ans', 67.80, { note: 'Sans limite de fréquence · montant à confirmer' }),
+
+      U('extr', '374975', 'Extraction simple, dent de lait ou permanente', '< 19 ans', 68.82),
+      U('extr', '374872', 'Extraction, dent supplémentaire, même séance', '< 19 ans', 53.93),
+      U('extr', '374754', 'Ablation de racine (P6)', '< 19 ans', 44.17),
+      U('extr', '374776', 'Ablation de racine (P7)', '< 19 ans', 59.06),
+      U('extr', '371195', 'Extraction chirurgicale, hors incisives', '< 19 ans', 141.75),
+      U('extr', '375130', 'Suture, première dent', '< 19 ans', 22.60),
+      U('extr', '375152', 'Suture, dent supplémentaire', '< 19 ans', 14.89),
+      R('extr', '304975', 'Extraction simple', '≥ 19 ans', 'a', 68.82, 68.82, 61.32, { bimH: 67.82, ordH: 54.32, note: 'Dès 50 ans, ou 19 à 50 ans selon critères' }),
+      R('extr', '304872', 'Extraction, dent supplémentaire, même séance', '≥ 19 ans', 'a', 53.93, 53.93, 48.43, { bimH: 52.93, ordH: 43.43 }),
+      R('extr', '304754', 'Ablation de racine (P6)', '≥ 19 ans', 'a', 44.17, 44.17, 36.67),
+      R('extr', '304776', 'Ablation de racine (P7)', '≥ 19 ans', 'a', 59.06, 59.06, 51.56),
+      R('extr', '301195', 'Extraction chirurgicale', '≥ 50 ans', 'a', 141.75, 119.75, 97.25, { note: 'Colonnes ambiguës dans la source : à confirmer' }),
+      R('extr', '305130', 'Suture, première dent', '≥ 19 ans', 'a', 22.60, 22.60, 19.10),
+      R('extr', '305152', 'Suture, dent supplémentaire', '≥ 19 ans', 'a', 14.89, 14.89, 11.39),
+
+      R('cons', '304371', 'Obturation, 1 face', '≥ 19 ans', 'a', 53.93, 53.93, 47.43),
+      R('cons', '304393', 'Obturation, 2 faces', '≥ 19 ans', 'a', 59.58, 59.58, 50.08, { bimH: 58.58, ordH: 41.08 }),
+      R('cons', '304415', 'Obturation, 3 faces', '≥ 19 ans', 'a', 88.85, 88.85, 79.35),
+      R('cons', '304430', 'Obturation, 4 faces', '≥ 19 ans', 'a', 100.15, 100.15, 85.15),
+      R('cons', '304452', 'Obturation, 5 faces', '≥ 19 ans', 'a', 120.18, 120.18, 105.18),
+      R('cons', '303590', 'Supplément techniques adhésives, par dent', '≥ 19 ans', 'a', 14.89, 14.89, 11.39, { ordH: 9.89 }),
+      R('cons', '303612', 'Supplément digue en caoutchouc', '≥ 19 ans', 'a', 14.89, 14.89, 11.39),
+      R('cons', '303796', 'Substitut dentinaire bioactif, coiffage direct', '≥ 19 ans', 'a', 56.50, 56.50, 45.50),
+
+      U('ped', '373811', 'Obturation dent de lait, 1 face', '< 19 ans', 58.55),
+      U('ped', '373833', 'Obturation dent de lait, 2 faces', '< 19 ans', 78.07),
+      U('ped', '373855', 'Obturation dent de lait, 3 faces', '< 19 ans', 97.58),
+      U('ped', '373892', 'Obturation dent permanente (P5)', 'jusqu\'à 15 ans', 58.55),
+      U('ped', '373914', 'Obturation dent permanente (P6)', 'jusqu\'à 15 ans', 78.07),
+      U('ped', '373936', 'Obturation dent permanente (P8)', 'jusqu\'à 15 ans', 97.58),
+      U('ped', '373951', 'Obturation dent permanente (P9)', 'jusqu\'à 15 ans', 117.10),
+      U('ped', '373973', 'Obturation dent permanente (P11)', 'jusqu\'à 15 ans', 136.62),
+      U('ped', '374371', 'Obturation dent permanente (P3)', '15 à 19 ans', 53.93),
+      U('ped', '374393', 'Obturation dent permanente (P5)', '15 à 19 ans', 59.58),
+      U('ped', '374415', 'Obturation dent permanente (P6)', '15 à 19 ans', 88.85),
+      U('ped', '374430', 'Obturation dent permanente (P8)', '15 à 19 ans', 100.15),
+      U('ped', '374452', 'Obturation dent permanente (P9)', '15 à 19 ans', 120.18),
+      U('ped', '373590', 'Supplément techniques adhésives', '< 19 ans', 14.89),
+      U('ped', '373612', 'Supplément digue en caoutchouc', '< 19 ans', 14.89),
+      U('ped', '373796', 'Substitut bioactif, coiffage pulpaire direct', '< 19 ans', 56.50),
+      U('ped', '374356', 'Pulpotomie dent de lait', '< 19 ans', 55.47),
+      U('ped', '374791', 'Pulpotomie vitale, dent permanente immature', '< 19 ans', 111.96),
+      U('ped', '373634', 'Apexification (P10)', '< 19 ans', 98.61),
+      U('ped', '373656', 'Apexification (P16)', '< 19 ans', 268.10),
+      U('ped', '374474', 'Couronne préformée, molaire', '< 19 ans', 156.13),
+      U('ped', '372514', 'Scellement de sillons, par dent', '< 19 ans', 17.98),
+      U('ped', '372536', 'Scellement de sillons, valeur inférieure', '< 19 ans', 12.33),
+
+      U('endo', '374312', 'Traitement de canal, 1 canal', '< 19 ans', 111.45),
+      U('endo', '374533', 'Traitement de canal, 2 canaux', '< 19 ans', 134.05),
+      U('endo', '374555', 'Traitement de canal, 3 canaux', '< 19 ans', 201.84),
+      U('endo', '374570', 'Traitement de canal, 4 canaux ou plus', '< 19 ans', 268.10),
+      U('endo', '375012', 'Retraitement de canal, 1 canal', '< 19 ans', 110.94),
+      U('endo', '375034', 'Retraitement de canal, 2 canaux', '< 19 ans', 133.54),
+      U('endo', '375056', 'Retraitement de canal, 3 canaux', '< 19 ans', 201.84),
+      U('endo', '375071', 'Retraitement de canal, 4 canaux ou plus', '< 19 ans', 268.10),
+      R('endo', '304312', 'Traitement de canal, 1 canal', '≥ 19 ans', 'a', 111.45, 111.45, 98.45),
+      R('endo', '304533', 'Traitement de canal, 2 canaux', '≥ 19 ans', 'a', 134.05, 134.05, 121.05),
+      R('endo', '304555', 'Traitement de canal, 3 canaux', '≥ 19 ans', 'a', 201.84, 201.84, 189.34),
+      R('endo', '304570', 'Traitement de canal, 4 canaux ou plus', '≥ 19 ans', 'a', 268.10, 268.10, 255.10),
+      R('endo', '305012', 'Retraitement de canal, 1 canal', '≥ 19 ans', 'a', 110.94, 110.94, 97.94),
+      R('endo', '305034', 'Retraitement de canal, 2 canaux', '≥ 19 ans', 'a', 133.54, 133.54, 120.54),
+      R('endo', '305056', 'Retraitement de canal, 3 canaux', '≥ 19 ans', 'a', 201.84, 201.84, 188.84),
+      R('endo', '305071', 'Retraitement de canal, 4 canaux ou plus', '≥ 19 ans', 'a', 268.10, 268.10, 255.10),
+
+      U('paro', '372153 / 372551', 'Détartrage, par quadrant', '18 à 19 ans', 17.98),
+      R('paro', '302153 / 302551', 'Détartrage, par quadrant', '≥ 19 ans', 'a', 17.98, 17.98, 13.98),
+      U('paro', '371276', 'Détartrage sous-gingival, 1 fois par 3 ans', '18 à 19 ans', 102.72),
+      R('paro', '301276', 'Détartrage sous-gingival, 1 fois par 3 ans', '19 à 65 ans', 'a', 102.72, 102.72, 92.72),
+
+      U('prot', '377731', 'Prothèse amovible, partielle ou complète (P24)', '< 19 ans', 735.99),
+      U('prot', '376832', 'Prothèse amovible (P38)', '< 19 ans', 919.34),
+      U('prot', '379013', 'Réparation de prothèse', '< 19 ans', 149.97),
+      U('prot', '379131', 'Remplacement de la base de prothèse', '< 19 ans', 219.31),
+      R('prot', '307731', 'Prothèse amovible, partielle ou complète (P24)', '≥ 19 ans', 'a', 735.99, 717.99, 610.99, { note: 'Accord préalable entre 19 et 50 ans' }),
+      R('prot', '306832', 'Prothèse amovible (P38)', '≥ 19 ans', 'a', 919.34, 894.34, 729.84, { note: 'Accord préalable entre 19 et 50 ans' }),
+      R('prot', '309013', 'Réparation de prothèse', '≥ 19 ans', 'a', 149.97, 149.97, 128.97),
+      R('prot', '309131', 'Remplacement de la base de prothèse', '≥ 19 ans', 'a', 219.31, 210.81, 198.31),
+
+      R('consult', '303575 / 303586', 'Forfait urgence (service de garde)', '≥ 19 ans', 'a', 111.45, 111.45, 109.45, { bimH: 98.45, ordH: 85.95, note: 'Colonnes à confirmer' }),
+      U('consult', '373575 / 373586', 'Forfait urgence (service de garde)', '< 19 ans', 111.45),
+      R('consult', '303774 / 303785', 'Démarrage en urgence d\'un traitement de canal', '≥ 19 ans', 'a', 111.45, 111.45, 109.45, { bimH: 98.45, ordH: 85.95, note: 'Colonnes à confirmer' }),
+      U('consult', '373774 / 373785', 'Démarrage en urgence d\'un traitement de canal', '< 19 ans', 111.45),
+      U('consult', '379514 / 379525', 'Honoraires complémentaires, besoins particuliers (dentiste)', '< 19 ans', 30.30),
+      U('consult', '379492 / 379503', 'Honoraires complémentaires, besoins particuliers (hygiéniste)', '< 19 ans', 30.30),
+      R('consult', '309411 / 309433', 'Avis par téléphone', '≥ 19 ans', 'a', 15.92, 15.92, 15.92),
+      U('rx', '377112', 'Radiographie (description non disponible dans la source)', 'tous âges', 49.82, { note: 'À identifier dans NomenSoft' }),
+      U('rx', '377134', 'Radiographie (description non disponible dans la source)', 'tous âges', 68.31, { note: 'À identifier dans NomenSoft' }),
+      U('rx', '377230', 'Radiographie (description non disponible dans la source)', 'tous âges', 165.38, { note: 'À identifier dans NomenSoft' }),
+      R('extr', '304990 / 305001', 'Extraction simple, 19 à 50 ans (conditions art. 6 §3bis)', '19 à 50 ans', 'a', 68.82, 68.82, 61.32, { bimH: 67.82, ordH: 54.32 }),
+      R('extr', '304916 / 304920', 'Extraction, dent supplémentaire, 19 à 50 ans (art. 6 §3bis)', '19 à 50 ans', 'a', 53.93, 53.93, 48.43, { bimH: 52.93, ordH: 43.43 }),
+      R('extr', '301210 / 301221', 'Extraction chirurgicale, 19 à 50 ans (art. 6 §3bis)', '19 à 50 ans', 'a', 141.75, 119.75, 97.25, { note: 'Colonnes ambiguës dans la source : à confirmer' }),
+      R('endo', '304135 / 304146', 'Ancrage mécanique, honoraire maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 31.84, st: 'cond', note: 'Honoraire maximum à respecter' }),
+      R('endo', '304150 / 304161', 'Tenon canalaire métallique, honoraire maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 19.00, st: 'cond', note: 'Honoraire maximum à respecter' }),
+      R('endo', '304172 / 304183', 'Tenon fibre de verre, honoraire maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 83.20, st: 'cond', note: 'Honoraire maximum à respecter' }),
+      R('endo', '304194 / 304205', 'Tenon non métallique, honoraire maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 50.85, st: 'cond', note: 'Honoraire maximum à respecter' }),
+      R('endo', '305233 / 305244', 'Honoraires complémentaires, 1 canal (DETI classe B), maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 110.94, st: 'cond', note: 'Seulement avec le consentement éclairé du patient' }),
+      R('endo', '305255 / 305266', 'Honoraires complémentaires, 2 canaux (DETI classe B), maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 133.54, st: 'cond', note: 'Seulement avec le consentement éclairé du patient' }),
+      R('endo', '305270 / 305281', 'Honoraires complémentaires, 3 canaux (DETI classe B), maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 202.36, st: 'cond', note: 'Seulement avec le consentement éclairé du patient' }),
+      R('endo', '305292 / 305303', 'Honoraires complémentaires, 4 canaux ou plus (DETI classe B), maximum', '≥ 19 ans', 'a', null, 0, 0, { max: 268.10, st: 'cond', note: 'Seulement avec le consentement éclairé du patient' }),
+      R('endo', '374135 / 374150', 'Ancrage et tenons, honoraires maximum', '< 19 ans', 'u', null, 0, 0, { max: 31.84, st: 'cond', note: 'Mêmes plafonds que pour les adultes : 31,84 € (ancrage), 19,00 € (tenon métallique)' }),
+      U('endo', '373774', 'Démarrage en urgence, traitement de canal', '< 19 ans', 111.45),
+      U('paro', '371696 – 371781', 'Nettoyage prophylactique, personnes en situation de handicap (5 codes)', '< 19 ans', 17.98),
+      R('paro', '301696 – 301781', 'Nettoyage prophylactique, personnes en situation de handicap (5 codes)', '≥ 19 ans', 'a', 17.98, 17.98, 13.98),
+      U('paro', '372352 – 372444', 'Nettoyage prophylactique par l\'hygiéniste, handicap (5 codes)', '< 19 ans', 17.98),
+      R('paro', '302352 – 302444', 'Nettoyage prophylactique par l\'hygiéniste, handicap (5 codes)', '≥ 19 ans', 'a', 17.98, 17.98, 13.98),
+      U('paro', '372551 – 372643', 'Détartrage par l\'hygiéniste, par quadrant (5 codes)', '18 à 19 ans', 17.98),
+      R('paro', '302551 – 302643', 'Détartrage par l\'hygiéniste, par quadrant (5 codes)', '≥ 19 ans', 'a', 17.98, 17.98, 13.98),
+      U('paro', '372455', 'Scellement de sillons par l\'hygiéniste, par dent', '< 19 ans', 17.98),
+      U('paro', '372470', 'Scellement de sillons par l\'hygiéniste, valeur inférieure', '< 19 ans', 12.33),
+      U('paro', '371114 / 371125', 'Consultation chez le parodontologue', '< 19 ans', 32.87),
+      U('prot', '378335 / 378346', 'Renouvellement anticipé de prothèse amovible', '< 19 ans', 717.99, { note: 'Montants plus élevés selon la valeur de la prothèse : 833,69 € et 950,97 €' }),
+      U('prot', '378350 / 378361', 'Remplacement de base, renouvellement', '< 19 ans', 219.31),
+      R('impl', '312756 – 312760', 'Implants dans les cas médicaux reconnus (art. 6 §5ter)', 'tous âges', 'x', null, 0, 0, { feeTxt: 'montant non lu', st: 'cond', note: 'Remboursement sous conditions strictes, annexes 90 et 91, 1 à 4 implants par mâchoire' }),
+      R('impl', 'annexe 57 bis', 'Prothèse pour agénésie d\'au moins 4 dents permanentes', '< 19 ans', 'x', null, 0, 0, { feeTxt: 'accord CTD', st: 'cond', note: 'Accord du Conseil technique dentaire' }),
+      R('impl', '—', 'Pose d\'implant (indication courante)', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Honoraires libres, non repris dans les tarifs consultés' }),
+      R('impl', '—', 'Greffe osseuse, élévation de sinus', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Honoraires libres, non repris dans les tarifs consultés' }),
+      R('impl', '—', 'Pilier et couronne sur implant', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Honoraires libres' }),
+      R('impl', '—', 'Chirurgie guidée, scanner 3D (CBCT)', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'À vérifier dans NomenSoft' }),
+
+      R('non', '—', 'Couronne (céramique ou métal)', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Hors nomenclature : honoraires libres' }),
+      R('non', '—', 'Bridge', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Hors nomenclature : honoraires libres' }),
+      R('non', '—', 'Implant dentaire et prothèse sur implant', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Non remboursé en règle générale' }),
+      R('non', '—', 'Facettes dentaires', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Esthétique : non remboursé' }),
+      R('non', '—', 'Blanchiment dentaire', 'tous âges', 'x', null, 0, 0, { st: 'none', note: 'Esthétique : pas dans les tarifs consultés' }),
+      R('non', '—', 'Orthodontie', 'tous âges', 'x', null, 0, 0, { st: 'cond', note: 'Remboursement très encadré : à vérifier au cas par cas' })
+    ];
+
+    const cat = CATS.filter((c) => c[0] === S.cat)[0];
+    const ageOk = (r) => S.age === 'all' || r.g === 'x' || (S.age === 'u' ? r.g === 'u' : r.g === 'a');
+    const list = ROWS.filter((r) => r.cat === S.cat && ageOk(r));
+    const out = S.traj === 'out';
+    const rows = list.map((r) => {
+      const bim = out && r.bimH != null ? r.bimH : r.bim;
+      const ord = out && r.ordH != null ? r.ordH : r.ord;
+      const iv = S.reg === 'bim' ? bim : ord;
+      let st = r.st;
+      if (!st) { st = iv >= r.fee - 0.005 ? 'full' : (iv > 0 ? 'part' : 'none'); }
+      const label = { full: 'Remboursé à 100 %', part: 'Remboursé en partie', none: 'Non remboursé', cond: 'Selon conditions' }[st];
+      const sp = r.max != null || !!r.feeTxt;
+      const free = r.fee == null && !sp;
+      const pat = sp ? 'selon accord' : (free ? 'Tarif du cabinet' : eur(r.fee - iv));
+      return {
+        code: r.code, label: r.label, age: r.age, note: r.note || '', noteStyle: r.note ? 'font-size:12px; color:#4A5B57; margin-top:2px;' : 'display:none;',
+        fee: sp ? (r.feeTxt || ('max ' + eur(r.max))) : (free ? 'libres' : eur(r.fee)), interv: (free || sp) ? '—' : eur(iv),
+        patient: pat, patStyle: 'padding:12px 8px; text-align:right; font-variant-numeric:tabular-nums; font-weight:700; ' + ((free || sp) ? (sp ? 'color:#4B2F96; font-size:13px;' : 'color:#A3231A; font-size:13px;') : (r.fee - iv > 0.005 ? 'color:#8A4B08;' : 'color:#4A5B57;')),
+        chip: chips[st], status: label
+      };
+    });
+
+    const tile = (bg, bd) => 'background:' + bg + '; border:1px solid ' + bd + '; border-radius:14px; padding:16px 18px;';
+    const rules = [
+      { title: 'Intervention majorée', text: 'Le patient en intervention majorée paie en principe le tarif conventionné sans ticket modérateur, et le dentiste ne peut pas lui facturer de supplément en ambulatoire.', style: tile('#E3F2EF', '#BFDDD7') },
+      { title: 'Trajet de soins buccaux', text: 'Le remboursement est plus élevé quand le patient a eu des soins dentaires remboursés les années précédentes. Sans cela (« hors trajet »), la part du patient augmente sur plusieurs actes.', style: tile('#FDF0DC', '#F0D9B0') },
+      { title: 'Conventionnement', text: 'Un dentiste conventionné applique les tarifs INAMI. Un dentiste non conventionné, comme Dr Mohamed Bochouari, peut facturer davantage : l\'écart reste à charge du patient.', style: tile('#E9DEF7', '#D2C1EE') },
+      { title: 'Panoramique', text: 'Une fois par 3 années civiles dès 19 ans, une fois par 2 années civiles de 7 à 18 ans, jamais avant 7 ans, sauf traumatisme orofacial externe.', style: tile('#D6E6FA', '#B3CCEE') }
+    ];
+
+    const catPills = CATS.map((c) => ({ label: c[1], style: S.cat === c[0] ? pillOn : pillOff, pick: () => setState({ cat: c[0] }) }));
+    const regPills = [['ord', 'Assuré ordinaire'], ['bim', 'Intervention majorée']].map((p) => ({ label: p[1], style: S.reg === p[0] ? pillOn : pillOff, pick: () => setState({ reg: p[0] }) }));
+    const trajPills = [['in', 'Dans le trajet de soins'], ['out', 'Hors trajet']].map((p) => ({ label: p[1], style: S.traj === p[0] ? pillOn : pillOff, pick: () => setState({ traj: p[0] }) }));
+    const agePills = [['all', 'Tous âges'], ['u', 'Moins de 19 ans'], ['a', '19 ans et plus']].map((p) => ({ label: p[1], style: S.age === p[0] ? pillOn : pillOff, pick: () => setState({ age: p[0] }) }));
+
+    return {
+      rules: rules, catPills: catPills, regPills: regPills, trajPills: trajPills, agePills: agePills,
+      catTitle: cat[1], catNote: cat[2], count: String(rows.length),
+      ctx: (S.reg === 'bim' ? 'intervention majorée' : 'assuré ordinaire') + ', ' + (out ? 'hors trajet de soins' : 'dans le trajet de soins'),
+      rows: rows
+    };
+  }
+}
+</script>
+</body>
+</html>

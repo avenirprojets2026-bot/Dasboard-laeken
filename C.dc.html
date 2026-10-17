@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Suivi mutuelles et labo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:1400px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Mutuelles et labo</span>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Trésorerie</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Remboursements et laboratoire</h1>
+</div>
+<span style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500">Octobre 2026</span>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</section>
+
+<div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
+
+<section style="flex:999 1 560px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:16px">
+<h2 style="margin:0; font-size:18px">Où en sont les 7 mutuelles présentes à Bruxelles</h2>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Mutuelle</th><th style="padding:8px; text-align:right">Déposé</th><th style="padding:8px; text-align:right">Remboursé</th><th style="padding:8px; text-align:right">En attente</th><th style="padding:8px; text-align:right">Délai moyen</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{mutuelles}}" as="m" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0; font-weight:700">{{m.name}}</td>
+<td style="padding:12px 8px; text-align:right">{{m.filed}}</td>
+<td style="padding:12px 8px; text-align:right">{{m.paid}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{m.pending}}</td>
+<td style="padding:12px 8px; text-align:right">{{m.delay}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+
+<div style="font-size:13px; color:#4A5B57">Les patients néerlandophones peuvent être affiliés à une mutualité flamande (par exemple CM Vlaanderen ou Helan) : à ajouter si le cabinet en facture.</div>
+<h3 style="margin:8px 0 0; font-size:15px">Ancienneté de ce qui reste à recevoir</h3>
+<div style="display:flex; flex-direction:column; gap:10px">
+<sc-for list="{{aging}}" as="a" hint-placeholder-count="3">
+<div style="display:grid; grid-template-columns:90px 1fr 90px; gap:12px; align-items:center; font-size:14px">
+<span style="color:#4A5B57">{{a.label}}</span>
+<div style="background:#E7EDEB; border-radius:999px; height:12px; overflow:hidden"><div style="{{a.bar}}"></div></div>
+<b style="text-align:right">{{a.value}}</b>
+</div>
+</sc-for>
+</div>
+</section>
+
+<aside style="flex:1 1 300px; max-width:420px; display:flex; flex-direction:column; gap:16px">
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">À traiter cette semaine</h2>
+<sc-for list="{{todo}}" as="t" hint-placeholder-count="4">
+<div style="display:flex; gap:12px; align-items:flex-start; border-top:1px solid #E7EDEB; padding-top:12px">
+<span style="{{t.chip}}">{{t.tag}}</span>
+<div style="font-size:14px; line-height:1.4">{{t.text}}</div>
+</div>
+</sc-for>
+</section>
+</aside>
+</div>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
+<h2 style="margin:0 0 4px; font-size:18px">Laboratoire : devis estimés et factures réelles, par praticien</h2>
+<div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Total devis 28 000 € · total facturé 28 600 € · écart +600 €</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Devis estimés</th><th style="padding:8px; text-align:right">Facturé par le labo</th><th style="padding:8px; text-align:right">Écart</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{labo}}" as="l" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0; font-weight:700">{{l.name}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.quote}}</td>
+<td style="padding:12px 8px; text-align:right">{{l.invoice}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{l.gap}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57">Maquette : tous les chiffres sont fictifs. Les vrais chiffres viendront de l'export du logiciel de facturation et des factures des laboratoires.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tile = 'background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px;';
+    const alert = 'background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
+    const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
+    const bad = chipBase + ' background:#FBE7E5; color:#A3231A;';
+    const info = chipBase + ' background:#E7EDEB; color:#33433F;';
+    return {
+      kpis: [
+        { label: 'En attente de remboursement', value: '42 400 €', note: 'sur 173 100 € facturés', style: tile },
+        { label: 'En attente depuis plus de 45 jours', value: '6 800 €', note: 'à relancer', style: alert },
+        { label: 'Prestations refusées', value: '3', note: '1 150 € à corriger', style: tile },
+        { label: 'Devis labo à valider', value: '18', note: 'répartis sur 7 praticiens', style: tile }
+      ],
+      mutuelles: [
+        { name: 'Mutualités Chrétiennes', filed: '52 300 €', paid: '40 100 €', pending: '12 200 €', delay: '38 jours' },
+        { name: 'Solidaris (Brabant)', filed: '41 800 €', paid: '31 600 €', pending: '10 200 €', delay: '41 jours' },
+        { name: 'Partenamut', filed: '28 900 €', paid: '22 500 €', pending: '6 400 €', delay: '35 jours' },
+        { name: 'Mutualité Libérale (ML Mutplus)', filed: '21 400 €', paid: '15 800 €', pending: '5 600 €', delay: '44 jours' },
+        { name: 'Mutualia (mutualité neutre)', filed: '14 200 €', paid: '10 400 €', pending: '3 800 €', delay: '43 jours' },
+        { name: 'CAAMI (caisse auxiliaire)', filed: '9 500 €', paid: '6 800 €', pending: '2 700 €', delay: '52 jours' },
+        { name: 'HR Rail (soins de santé)', filed: '5 000 €', paid: '3 500 €', pending: '1 500 €', delay: '36 jours' }
+      ],
+      aging: [
+        { label: '0 à 30 jours', value: '21 800 €', bar: 'background:#0F766E; height:12px; width:51%' },
+        { label: '30 à 45 jours', value: '13 800 €', bar: 'background:#B45309; height:12px; width:33%' },
+        { label: 'Plus de 45 j', value: '6 800 €', bar: 'background:#B42318; height:12px; width:16%' }
+      ],
+      todo: [
+        { tag: 'Relance', tact: '', chip: wait, text: 'Relancer les mutuelles pour 6 800 € en attente depuis plus de 45 jours.' },
+        { tag: 'Refus', chip: bad, text: '3 prestations refusées : vérifier la nomenclature et renvoyer.' },
+        { tag: 'Devis', chip: info, text: '18 devis de prothèses attendent une validation avant commande au labo.' },
+        { tag: 'Labo', chip: wait, text: 'Dr Mohamed Bochouari : écart de +300 € entre devis et factures du labo ce mois.' }
+      ],
+      labo: [
+        { name: 'Dr Aya Turkieh', quote: '7 600 €', invoice: '7 800 €', gap: '+200 €' },
+        { name: 'Dr Abde-Ssadic Bochouari', quote: '3 100 €', invoice: '3 100 €', gap: '0 €' },
+        { name: 'Dr Mohamed Bochouari', quote: '7 200 €', invoice: '7 500 €', gap: '+300 €' },
+        { name: 'Dr Nabila Touil', quote: '1 500 €', invoice: '1 600 €', gap: '+100 €' },
+        { name: 'Dr Julien Cabaz', quote: '3 100 €', invoice: '3 000 €', gap: '−100 €' },
+        { name: 'Dr Daoud Bouchouari', quote: '2 900 €', invoice: '2 900 €', gap: '0 €' },
+        { name: '7e praticien (à confirmer)', quote: '2 600 €', invoice: '2 700 €', gap: '+100 €' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

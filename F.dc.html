@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Fauteuils et coût par patient</title>
+<script src="./support.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} a:hover{color:#063B37}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2900px">
+
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Fauteuils et coût par patient</span>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+</nav>
+
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinique Laeken · Organisation</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Fauteuils et coût par patient</h1>
+</div>
+<span style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500">Semaine type, octobre 2026</span>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="{{k.style}}">
+<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
+<div style="font-size:32px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Qui travaille quel jour</h2>
+<div style="font-size:13px; color:#4A5B57">Un patient toutes les 30 minutes, de 10 h à 18 h 30 environ, soit près de 17 patients par praticien et par jour.</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px">
+<sc-for list="{{legend}}" as="l" hint-placeholder-count="3">
+<span style="{{l.style}}">{{l.label}}</span>
+</sc-for>
+</div>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:820px; display:flex; flex-direction:column; gap:8px">
+<div style="display:grid; grid-template-columns:200px repeat(7, minmax(64px, 1fr)) 100px; gap:8px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#4A5B57; text-align:center">
+<span style="text-align:left">Praticien</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span><span>Jours</span>
+</div>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<div style="display:grid; grid-template-columns:200px repeat(7, minmax(64px, 1fr)) 100px; gap:8px; align-items:stretch">
+<span style="display:flex; align-items:center; font-size:14px; font-weight:700">{{r.name}}</span>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="7">
+<span style="{{c.style}}"><b>{{c.label}}</b><span style="font-size:11px; font-weight:500">{{c.sub}}</span></span>
+</sc-for>
+<span style="display:flex; align-items:center; justify-content:center; text-align:center; font-size:13px; font-weight:700">{{r.days}}</span>
+</div>
+</sc-for>
+<div style="display:grid; grid-template-columns:200px repeat(7, minmax(64px, 1fr)) 100px; gap:8px; align-items:stretch; border-top:2px solid #14201D; padding-top:10px">
+<span style="display:flex; align-items:center; font-size:14px; font-weight:700">Box utilisés</span>
+<sc-for list="{{totals}}" as="t" hint-placeholder-count="7">
+<span style="{{t.style}}"><b style="font-size:15px">{{t.value}}</b><span style="font-size:11px; font-weight:500">{{t.note}}</span></span>
+</sc-for>
+<span></span>
+</div>
+</div>
+</div>
+<div style="font-size:13px; color:#4A5B57">Les cases en pointillés « ? » sont des jours à confirmer pour Julien Cabaz (2 jours) et le 7e praticien (1 jour).</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Les 3 box dentaires, jour par jour</h2>
+<div style="font-size:13px; color:#4A5B57">Aya prend toujours le box pédiatrique, Daoud le box du microscope. Les autres praticiens peuvent travailler dans n'importe quel box.</div>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:820px; display:flex; flex-direction:column; gap:8px">
+<div style="display:grid; grid-template-columns:240px repeat(7, minmax(64px, 1fr)); gap:8px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#4A5B57; text-align:center">
+<span style="text-align:left">Box</span><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+</div>
+<sc-for list="{{boxes}}" as="b" hint-placeholder-count="3">
+<div style="display:grid; grid-template-columns:240px repeat(7, minmax(64px, 1fr)); gap:8px; align-items:stretch">
+<div style="{{b.headStyle}}">
+<b style="font-size:15px">{{b.name}}</b>
+<span style="font-size:13px; color:#4A5B57">{{b.desc}}</span>
+<span style="{{b.ruleStyle}}">{{b.rule}}</span>
+</div>
+<sc-for list="{{b.cells}}" as="c" hint-placeholder-count="7">
+<span style="{{c.style}}">{{c.label}}</span>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px">
+<div style="background:#E3F4EA; color:#0B4F2B; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Aucun conflit.</b> Aya occupe le box pédiatrique du lundi au vendredi, Daoud le box du microscope jeudi et dimanche.</div>
+<div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, samedi 3 box et dimanche 1 box : c'est là que Julien et le 7e praticien peuvent être placés.</div>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Ce que coûte et rapporte un patient</h2>
+<div style="font-size:13px; color:#4A5B57">Moyenne du mois d'octobre, sur 1 329 patients vus. Chaque barre montre la part du chiffre d'affaires.</div>
+</div>
+<sc-for list="{{perPatient}}" as="p" hint-placeholder-count="5">
+<div style="display:grid; grid-template-columns:minmax(120px, 240px) 1fr minmax(70px, 90px); gap:12px; align-items:center; font-size:14px">
+<span style="font-weight:500">{{p.label}}</span>
+<div style="background:#F3F6F5; border-radius:8px; height:22px; position:relative"><div style="{{p.bar}}"></div></div>
+<b style="text-align:right; font-size:15px">{{p.value}}</b>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px; font-size:14px; line-height:1.5; color:#5A3205">
+<b>Ce qui est confirmé et ce qui ne l'est pas.</b> Confirmé : les jours d'Aya, Mohamed, Abde-Ssadic, Daoud et Nabila, et les 3 box dont un avec microscope et un pédiatrique. À confirmer : les jours de Julien et du 7e praticien. Proposé par moi : le choix du box pour Mohamed, Abde-Ssadic et Nabila, puisqu'ils peuvent travailler partout.
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h3 style="margin:0; font-size:18px">Présence des praticiens</h3>
+<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 18 journées de présence par semaine (jours de Julien et du 7e praticien à confirmer).</div>
+<div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
+<div style="position:relative; width:240px; height:240px; flex:0 0 240px"><svg viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Disque de la présence hebdomadaire par praticien">
+<sc-for list="{{donutSegs}}" as="s" hint-placeholder-count="7">
+<circle cx="100" cy="100" r="70" fill="none" stroke="{{s.color}}" stroke-width="36" stroke-dasharray="{{s.dash}}" stroke-dashoffset="{{s.off}}" transform="rotate(-90 100 100)"></circle>
+</sc-for>
+</svg><div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><span style="font-size:12px; color:#4A5B57">{{donutLabel}}</span><b style="font-size:20px">{{donutValue}}</b></div></div>
+<div style="display:flex; flex-direction:column; gap:8px; flex:1 1 280px; min-width:0">
+<sc-for list="{{donutLegend}}" as="g" hint-placeholder-count="7">
+<div style="display:grid; grid-template-columns:14px 1fr auto 56px; gap:10px; align-items:center; font-size:14px"><span style="{{g.sw}}"></span><span>{{g.name}}</span><b>{{g.value}}</b><span style="text-align:right; color:#4A5B57">{{g.pct}}</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div><h2 style="margin:0; font-size:18px">Occupation et marge par fauteuil</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026. Heures occupées sur les heures ouvertes (10 h à 18 h 30). La marge est la part du cabinet (40 %) moins le leasing, les consommables et le personnel répartis selon l'usage du box.</div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
+<sc-for list="{{boxCards}}" as="b" hint-placeholder-count="3">
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px">
+<div style="font-weight:700">{{b.name}}</div>
+<div style="font-size:12px; color:#4A5B57">Occupation : {{b.occ}}</div>
+<div style="height:12px; background:#EEF3F1; border-radius:6px; overflow:hidden"><div style="{{b.bar}}"></div></div>
+<div style="font-size:13px; line-height:1.7">{{b.visits}} visites, {{b.hours}} h occupées sur {{b.avail}} h<br>Honoraires : {{b.ca}}<br>Part du cabinet : {{b.part}}<br>Leasing : {{b.leasing}}, consommables : {{b.conso}}, personnel : {{b.perso}}</div>
+<div style="font-size:22px; font-weight:700; color:#15803D">{{b.margin}}</div><div style="font-size:12px; color:#4A5B57">marge du fauteuil</div>
+</div>
+</sc-for>
+</div>
+<div style="font-size:13px; color:#4A5B57">Le box pédiatrique n'est utilisé que par le Dr Turkieh. Le box du microscope est celui de Daoud, mais d'autres praticiens y travaillent les autres jours. Les heures et la répartition viennent du modèle fictif.</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57">Maquette : les montants sont fictifs, les jours et les box viennent de ton frère.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+    const P = {
+      ped: { name: 'Box pédiatrique', short: 'Pédiatrique', bg: '#FADADD', fg: '#7A1F3D', bd: '#F0B6C0' },
+      mic: { name: 'Box microscope', short: 'Microscope', bg: '#D6E6FA', fg: '#1B3F73', bd: '#B3CCEE' },
+      b3: { name: 'Box 3', short: 'Box 3', bg: '#D5F0DF', fg: '#1E5A3A', bd: '#A9DBBE' }
+    };
+    const cellBase = 'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; padding:10px 4px; font-size:12px; text-align:center; ';
+    const boxStyle = (k) => cellBase + 'background:' + P[k].bg + '; color:' + P[k].fg + '; border:1px solid ' + P[k].bd + ';';
+    const offStyle = cellBase + 'background:#F3F6F5; color:#4A5B57;';
+    const tbdStyle = cellBase + 'background:#fff; color:#4A5B57; border:2px dashed #C9D6D2; font-size:14px; font-weight:700;';
+    const freeStyle = 'display:flex; align-items:center; justify-content:center; background:#fff; color:#4A5B57; border:1px dashed #C9D6D2; border-radius:8px; padding:14px 4px; font-size:12px;';
+    const assign = {
+      ped: ['Aya', 'Aya', 'Aya', 'Aya', 'Aya', null, null],
+      mic: ['Abde-Ssadic', 'Abde-Ssadic', null, 'Daoud', 'Nabila', null, 'Daoud'],
+      b3: ['Mohamed', 'Mohamed', null, 'Mohamed', 'Mohamed', null, 'Mohamed']
+    };
+    const people = [
+      { name: 'Dr Aya Turkieh', key: 'Aya' },
+      { name: 'Dr Mohamed Bochouari', key: 'Mohamed' },
+      { name: 'Dr Abde-Ssadic Bochouari', key: 'Abde-Ssadic' },
+      { name: 'Dr Daoud Bouchouari', key: 'Daoud' },
+      { name: 'Dr Nabila Touil', key: 'Nabila' },
+      { name: 'Dr Julien Cabaz', tbd: '2 (à placer)' },
+      { name: '7e praticien (à confirmer)', tbd: '1 (à placer)' }
+    ];
+    const days7 = [0, 1, 2, 3, 4, 5, 6];
+    const boxOf = (key, i) => ['ped', 'mic', 'b3'].filter((k) => assign[k][i] === key)[0];
+    const rows = people.map((p) => {
+      if (p.tbd) {
+        return { name: p.name, days: p.tbd, cells: days7.map(() => ({ style: tbdStyle, label: '?', sub: '' })) };
+      }
+      let n = 0;
+      const cells = days7.map((i) => {
+        const k = boxOf(p.key, i);
+        if (k) { n += 1; return { style: boxStyle(k), label: P[k].short, sub: '10 h – 18 h 30' }; }
+        return { style: offStyle, label: 'repos', sub: '' };
+      });
+      return { name: p.name, days: n, cells: cells };
+    });
+    const totals = days7.map((i) => {
+      const n = ['ped', 'mic', 'b3'].filter((k) => assign[k][i]).length;
+      const free = 3 - n;
+      return {
+        value: n + ' / 3',
+        note: free === 0 ? 'complet' : (free + (free > 1 ? ' libres' : ' libre')),
+        style: 'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; padding:8px 4px; ' + (free === 0 ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
+      };
+    });
+    const legend = ['ped', 'mic', 'b3'].map((k) => ({
+      label: P[k].name,
+      style: 'display:inline-flex; align-items:center; border-radius:999px; padding:6px 14px; font-size:13px; font-weight:700; background:' + P[k].bg + '; color:' + P[k].fg + '; border:1px solid ' + P[k].bd + ';'
+    }));
+    const ruleStyle = 'display:inline-block; align-self:flex-start; margin-top:4px; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700; background:#fff; color:#14201D;';
+    const head = (k) => 'display:flex; flex-direction:column; justify-content:center; gap:2px; padding:10px 12px; border-radius:10px; background:' + P[k].bg + '; border:1px solid ' + P[k].bd + '; color:' + P[k].fg + ';';
+    const boxCells = (k) => assign[k].map((who) => who ? { style: boxStyle(k), label: who, sub: '' } : { style: freeStyle, label: 'libre', sub: '' });
+    const boxes = [
+      { name: 'Box pédiatrique', desc: 'Écran TV OLED côté rue', rule: 'Prioritaire : Aya', ruleStyle: ruleStyle, headStyle: head('ped'), cells: boxCells('ped') },
+      { name: 'Box microscope', desc: 'Microscope électronique', rule: 'Prioritaire : Daoud', ruleStyle: ruleStyle, headStyle: head('mic'), cells: boxCells('mic') },
+      { name: 'Box 3', desc: 'Box polyvalent', rule: 'Pour tous', ruleStyle: ruleStyle, headStyle: head('b3'), cells: boxCells('b3') }
+    ];
+    const bar = (w, c) => 'position:absolute; left:0; top:0; height:22px; border-radius:8px; background:' + c + '; width:' + w + '%;';
+    const DCOL = ['#0F766E', '#B45309', '#5B3FA8', '#2F6DB5', '#15803D', '#B42318', '#7A8A86'];
+    const mkDonut = (items, fmtv, label, total) => {
+      const C = 2 * Math.PI * 70; const sumv = items.reduce((a, x) => a + x[1], 0); let acc = 0;
+      const segs = items.map((x, i) => { const len = x[1] / sumv * C; const o = { color: DCOL[i % DCOL.length], dash: (Math.max(0, len - 2)).toFixed(2) + ' ' + (C - Math.max(0, len - 2)).toFixed(2), off: (-acc).toFixed(2) }; acc += len; return o; });
+      const legend = items.map((x, i) => ({ sw: 'display:inline-block; width:14px; height:14px; border-radius:3px; background:' + DCOL[i % DCOL.length] + ';', name: x[0], value: fmtv(x[1]), pct: (Math.round(x[1] / sumv * 1000) / 10).toString().replace('.', ',') + ' %' }));
+      return { donutSegs: segs, donutLegend: legend, donutLabel: label, donutValue: total };
+    };
+    const donut = mkDonut([['Aya Turkieh', 5], ['Mohamed Bochouari', 5], ['Abde-Ssadic Bochouari', 2], ['Daoud Bouchouari', 2], ['Julien Cabaz', 2], ['Nabila Touil', 1], ['7e praticien', 1]], (v) => v + (v > 1 ? ' jours' : ' jour'), 'Par semaine', '18 jours');
+    const D = window.LAEKEN; const fe = (n) => { const r = Math.round(n); return String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; };
+    const boxCards = D ? D.boxes.map((b) => ({ name: b.name, occ: (Math.round(b.occ * 1000) / 10).toString().replace('.', ',') + ' %', bar: 'height:100%; background:' + (b.occ > 0.9 ? '#B45309' : '#0F766E') + '; width:' + Math.min(100, b.occ * 100) + '%', visits: b.visits, hours: Math.round(b.hours), avail: Math.round(b.avail), ca: fe(b.ca), part: fe(b.part), leasing: fe(b.leasing), conso: fe(b.conso), perso: fe(b.perso), margin: fe(b.margin) })) : [];
+    return Object.assign(donut, { boxCards: boxCards,
+      kpis: [
+        { label: 'Box dentaires', value: '3', note: 'dont 1 avec microscope et 1 pédiatrique', style: tile('#5B3FA8') },
+        { label: 'Journées de praticien', value: '18', note: 'par semaine, 7 praticiens', style: tile('#0F766E') },
+        { label: 'Box déjà occupés', value: '71 %', note: '15 journées de box sur 21, 7 jours sur 7', style: tile('#B45309') },
+        { label: 'Patients par semaine', value: '306', note: 'environ 17 par journée de praticien', style: tile('#15803D') }
+      ],
+      rows: rows,
+      totals: totals,
+      legend: legend,
+      boxes: boxes,
+      perPatient: [
+        { label: "Chiffre d'affaires", value: '130 €', bar: bar(100, '#0F766E') },
+        { label: 'Rétrocession au praticien (60 %)', value: '78 €', bar: bar(60, '#B45309') },
+        { label: 'Charges du cabinet', value: '22,8 €', bar: bar(17.5, '#5B3FA8') },
+        { label: 'Dont salaires des assistantes', value: '8,8 €', bar: bar(6.8, '#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '29,3 €', bar: bar(22.5, '#15803D') }
+      ]
+    });
+  }
+}
+</script>
+</body>
+</html>
