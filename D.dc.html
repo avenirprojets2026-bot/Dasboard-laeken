@@ -83,6 +83,13 @@
 </sc-for>
 </div>
 <div style="font-size:13px; color:#4A5B57; line-height:1.5">{{cDesc}}</div>
+<sc-if value="{{showSub}}" hint-placeholder-val="{{ false }}">
+<div role="tablist" aria-label="Sous-familles" style="display:flex; flex-wrap:wrap; gap:6px; padding-left:8px; border-left:3px solid #DCE5E2">
+<sc-for list="{{subTabs}}" as="u" hint-placeholder-count="4">
+<button role="tab" onClick="{{u.pick}}" style="{{u.style}}">{{u.label}}<span style="font-size:12px; opacity:0.75">{{u.amount}}</span></button>
+</sc-for>
+</div>
+</sc-if>
 <sc-if value="{{showCards}}" hint-placeholder-val="{{ true }}">
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
 <sc-for list="{{catCards}}" as="k" hint-placeholder-count="3">
@@ -154,7 +161,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
 class Component extends DCLogic {
-  state = { ct: 'all' };
+  state = { ct: 'all', st: 'all' };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
@@ -190,49 +197,61 @@ class Component extends DCLogic {
       { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' }
     ];
     const LINES = [
-      ['org', 'Rémunération brute des 3 secrétaires salariées', 7200, 'Salariées sous contrat, réparties dans la journée'],
-      ['org', 'Cotisations patronales ONSS (environ 25 %)', 1800, 'Taux à confirmer avec le secrétariat social'],
-      ['org', 'Pécule de vacances et prime de fin d\'année (provision)', 1750, 'Provision mensuelle pour les montants versés une fois par an'],
-      ['org', 'Assurance accidents du travail, médecine du travail, secrétariat social', 450, 'Obligations de l\'employeur'],
-      ['org', 'Chèques-repas et frais de déplacement du personnel', 500, 'Selon les avantages accordés'],
-      ['org', 'Remplacement du personnel (congés, maladie)', 600, 'Intérim ou remplaçante quand une secrétaire est absente'],
-      ['exp', 'Loyer des locaux', 6500, 'Charge fixe mensuelle'],
-      ['exp', 'Énergie : eau, chauffage, gaz', 1800, 'Varie selon la saison'],
-      ['exp', 'Nettoyage des locaux', 1400, 'Charge fixe mensuelle'],
-      ['exp', 'Matériaux consommables', 3200, 'Gants, anesthésiques, composites, empreintes, stérilisation'],
-      ['exp', 'Catering', 600, 'Repas et boissons pour l\'équipe'],
-      ['exp', 'Lavage des blouses de travail', 350, 'Blanchisserie des tenues du personnel et des praticiens'],
-      ['exp', 'Déchets médicaux et entretien de l\'autoclave', 320, 'Collecte agréée, stérilisation'],
-      ['exp', 'Assurances du cabinet', 450, 'Incendie, responsabilité du cabinet, accidents. La RC professionnelle de chaque praticien reste à sa charge'],
-      ['exp', 'Comptabilité et gestion administrative', 450, 'Comptable du cabinet : comptabilité, déclarations, bilan et suivi administratif'],
-      ['exp', 'Fournitures administratives', 120, 'Papier, impression, enveloppes, petites fournitures de bureau'],
-      ['exp', 'Logiciel de gestion, facturation électronique et informatique', 380, 'Dossiers patients, e-attestations via MyCareNet, sauvegardes'],
-      ['exp', 'Télécom, internet, téléphone', 150, 'Abonnements du cabinet'],
-      ['exp', 'Frais bancaires et terminaux de paiement par carte', 300, 'Commissions sur les paiements par carte'],
-      ['exp', 'Marketing et publicité', 250, 'Réseaux sociaux, prospectus, communication du cabinet'],
-      ['exp', 'Site web et visibilité sur Google', 350, 'Site, hébergement, référencement, fiche Google Business Profile et publicité Google Ads'],
-      ['exc', 'Leasing des 3 fauteuils dentaires', 1950, '3 contrats en cours, 650 € par fauteuil'],
-      ['exc', 'Leasing scanner, panoramique, CBCT et matériel numérique', 1400, 'Imagerie et équipement numérique financés par leasing, à confirmer'],
-      ['exc', 'Intérêts bancaires et frais de financement', 500, 'Crédits d\'équipement ou d\'aménagement, frais de dossier'],
-      ['exc', 'Précompte immobilier', 180, 'Dépend de la propriété des locaux et du bail : à vérifier si le propriétaire le refacture'],
-      ['rare', 'Radioprotection (AFCN)', 250, 'Contrôles, rapports, autorisations'],
-      ['rare', 'Cybersécurité', 120, 'Protection et sauvegarde des données patients'],
-      ['rare', 'Contrôles électriques', 60, 'Certificats et périodicité'],
-      ['rare', 'Remplacement de l\'autoclave', 250, 'État et historique technique'],
-      ['rare', 'Réparation de l\'aspiration', 100, 'Diagnostic et devis'],
-      ['rare', 'Formation des assistantes', 150, 'Formation suivie et facturée'],
-      ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures']
+      ['org', 'Rémunération brute des 3 secrétaires salariées', 7200, 'Salariées sous contrat, réparties dans la journée', 'sal'],
+      ['org', 'Cotisations patronales ONSS (environ 25 %)', 1800, 'Taux à confirmer avec le secrétariat social', 'sal'],
+      ['org', 'Pécule de vacances et prime de fin d\'année (provision)', 1750, 'Provision mensuelle pour les montants versés une fois par an', 'obl'],
+      ['org', 'Assurance accidents du travail, médecine du travail, secrétariat social', 450, 'Obligations de l\'employeur', 'obl'],
+      ['org', 'Chèques-repas et frais de déplacement du personnel', 500, 'Selon les avantages accordés', 'ava'],
+      ['org', 'Remplacement du personnel (congés, maladie)', 600, 'Intérim ou remplaçante quand une secrétaire est absente', 'ava'],
+      ['exp', 'Loyer des locaux', 6500, 'Charge fixe mensuelle', 'loc'],
+      ['exp', 'Énergie : eau, chauffage, gaz', 1800, 'Varie selon la saison', 'loc'],
+      ['exp', 'Nettoyage des locaux', 1400, 'Charge fixe mensuelle', 'loc'],
+      ['exp', 'Matériaux consommables', 3200, 'Gants, anesthésiques, composites, empreintes, stérilisation', 'con'],
+      ['exp', 'Catering', 600, 'Repas et boissons pour l\'équipe', 'con'],
+      ['exp', 'Lavage des blouses de travail', 350, 'Blanchisserie des tenues du personnel et des praticiens', 'con'],
+      ['exp', 'Déchets médicaux et entretien de l\'autoclave', 320, 'Collecte agréée, stérilisation', 'con'],
+      ['exp', 'Assurances du cabinet', 450, 'Incendie, responsabilité du cabinet, accidents. La RC professionnelle de chaque praticien reste à sa charge', 'ass'],
+      ['exp', 'Comptabilité et gestion administrative', 450, 'Comptable du cabinet : comptabilité, déclarations, bilan et suivi administratif', 'adm'],
+      ['exp', 'Fournitures administratives', 120, 'Papier, impression, enveloppes, petites fournitures de bureau', 'adm'],
+      ['exp', 'Logiciel de gestion, facturation électronique et informatique', 380, 'Dossiers patients, e-attestations via MyCareNet, sauvegardes', 'adm'],
+      ['exp', 'Télécom, internet, téléphone', 150, 'Abonnements du cabinet', 'adm'],
+      ['exp', 'Frais bancaires et terminaux de paiement par carte', 300, 'Commissions sur les paiements par carte', 'adm'],
+      ['exp', 'Marketing et publicité', 250, 'Réseaux sociaux, prospectus, communication du cabinet', 'mkt'],
+      ['exp', 'Site web et visibilité sur Google', 350, 'Site, hébergement, référencement, fiche Google Business Profile et publicité Google Ads', 'mkt'],
+      ['exc', 'Leasing des 3 fauteuils dentaires', 1950, '3 contrats en cours, 650 € par fauteuil', 'mat'],
+      ['exc', 'Leasing scanner, panoramique, CBCT et matériel numérique', 1400, 'Imagerie et équipement numérique financés par leasing, à confirmer', 'mat'],
+      ['exc', 'Intérêts bancaires et frais de financement', 500, 'Crédits d\'équipement ou d\'aménagement, frais de dossier', 'fin'],
+      ['exc', 'Précompte immobilier', 180, 'Dépend de la propriété des locaux et du bail : à vérifier si le propriétaire le refacture', 'fin'],
+      ['rare', 'Radioprotection (AFCN)', 250, 'Contrôles, rapports, autorisations', 'conf'],
+      ['rare', 'Cybersécurité', 120, 'Protection et sauvegarde des données patients', 'conf'],
+      ['rare', 'Contrôles électriques', 60, 'Certificats et périodicité', 'conf'],
+      ['rare', 'Remplacement de l\'autoclave', 250, 'État et historique technique', 'equ'],
+      ['rare', 'Réparation de l\'aspiration', 100, 'Diagnostic et devis', 'equ'],
+      ['rare', 'Formation des assistantes', 150, 'Formation suivie et facturée', 'for'],
+      ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures', 'fin']
     ];
+    const SUBS = {
+      exp: [['loc', 'Locaux et énergie'], ['con', 'Fournitures et consommables'], ['adm', 'Administration et informatique'], ['ass', 'Assurances'], ['mkt', 'Marketing et visibilité']],
+      exc: [['mat', 'Matériel et leasings'], ['fin', 'Financement, impôts et divers']],
+      rare: [['conf', 'Conformité et sécurité'], ['equ', 'Remplacement de matériel'], ['for', 'Formation']],
+      org: [['sal', 'Rémunération des secrétaires'], ['obl', 'Obligations de l\'employeur'], ['ava', 'Avantages et remplacements']]
+    };
     const TOT = LINES.reduce((a, l) => a + l[2], 0);
     const ctab = (S && S.ct) || 'all';
     const sumCat = (id) => LINES.filter((l) => l[0] === id).reduce((a, l) => a + l[2], 0);
     const tabBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:12px 12px 0 0; padding:8px 14px; font-size:14px; cursor:pointer; ';
     const tOn = tabBase + 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #5B3FA8; font-weight:700;';
     const tOff = tabBase + 'background:#EFEAF8; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
-    const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id }) }));
+    const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
     const catCards = CAT.map((c) => ({ title: c.short, desc: c.desc, total: eur(sumCat(c.id)), share: pc(sumCat(c.id) / TOT * 100) + ' des charges', bar: 'height:10px; border-radius:999px; background:' + c.color + '; width:' + (sumCat(c.id) / TOT * 100) + '%;', style: 'border:1px solid #DCE5E2; border-top:5px solid ' + c.color + '; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:6px;' }));
     const ord = { exp: 0, exc: 1, rare: 2, org: 3 };
-    const shownLines = LINES.filter((l) => ctab === 'all' || l[0] === ctab).sort((x, y) => ord[x[0]] - ord[y[0]]);
+    const stab = (S && S.st) || 'all';
+    const subDefs = ctab === 'all' ? [] : SUBS[ctab];
+    const sTabBase = 'display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:999px; padding:4px 12px; font-size:13px; cursor:pointer; ';
+    const sOn = sTabBase + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const sOff = sTabBase + 'background:#fff; color:#33433F; border:1px solid #C9D6D2; font-weight:500;';
+    const subTabs = ctab === 'all' ? [] : [['all', 'Tout']].concat(subDefs).map((d) => ({ label: d[1], amount: eur(LINES.filter((l) => l[0] === ctab && (d[0] === 'all' || l[4] === d[0])).reduce((a, l) => a + l[2], 0)), style: stab === d[0] ? sOn : sOff, pick: () => setState({ st: d[0] }) }));
+    const shownLines = LINES.filter((l) => (ctab === 'all' || l[0] === ctab) && (ctab === 'all' || stab === 'all' || l[4] === stab)).sort((x, y) => ord[x[0]] - ord[y[0]]);
     const shownTotal = shownLines.reduce((a, l) => a + l[2], 0);
     const curCat = CAT.filter((c) => c.id === ctab)[0];
     const charges = shownLines.map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
@@ -251,7 +270,7 @@ class Component extends DCLogic {
         { label: 'Charges du cabinet', value: '− 34 030 €', bar: bar('#5B3FA8', 20.3, 19.7) },
         { label: 'Bénéfice', value: '35 210 €', bar: bar('#15803D', 0, 20.3) }
       ],
-      charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les trois familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? 'Total : ' + curCat.short.toLowerCase() : 'Total des charges',
+      charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les trois familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [
         { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '50 500 €', retro: '30 300 €', share: '20 200 €', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '19 200 €', retro: '11 520 €', share: '7 680 €', conv: 'Conventionné', convStyle: cs },
