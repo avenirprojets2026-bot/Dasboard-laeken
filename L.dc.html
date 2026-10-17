@@ -7,6 +7,8 @@
 <meta charset="utf-8">
 <title>Patients vus par praticien</title>
 <script src="./support.js"></script>
+<script src="./acces.js"></script>
+<script src="./auth.js"></script>
 <script src="./nav.js"></script>
 <script src="./data.js"></script>
 </head>
@@ -163,7 +165,8 @@ class Component extends DCLogic {
     const chips = { cb: chipBase + 'background:#D6E6FA; color:#1B3F73;', cash: chipBase + 'background:#D5F0DF; color:#1E5A3A;', plan: chipBase + 'background:#E9DEF7; color:#4B2F96;', unpaid: chipBase + 'background:#FBE0DC; color:#A3231A;', zero: chipBase + 'background:#E7EDEB; color:#33433F;', planned: chipBase + 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' };
     const msChips = { 'En ordre': chipBase + 'background:#E3F4EA; color:#0B6B3A;', 'À vérifier': chipBase + 'background:#FDF0DC; color:#8A4B08;', 'Non en ordre': chipBase + 'background:#FBE7E5; color:#A3231A;' };
     const payLabel = { cb: 'Payé par carte', cash: 'Payé en liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
-    const pi = Math.min(S.pr, PR.length - 1);
+    const lockPr = window.LKAUTH ? window.LKAUTH.prIndex() : -1;
+    const pi = lockPr >= 0 ? lockPr : Math.min(S.pr, PR.length - 1);
     const P = pi >= 0 ? PR[pi] : null;
     const allBase = (P ? P.visits : D.visits).slice().sort((a, b) => (a.d - b.d) || a.time.localeCompare(b.time) || (a.p - b.p));
     const all = S.st === 'all' ? allBase : allBase.filter((r) => r.reg === S.st);
@@ -206,7 +209,7 @@ class Component extends DCLogic {
     const disabled = 'opacity:0.4; cursor:default;';
     const moPills = [{ label: D.MONTH.label, style: pillOn, pick: () => {} }];
 
-    const prPills = [{ label: 'Tous (' + nf(D.visits.length) + ')', style: !P ? pillOn : pillOff, pick: () => setState({ pr: -1, page: 0, msg: '' }) }].concat(PR.map((p, i) => ({ label: p.short + ' (' + p.visits.length + ')', style: i === pi ? pillOn : pillOff, pick: () => setState({ pr: i, page: 0, msg: '' }) })));
+    const prPills = (lockPr >= 0 ? [] : [{ label: 'Tous (' + nf(D.visits.length) + ')', style: !P ? pillOn : pillOff, pick: () => setState({ pr: -1, page: 0, msg: '' }) }]).concat(PR.map((p, i) => ({ label: p.short + ' (' + p.visits.length + ')', style: i === pi ? pillOn : pillOff, pick: () => setState({ pr: i, page: 0, msg: '' }) })).filter((x, i) => lockPr < 0 || i === lockPr));
     const kpis = [
       { label: 'Statut BIM/VIPO', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
       { label: 'Patients vus', value: nf(all.length), note: nActs + ' actes, ' + (nActs / all.length).toFixed(2).replace('.', ',') + ' par patient', style: tile('#0F766E') },

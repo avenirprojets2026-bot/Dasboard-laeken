@@ -8,9 +8,12 @@
   var cur = (location.pathname.split('/').pop() || '').replace('.dc.html', '');
   var curName = 'Menu';
   var html = '<a class="lk-i" href="Accueil.dc.html">Accueil</a>';
+  var okp = function (p) { return !window.LKAUTH || window.LKAUTH.allowed(p); };
   G.forEach(function (g) {
+    var vis = g[1].filter(function (it) { return okp(it[1]); });
+    if (!vis.length) { return; }
     html += '<div class="lk-g">' + g[0] + '</div>';
-    g[1].forEach(function (it) {
+    vis.forEach(function (it) {
       var on = it[1] === cur; if (on) curName = it[0];
       html += '<a class="lk-i' + (on ? ' on' : '') + '" href="' + it[1] + '.dc.html">' + it[0] + '</a>';
     });
