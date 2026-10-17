@@ -196,7 +196,7 @@ class Component extends DCLogic {
     const kpis = [
       { label: 'Patients vus', value: nf(all.length), note: nActs + ' actes, ' + (nActs / all.length).toFixed(2).replace('.', ',') + ' par patient', style: tile('#0F766E') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + nf(all.length) + ' visites', style: tile('#0F766E') },
-      { label: 'Honoraires', value: eur(tF), note: 'rétrocession 60 % : ' + eur(tF * 0.6), style: tile('#B45309') },
+      { label: 'Honoraires', value: eur(tF), note: 'rémunération après labo : ' + eur(P ? P.net : D.PR.reduce((a, x) => a + x.net, 0)), style: tile('#B45309') },
       { label: 'Part des mutuelles', value: eur(tI), note: 'à recevoir sous 1 à 1,5 mois', style: tile('#2F6DB5') },
       { label: 'Part des patients', value: eur(tS), note: 'suppléments week-end inclus', style: tile('#5B3FA8') },
       { label: 'Pas encore payé', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }

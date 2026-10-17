@@ -63,7 +63,7 @@
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
-<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 35 210 €</h2>
+<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 19 850 €</h2>
 <sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
 <div style="display:grid; grid-template-columns:minmax(120px, 230px) 1fr minmax(84px, 110px); gap:12px; align-items:center; font-size:14px">
 <span style="font-weight:500">{{f.label}}</span>
@@ -110,10 +110,10 @@
 <section style="flex:999 1 520px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <h2 style="margin:0; font-size:18px">Ce que chaque praticien rapporte</h2>
 <div style="overflow-x:auto">
-<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:520px">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:620px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th><th style="padding:8px; text-align:right">Part cabinet 40 %</th>
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Frais de labo</th><th style="padding:8px; text-align:right">Rémunération</th><th style="padding:8px; text-align:right">Part cabinet</th>
 </tr>
 </thead>
 <tbody>
@@ -122,12 +122,13 @@
 <td style="padding:12px 8px 12px 0"><b>{{d.name}}</b><div style="font-size:12px; color:#4A5B57">{{d.role}}</div>
 <span style="{{d.convStyle}}">{{d.conv}}</span></td>
 <td style="padding:12px 8px; text-align:right">{{d.billed}}</td>
-<td style="padding:12px 8px; text-align:right"><span style="background:#FDF0DC; color:#8A4B08; border-radius:6px; padding:3px 8px; font-weight:700">{{d.retro}}</span></td>
+<td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{d.labo}}</td>
+<td style="padding:12px 8px; text-align:right"><span style="background:#FDF0DC; color:#8A4B08; border-radius:6px; padding:3px 8px; font-weight:700">{{d.retro}}</span><div style="font-size:12px; color:#4A5B57; margin-top:2px">{{d.rate}} de la base</div></td>
 <td style="padding:12px 8px; text-align:right"><span style="background:#E3F2EF; color:#0B5D56; border-radius:6px; padding:3px 8px; font-weight:700">{{d.share}}</span></td>
 </tr>
 </sc-for>
 <tr style="border-top:2px solid #14201D; font-weight:700">
-<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">173 100 €</td><td style="padding:12px 8px; text-align:right">103 860 €</td><td style="padding:12px 8px; text-align:right">69 240 €</td>
+<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">173 100 €</td><td style="padding:12px 8px; text-align:right; color:#8A4B08">− 28 600 €</td><td style="padding:12px 8px; text-align:right">85 930 €</td><td style="padding:12px 8px; text-align:right">58 570 €</td>
 </tr>
 </tbody>
 </table>
@@ -156,7 +157,7 @@
 <div style="background:#FDF0DC; color:#5C3A06; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>À confirmer avec le comptable.</b> La TVA : les soins dentaires thérapeutiques sont exonérés en Belgique, mais les actes esthétiques (blanchiment, facettes) seraient taxés, ce qui dépend aussi du statut de chaque praticien. Les cotisations sociales des indépendants sont à la charge de chaque praticien, pas du cabinet. L'ONSS patronale concerne seulement les 3 secrétaires salariées (tous les dentistes sont indépendants).</div>
 </section>
 
-<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : tous les chiffres sont fictifs, notamment les charges (personnel avec ONSS, loyer, leasing, énergie, consommables, assurances, comptable, AFCN, logiciel, frais bancaires et autres). Hypothèses à confirmer : la rétrocession de 60 % est calculée sur le chiffre d'affaires facturé, la part restante de 40 % revient au cabinet, et les frais de laboratoire sont supportés par chaque praticien.</footer>
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : tous les chiffres sont fictifs, notamment les charges (personnel avec ONSS, loyer, leasing, énergie, consommables, assurances, comptable, AFCN, logiciel, frais bancaires et autres). Hypothèses à confirmer : les frais de laboratoire sont déduits des honoraires facturés, puis la rétrocession (60 %, soit 50 % pour Nabila Touil) est calculée sur le reste, la part restante revenant au cabinet ; les deux BMW (série 7 hybride et série 5 électrique) sont des charges du cabinet.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
@@ -178,8 +179,8 @@ class Component extends DCLogic {
       const esth = D.rows.filter((r) => r.key === 'blanch' || r.key === 'facette'); const esthTot = esth.reduce((a, r) => a + r.fee, 0);
       const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
       pilotKpis = [
-        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(34030 / ca * 100), '34 030 € de charges sur ' + eur(ca)),
-        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(34030 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(38720 / ca * 100), '38 720 € de charges sur ' + eur(ca)),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(38720 / 58570 * 100), 'sur 58 570 € après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
         T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
@@ -194,9 +195,22 @@ class Component extends DCLogic {
       { id: 'exp', label: 'Exploitation habituelle', short: 'Charges d\'exploitation habituelles', desc: 'Les dépenses courantes qui reviennent chaque mois pour faire tourner le cabinet.', color: '#0F766E' },
       { id: 'exc', label: 'Exceptionnelles ou moins visibles', short: 'Charges exceptionnelles ou moins visibles', desc: 'Matériel financé, intérêts, impôts et contrôles : des montants que l\'on oublie facilement.', color: '#B45309' },
       { id: 'rare', label: 'Peu fréquentes mais légitimes', short: 'Dépenses peu fréquentes mais légitimes', desc: 'Contrôles, remises en conformité et remplacements qui ne reviennent pas chaque mois. Les montants sont lissés sur 12 mois (provision mensuelle). L\'AFCN exige notamment une organisation documentée de la radioprotection pour les installations concernées, et les fréquences de contrôle varient selon les équipements, en particulier pour les CBCT : à confirmer.', color: '#B42318' },
-      { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' }
+      { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' },
+      { id: 'veh', label: 'Véhicules du cabinet', short: 'Véhicules du cabinet (2 BMW)', desc: 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique : leasing, assurance, réparations, entretien, taxe de circulation et énergie. La déductibilité fiscale, l\'avantage de toute nature en cas d\'usage privé et la cotisation de solidarité CO2 sont à confirmer avec le comptable.', color: '#2F6DB5' }
     ];
     const LINES = [
+      ['veh', 'Leasing BMW Série 7 hybride', 1750, 'Loyer mensuel de leasing (estimation)', 'b7'],
+      ['veh', 'Assurance BMW Série 7 hybride', 260, 'Responsabilité civile et omnium', 'b7'],
+      ['veh', 'Réparations BMW Série 7 hybride', 110, 'Provision lissée sur 12 mois', 'b7'],
+      ['veh', 'Entretien BMW Série 7 hybride', 130, 'Révisions, pneus et contrôle technique', 'b7'],
+      ['veh', 'Taxe de circulation BMW Série 7 hybride', 70, 'Taxe annuelle régionale divisée par 12', 'b7'],
+      ['veh', 'Carburant et recharge BMW Série 7 hybride', 480, 'Essence et recharge électrique', 'b7'],
+      ['veh', 'Leasing BMW Série 5 électrique', 1350, 'Loyer mensuel de leasing (estimation)', 'b5'],
+      ['veh', 'Assurance BMW Série 5 électrique', 210, 'Responsabilité civile et omnium', 'b5'],
+      ['veh', 'Réparations BMW Série 5 électrique', 80, 'Provision lissée sur 12 mois', 'b5'],
+      ['veh', 'Entretien BMW Série 5 électrique', 60, 'Révisions, pneus et contrôle technique', 'b5'],
+      ['veh', 'Taxe de circulation BMW Série 5 électrique', 0, 'Exonération possible pour un véhicule électrique, à confirmer selon la Région', 'b5'],
+      ['veh', 'Recharge électrique BMW Série 5 électrique', 190, 'Électricité à domicile et bornes publiques', 'b5'],
       ['org', 'Rémunération brute des 3 secrétaires salariées', 7200, 'Salariées sous contrat, réparties dans la journée', 'sal'],
       ['org', 'Cotisations patronales ONSS (environ 25 %)', 1800, 'Taux à confirmer avec le secrétariat social', 'sal'],
       ['org', 'Pécule de vacances et prime de fin d\'année (provision)', 1750, 'Provision mensuelle pour les montants versés une fois par an', 'obl'],
@@ -231,6 +245,7 @@ class Component extends DCLogic {
       ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures', 'fin']
     ];
     const SUBS = {
+      veh: [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']],
       exp: [['loc', 'Locaux et énergie'], ['con', 'Fournitures et consommables'], ['adm', 'Administration et informatique'], ['ass', 'Assurances'], ['mkt', 'Marketing et visibilité']],
       exc: [['mat', 'Matériel et leasings'], ['fin', 'Financement, impôts et divers']],
       rare: [['conf', 'Conformité et sécurité'], ['equ', 'Remplacement de matériel'], ['for', 'Formation']],
@@ -244,7 +259,7 @@ class Component extends DCLogic {
     const tOff = tabBase + 'background:#EFEAF8; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
     const catCards = CAT.map((c) => ({ title: c.short, desc: c.desc, total: eur(sumCat(c.id)), share: pc(sumCat(c.id) / TOT * 100) + ' des charges', bar: 'height:10px; border-radius:999px; background:' + c.color + '; width:' + (sumCat(c.id) / TOT * 100) + '%;', style: 'border:1px solid #DCE5E2; border-top:5px solid ' + c.color + '; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:6px;' }));
-    const ord = { exp: 0, exc: 1, rare: 2, org: 3 };
+    const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4 };
     const stab = (S && S.st) || 'all';
     const subDefs = ctab === 'all' ? [] : SUBS[ctab];
     const sTabBase = 'display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:999px; padding:4px 12px; font-size:13px; cursor:pointer; ';
@@ -259,26 +274,27 @@ class Component extends DCLogic {
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
         { label: "Chiffre d'affaires", value: '173 100 €', note: '1 329 patients vus', style: tile('#0F766E') },
-        { label: 'Rétrocessions (60 %)', value: '103 860 €', note: 'versées aux praticiens indépendants', style: tile('#B45309') },
-        { label: 'Charges du cabinet', value: '34 030 €', note: 'dont 12 300 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements) et 5 110 € de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '35 210 €', note: '20,3 % du chiffre d\'affaires', style: tile('#15803D') }
+        { label: 'Rémunération des praticiens', value: '85 930 €', note: '(honoraires − 28 600 € de labo) × 60 %, ou 50 % pour Nabila Touil', style: tile('#B45309') },
+        { label: 'Charges du cabinet', value: '38 720 €', note: 'dont 12 300 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements), 4 690 € pour les 2 BMW et 5 110 € de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '19 850 €', note: '11,5 % du chiffre d\'affaires', style: tile('#15803D') }
       ],
       flow: [
         { label: "Chiffre d'affaires", value: '173 100 €', bar: bar('#0F766E', 0, 100) },
-        { label: 'Rétrocessions (60 %)', value: '− 103 860 €', bar: bar('#B45309', 40, 60) },
-        { label: 'Marge du cabinet (40 %)', value: '69 240 €', bar: bar('#0F766E', 0, 40) },
-        { label: 'Charges du cabinet', value: '− 34 030 €', bar: bar('#5B3FA8', 20.3, 19.7) },
-        { label: 'Bénéfice', value: '35 210 €', bar: bar('#15803D', 0, 20.3) }
+        { label: 'Frais de laboratoire', value: '− 28 600 €', bar: bar('#8A4B08', 83.5, 16.5) },
+        { label: 'Rémunération des praticiens', value: '− 85 930 €', bar: bar('#B45309', 33.9, 49.6) },
+        { label: 'Part du cabinet', value: '58 570 €', bar: bar('#0F766E', 0, 33.9) },
+        { label: 'Charges du cabinet', value: '− 38 720 €', bar: bar('#5B3FA8', 11.5, 22.4) },
+        { label: 'Bénéfice', value: '19 850 €', bar: bar('#15803D', 0, 11.5) }
       ],
-      charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les trois familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
+      charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les cinq familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [
-        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '50 500 €', retro: '30 300 €', share: '20 200 €', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '19 200 €', retro: '11 520 €', share: '7 680 €', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', billed: '47 900 €', retro: '28 740 €', share: '19 160 €', conv: 'Non conventionné', convStyle: ns },
-        { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: '9 300 €', retro: '5 580 €', share: '3 720 €', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: '18 900 €', retro: '11 340 €', share: '7 560 €', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: '18 300 €', retro: '10 980 €', share: '7 320 €', conv: 'Conventionné', convStyle: cs },
-        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', billed: '9 000 €', retro: '5 400 €', share: '3 600 €', conv: 'Conventionné', convStyle: cs }
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '50 500 €', labo: '7 800 €', retro: '25 620 €', share: '17 080 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '19 200 €', labo: '3 100 €', retro: '9 660 €', share: '6 440 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', billed: '47 900 €', labo: '7 500 €', retro: '24 240 €', share: '16 160 €', rate: '60 %', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: '9 300 €', labo: '1 600 €', retro: '3 850 €', share: '3 850 €', rate: '50 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: '18 900 €', labo: '3 000 €', retro: '9 540 €', share: '6 360 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: '18 300 €', labo: '2 900 €', retro: '9 240 €', share: '6 160 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', billed: '9 000 €', labo: '2 700 €', retro: '3 780 €', share: '2 520 €', rate: '60 %', conv: 'Conventionné', convStyle: cs }
       ]
     };
   }

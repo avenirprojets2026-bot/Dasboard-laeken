@@ -92,7 +92,7 @@
 </sc-for>
 </ul>
 </div>
-<div style="font-size:13px; color:#4A5B57">Rétrocession de 60 % due à chaque praticien pour les prestations du mois. Septembre et octobre sont provisoires, car les mutuelles n'ont pas encore tout remboursé.</div>
+<div style="font-size:13px; color:#4A5B57">Rémunération due à chaque praticien pour les prestations du mois : honoraires moins frais de laboratoire, puis 60 % (50 % pour Nabila Touil). Septembre et octobre sont provisoires, car les mutuelles n'ont pas encore tout remboursé.</div>
 </section>
 
 <section style="display:flex; flex-direction:column; gap:12px">
@@ -127,13 +127,13 @@
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
 <h2 style="margin:0 0 4px; font-size:18px">Calcul de la rémunération de chaque praticien (octobre)</h2>
-<div style="font-size:13px; color:#4A5B57; line-height:1.5">Opération : chiffre d'affaires facturé × 60 % = rétrocession brute, puis − frais de laboratoire = rémunération nette versée par le gérant.</div>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">Opération : honoraires facturés − frais de laboratoire = base de calcul, puis × taux de rétrocession (60 %, soit 50 % pour Nabila Touil) = rémunération nette versée par le gérant.</div>
 </div>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">× 60 %</th><th style="padding:8px; text-align:right">− Frais de labo</th><th style="padding:8px; text-align:right">= Net à payer</th><th style="padding:8px; min-width:200px">Net et labo en part de la rétrocession</th>
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">− Frais de labo</th><th style="padding:8px; text-align:right">= Base</th><th style="padding:8px; text-align:right">× Taux</th><th style="padding:8px; text-align:right">= Net à payer</th><th style="padding:8px; min-width:200px">Part du praticien et du cabinet sur la base</th>
 </tr>
 </thead>
 <tbody>
@@ -141,19 +141,20 @@
 <tr style="border-top:1px solid #E7EDEB">
 <td style="padding:12px 8px 12px 0"><b>{{c.name}}</b><div style="font-size:12px; color:#4A5B57">{{c.spec}}</div></td>
 <td style="padding:12px 8px; text-align:right">{{c.billed}}</td>
-<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{c.retro}}</td>
 <td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{c.labo}}</td>
+<td style="padding:12px 8px; text-align:right">{{c.base}}</td>
+<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{c.rate}}</td>
 <td style="padding:12px 8px; text-align:right; font-weight:700; color:#0B6B3A; font-size:15px">{{c.net}}</td>
-<td style="padding:12px 8px"><div style="display:flex; height:14px; border-radius:999px; overflow:hidden; background:#F3F6F5"><div style="{{c.netBar}}"></div><div style="{{c.laboBar}}"></div></div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{c.pct}} net · {{c.pctLabo}} labo</div></td>
+<td style="padding:12px 8px"><div style="display:flex; height:14px; border-radius:999px; overflow:hidden; background:#F3F6F5"><div style="{{c.netBar}}"></div><div style="{{c.cabBar}}"></div></div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{c.pct}} praticien · {{c.pctCab}} cabinet</div></td>
 </tr>
 </sc-for>
 <tr style="border-top:2px solid #14201D; font-weight:700">
-<td style="padding:12px 8px 12px 0">Total des 7 praticiens</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right; color:#B45309">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-size:15px">{{tot.net}}</td><td></td>
+<td style="padding:12px 8px 12px 0">Total des 7 praticiens</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right">{{tot.base}}</td><td></td><td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-size:15px">{{tot.net}}</td><td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Hypothèse à confirmer : les frais de laboratoire sont retirés de la rétrocession de 60 % de chaque praticien. Les montants du calendrier des paiements ci-dessous sont avant cette déduction.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Hypothèse à confirmer : les frais de laboratoire sont déduits des honoraires avant le calcul de la rétrocession, donc partagés entre le praticien et le cabinet selon le taux (60/40, ou 50/50 pour Nabila Touil). Les montants du calendrier des paiements ci-dessous sont déjà nets de labo.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -188,7 +189,7 @@
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
 <h3 style="margin:0; font-size:18px">Répartition des rémunérations nettes</h3>
-<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 75 260 € nets à payer (60 % de rétrocession moins les frais de laboratoire).</div>
+<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 85 930 € nets à payer (honoraires moins frais de laboratoire, puis 60 %, ou 50 % pour Nabila Touil).</div>
 <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
 <div style="position:relative; width:240px; height:240px; flex:0 0 240px"><svg viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Disque des rémunérations nettes par praticien">
 <sc-for list="{{donutSegs}}" as="s" hint-placeholder-count="7">
@@ -227,13 +228,13 @@ class Component extends DCLogic {
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const data = [
-      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [28400, 27900, 25200, 22100, 29600, 30300] },
-      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', color: '#B45309', v: [27100, 26800, 24300, 21500, 28200, 28740] },
-      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [10900, 11200, 9800, 8100, 11000, 11520] },
-      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [10300, 10800, 9500, 8400, 10600, 10980] },
-      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [10600, 10400, 9700, 8600, 10900, 11340] },
-      { name: 'Dr Nabila Touil', role: '1 jour par semaine', color: '#B42318', v: [5200, 5400, 4700, 4100, 5400, 5580] },
-      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [5000, 5100, 4600, 4000, 5200, 5400] }
+      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [24010, 23590, 21310, 18690, 25030, 25620] },
+      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', color: '#B45309', v: [22860, 22600, 20500, 18130, 23780, 24240] },
+      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [9140, 9390, 8220, 6790, 9220, 9660] },
+      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [8670, 9090, 7990, 7070, 8920, 9240] },
+      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [8920, 8750, 8160, 7230, 9170, 9540] },
+      { name: 'Dr Nabila Touil', role: '1 jour par semaine', color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850] },
+      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780] }
     ];
     const series = data.map((d) => {
       const pts = d.v.map((v, i) => (60 + 136 * i) + ',' + Math.round((320 - v * 300 / 32000) * 10) / 10);
@@ -259,31 +260,31 @@ class Component extends DCLogic {
     const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
     const bar = (w, c) => 'background:' + c + '; height:8px; width:' + w + '%;';
     const payments = [
-      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/07/2026', total: '97 500 €', status: 'Payé', chip: ok },
-      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '14/08/2026', total: '97 600 €', status: 'Payé', chip: ok },
-      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/09/2026', total: '87 800 €', status: 'Payé', chip: ok },
-      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '15/10/2026', total: '76 800 €', status: 'Payé', chip: ok },
-      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 16/11/2026', total: '100 900 €', status: 'En attente des mutuelles', chip: wait },
-      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 15/12/2026', total: '103 860 €', status: 'En attente des mutuelles', chip: wait }
+      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/07/2026', total: '80 690 €', status: 'Payé', chip: ok },
+      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '14/08/2026', total: '80 720 €', status: 'Payé', chip: ok },
+      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/09/2026', total: '72 640 €', status: 'Payé', chip: ok },
+      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '15/10/2026', total: '63 540 €', status: 'Payé', chip: ok },
+      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 16/11/2026', total: '83 490 €', status: 'En attente des mutuelles', chip: wait },
+      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 15/12/2026', total: '85 930 €', status: 'En attente des mutuelles', chip: wait }
     ];
     const cd = [
-      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 50500, 30300, 7800],
-      ['Dr Mohamed Bochouari', 'Orthodontiste', 47900, 28740, 7500],
-      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 19200, 11520, 3100],
-      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 18300, 10980, 2900],
-      ['Dr Julien Cabaz', 'Implantologue', 18900, 11340, 3000],
-      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer)', 9300, 5580, 1600],
-      ['7e praticien (à confirmer)', 'jours à confirmer', 9000, 5400, 2700]
+      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 50500, 7800, 0.6],
+      ['Dr Mohamed Bochouari', 'Orthodontiste', 47900, 7500, 0.6],
+      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 19200, 3100, 0.6],
+      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 18300, 2900, 0.6],
+      ['Dr Julien Cabaz', 'Implantologue', 18900, 3000, 0.6],
+      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer)', 9300, 1600, 0.5],
+      ['7e praticien (à confirmer)', 'jours à confirmer', 9000, 2700, 0.6]
     ];
     const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const net = (x) => (x[2] - x[3]) * x[4];
     const calc = cd.map((x) => {
-      const net = x[3] - x[4];
-      const pn = Math.round(net / x[3] * 100);
-      return { name: x[0], spec: x[1], billed: eur(x[2]), retro: eur(x[3]), labo: eur(x[4]), net: eur(net), pct: pn + ' %', pctLabo: (100 - pn) + ' %',
-        netBar: 'background:#2E8B57; width:' + pn + '%;', laboBar: 'background:#E9B872; width:' + (100 - pn) + '%;' };
+      const pn = Math.round(x[4] * 100);
+      return { name: x[0], spec: x[1], billed: eur(x[2]), labo: eur(x[3]), base: eur(x[2] - x[3]), rate: pn + ' %', net: eur(net(x)), pct: pn + ' %', pctCab: (100 - pn) + ' %',
+        netBar: 'background:#2E8B57; width:' + pn + '%;', cabBar: 'background:#B8C7C2; width:' + (100 - pn) + '%;' };
     });
-    const sum = (k) => cd.reduce((a, x) => a + x[k], 0);
-    const tot = { billed: eur(sum(2)), retro: eur(sum(3)), labo: eur(sum(4)), net: eur(sum(3) - sum(4)) };
+    const sum = (f) => cd.reduce((a, x) => a + f(x), 0);
+    const tot = { billed: eur(sum((x) => x[2])), labo: eur(sum((x) => x[3])), base: eur(sum((x) => x[2] - x[3])), net: eur(sum(net)) };
     const DCOL = ['#0F766E', '#B45309', '#5B3FA8', '#2F6DB5', '#15803D', '#B42318', '#7A8A86'];
     const mkDonut = (items, fmtv, label, total) => {
       const C = 2 * Math.PI * 70; const sumv = items.reduce((a, x) => a + x[1], 0); let acc = 0;
@@ -291,7 +292,7 @@ class Component extends DCLogic {
       const legend = items.map((x, i) => ({ sw: 'display:inline-block; width:14px; height:14px; border-radius:3px; background:' + DCOL[i % DCOL.length] + ';', name: x[0], value: fmtv(x[1]), pct: (Math.round(x[1] / sumv * 1000) / 10).toString().replace('.', ',') + ' %' }));
       return { donutSegs: segs, donutLegend: legend, donutLabel: label, donutValue: total };
     };
-    const donut = mkDonut(cd.map((x) => [x[0].replace('Dr ', ''), x[3] - x[4]]), (v) => eur(v), 'Total net', eur(sum(3) - sum(4)));
+    const donut = mkDonut(cd.map((x) => [x[0].replace('Dr ', ''), net(x)]), (v) => eur(v), 'Total net', eur(sum(net)));
     const LK = window.LAEKEN; let cash = [];
     if (LK) {
       const mu = LK.rows.reduce((x, r) => x + r.interv, 0);

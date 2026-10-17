@@ -115,7 +115,7 @@
 </sc-for>
 </ul>
 </div>
-<div style="font-size:13px; color:#4A5B57">Rétrocession de 60 % due pour les prestations de chaque mois. La bande grise marque le mois choisi. Septembre et octobre sont provisoires.</div>
+<div style="font-size:13px; color:#4A5B57">Rémunération due pour les prestations de chaque mois (honoraires moins frais de laboratoire, puis 60 %, ou 50 % pour Nabila Touil). La bande grise marque le mois choisi. Septembre et octobre sont provisoires.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -124,10 +124,10 @@
 <div style="font-size:13px; color:#4A5B57">Clique sur un nom pour ouvrir son casier plus bas.</div>
 </div>
 <div style="overflow-x:auto">
-<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:860px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 12px">Praticien</th><th style="padding:8px">Conventionnement</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Rétrocession 60 %</th><th style="padding:8px; text-align:right">Part cabinet</th><th style="padding:8px">Paiement</th>
+<th style="padding:8px 8px 8px 12px">Praticien</th><th style="padding:8px">Conventionnement</th><th style="padding:8px; text-align:right">Chiffre d'affaires</th><th style="padding:8px; text-align:right">Frais de labo</th><th style="padding:8px; text-align:right">Rémunération (taux)</th><th style="padding:8px; text-align:right">Part cabinet</th><th style="padding:8px">Paiement</th>
 </tr>
 </thead>
 <tbody>
@@ -136,13 +136,14 @@
 <td style="padding:12px 8px 12px 12px"><button onClick="{{r.pick}}" style="background:none; border:0; padding:6px 0; font-size:14px; font-weight:700; cursor:pointer; text-align:left; color:#0B5D56; text-decoration:underline">{{r.name}}</button><div style="font-size:12px; color:#4A5B57">{{r.days}}</div></td>
 <td style="padding:12px 8px"><span style="{{r.convStyle}}">{{r.conv}}</span></td>
 <td style="padding:12px 8px; text-align:right">{{r.billed}}</td>
-<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.retro}}</td>
+<td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{r.labo}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.retro}} <span style="font-weight:400; font-size:12px; color:#4A5B57">({{r.rate}})</span></td>
 <td style="padding:12px 8px; text-align:right">{{r.share}}</td>
 <td style="padding:12px 8px"><span style="{{r.chip}}">{{r.status}}</span><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{r.date}}</div></td>
 </tr>
 </sc-for>
 <tr style="border-top:2px solid #14201D; font-weight:700">
-<td style="padding:12px 8px 12px 12px">Total</td><td style="padding:12px 8px"></td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right">{{tot.share}}</td><td style="padding:12px 8px"></td>
+<td style="padding:12px 8px 12px 12px">Total</td><td style="padding:12px 8px"></td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right">{{tot.share}}</td><td style="padding:12px 8px"></td>
 </tr>
 </tbody>
 </table>
@@ -223,13 +224,13 @@ class Component extends DCLogic {
     const monthsShort = ['Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.'];
     const paidDates = ['15/07/2026', '14/08/2026', '15/09/2026', '15/10/2026', '16/11/2026', '15/12/2026'];
     const D = [
-      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [28400, 27900, 25200, 22100, 29600, 30300], labo: 7800 },
-      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [10900, 11200, 9800, 8100, 11000, 11520], labo: 3100 },
-      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 5 jours par semaine', conv: false, color: '#B45309', v: [27100, 26800, 24300, 21500, 28200, 28740], labo: 7500 },
-      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine', conv: true, color: '#B42318', v: [5200, 5400, 4700, 4100, 5400, 5580], labo: 1600 },
-      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [10600, 10400, 9700, 8600, 10900, 11340], labo: 3000 },
-      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [10300, 10800, 9500, 8400, 10600, 10980], labo: 2900 },
-      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [5000, 5100, 4600, 4000, 5200, 5400], labo: 2700 }
+      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [24010, 23590, 21310, 18690, 25030, 25620], t: 50500, rate: 0.6, labo: 7800 },
+      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [9140, 9390, 8220, 6790, 9220, 9660], t: 19200, rate: 0.6, labo: 3100 },
+      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 5 jours par semaine', conv: false, color: '#B45309', v: [22860, 22600, 20500, 18130, 23780, 24240], t: 47900, rate: 0.6, labo: 7500 },
+      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine', conv: true, color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850], t: 9300, rate: 0.5, labo: 1600 },
+      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [8920, 8750, 8160, 7230, 9170, 9540], t: 18900, rate: 0.6, labo: 3000 },
+      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [8670, 9090, 7990, 7070, 8920, 9240], t: 18300, rate: 0.6, labo: 2900 },
+      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780], t: 9000, rate: 0.6, labo: 2700 }
     ];
 
     const pillBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
@@ -257,14 +258,15 @@ class Component extends DCLogic {
     const convPills = convDefs.map((c) => ({ label: c[1], style: (S.dentist < 0 && S.conv === c[0]) ? pillOn : pillOff, pick: () => setState({ conv: c[0], dentist: -1, pf: 'all' }) }));
 
     const paid = m <= 3;
-    const billedOf = (d) => Math.round(d.v[m] / 0.6);
-    let sumBilled = 0; let sumRetro = 0;
-    idx.forEach((i) => { sumBilled += billedOf(D[i]); sumRetro += D[i].v[m]; });
+    const billedOf = (d) => Math.round(d.v[m] / ((1 - d.labo / d.t) * d.rate));
+    const laboOf = (d) => Math.round(billedOf(d) * d.labo / d.t);
+    let sumBilled = 0; let sumRetro = 0; let sumLabo = 0;
+    idx.forEach((i) => { sumBilled += billedOf(D[i]); sumRetro += D[i].v[m]; sumLabo += laboOf(D[i]); });
     const scope = S.dentist >= 0 ? D[S.dentist].name : (S.conv === 'conv' ? 'les praticiens conventionnés' : (S.conv === 'non' ? 'le praticien non conventionné' : 'tout le cabinet'));
     const kpis = [
       { label: "Chiffre d'affaires", value: fmt(sumBilled), note: months[m] + ' 2026', style: tile('#0F766E') },
-      { label: 'Rétrocession (60 %)', value: fmt(sumRetro), note: 'à verser aux praticiens', style: tile('#B45309') },
-      { label: 'Part du cabinet (40 %)', value: fmt(sumBilled - sumRetro), note: 'avant charges du cabinet', style: tile('#5B3FA8') },
+      { label: 'Rémunération des praticiens', value: fmt(sumRetro), note: '(honoraires − labo) × 60 %, 50 % pour Touil', style: tile('#B45309') },
+      { label: 'Part du cabinet', value: fmt(sumBilled - sumLabo - sumRetro), note: 'après labo (' + fmt(sumLabo) + ') et rémunérations, avant charges', style: tile('#5B3FA8') },
       { label: 'Paiement', value: paid ? 'Payé' : 'En attente', note: paid ? 'versé le ' + paidDates[m] : 'prévu le ' + paidDates[m] + ', après les mutuelles', style: tile(paid ? '#15803D' : '#B45309') }
     ];
 
@@ -302,14 +304,14 @@ class Component extends DCLogic {
       const b = billedOf(d);
       return {
         name: d.name, days: d.days, conv: d.conv ? 'Conventionné' : 'Non conventionné', convStyle: d.conv ? csC : nsC,
-        billed: fmt(b), retro: fmt(d.v[m]), share: fmt(b - d.v[m]),
+        billed: fmt(b), labo: fmt(laboOf(d)), rate: Math.round(d.rate * 100) + ' %', retro: fmt(d.v[m]), share: fmt(b - laboOf(d) - d.v[m]),
         status: paid ? 'Payé' : 'En attente', chip: paid ? okC : waitC,
         date: paid ? 'le ' + paidDates[m] : 'prévu le ' + paidDates[m],
         trStyle: 'border-top:1px solid #E7EDEB;' + (i === S.dentist ? ' background:#E3F2EF;' : ''),
         pick: () => setState({ dentist: i, conv: 'all', pf: 'all' })
       };
     });
-    const tot = { billed: fmt(sumBilled), retro: fmt(sumRetro), share: fmt(sumBilled - sumRetro) };
+    const tot = { billed: fmt(sumBilled), labo: fmt(sumLabo), retro: fmt(sumRetro), share: fmt(sumBilled - sumLabo - sumRetro) };
 
     const showCasier = S.dentist >= 0;
     const cd = showCasier ? D[S.dentist] : D[0];

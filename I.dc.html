@@ -48,7 +48,7 @@
 <section style="display:flex; flex-direction:column; gap:16px">
 <div>
 <h2 style="margin:0; font-size:22px">Blanchiment et détartrage</h2>
-<div style="font-size:14px; color:#4A5B57; margin-top:4px">Détartrage au tarif INAMI (71,92 €), blanchiment libre (prix du cabinet). Le praticien reçoit 60 % de chaque acte. Octobre 2026.</div>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px">Détartrage au tarif INAMI (71,92 €), blanchiment libre (prix du cabinet). Le praticien reçoit 60 % de chaque acte (50 % pour Nabila Touil). Octobre 2026.</div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
 <sc-for list="{{kpiA}}" as="k" hint-placeholder-count="4">
@@ -121,7 +121,7 @@
 <section style="display:flex; flex-direction:column; gap:16px">
 <div>
 <h2 style="margin:0; font-size:22px">Panoramiques</h2>
-<div style="font-size:14px; color:#4A5B57; margin-top:4px">Panoramique au tarif INAMI (67,80 €). Le praticien reçoit 60 % de l'acte. Octobre 2026.</div>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px">Panoramique au tarif INAMI (67,80 €). Le praticien reçoit 60 % de l'acte (50 % pour Nabila Touil). Octobre 2026.</div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
 <sc-for list="{{kpiB}}" as="k" hint-placeholder-count="3">
@@ -198,17 +198,18 @@ class Component extends DCLogic {
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
     const bar = (c, w) => 'background:' + c + '; height:10px; width:' + Math.min(100, w) + '%;';
     const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
-    const R = 0.6;
     const D = window.LAEKEN;
     if (!D) { return { kpiA: [], tabA: [], totA: {}, patA: [], kpiB: [], tabB: [], totB: {}, patB: [] }; }
     const pr = D.PR.map((P) => {
       const f = (k) => P.rows.filter((r) => r.key === k);
       const fee = (a) => a.reduce((t, r) => t + r.fee, 0);
-      return { name: P.name, spec: P.spec, pat: P.visits.length, det: f('detart').length, bla: f('blanch').length, pan: f('pano').length, caDet: fee(f('detart')), caBla: fee(f('blanch')), caPan: fee(f('pano')) };
+      return { name: P.name, spec: P.spec, rate: P.rate, pat: P.visits.length, det: f('detart').length, bla: f('blanch').length, pan: f('pano').length, caDet: fee(f('detart')), caBla: fee(f('blanch')), caPan: fee(f('pano')) };
     });
     const sum = (k) => pr.reduce((a, x) => a + x[k], 0);
     const T = { pat: sum('pat'), det: sum('det'), bla: sum('bla'), pan: sum('pan') };
     const caA = (x) => x.caDet + x.caBla;
+    const rA = pr.reduce((a, x) => a + (x.caDet + x.caBla) * x.rate, 0);
+    const rB = pr.reduce((a, x) => a + x.caPan * x.rate, 0);
     const sumC = (k) => pr.reduce((a, x) => a + x[k], 0);
     const totCaA = sumC('caDet') + sumC('caBla');
     const totCaB = sumC('caPan');
@@ -217,25 +218,25 @@ class Component extends DCLogic {
       name: x.name, spec: x.spec, patients: String(x.pat), det: String(x.det), blanc: String(x.bla),
       detPct: pc(x.det / x.pat * 100), blancPct: pc(x.bla / x.pat * 100),
       detBar: bar('#2E8B57', x.det / x.pat * 100 * 2.5), blancBar: bar('#D9922B', x.bla / x.pat * 100 * 8),
-      ca: eur(caA(x)), share: pc(caA(x) / totCaA * 100), retro: eur(caA(x) * R)
+      ca: eur(caA(x)), share: pc(caA(x) / totCaA * 100), retro: eur(caA(x) * x.rate)
     }));
-    const totA = { patients: String(T.pat), det: String(T.det), blanc: String(T.bla), detPct: pc(T.det / T.pat * 100), blancPct: pc(T.bla / T.pat * 100), ca: eur(totCaA), retro: eur(totCaA * R) };
+    const totA = { patients: String(T.pat), det: String(T.det), blanc: String(T.bla), detPct: pc(T.det / T.pat * 100), blancPct: pc(T.bla / T.pat * 100), ca: eur(totCaA), retro: eur(rA) };
     const kpiA = [
       { label: 'Détartrages', value: String(T.det), note: eur(sumC('caDet')) + ' · ' + pc(T.det / T.pat * 100) + ' des patients', style: tile('#2E8B57') },
       { label: 'Blanchiments', value: String(T.bla), note: eur(sumC('caBla')) + ' · ' + pc(T.bla / T.pat * 100) + ' des patients', style: tile('#D9922B') },
       { label: 'Chiffre d\'affaires des deux actes', value: eur(totCaA), note: 'sur 173 100 € au total', style: tile('#0F766E') },
-      { label: 'Rétrocession aux praticiens', value: eur(totCaA * R), note: '60 % de ces deux actes', style: tile('#B45309') }
+      { label: 'Rétrocession aux praticiens', value: eur(rA), note: '60 % de ces deux actes (50 % pour Nabila Touil)', style: tile('#B45309') }
     ];
 
     const tabB = pr.map((x) => ({
       name: x.name, spec: x.spec, patients: String(x.pat), n: String(x.pan), pct: pc(x.pan / x.pat * 100), bar: bar('#2F6DB5', x.pan / x.pat * 100 * 2),
-      share: pc(x.pan / T.pan * 100), ca: eur(x.caPan), retro: eur(x.caPan * R)
+      share: pc(x.pan / T.pan * 100), ca: eur(x.caPan), retro: eur(x.caPan * x.rate)
     }));
-    const totB = { patients: String(T.pat), n: String(T.pan), pct: pc(T.pan / T.pat * 100), ca: eur(totCaB), retro: eur(totCaB * R) };
+    const totB = { patients: String(T.pat), n: String(T.pan), pct: pc(T.pan / T.pat * 100), ca: eur(totCaB), retro: eur(rB) };
     const top = pr.slice().sort((a, b) => b.pan - a.pan)[0];
     const kpiB = [
       { label: 'Panoramiques réalisés', value: String(T.pan), note: pc(T.pan / T.pat * 100) + ' des patients du cabinet', style: tile('#2F6DB5') },
-      { label: 'Chiffre d\'affaires', value: eur(totCaB), note: 'dont ' + eur(totCaB * R) + ' de rétrocession', style: tile('#0F766E') },
+      { label: 'Chiffre d\'affaires', value: eur(totCaB), note: 'dont ' + eur(rB) + ' de rétrocession', style: tile('#0F766E') },
       { label: 'Praticien qui en fait le plus', value: pc(top.pan / T.pan * 100), note: top.name + ', ' + top.pan + ' panoramiques', style: tile('#5B3FA8') }
     ];
 
@@ -244,8 +245,8 @@ class Component extends DCLogic {
       'Blanchiment': chipBase + ' background:#FDF0DC; color:#8A4B08;'
     };
     const latest = (keys, n) => D.rows.filter((r) => keys.indexOf(r.key) >= 0).sort((x, y) => (y.d - x.d) || y.time.localeCompare(x.time)).slice(0, n);
-    const patA = latest(['detart', 'blanch'], 10).map((r) => { const nm = r.key === 'blanch' ? 'Blanchiment' : 'Détartrage'; return { date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, act: nm, chip: actStyle[nm], amount: eur(r.fee), retro: eur(r.fee * R) }; });
-    const patB = latest(['pano'], 8).map((r) => ({ date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, amount: eur(r.fee), retro: eur(r.fee * R) }));
+    const patA = latest(['detart', 'blanch'], 10).map((r) => { const nm = r.key === 'blanch' ? 'Blanchiment' : 'Détartrage'; return { date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, act: nm, chip: actStyle[nm], amount: eur(r.fee), retro: eur(r.fee * D.PR[r.p].rate) }; });
+    const patB = latest(['pano'], 8).map((r) => ({ date: r.when, patient: r.doss + ' · ' + r.dob, dentist: D.PR[r.p].name, amount: eur(r.fee), retro: eur(r.fee * D.PR[r.p].rate) }));
 
     return { kpiA: kpiA, tabA: tabA, totA: totA, patA: patA, kpiB: kpiB, tabB: tabB, totB: totB, patB: patB };
   }

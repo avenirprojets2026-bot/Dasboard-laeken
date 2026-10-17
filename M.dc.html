@@ -110,7 +110,7 @@
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
 <h3 style="margin:0; font-size:18px">Mes travaux avec le laboratoire</h3>
-<div style="font-size:13px; color:#4A5B57">Actes hors nomenclature avec frais de laboratoire. Les frais sont déduits de ma rétrocession.</div>
+<div style="font-size:13px; color:#4A5B57">Actes hors nomenclature avec frais de laboratoire. Les frais sont déduits de mes honoraires avant le calcul de ma rétrocession.</div>
 <sc-if value="{{hasWorks}}" hint-placeholder-val="{{ true }}">
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:700px">
@@ -235,7 +235,7 @@ class Component extends DCLogic {
       { label: 'Heures prestées', value: (P.dates.length * (P.span === 600 ? 10 : 8.5)).toString().replace('.', ',') + ' h', note: P.dates.length + ' jours de 10 h à ' + (P.span === 600 ? '20 h' : '18 h 30'), style: tile('#0F766E') },
       { label: 'Patients vus', value: String(all.length), note: nActs + ' actes, jusqu\'à ' + P.maxDay + ' patients par jour', style: tile('#2F6DB5') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + all.length + ' visites', style: tile('#0F766E') },
-      { label: 'Ma rémunération nette', value: eur(P.net), note: 'honoraires ' + eur(tF) + ' × 60 % = ' + eur(P.retro) + ', moins ' + eur(laboTot) + ' de labo', style: tile('#B45309') },
+      { label: 'Ma rémunération nette', value: eur(P.net), note: '(honoraires ' + eur(tF) + ' − labo ' + eur(laboTot) + ') × ' + Math.round(P.rate * 100) + ' %', style: tile('#B45309') },
       { label: 'Honoraires pas encore encaissés', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }
     ];
     return {

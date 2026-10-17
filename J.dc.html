@@ -52,7 +52,7 @@
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px">
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:12px">
-<div><b style="font-size:16px">Synthèse par praticien</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Patients, facturé, rétrocession 60 %, frais de labo et net à payer des 7 praticiens.</div></div>
+<div><b style="font-size:16px">Synthèse par praticien</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Patients, facturé, frais de labo, base et net à payer (60 %, ou 50 % pour Nabila Touil) des 7 praticiens.</div></div>
 <div style="display:flex; flex-wrap:wrap; gap:8px">
 <button onClick="{{onSynCsv}}" style="{{btnMain}}">Exporter en CSV</button>
 <button onClick="{{onSynXlsx}}" style="{{btnSide}}">Exporter en Excel</button>
@@ -115,12 +115,12 @@
 
 <div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <h3 style="margin:0; font-size:18px">Résultat par praticien</h3>
-<div style="font-size:13px; color:#4A5B57">Rétrocession = 60 % du facturé. Net à payer = rétrocession − frais de labo.</div>
+<div style="font-size:13px; color:#4A5B57">Base = facturé − frais de labo. Net à payer = base × 60 % (50 % pour Nabila Touil).</div>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1000px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Patients</th><th style="padding:8px; text-align:right">Actes</th><th style="padding:8px; text-align:right">Détartrages</th><th style="padding:8px; text-align:right">Blanchiments</th><th style="padding:8px; text-align:right">Panoramiques</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">× 60 %</th><th style="padding:8px; text-align:right">− Labo</th><th style="padding:8px; text-align:right">= Net à payer</th>
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Patients</th><th style="padding:8px; text-align:right">Actes</th><th style="padding:8px; text-align:right">Détartrages</th><th style="padding:8px; text-align:right">Blanchiments</th><th style="padding:8px; text-align:right">Panoramiques</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">− Labo</th><th style="padding:8px; text-align:right">= Base</th><th style="padding:8px; text-align:right">Net à payer (× taux)</th>
 </tr>
 </thead>
 <tbody>
@@ -133,13 +133,13 @@
 <td style="padding:12px 8px; text-align:right">{{r.bla}}</td>
 <td style="padding:12px 8px; text-align:right">{{r.pan}}</td>
 <td style="padding:12px 8px; text-align:right">{{r.billed}}</td>
-<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{r.retro}}</td>
 <td style="padding:12px 8px; text-align:right; color:#8A4B08">− {{r.labo}}</td>
-<td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-weight:700; font-size:15px">{{r.net}}</td>
+<td style="padding:12px 8px; text-align:right; color:#B45309; font-weight:700">{{r.base}}</td>
+<td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-weight:700; font-size:15px">{{r.net}} <span style="font-weight:400; font-size:12px; color:#4A5B57">({{r.rate}})</span></td>
 </tr>
 </sc-for>
 <tr style="border-top:2px solid #14201D; font-weight:700">
-<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">{{tot.patients}}</td><td style="padding:12px 8px; text-align:right">{{tot.acts}}</td><td style="padding:12px 8px; text-align:right">{{tot.det}}</td><td style="padding:12px 8px; text-align:right">{{tot.bla}}</td><td style="padding:12px 8px; text-align:right">{{tot.pan}}</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right">{{tot.retro}}</td><td style="padding:12px 8px; text-align:right">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right; color:#0B6B3A">{{tot.net}}</td>
+<td style="padding:12px 8px 12px 0">Total</td><td style="padding:12px 8px; text-align:right">{{tot.patients}}</td><td style="padding:12px 8px; text-align:right">{{tot.acts}}</td><td style="padding:12px 8px; text-align:right">{{tot.det}}</td><td style="padding:12px 8px; text-align:right">{{tot.bla}}</td><td style="padding:12px 8px; text-align:right">{{tot.pan}}</td><td style="padding:12px 8px; text-align:right">{{tot.billed}}</td><td style="padding:12px 8px; text-align:right">− {{tot.labo}}</td><td style="padding:12px 8px; text-align:right">{{tot.base}}</td><td style="padding:12px 8px; text-align:right; color:#0B6B3A">{{tot.net}}</td>
 </tr>
 </tbody>
 </table>
@@ -209,7 +209,7 @@ class Component extends DCLogic {
       { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: 147, billed: 19200, labo: 3100 },
       { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: 147, billed: 18300, labo: 2900 },
       { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: 147, billed: 18900, labo: 3000 },
-      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 74, billed: 9300, labo: 1600 },
+      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 74, billed: 9300, labo: 1600, rate: 0.5 },
       { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: 74, billed: 9000, labo: 2700 }
     ];
 
@@ -242,8 +242,8 @@ class Component extends DCLogic {
       }).catch(() => setState({ msg: 'Le module Excel n\'a pas pu être chargé. Utilisez l\'export CSV, qui s\'ouvre aussi dans Excel.', msgKind: 'bad' }));
     };
 
-    const synAoa = [['Praticien', 'Spécialité', 'Patients', 'Facturé (€)', 'Rétrocession 60 % (€)', 'Frais de labo (€)', 'Net à payer (€)']]
-      .concat(PRACT.map((p) => [p.name, p.spec, p.pat, p.billed, Math.round(p.billed * 0.6), p.labo, Math.round(p.billed * 0.6) - p.labo]));
+    const synAoa = [['Praticien', 'Spécialité', 'Patients', 'Facturé (€)', 'Frais de labo (€)', 'Base (€)', 'Taux', 'Net à payer (€)']]
+      .concat(PRACT.map((p) => [p.name, p.spec, p.pat, p.billed, p.labo, p.billed - p.labo, (p.rate || 0.6), Math.round((p.billed - p.labo) * (p.rate || 0.6))]));
     const tplAoa = [
       ['Date', 'N° de dossier · naissance', 'Praticien', 'Acte', 'Montant', 'Frais de labo', 'Mode de paiement', 'Statut mutuelle'],
       ['15/10/2026', 'D-19257 · 06/10/1986', 'Dr Aya Turkieh', 'Examen clinique', 28, 0, 'Carte bancaire', 'En ordre'],
@@ -350,7 +350,7 @@ class Component extends DCLogic {
         if (!rawName) { return; }
         const pi = matchP(rawName);
         const key = pi >= 0 ? 'p' + pi : 'x' + norm(rawName);
-        if (!agg[key]) { agg[key] = { name: pi >= 0 ? PRACT[pi].name : rawName, spec: pi >= 0 ? PRACT[pi].spec : 'Praticien non reconnu : ajouté à la liste', pats: {}, acts: 0, det: 0, bla: 0, pan: 0, billed: 0, labo: 0, ord: pi >= 0 ? pi : 100 + order.length }; order.push(key); }
+        if (!agg[key]) { agg[key] = { name: pi >= 0 ? PRACT[pi].name : rawName, spec: pi >= 0 ? PRACT[pi].spec : 'Praticien non reconnu : ajouté à la liste', rate: pi >= 0 && PRACT[pi].rate ? PRACT[pi].rate : 0.6, pats: {}, acts: 0, det: 0, bla: 0, pan: 0, billed: 0, labo: 0, ord: pi >= 0 ? pi : 100 + order.length }; order.push(key); }
         const g = agg[key];
         g.acts += 1;
         g.billed += num(r[map.amount]);
@@ -367,18 +367,18 @@ class Component extends DCLogic {
       const sum = (f) => list.reduce((a, x) => a + f(x), 0);
       table = list.map((x) => {
         const pc = map.patient !== undefined ? Object.keys(x.pats).length : x.acts;
-        return { name: x.name, spec: x.spec, patients: String(pc), acts: String(x.acts), det: String(x.det), bla: String(x.bla), pan: String(x.pan), billed: eur(x.billed), retro: eur(x.billed * 0.6), labo: eur(x.labo), net: eur(x.billed * 0.6 - x.labo) };
+        return { name: x.name, spec: x.spec, patients: String(pc), acts: String(x.acts), det: String(x.det), bla: String(x.bla), pan: String(x.pan), billed: eur(x.billed), labo: eur(x.labo), base: eur(x.billed - x.labo), rate: Math.round(x.rate * 100) + ' %', net: eur((x.billed - x.labo) * x.rate) };
       });
-      const tb = sum((x) => x.billed); const tl = sum((x) => x.labo);
-      tot = { patients: String(sum((x) => (map.patient !== undefined ? Object.keys(x.pats).length : x.acts))), acts: String(sum((x) => x.acts)), det: String(sum((x) => x.det)), bla: String(sum((x) => x.bla)), pan: String(sum((x) => x.pan)), billed: eur(tb), retro: eur(tb * 0.6), labo: eur(tl), net: eur(tb * 0.6 - tl) };
-      const CH = 34030;
+      const tb = sum((x) => x.billed); const tl = sum((x) => x.labo); const tn = sum((x) => (x.billed - x.labo) * x.rate);
+      tot = { patients: String(sum((x) => (map.patient !== undefined ? Object.keys(x.pats).length : x.acts))), acts: String(sum((x) => x.acts)), det: String(sum((x) => x.det)), bla: String(sum((x) => x.bla)), pan: String(sum((x) => x.pan)), billed: eur(tb), labo: eur(tl), base: eur(tb - tl), net: eur(tn) };
+      const CH = 38720;
       kpis = [
         { label: 'Chiffre d\'affaires facturé', value: eur(tb), note: rowCount + ' lignes', style: tile('#0F766E') },
-        { label: 'Rétrocessions (60 %)', value: eur(tb * 0.6), note: 'avant frais de labo', style: tile('#B45309') },
-        { label: 'Frais de labo', value: eur(tl), note: map.labo === undefined ? 'colonne absente' : 'retirés des rétrocessions', style: tile('#8A4B08') },
-        { label: 'Net à payer aux praticiens', value: eur(tb * 0.6 - tl), note: 'rétrocession − labo', style: tile('#15803D') },
-        { label: 'Part du cabinet (40 %)', value: eur(tb * 0.4), note: 'avant charges', style: tile('#5B3FA8') },
-        { label: 'Bénéfice estimé', value: eur(tb * 0.4 - CH), note: 'après 34 030 € de charges mensuelles', style: tile('#15803D') }
+        { label: 'Frais de labo', value: eur(tl), note: map.labo === undefined ? 'colonne absente' : 'déduits des honoraires', style: tile('#8A4B08') },
+        { label: 'Base de calcul', value: eur(tb - tl), note: 'facturé − labo', style: tile('#B45309') },
+        { label: 'Net à payer aux praticiens', value: eur(tn), note: 'base × 60 % (50 % pour Touil)', style: tile('#15803D') },
+        { label: 'Part du cabinet', value: eur(tb - tl - tn), note: 'avant charges', style: tile('#5B3FA8') },
+        { label: 'Bénéfice estimé', value: eur(tb - tl - tn - CH), note: 'après 38 720 € de charges mensuelles', style: tile('#15803D') }
       ];
       mapChips = FIELDS.map((f) => {
         const ok = map[f[0]] !== undefined;
@@ -386,8 +386,8 @@ class Component extends DCLogic {
       });
       previewHead = head.map((h) => ({ label: String(h) }));
       preview = body.slice(0, 8).map((r) => ({ cells: head.map((h, i) => ({ v: String(r[i] == null ? '' : r[i]) })) }));
-      resAoa = [['Praticien', 'Patients', 'Actes', 'Détartrages', 'Blanchiments', 'Panoramiques', 'Facturé (€)', 'Rétrocession 60 % (€)', 'Frais de labo (€)', 'Net à payer (€)']]
-        .concat(list.map((x) => [x.name, map.patient !== undefined ? Object.keys(x.pats).length : x.acts, x.acts, x.det, x.bla, x.pan, Math.round(x.billed), Math.round(x.billed * 0.6), Math.round(x.labo), Math.round(x.billed * 0.6 - x.labo)]));
+      resAoa = [['Praticien', 'Patients', 'Actes', 'Détartrages', 'Blanchiments', 'Panoramiques', 'Facturé (€)', 'Frais de labo (€)', 'Base (€)', 'Net à payer (€)']]
+        .concat(list.map((x) => [x.name, map.patient !== undefined ? Object.keys(x.pats).length : x.acts, x.acts, x.det, x.bla, x.pan, Math.round(x.billed), Math.round(x.labo), Math.round(x.billed - x.labo), Math.round((x.billed - x.labo) * x.rate)]));
     }
 
     return {

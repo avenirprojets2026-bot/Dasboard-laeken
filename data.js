@@ -28,7 +28,8 @@
   };
   var MUT = ['Mutualités Chrétiennes', 'Solidaris', 'Partenamut', 'Mutualité Libérale', 'Mutualia', 'CAAMI', 'HR Rail'];
 
-  // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet)
+  // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil)
+  // Rémunération du praticien = (T − LAB) × rate ; part du cabinet = (T − LAB) × (1 − rate)
   var PR = [
     { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 370, T: 50500, LAB: 7800, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
@@ -40,7 +41,7 @@
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
     { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], span: 600, N: 147, T: 18900, LAB: 3000, young: 0,
       mix: { implant: 0.26, greffe: 0.08, consult: 2, pano: 2, couronneImpl: 0.2, couronne: 0.05, exam: 1 } },
-    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, young: 0,
+    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, rate: 0.5, young: 0,
       mix: { detart: 4, exam: 3, obt: 3, consult: 2, blanch: 0.9, facette: 0.5, couronne: 0.6 } },
     { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 74, T: 9000, LAB: 2700, young: 0,
       mix: { consult: 3, obt: 3, detart: 3, extr: 2, exam: 2, couronne: 1.8, bridge: 0.5, prothese: 0.5 } }
@@ -121,14 +122,14 @@
       v.lines.forEach(function (L) { L.pay = pay; rows.push(L); });
     });
     P.rows = mine; P.visits = myVisits;
-    P.retro = Math.round(P.T * 0.6 * 100) / 100; P.net = Math.round((P.retro - P.LAB) * 100) / 100;
+    P.rate = P.rate || 0.6; P.base = P.T - P.LAB; P.retro = Math.round(P.base * P.rate * 100) / 100; P.net = P.retro; P.cab = Math.round((P.base - P.retro) * 100) / 100;
     P.maxDay = 0; P.dates.forEach(function (d) { var c = myVisits.filter(function (r) { return r.d === d; }).length; if (c > P.maxDay) { P.maxDay = c; } });
   });
 
   // ---- Box (fauteuils) : occupation et marge ----
   var BOXNAMES = { ped: 'Box pédiatrique', mic: 'Box microscope', b3: 'Box 3' };
   var BOXMAP = { ped: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, mic: { 1: 2, 2: 2, 4: 3, 5: 5, 6: 4, 0: 3 }, b3: { 1: 1, 2: 1, 4: 1, 5: 1, 0: 1, 6: 6 } };
-  var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.4 };
+  var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.3384 };
   var boxes = Object.keys(BOXMAP).map(function (bk) {
     var vs = visits.filter(function (v) { return BOXMAP[bk][v.wd] === v.p; });
     var perDay = {}; vs.forEach(function (v) { perDay[v.d] = (perDay[v.d] || 0) + 1; });

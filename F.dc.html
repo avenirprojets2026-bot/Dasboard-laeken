@@ -156,7 +156,7 @@
 </div>
 </section>
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
-<div><h2 style="margin:0; font-size:18px">Occupation et marge par fauteuil</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026. Heures occupées sur les heures ouvertes (10 h à 18 h 30). La marge est la part du cabinet (40 %) moins le leasing, les consommables et le personnel répartis selon l'usage du box.</div></div>
+<div><h2 style="margin:0; font-size:18px">Occupation et marge par fauteuil</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026. Heures occupées sur les heures ouvertes (10 h à 18 h 30). La marge est la part du cabinet (après frais de labo et rémunération des praticiens) moins le leasing, les consommables et le personnel répartis selon l'usage du box.</div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
 <sc-for list="{{boxCards}}" as="b" hint-placeholder-count="3">
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px">
@@ -263,10 +263,11 @@ class Component extends DCLogic {
       boxes: boxes,
       perPatient: [
         { label: "Chiffre d'affaires", value: '130 €', bar: bar(100, '#0F766E') },
-        { label: 'Rétrocession au praticien (60 %)', value: '78 €', bar: bar(60, '#B45309') },
-        { label: 'Charges du cabinet', value: '25,6 €', bar: bar(19.7, '#5B3FA8') },
+        { label: 'Frais de laboratoire', value: '21,5 €', bar: bar(16.5, '#8A4B08') },
+        { label: 'Rémunération du praticien (60 %, 50 % Touil)', value: '64,7 €', bar: bar(49.6, '#B45309') },
+        { label: 'Charges du cabinet (dont 2 BMW)', value: '29,1 €', bar: bar(22.4, '#5B3FA8') },
         { label: 'Dont salaires des secrétaires', value: '8,8 €', bar: bar(6.8, '#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '26,5 €', bar: bar(20.3, '#15803D') }
+        { label: 'Bénéfice du cabinet', value: '14,9 €', bar: bar(11.5, '#15803D') }
       ]
     });
   }
