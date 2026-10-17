@@ -184,7 +184,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Règle proposée : le gérant verse la rétrocession d'un mois quand au moins 95 % des remboursements de ce mois sont arrivés, ce qui donne un paiement vers le 15 du deuxième mois suivant. À confirmer avec ton frère.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Règle retenue : le gérant verse la rémunération d'un mois le 1er jour du deuxième mois suivant (septembre payé le 1er novembre, octobre le 1er décembre), une fois les remboursements des mutuelles arrivés. À confirmer avec ton frère.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
@@ -252,7 +252,7 @@ class Component extends DCLogic {
         name: d.name, role: d.role, color: d.color, points: line,
         area: line + ' 290,106 10,106', cy: pts[5][1],
         delta: (pct >= 0 ? '+' : '−') + Math.abs(pct) + ' % vs sept.',
-        last: fmt(last), paid: '15/10/2026 · ' + fmt(d.v[3]), next: '16/11/2026 · ' + fmt(d.v[4]), conv: d.name === 'Dr Mohamed Bochouari' ? 'Non conventionné' : 'Conventionné', convStyle: d.name === 'Dr Mohamed Bochouari' ? ns : cs
+        last: fmt(last), paid: '01/10/2026 · ' + fmt(d.v[3]), next: '01/11/2026 · ' + fmt(d.v[4]), conv: d.name === 'Dr Mohamed Bochouari' ? 'Non conventionné' : 'Conventionné', convStyle: d.name === 'Dr Mohamed Bochouari' ? ns : cs
       };
     });
     const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
@@ -260,12 +260,12 @@ class Component extends DCLogic {
     const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
     const bar = (w, c) => 'background:' + c + '; height:8px; width:' + w + '%;';
     const payments = [
-      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/07/2026', total: '80 690 €', status: 'Payé', chip: ok },
-      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '14/08/2026', total: '80 720 €', status: 'Payé', chip: ok },
-      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '15/09/2026', total: '72 640 €', status: 'Payé', chip: ok },
-      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '15/10/2026', total: '63 540 €', status: 'Payé', chip: ok },
-      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 16/11/2026', total: '83 490 €', status: 'En attente des mutuelles', chip: wait },
-      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 15/12/2026', total: '85 930 €', status: 'En attente des mutuelles', chip: wait }
+      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/07/2026', total: '80 690 €', status: 'Payé', chip: ok },
+      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/08/2026', total: '80 720 €', status: 'Payé', chip: ok },
+      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/09/2026', total: '72 640 €', status: 'Payé', chip: ok },
+      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '01/10/2026', total: '63 540 €', status: 'Payé', chip: ok },
+      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 01/11/2026', total: '83 490 €', status: 'En attente des mutuelles', chip: wait },
+      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 01/12/2026', total: '85 930 €', status: 'En attente des mutuelles', chip: wait }
     ];
     const cd = [
       ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 50500, 7800, 0.6],
