@@ -202,9 +202,9 @@ class Component extends DCLogic {
     const all = S.st === 'all' ? allBase : allBase.filter((r) => r.reg === S.st);
     const nBim = allBase.filter((r) => r.reg === 'bim').length;
     const stChips = { ord: chipBase + 'background:#E7EDEB; color:#33433F;', bim: chipBase + 'background:#E3F4EA; color:#0B6B3A;' };
-    const stLabel = { ord: 'Ordinaire', bim: 'BIM' };
+    const stLabel = { ord: 'Ordinaire', bim: 'BIM/VIPO' };
     const nfx = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    const stPills = [['all', 'Tous (' + nfx(allBase.length) + ')'], ['ord', 'Ordinaire (' + nfx(allBase.length - nBim) + ')'], ['bim', 'BIM (' + nfx(nBim) + ')']].map((x) => ({ label: x[1], style: S.st === x[0] ? pillOn : pillOff, pick: () => setState({ st: x[0], page: 0, msg: '' }) }));
+    const stPills = [['all', 'Tous (' + nfx(allBase.length) + ')'], ['ord', 'Ordinaire (' + nfx(allBase.length - nBim) + ')'], ['bim', 'BIM/VIPO (' + nfx(nBim) + ')']].map((x) => ({ label: x[1], style: S.st === x[0] ? pillOn : pillOff, pick: () => setState({ st: x[0], page: 0, msg: '' }) }));
     const sum = (f) => all.reduce((a, r) => a + f(r), 0);
     const tF = sum((r) => r.fee); const tI = sum((r) => r.interv); const tS = sum((r) => r.share);
     const tH = all.reduce((a, v) => a + v.lines.reduce((b, l) => b + (l.suph || 0), 0), 0);
@@ -246,7 +246,7 @@ class Component extends DCLogic {
     Object.keys(byDay).forEach((k) => { const x = byDay[k]; hours.push({ day: x.r.when, span: P.span === 600 ? '10 h 00 à 20 h 00' : '10 h 00 à 18 h 30', h: P.span === 600 ? '10 h' : '8,5 h', n: String(x.n), chip: x.r.future ? 'À venir' : (x.r.off ? 'Week-end ou férié' : 'Semaine'), chipStyle: chipBase + (x.r.future ? 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' : x.r.off ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E7EDEB; color:#33433F;') }); });
     const laboTot = P.LAB;
     const kpis = [
-      { label: 'Statut BIM', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
+      { label: 'Statut BIM/VIPO', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
       { label: 'Heures prestées', value: (P.dates.length * (P.span === 600 ? 10 : 8.5)).toString().replace('.', ',') + ' h', note: P.dates.length + ' jours de 10 h à ' + (P.span === 600 ? '20 h' : '18 h 30'), style: tile('#0F766E') },
       { label: 'Patients vus', value: String(all.length), note: nActs + ' actes, jusqu\'à ' + P.maxDay + ' patients par jour', style: tile('#2F6DB5') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + all.length + ' visites', style: tile('#0F766E') },

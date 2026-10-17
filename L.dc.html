@@ -169,9 +169,9 @@ class Component extends DCLogic {
     const all = S.st === 'all' ? allBase : allBase.filter((r) => r.reg === S.st);
     const nBim = allBase.filter((r) => r.reg === 'bim').length;
     const stChips = { ord: chipBase + 'background:#E7EDEB; color:#33433F;', bim: chipBase + 'background:#E3F4EA; color:#0B6B3A;' };
-    const stLabel = { ord: 'Ordinaire', bim: 'BIM' };
+    const stLabel = { ord: 'Ordinaire', bim: 'BIM/VIPO' };
     const nfx = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    const stPills = [['all', 'Tous (' + nfx(allBase.length) + ')'], ['ord', 'Ordinaire (' + nfx(allBase.length - nBim) + ')'], ['bim', 'BIM (' + nfx(nBim) + ')']].map((x) => ({ label: x[1], style: S.st === x[0] ? pillOn : pillOff, pick: () => setState({ st: x[0], page: 0, msg: '' }) }));
+    const stPills = [['all', 'Tous (' + nfx(allBase.length) + ')'], ['ord', 'Ordinaire (' + nfx(allBase.length - nBim) + ')'], ['bim', 'BIM/VIPO (' + nfx(nBim) + ')']].map((x) => ({ label: x[1], style: S.st === x[0] ? pillOn : pillOff, pick: () => setState({ st: x[0], page: 0, msg: '' }) }));
     const sum = (f) => all.reduce((a, r) => a + f(r), 0);
     const tF = sum((r) => r.fee); const tI = sum((r) => r.interv); const tS = sum((r) => r.share);
     const tH = all.reduce((a, v) => a + v.lines.reduce((b, l) => b + (l.suph || 0), 0), 0);
@@ -208,7 +208,7 @@ class Component extends DCLogic {
 
     const prPills = [{ label: 'Tous (' + nf(D.visits.length) + ')', style: !P ? pillOn : pillOff, pick: () => setState({ pr: -1, page: 0, msg: '' }) }].concat(PR.map((p, i) => ({ label: p.short + ' (' + p.visits.length + ')', style: i === pi ? pillOn : pillOff, pick: () => setState({ pr: i, page: 0, msg: '' }) })));
     const kpis = [
-      { label: 'Statut BIM', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
+      { label: 'Statut BIM/VIPO', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
       { label: 'Patients vus', value: nf(all.length), note: nActs + ' actes, ' + (nActs / all.length).toFixed(2).replace('.', ',') + ' par patient', style: tile('#0F766E') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + nf(all.length) + ' visites', style: tile('#0F766E') },
       { label: 'Honoraires', value: eur(tF), note: 'rémunération après labo : ' + eur(P ? P.net : D.PR.reduce((a, x) => a + x.net, 0)), style: tile('#B45309') },

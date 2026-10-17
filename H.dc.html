@@ -344,7 +344,7 @@ class Component extends DCLogic {
         date: r.d, patient: r.ini, pinfo: 'né(e) le ' + r.dob + ' · ' + r.age + ' ans', dentist: r.dentist, label: r.label, code: r.code, fee: eur(r.fee), interv: eur(r.interv), amount: eur(r.total),
         suppLabel: (r.supp ? '+ 50 € ' + (hol.indexOf(r.d) >= 0 ? 'jour férié' : 'week-end') : '') + (r.supp && r.suph ? ' · ' : '') + (r.suph ? 'dont ' + eur(r.suph) + ' de supplément d\'honoraires' : ''),
         suppStyle: (r.supp || r.suph) ? chipBase + ' background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
-        st: r.reg === 'bim' ? 'BIM' : 'Ordinaire', stChip: 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ' + (r.reg === 'bim' ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#E7EDEB; color:#33433F;'), mutuelle: r.mut + (r.reg === 'bim' ? ' · intervention majorée' : ''), mStatus: r.ms, mChip: mChips[r.ms],
+        st: r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', stChip: 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ' + (r.reg === 'bim' ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#E7EDEB; color:#33433F;'), mutuelle: r.mut + (r.reg === 'bim' ? ' · intervention majorée' : ''), mStatus: r.ms, mChip: mChips[r.ms],
         payChip: chip(r.mode), payLabel: r.mode === 'plan' ? 'Étalement sur ' + r.n + ' mois' : M[r.mode].label, payNote: note,
         rest: eur(rest(r)), restStyle: unpaid ? 'color:#A3231A;' : '',
         trStyle: 'border-top:1px solid #E7EDEB; ' + (sel ? 'background:#E3F2EF;' : (unpaid ? 'background:#FFF4F2;' : '')),
