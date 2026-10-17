@@ -47,6 +47,11 @@
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
 <h2 style="margin:0; font-size:18px">Tous les praticiens, mois par mois</h2>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-for list="{{viewPills}}" as="p" hint-placeholder-count="2">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
 <div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
 <div style="flex:999 1 520px; min-width:0">
 <div style="position:relative; width:100%; aspect-ratio:760 / 360">
@@ -58,13 +63,7 @@
 <line x1="60" y1="245" x2="740" y2="245"></line>
 <line x1="60" y1="320" x2="740" y2="320" stroke="#4A5B57"></line>
 </g>
-<g fill="#4A5B57" font-size="13" font-family="DM Sans, sans-serif" text-anchor="end">
-<text x="50" y="25">32 000 €</text>
-<text x="50" y="100">24 000 €</text>
-<text x="50" y="175">16 000 €</text>
-<text x="50" y="250">8 000 €</text>
-<text x="50" y="325">0 €</text>
-</g>
+
 <g fill="#4A5B57" font-size="13" font-family="DM Sans, sans-serif" text-anchor="middle">
 <text x="60" y="345">Mai</text>
 <text x="196" y="345">Juin</text>
@@ -74,6 +73,9 @@
 <text x="740" y="345">Oct.</text>
 </g>
 </svg>
+<sc-for list="{{yTicks}}" as="y" hint-placeholder-count="5">
+<div style="{{y.style}}">{{y.label}}</div>
+</sc-for>
 <sc-for list="{{series}}" as="s" hint-placeholder-count="7">
 <svg viewBox="0 0 760 360" style="position:absolute; left:0; top:0; width:100%; height:100%" aria-hidden="true">
 <polyline points="{{s.points}}" fill="none" stroke="{{s.color}}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></polyline>
@@ -92,7 +94,7 @@
 </sc-for>
 </ul>
 </div>
-<div style="font-size:13px; color:#4A5B57">Rémunération due à chaque praticien pour les prestations du mois : honoraires moins frais de laboratoire, puis 60 % (50 % pour Nabila Touil). Septembre et octobre sont provisoires, car les mutuelles n'ont pas encore tout remboursé.</div>
+<div style="font-size:13px; color:#4A5B57">{{viewNote}}</div>
 </section>
 
 <section style="display:flex; flex-direction:column; gap:12px">
@@ -223,7 +225,9 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1950}}'>
 class Component extends DCLogic {
+  state = { view: 'net' };
   renderVals() {
+    const S = this.state;
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
@@ -236,10 +240,20 @@ class Component extends DCLogic {
       { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850] },
       { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780] }
     ];
+    const TL = { 'Dr Aya Turkieh': [50500, 7800, 0.6], 'Dr Mohamed Bochouari': [47900, 7500, 0.6], 'Dr Abde-Ssadic Bochouari': [19200, 3100, 0.6], 'Dr Daoud Bouchouari': [18300, 2900, 0.6], 'Dr Julien Cabaz': [18900, 3000, 0.6], 'Dr Nabila Touil': [9300, 1600, 0.5], '7e praticien (à confirmer)': [9000, 2700, 0.6] };
+    const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - t[1] / t[0]) * t[2])); });
+    const isB = S.view === 'billed';
+    const top = isB ? 64000 : 32000;
+    const step = top / 4;
+    const yTicks = [0, 1, 2, 3, 4].map((k) => ({ style: 'position:absolute; left:0; width:7%; top:' + ((20 + k * 75) / 360 * 100) + '%; transform:translateY(-50%); text-align:right; font-size:13px; color:#4A5B57;', label: fmt(top - k * step) }));
     const series = data.map((d) => {
-      const pts = d.v.map((v, i) => (60 + 136 * i) + ',' + Math.round((320 - v * 300 / 32000) * 10) / 10);
-      return { name: d.name, color: d.color, points: pts.join(' '), cy: Math.round((320 - d.v[5] * 300 / 32000) * 10) / 10, last: fmt(d.v[5]) };
+      const vals = isB ? billedV(d) : d.v;
+      const pts = vals.map((v, i) => (60 + 136 * i) + ',' + Math.round((320 - v * 300 / top) * 10) / 10);
+      return { name: d.name, color: d.color, points: pts.join(' '), cy: Math.round((320 - vals[5] * 300 / top) * 10) / 10, last: fmt(vals[5]) };
     });
+    const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
+    const viewPills = [['net', 'Rémunération nette versée'], ['billed', 'Honoraires facturés (avant labo et rétrocession)']].map((x) => ({ label: x[1], style: pillBase + (S.view === x[0] ? 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;'), pick: () => this.setState({ view: x[0] }) }));
+    const viewNote = isB ? 'Honoraires facturés chaque mois par praticien, avant frais de laboratoire et rétrocession. Octobre : 173 100 € au total, identique aux pages Vue cabinet et Patients vus. Les mois précédents sont reconstitués à partir de la rémunération versée.' : 'Rémunération due à chaque praticien pour les prestations du mois : (honoraires − frais de laboratoire) × 60 % (50 % pour Nabila Touil). Octobre : 85 930 € au total. Septembre et octobre sont provisoires, car les mutuelles n\'ont pas encore tout remboursé.';
     const cards = data.map((d) => {
       const min = Math.min.apply(null, d.v);
       const max = Math.max.apply(null, d.v);
@@ -302,7 +316,7 @@ class Component extends DCLogic {
       const mx = Math.max.apply(null, vals.map((v) => v.mut + v.pl));
       cash = vals.map((v) => ({ label: v.m, total: eur(v.mut + v.pl), mut: eur(v.mut), plan: eur(v.pl), bar: 'height:100%; background:#0F766E; width:' + Math.max(2, (v.mut + v.pl) / mx * 100) + '%' }));
     }
-    return Object.assign({ series: series, cards: cards, payments: payments, calc: calc, tot: tot, cash: cash }, donut);
+    return Object.assign({ series: series, yTicks: yTicks, viewPills: viewPills, viewNote: viewNote, cards: cards, payments: payments, calc: calc, tot: tot, cash: cash }, donut);
   }
 }
 </script>
