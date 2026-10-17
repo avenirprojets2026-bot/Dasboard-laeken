@@ -63,7 +63,7 @@
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
-<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 36 090 €</h2>
+<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 35 740 €</h2>
 <sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
 <div style="display:grid; grid-template-columns:minmax(120px, 230px) 1fr minmax(84px, 110px); gap:12px; align-items:center; font-size:14px">
 <span style="font-weight:500">{{f.label}}</span>
@@ -171,8 +171,8 @@ class Component extends DCLogic {
       const esth = D.rows.filter((r) => r.key === 'blanch' || r.key === 'facette'); const esthTot = esth.reduce((a, r) => a + r.fee, 0);
       const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
       pilotKpis = [
-        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(33150 / ca * 100), '33 150 € de charges sur ' + eur(ca)),
-        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(33150 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(33500 / ca * 100), '33 500 € de charges sur ' + eur(ca)),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(33500 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
         T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
@@ -209,7 +209,8 @@ class Component extends DCLogic {
       ['exp', 'Logiciel de gestion, facturation électronique et informatique', 380, 'Dossiers patients, e-attestations via MyCareNet, sauvegardes'],
       ['exp', 'Télécom, internet, téléphone', 150, 'Abonnements du cabinet'],
       ['exp', 'Frais bancaires et terminaux de paiement par carte', 300, 'Commissions sur les paiements par carte'],
-      ['exp', 'Publicité et site web', 250, 'Communication du cabinet'],
+      ['exp', 'Marketing et publicité', 250, 'Réseaux sociaux, prospectus, communication du cabinet'],
+      ['exp', 'Site web et visibilité sur Google', 350, 'Site, hébergement, référencement, fiche Google Business Profile et publicité Google Ads'],
       ['exc', 'Leasing des 3 fauteuils dentaires', 1950, '3 contrats en cours, 650 € par fauteuil'],
       ['exc', 'Leasing scanner, panoramique, CBCT et matériel numérique', 1400, 'Imagerie et équipement numérique financés par leasing, à confirmer'],
       ['exc', 'Intérêts bancaires et frais de financement', 500, 'Crédits d\'équipement ou d\'aménagement, frais de dossier'],
@@ -235,15 +236,15 @@ class Component extends DCLogic {
       kpis: [
         { label: "Chiffre d'affaires", value: '173 100 €', note: '1 329 patients vus', style: tile('#0F766E') },
         { label: 'Rétrocessions (60 %)', value: '103 860 €', note: 'versées aux praticiens indépendants', style: tile('#B45309') },
-        { label: 'Charges du cabinet', value: '33 150 €', note: 'dont 12 450 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements) et 4 430 € de charges moins visibles', style: tile('#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '36 090 €', note: '20,8 % du chiffre d\'affaires', style: tile('#15803D') }
+        { label: 'Charges du cabinet', value: '33 500 €', note: 'dont 12 450 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements) et 4 430 € de charges moins visibles', style: tile('#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '35 740 €', note: '20,6 % du chiffre d\'affaires', style: tile('#15803D') }
       ],
       flow: [
         { label: "Chiffre d'affaires", value: '173 100 €', bar: bar('#0F766E', 0, 100) },
         { label: 'Rétrocessions (60 %)', value: '− 103 860 €', bar: bar('#B45309', 40, 60) },
         { label: 'Marge du cabinet (40 %)', value: '69 240 €', bar: bar('#0F766E', 0, 40) },
-        { label: 'Charges du cabinet', value: '− 33 150 €', bar: bar('#5B3FA8', 20.8, 19.2) },
-        { label: 'Bénéfice', value: '36 090 €', bar: bar('#15803D', 0, 20.8) }
+        { label: 'Charges du cabinet', value: '− 33 500 €', bar: bar('#5B3FA8', 20.6, 19.4) },
+        { label: 'Bénéfice', value: '35 740 €', bar: bar('#15803D', 0, 20.6) }
       ],
       charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les trois familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? 'Total : ' + curCat.short.toLowerCase() : 'Total des charges',
       dentists: [

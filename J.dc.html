@@ -371,14 +371,14 @@ class Component extends DCLogic {
       });
       const tb = sum((x) => x.billed); const tl = sum((x) => x.labo);
       tot = { patients: String(sum((x) => (map.patient !== undefined ? Object.keys(x.pats).length : x.acts))), acts: String(sum((x) => x.acts)), det: String(sum((x) => x.det)), bla: String(sum((x) => x.bla)), pan: String(sum((x) => x.pan)), billed: eur(tb), retro: eur(tb * 0.6), labo: eur(tl), net: eur(tb * 0.6 - tl) };
-      const CH = 33150;
+      const CH = 33500;
       kpis = [
         { label: 'Chiffre d\'affaires facturé', value: eur(tb), note: rowCount + ' lignes', style: tile('#0F766E') },
         { label: 'Rétrocessions (60 %)', value: eur(tb * 0.6), note: 'avant frais de labo', style: tile('#B45309') },
         { label: 'Frais de labo', value: eur(tl), note: map.labo === undefined ? 'colonne absente' : 'retirés des rétrocessions', style: tile('#8A4B08') },
         { label: 'Net à payer aux praticiens', value: eur(tb * 0.6 - tl), note: 'rétrocession − labo', style: tile('#15803D') },
         { label: 'Part du cabinet (40 %)', value: eur(tb * 0.4), note: 'avant charges', style: tile('#5B3FA8') },
-        { label: 'Bénéfice estimé', value: eur(tb * 0.4 - CH), note: 'après 33 150 € de charges mensuelles', style: tile('#15803D') }
+        { label: 'Bénéfice estimé', value: eur(tb * 0.4 - CH), note: 'après 33 500 € de charges mensuelles', style: tile('#15803D') }
       ];
       mapChips = FIELDS.map((f) => {
         const ok = map[f[0]] !== undefined;
