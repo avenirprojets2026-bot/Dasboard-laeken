@@ -38,7 +38,7 @@
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
     { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 147, T: 18300, LAB: 2900, young: 0,
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
-    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [3, 6], N: 147, T: 18900, LAB: 3000, young: 0,
+    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], span: 600, N: 147, T: 18900, LAB: 3000, young: 0,
       mix: { implant: 0.26, greffe: 0.08, consult: 2, pano: 2, couronneImpl: 0.2, couronne: 0.05, exam: 1 } },
     { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, young: 0,
       mix: { detart: 4, exam: 3, obt: 3, consult: 2, blanch: 0.9, facette: 0.5, couronne: 0.6 } },
@@ -75,7 +75,7 @@
         var byear = P.young && (key === 'ortho' || key === 'consultO' || key === 'appareil') ? 2000 + Math.floor(rnd() * 19) : 1945 + Math.floor(rnd() * 74);
         var bm = 1 + Math.floor(rnd() * 12); var bd = 1 + Math.floor(rnd() * 28);
         var age = MONTH.y - byear; if (MONTH.m + 1 < bm || (MONTH.m + 1 === bm && d < bd)) { age -= 1; }
-        var mins = 600 + Math.round(i * 510 / n / 5) * 5;
+        var mins = 600 + Math.round(i * (P.span || 510) / n / 5) * 5;
         var rg = rnd(); var ms = rg < 0.92 ? 'En ordre' : (rg < 0.97 ? 'À vérifier' : 'Non en ordre');
         var reg = rnd() < 0.18 ? 'bim' : 'ord';
         var vis = { vi: visits.length, p: pi, d: d, wd: wd, off: off, time: pad(Math.floor(mins / 60)) + ' h ' + pad(mins % 60), when: WD[wd] + ' ' + dstr,
@@ -127,7 +127,7 @@
 
   // ---- Box (fauteuils) : occupation et marge ----
   var BOXNAMES = { ped: 'Box pédiatrique', mic: 'Box microscope', b3: 'Box 3' };
-  var BOXMAP = { ped: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, mic: { 1: 2, 2: 2, 3: 4, 4: 3, 5: 5, 6: 4, 0: 3 }, b3: { 1: 1, 2: 1, 4: 1, 5: 1, 0: 1, 6: 6 } };
+  var BOXMAP = { ped: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, mic: { 1: 2, 2: 2, 4: 3, 5: 5, 6: 4, 0: 3 }, b3: { 1: 1, 2: 1, 4: 1, 5: 1, 0: 1, 6: 6 } };
   var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.4 };
   var boxes = Object.keys(BOXMAP).map(function (bk) {
     var vs = visits.filter(function (v) { return BOXMAP[bk][v.wd] === v.p; });

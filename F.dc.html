@@ -88,7 +88,7 @@
 </div>
 </div>
 </div>
-<div style="font-size:13px; color:#4A5B57">Les cases en pointillés « ? » sont des jours à confirmer pour Julien Cabaz (2 jours) et le 7e praticien (1 jour).</div>
+<div style="font-size:13px; color:#4A5B57">Les cases « ? » sont les jours à confirmer pour le 7e praticien (1 jour). Julien Cabaz travaille le vendredi et le samedi, de 10 h à 20 h.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -116,8 +116,8 @@
 </div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px">
-<div style="background:#E3F4EA; color:#0B4F2B; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Aucun conflit.</b> Aya occupe le box pédiatrique du lundi au vendredi, Daoud le box du microscope jeudi et dimanche.</div>
-<div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, samedi 3 box et dimanche 1 box : c'est là que Julien et le 7e praticien peuvent être placés.</div>
+<div style="background:#FBE7E5; color:#7A1A12; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Conflit le vendredi.</b> Aya, Mohamed, Nabila et Julien (10 h à 20 h) travaillent le même jour pour 3 box. À arbitrer avec ton frère : partager un box par tranches horaires ou déplacer un praticien.</div>
+<div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, samedi 2 box et dimanche 1 box : c'est là que le 7e praticien peut être placé.</div>
 </div>
 </section>
 
@@ -136,12 +136,12 @@
 </section>
 
 <section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px; font-size:14px; line-height:1.5; color:#5A3205">
-<b>Ce qui est confirmé et ce qui ne l'est pas.</b> Confirmé : les jours d'Aya, Mohamed, Abde-Ssadic, Daoud et Nabila, et les 3 box dont un avec microscope et un pédiatrique. À confirmer : les jours de Julien et du 7e praticien. Proposé par moi : le choix du box pour Mohamed, Abde-Ssadic et Nabila, puisqu'ils peuvent travailler partout.
+<b>Ce qui est confirmé et ce qui ne l'est pas.</b> Confirmé : les jours d'Aya, Mohamed, Abde-Ssadic, Daoud, Nabila et Julien (vendredi et samedi, 10 h à 20 h), et les 3 box dont un avec microscope et un pédiatrique. À confirmer : les jours du 7e praticien, et le box de Julien le vendredi. Proposé par moi : le choix du box pour Mohamed, Abde-Ssadic et Nabila, puisqu'ils peuvent travailler partout.
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
 <h3 style="margin:0; font-size:18px">Présence des praticiens</h3>
-<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 18 journées de présence par semaine (jours de Julien et du 7e praticien à confirmer).</div>
+<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 18 journées de présence par semaine (jours du 7e praticien à confirmer).</div>
 <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
 <div style="position:relative; width:240px; height:240px; flex:0 0 240px"><svg viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Disque de la présence hebdomadaire par praticien">
 <sc-for list="{{donutSegs}}" as="s" hint-placeholder-count="7">
@@ -190,7 +190,7 @@ class Component extends DCLogic {
     const freeStyle = 'display:flex; align-items:center; justify-content:center; background:#fff; color:#4A5B57; border:1px dashed #C9D6D2; border-radius:8px; padding:14px 4px; font-size:12px;';
     const assign = {
       ped: ['Aya', 'Aya', 'Aya', 'Aya', 'Aya', null, null],
-      mic: ['Abde-Ssadic', 'Abde-Ssadic', null, 'Daoud', 'Nabila', null, 'Daoud'],
+      mic: ['Abde-Ssadic', 'Abde-Ssadic', null, 'Daoud', 'Nabila', 'Julien', 'Daoud'],
       b3: ['Mohamed', 'Mohamed', null, 'Mohamed', 'Mohamed', null, 'Mohamed']
     };
     const people = [
@@ -199,7 +199,7 @@ class Component extends DCLogic {
       { name: 'Dr Abde-Ssadic Bochouari', key: 'Abde-Ssadic' },
       { name: 'Dr Daoud Bouchouari', key: 'Daoud' },
       { name: 'Dr Nabila Touil', key: 'Nabila' },
-      { name: 'Dr Julien Cabaz', tbd: '2 (à placer)' },
+      { name: 'Dr Julien Cabaz', key: 'Julien', conflictDay: 4 },
       { name: '7e praticien (à confirmer)', tbd: '1 (à placer)' }
     ];
     const days7 = [0, 1, 2, 3, 4, 5, 6];
@@ -211,7 +211,8 @@ class Component extends DCLogic {
       let n = 0;
       const cells = days7.map((i) => {
         const k = boxOf(p.key, i);
-        if (k) { n += 1; return { style: boxStyle(k), label: P[k].short, sub: '10 h – 18 h 30' }; }
+        if (p.conflictDay === i) { n += 1; return { style: cellBase + 'background:#FDF0DC; color:#8A4B08; border:2px dashed #B45309;', label: 'Julien', sub: '10 h – 20 h, sans box' }; }
+        if (k) { n += 1; return { style: boxStyle(k), label: P[k].short, sub: p.key === 'Julien' ? '10 h – 20 h' : '10 h – 18 h 30' }; }
         return { style: offStyle, label: 'repos', sub: '' };
       });
       return { name: p.name, days: n, cells: cells };
@@ -219,6 +220,7 @@ class Component extends DCLogic {
     const totals = days7.map((i) => {
       const n = ['ped', 'mic', 'b3'].filter((k) => assign[k][i]).length;
       const free = 3 - n;
+      if (i === 4) { return { value: '4 / 3', note: 'conflit', style: 'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; padding:8px 4px; background:#FBE7E5; color:#A3231A;' }; }
       return {
         value: n + ' / 3',
         note: free === 0 ? 'complet' : (free + (free > 1 ? ' libres' : ' libre')),
@@ -252,7 +254,7 @@ class Component extends DCLogic {
       kpis: [
         { label: 'Box dentaires', value: '3', note: 'dont 1 avec microscope et 1 pédiatrique', style: tile('#5B3FA8') },
         { label: 'Journées de praticien', value: '18', note: 'par semaine, 7 praticiens', style: tile('#0F766E') },
-        { label: 'Box déjà occupés', value: '71 %', note: '15 journées de box sur 21, 7 jours sur 7', style: tile('#B45309') },
+        { label: 'Box déjà occupés', value: '76 %', note: '16 journées de box sur 21, 7 jours sur 7 (sans le vendredi de Julien)', style: tile('#B45309') },
         { label: 'Patients par semaine', value: '306', note: 'environ 17 par journée de praticien', style: tile('#15803D') }
       ],
       rows: rows,
@@ -263,7 +265,7 @@ class Component extends DCLogic {
         { label: "Chiffre d'affaires", value: '130 €', bar: bar(100, '#0F766E') },
         { label: 'Rétrocession au praticien (60 %)', value: '78 €', bar: bar(60, '#B45309') },
         { label: 'Charges du cabinet', value: '22,8 €', bar: bar(17.5, '#5B3FA8') },
-        { label: 'Dont salaires des assistantes', value: '8,8 €', bar: bar(6.8, '#5B3FA8') },
+        { label: 'Dont salaires des secrétaires', value: '8,8 €', bar: bar(6.8, '#5B3FA8') },
         { label: 'Bénéfice du cabinet', value: '29,3 €', bar: bar(22.5, '#15803D') }
       ]
     });

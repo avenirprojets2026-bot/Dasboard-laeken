@@ -229,10 +229,10 @@ class Component extends DCLogic {
     const works = all.reduce((a, v) => a.concat(v.lines), []).filter((r) => r.labo > 0).map((r) => ({ when: r.when, ini: r.doss, dob: r.dob, label: r.label, fee: eur(r.fee), labo: eur(r.labo) }));
     const hours = []; const byDay = {};
     all.forEach((r) => { byDay[r.d] = byDay[r.d] || { r: r, n: 0 }; byDay[r.d].n += 1; });
-    Object.keys(byDay).forEach((k) => { const x = byDay[k]; hours.push({ day: x.r.when, span: '10 h 00 à 18 h 30', h: '8,5 h', n: String(x.n), chip: x.r.future ? 'À venir' : (x.r.off ? 'Week-end ou férié' : 'Semaine'), chipStyle: chipBase + (x.r.future ? 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' : x.r.off ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E7EDEB; color:#33433F;') }); });
+    Object.keys(byDay).forEach((k) => { const x = byDay[k]; hours.push({ day: x.r.when, span: P.span === 600 ? '10 h 00 à 20 h 00' : '10 h 00 à 18 h 30', h: P.span === 600 ? '10 h' : '8,5 h', n: String(x.n), chip: x.r.future ? 'À venir' : (x.r.off ? 'Week-end ou férié' : 'Semaine'), chipStyle: chipBase + (x.r.future ? 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' : x.r.off ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E7EDEB; color:#33433F;') }); });
     const laboTot = P.LAB;
     const kpis = [
-      { label: 'Heures prestées', value: (P.dates.length * 8.5).toString().replace('.', ',') + ' h', note: P.dates.length + ' jours de 10 h à 18 h 30', style: tile('#0F766E') },
+      { label: 'Heures prestées', value: (P.dates.length * (P.span === 600 ? 10 : 8.5)).toString().replace('.', ',') + ' h', note: P.dates.length + ' jours de 10 h à ' + (P.span === 600 ? '20 h' : '18 h 30'), style: tile('#0F766E') },
       { label: 'Patients vus', value: String(all.length), note: nActs + ' actes, jusqu\'à ' + P.maxDay + ' patients par jour', style: tile('#2F6DB5') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + all.length + ' visites', style: tile('#0F766E') },
       { label: 'Ma rémunération nette', value: eur(P.net), note: 'honoraires ' + eur(tF) + ' × 60 % = ' + eur(P.retro) + ', moins ' + eur(laboTot) + ' de labo', style: tile('#B45309') },
