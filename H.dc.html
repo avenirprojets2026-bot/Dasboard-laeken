@@ -292,10 +292,12 @@ class Component extends DCLogic {
       r.lines = (r.acts || [r.act]).map((k) => {
         if (TARIF[k]) {
           const t = TARIF[k](r.age);
-          return { code: t[0], label: t[1], fee: t[2], free: false, interv: (r.ms === 'En ordre' || r.ms === 'À vérifier') ? (r.reg === 'bim' ? t[3] : t[4]) : 0 };
+          const sup = r.dentist === 'Dr Mohamed Bochouari' ? Math.round(t[2] * 0.35 * 100) / 100 : 0;
+          return { code: t[0], label: t[1], fee: Math.round((t[2] + sup) * 100) / 100, suph: sup, free: false, interv: (r.ms === 'En ordre' || r.ms === 'À vérifier') ? (r.reg === 'bim' ? t[3] : t[4]) : 0 };
         }
         return { code: 'hors nomenclature', label: LIBRE[k], fee: r.price, free: true, interv: 0 };
       });
+      r.suph = r.lines.reduce((a, l) => a + (l.suph || 0), 0);
       r.fee = r.lines.reduce((a, l) => a + l.fee, 0); r.interv = r.lines.reduce((a, l) => a + l.interv, 0);
       r.free = r.lines.some((l) => l.free);
       r.label = r.lines.map((l) => l.label + ' · ' + l.code).join('\n');
@@ -307,6 +309,7 @@ class Component extends DCLogic {
     const intervSum = raw.reduce((a, r) => a + r.interv, 0);
     const suppSum = raw.reduce((a, r) => a + r.supp, 0);
     const suppN = raw.filter((r) => r.supp).length;
+    const suphSum = raw.reduce((a, r) => a + r.suph, 0); const suphN = raw.filter((r) => r.suph > 0).length;
     const today = new Date(2026, 9, 17);
     const daysSince = (r) => { const p = r.d.split('/'); return Math.round((today - new Date(2026, Number(p[1]) - 1, Number(p[0]))) / 86400000); };
     const rest = (r) => r.mode === 'unpaid' ? r.total : (r.mode === 'plan' ? r.total - r.done * (r.total / r.n) : 0);
@@ -324,6 +327,7 @@ class Component extends DCLogic {
       { label: 'Étalement : reste à recevoir', value: eur(sums.planRest), note: sums.planN + ' plans, ' + eur(sums.planPaid) + ' déjà reçus', style: tile('#6B4BC0') },
       { label: 'Pas encore payé', value: eur(sums.unpaid), note: sums.unpaidN + ' patients à relancer', style: tile('#B42318') },
       { label: 'Suppléments week-end et jours fériés', value: eur(suppSum), note: suppN + ' prestations à +50 € incluses', style: tile('#B45309') },
+      { label: 'Suppléments d\'honoraires', value: eur(suphSum), note: suphN + ' prestations du dentiste non conventionné, à charge du patient (la mutuelle rembourse sur le tarif INAMI)', style: tile('#8A4B08') },
       { label: 'Part des mutuelles (INAMI)', value: eur(intervSum), note: 'à recevoir sous 1 à 1,5 mois', style: tile('#0F766E') }
     ];
 
@@ -338,8 +342,8 @@ class Component extends DCLogic {
       const sel = r.id === S.sel;
       return {
         date: r.d, patient: r.ini, pinfo: 'né(e) le ' + r.dob + ' · ' + r.age + ' ans', dentist: r.dentist, label: r.label, code: r.code, fee: eur(r.fee), interv: eur(r.interv), amount: eur(r.total),
-        suppLabel: r.supp ? '+ 50 € ' + (hol.indexOf(r.d) >= 0 ? 'jour férié' : 'week-end') : '',
-        suppStyle: r.supp ? chipBase + ' background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
+        suppLabel: (r.supp ? '+ 50 € ' + (hol.indexOf(r.d) >= 0 ? 'jour férié' : 'week-end') : '') + (r.supp && r.suph ? ' · ' : '') + (r.suph ? 'dont ' + eur(r.suph) + ' de supplément d\'honoraires' : ''),
+        suppStyle: (r.supp || r.suph) ? chipBase + ' background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
         mutuelle: r.mut + (r.reg === 'bim' ? ' · intervention majorée' : ''), mStatus: r.ms, mChip: mChips[r.ms],
         payChip: chip(r.mode), payLabel: r.mode === 'plan' ? 'Étalement sur ' + r.n + ' mois' : M[r.mode].label, payNote: note,
         rest: eur(rest(r)), restStyle: unpaid ? 'color:#A3231A;' : '',

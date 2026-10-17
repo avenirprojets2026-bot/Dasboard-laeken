@@ -154,7 +154,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Hypothèse à confirmer : les frais de laboratoire sont déduits des honoraires avant le calcul de la rétrocession, donc partagés entre le praticien et le cabinet selon le taux (60/40, ou 50/50 pour Nabila Touil). Les montants du calendrier des paiements ci-dessous sont déjà nets de labo.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Dr Mohamed Bochouari (non conventionné) facture des suppléments d'honoraires de 35 % au-dessus du tarif INAMI sur les actes de la nomenclature, soit environ 3 583 € sur ses 47 900 € d'honoraires : ils sont inclus dans la base de calcul. Hypothèse à confirmer : les frais de laboratoire sont déduits des honoraires avant le calcul de la rétrocession, donc partagés entre le praticien et le cabinet selon le taux (60/40, ou 50/50 pour Nabila Touil). Les montants du calendrier des paiements ci-dessous sont déjà nets de labo.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -184,7 +184,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Règle retenue : le gérant verse la rémunération d'un mois le 1er jour du deuxième mois suivant (septembre payé le 1er novembre, octobre le 1er décembre), une fois les remboursements des mutuelles arrivés. À confirmer avec ton frère.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Dr Nabila Touil quitte le cabinet le 1er décembre : sa dernière rémunération (prestations de novembre) sera payée le 01/01/2027. Règle retenue : le gérant verse la rémunération d'un mois le 1er jour du deuxième mois suivant (septembre payé le 1er novembre, octobre le 1er décembre), une fois les remboursements des mutuelles arrivés. À confirmer avec ton frère.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
@@ -233,7 +233,7 @@ class Component extends DCLogic {
       { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [9140, 9390, 8220, 6790, 9220, 9660] },
       { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [8670, 9090, 7990, 7070, 8920, 9240] },
       { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [8920, 8750, 8160, 7230, 9170, 9540] },
-      { name: 'Dr Nabila Touil', role: '1 jour par semaine', color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850] },
+      { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850] },
       { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780] }
     ];
     const series = data.map((d) => {
@@ -273,7 +273,7 @@ class Component extends DCLogic {
       ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 19200, 3100, 0.6],
       ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 18300, 2900, 0.6],
       ['Dr Julien Cabaz', 'Implantologue', 18900, 3000, 0.6],
-      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer)', 9300, 1600, 0.5],
+      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer) · départ le 1er décembre 2026', 9300, 1600, 0.5],
       ['7e praticien (à confirmer)', 'jours à confirmer', 9000, 2700, 0.6]
     ];
     const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';

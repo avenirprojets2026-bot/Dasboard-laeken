@@ -116,7 +116,7 @@
 </div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px">
-<div style="background:#FBE7E5; color:#7A1A12; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Conflit le vendredi.</b> Aya, Mohamed, Nabila et Julien (10 h à 20 h) travaillent le même jour pour 3 box. À arbitrer avec ton frère : partager un box par tranches horaires ou déplacer un praticien.</div>
+<div style="background:#FBE7E5; color:#7A1A12; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Conflit le vendredi.</b> Aya, Mohamed, Nabila et Julien (10 h à 20 h) travaillent le même jour pour 3 box. À arbitrer avec ton frère : partager un box par tranches horaires ou déplacer un praticien. Le conflit disparaît à partir de décembre, puisque Dr Nabila Touil quitte le cabinet le 1er décembre.</div>
 <div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, samedi 2 box et dimanche 1 box : c'est là que le 7e praticien peut être placé.</div>
 </div>
 </section>
@@ -253,7 +253,7 @@ class Component extends DCLogic {
     return Object.assign(donut, { boxCards: boxCards,
       kpis: [
         { label: 'Box dentaires', value: '3', note: 'dont 1 avec microscope et 1 pédiatrique', style: tile('#5B3FA8') },
-        { label: 'Journées de praticien', value: '18', note: 'par semaine, 7 praticiens', style: tile('#0F766E') },
+        { label: 'Journées de praticien', value: '18', note: 'par semaine, 7 praticiens (17 à partir de décembre sans Dr Touil)', style: tile('#0F766E') },
         { label: 'Box déjà occupés', value: '76 %', note: '16 journées de box sur 21, 7 jours sur 7 (sans le vendredi de Julien)', style: tile('#B45309') },
         { label: 'Patients par semaine', value: '306', note: 'environ 17 par journée de praticien', style: tile('#15803D') }
       ],

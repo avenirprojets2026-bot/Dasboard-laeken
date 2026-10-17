@@ -161,6 +161,7 @@ class Component extends DCLogic {
     const all = (P ? P.visits : D.visits).slice().sort((a, b) => (a.d - b.d) || a.time.localeCompare(b.time) || (a.p - b.p));
     const sum = (f) => all.reduce((a, r) => a + f(r), 0);
     const tF = sum((r) => r.fee); const tI = sum((r) => r.interv); const tS = sum((r) => r.share);
+    const tH = all.reduce((a, v) => a + v.lines.reduce((b, l) => b + (l.suph || 0), 0), 0);
     const unpaid = all.filter((r) => r.pay === 'unpaid');
     const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const PAGE = 20;
@@ -168,7 +169,7 @@ class Component extends DCLogic {
     const page = Math.min(S.page, pages - 1);
     const rows = all.slice(page * PAGE, page * PAGE + PAGE).map((r) => ({
       when: r.when + ' · ' + r.time, suppLabel: r.off ? '+ 50 € week-end ou férié' : '', suppStyle: r.off ? chipBase + 'background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
-      prat: PR[r.p].short, ini: r.doss, dob: r.dob, age: String(r.age), acts: r.lines.map((l) => l.label + ' · ' + l.code).join('\n'), fees: r.lines.map((l) => eur(l.fee)).join('\n'), nact: r.nact > 1 ? r.nact + ' actes' : '', nactStyle: r.nact > 1 ? chipBase + 'background:#E7EDEB; color:#33433F; margin-top:4px;' : 'display:none;', total: eur(r.fee),
+      prat: PR[r.p].short, ini: r.doss, dob: r.dob, age: String(r.age), acts: r.lines.map((l) => l.label + ' · ' + l.code).join('\n'), fees: r.lines.map((l) => eur(l.fee) + (l.suph ? ' (dont ' + eur(l.suph) + ' de supp.)' : '')).join('\n'), nact: r.nact > 1 ? r.nact + ' actes' : '', nactStyle: r.nact > 1 ? chipBase + 'background:#E7EDEB; color:#33433F; margin-top:4px;' : 'display:none;', total: eur(r.fee),
       mut: r.mut + (r.reg === 'bim' && !r.free ? ' · interv. majorée' : ''), ms: r.ms, msChip: msChips[r.ms],
       share: eur(r.share), payChip: chips[r.pay], pay: payLabel[r.pay]
     }));
@@ -197,6 +198,7 @@ class Component extends DCLogic {
       { label: 'Patients vus', value: nf(all.length), note: nActs + ' actes, ' + (nActs / all.length).toFixed(2).replace('.', ',') + ' par patient', style: tile('#0F766E') },
       { label: 'Valeur moyenne par visite', value: eur(tF / Math.max(1, all.length)), note: 'honoraires divisés par ' + nf(all.length) + ' visites', style: tile('#0F766E') },
       { label: 'Honoraires', value: eur(tF), note: 'rémunération après labo : ' + eur(P ? P.net : D.PR.reduce((a, x) => a + x.net, 0)), style: tile('#B45309') },
+      { label: 'Suppléments d\'honoraires', value: eur(tH), note: 'dentiste non conventionné, sur les actes de la nomenclature, inclus dans les honoraires', style: tile('#8A4B08') },
       { label: 'Part des mutuelles', value: eur(tI), note: 'à recevoir sous 1 à 1,5 mois', style: tile('#2F6DB5') },
       { label: 'Part des patients', value: eur(tS), note: 'suppléments week-end inclus', style: tile('#5B3FA8') },
       { label: 'Pas encore payé', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }

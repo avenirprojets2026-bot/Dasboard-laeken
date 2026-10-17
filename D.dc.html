@@ -62,6 +62,11 @@
 </sc-for>
 </section>
 
+<section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:8px">
+<h2 style="margin:0; font-size:18px; color:#5C3A06">À partir de décembre : départ de Dr Nabila Touil</h2>
+<div style="font-size:14px; line-height:1.6; color:#5C3A06">Dr Touil (1 jour par semaine, 50 % de rétrocession) quitte le cabinet le 1er décembre 2026. Il reste 6 praticiens. Sa dernière rémunération porte sur les prestations de novembre, payée le 01/01/2027. Projection mensuelle si personne ne la remplace et si les charges restent identiques : chiffre d'affaires − 9 300 €, frais de labo − 1 600 €, part du cabinet − 3 850 €, soit un <b>bénéfice de 16 000 € par mois</b> (contre 19 850 €). Le vendredi redevient moins chargé : le conflit de box du vendredi disparaît.</div>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 19 850 €</h2>
 <sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
@@ -187,6 +192,7 @@ class Component extends DCLogic {
         T('#15803D', 'Nouveaux patients', String(D.pilot.nouveaux), pc(D.pilot.nouveaux / D.pilot.actifs * 100) + ' des ' + D.pilot.actifs + ' patients actifs (chiffre fictif)'),
         T('#15803D', 'Fidélisation à 12 mois', pc(D.pilot.retour * 100), 'des patients vus il y a un an sont revenus (chiffre fictif)'),
         T('#B42318', 'Rendez-vous manqués', pc(missed / (past + missed) * 100), missed + ' manqués sur ' + (past + missed) + ' rendez-vous du 5 au 16 octobre. Repère étranger : moins de 8 %'),
+        T('#8A4B08', 'Suppléments d\'honoraires', eur(D.PR.reduce((a, P) => a + P.suph, 0)), 'Dr Mohamed Bochouari, non conventionné : ' + pc(D.PR.filter((P) => P.supRate)[0].suph / D.PR.filter((P) => P.supRate)[0].T * 100) + ' de ses honoraires, inclus dans le chiffre d\'affaires. Les conventionnés respectent le tarif INAMI'),
         T('#7A8A86', 'TVA incluse dans les actes esthétiques', eur(esthTot * 21 / 121), 'blanchiments et facettes (' + eur(esthTot) + ' TTC). Hypothèse 21 %, à confirmer avec le comptable')
       ];
       pilotRows = D.PR.map((P) => { const v = P.visits.length; const t = P.rows.reduce((a, r) => a + r.fee, 0); return { name: P.name, visits: String(v), acts: (P.rows.length / v).toFixed(2).replace('.', ','), total: eur(t), avg: eur(t / v) }; });

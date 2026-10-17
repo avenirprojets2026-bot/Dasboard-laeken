@@ -44,6 +44,11 @@
 <div style="font-size:14px; color:#4A5B57; max-width:480px; line-height:1.5">Choisissez une famille de soins, le statut du patient et le trajet de soins buccaux : le montant remboursé et la part du patient se recalculent. Les actes non remboursés sont signalés.</div>
 </header>
 
+<section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:16px 20px; display:flex; flex-direction:column; gap:6px">
+<div style="font-size:15px; font-weight:700; color:#5C3A06">Dentistes conventionnés et non conventionnés : suppléments d'honoraires</div>
+<div style="font-size:13px; line-height:1.6; color:#5C3A06">Un dentiste conventionné applique les tarifs INAMI de la nomenclature. Un dentiste non conventionné fixe librement ses honoraires et peut facturer un supplément au-dessus du tarif. La mutuelle ne rembourse que sur la base du tarif INAMI : le supplément reste entièrement à charge du patient. Dans la maquette, le Dr Mohamed Bochouari (non conventionné) applique 35 % de supplément sur les actes de la nomenclature (hypothèse, à confirmer). Les actes hors nomenclature (couronnes, blanchiments, facettes, implants) ont déjà des prix libres pour tous. À vérifier : le détail des règles de conventionnement des dentistes sur le site de l'INAMI.</div>
+</section>
+
 <section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
 <sc-for list="{{rules}}" as="r" hint-placeholder-count="4">
 <div style="{{r.style}}">

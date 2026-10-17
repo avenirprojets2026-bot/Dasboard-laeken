@@ -28,12 +28,13 @@
   };
   var MUT = ['Mutualités Chrétiennes', 'Solidaris', 'Partenamut', 'Mutualité Libérale', 'Mutualia', 'CAAMI', 'HR Rail'];
 
+  // supRate = supplément d'honoraires appliqué sur les actes de la nomenclature (dentiste non conventionné) ; leaves = date de départ du praticien
   // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil)
   // Rémunération du praticien = (T − LAB) × rate ; part du cabinet = (T − LAB) × (1 − rate)
   var PR = [
     { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 370, T: 50500, LAB: 7800, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
-    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 2, 4, 5, 0], N: 370, T: 47900, LAB: 7500, young: 1,
+    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 2, 4, 5, 0], N: 370, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
       mix: { consultO: 3, exam: 1, pano: 2, consult: 1, ortho: 8, appareil: 1.3, goutt: 0.5, blanch: 0.3 } },
     { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 147, T: 19200, LAB: 3100, young: 0,
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
@@ -41,7 +42,7 @@
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
     { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], span: 600, N: 147, T: 18900, LAB: 3000, young: 0,
       mix: { implant: 0.26, greffe: 0.08, consult: 2, pano: 2, couronneImpl: 0.2, couronne: 0.05, exam: 1 } },
-    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, rate: 0.5, young: 0,
+    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
       mix: { detart: 4, exam: 3, obt: 3, consult: 2, blanch: 0.9, facette: 0.5, couronne: 0.6 } },
     { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 74, T: 9000, LAB: 2700, young: 0,
       mix: { consult: 3, obt: 3, detart: 3, extr: 2, exam: 2, couronne: 1.8, bridge: 0.5, prothese: 0.5 } }
@@ -63,8 +64,8 @@
     var nd = P.dates.length; var base = Math.floor(P.N / nd); var rem = P.N - base * nd; var mine = []; var myVisits = [];
     var mkLine = function (key, age) {
       var L = { key: key, labo: 0 };
-      if (ACT[key]) { var t = ACT[key](age); L.code = t[0]; L.label = t[1]; L.fee = t[2]; L.ib = t[3]; L.io = t[4]; L.free = false; }
-      else { L.code = 'hors nomenclature'; L.label = FREE[key][0]; L.fee = FREE[key][1]; L.free = true; }
+      if (ACT[key]) { var t = ACT[key](age); L.code = t[0]; L.label = t[1]; L.tarif = t[2]; L.suph = P.supRate ? Math.round(t[2] * P.supRate * 100) / 100 : 0; L.fee = Math.round((t[2] + L.suph) * 100) / 100; L.ib = t[3]; L.io = t[4]; L.free = false; }
+      else { L.code = 'hors nomenclature'; L.label = FREE[key][0]; L.fee = FREE[key][1]; L.free = true; L.suph = 0; }
       return L;
     };
     P.dates.forEach(function (d, di) {
@@ -121,7 +122,7 @@
       v.pay = pay; v.nact = v.lines.length; v.free = fr2 > 0;
       v.lines.forEach(function (L) { L.pay = pay; rows.push(L); });
     });
-    P.rows = mine; P.visits = myVisits;
+    P.rows = mine; P.visits = myVisits; P.suph = Math.round(mine.reduce(function (a, r) { return a + (r.suph || 0); }, 0) * 100) / 100;
     P.rate = P.rate || 0.6; P.base = P.T - P.LAB; P.retro = Math.round(P.base * P.rate * 100) / 100; P.net = P.retro; P.cab = Math.round((P.base - P.retro) * 100) / 100;
     P.maxDay = 0; P.dates.forEach(function (d) { var c = myVisits.filter(function (r) { return r.d === d; }).length; if (c > P.maxDay) { P.maxDay = c; } });
   });
