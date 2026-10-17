@@ -1,5 +1,5 @@
 /* Jeu de données unique (fictif) : octobre 2026 (mois en cours, projection complète), tel que le modèle du cabinet.
-   Total honoraires 173 100 €, 1 329 patients, frais de labo 28 600 €. */
+   Total honoraires 173 100 €, 1 175 patients (pause de midi 12 h à 13 h déduite), frais de labo 28 600 €. */
 (function () {
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var mul = function (a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
@@ -32,19 +32,19 @@
   // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil)
   // Rémunération du praticien = (T − LAB) × rate ; part du cabinet = (T − LAB) × (1 − rate)
   var PR = [
-    { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 370, T: 50500, LAB: 7800, young: 0,
+    { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 325, T: 50500, LAB: 7800, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
-    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 2, 4, 5, 0], N: 370, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
+    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 2, 4, 5, 0], N: 325, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
       mix: { consultO: 3, exam: 1, pano: 2, consult: 1, ortho: 8, appareil: 1.3, goutt: 0.5, blanch: 0.3 } },
-    { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 147, T: 19200, LAB: 3100, young: 0,
+    { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 116, T: 19200, LAB: 3100, young: 0,
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
-    { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 147, T: 18300, LAB: 2900, young: 0,
+    { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 130, T: 18300, LAB: 2900, young: 0,
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
     { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], span: 600, N: 147, T: 18900, LAB: 3000, young: 0,
       mix: { implant: 0.26, greffe: 0.08, consult: 2, pano: 2, couronneImpl: 0.2, couronne: 0.05, exam: 1 } },
-    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 74, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
+    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 66, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
       mix: { detart: 4, exam: 3, obt: 3, consult: 2, blanch: 0.9, facette: 0.5, couronne: 0.6 } },
-    { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 74, T: 9000, LAB: 2700, young: 0,
+    { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 66, T: 9000, LAB: 2700, young: 0,
       mix: { consult: 3, obt: 3, detart: 3, extr: 2, exam: 2, couronne: 1.8, bridge: 0.5, prothese: 0.5 } }
   ];
 
@@ -59,6 +59,8 @@
   PR.forEach(function (P, pi) {
     P.dates = [];
     for (var d = 1; d <= MONTH.days; d += 1) { if (P.days.indexOf(new Date(MONTH.y, MONTH.m, d).getDay()) >= 0) { P.dates.push(d); } }
+    // créneaux de 30 minutes, pause de midi de 12 h à 13 h (aucun rendez-vous)
+    var SLOTS = []; for (var sm = 600; sm < 600 + (P.span || 510); sm += 30) { if (sm < 720 || sm >= 780) { SLOTS.push(sm); } }
     var rnd = mul(pi * 7919 + 101);
     var keys = Object.keys(P.mix); var wsum = keys.reduce(function (a, k) { return a + P.mix[k]; }, 0);
     var nd = P.dates.length; var base = Math.floor(P.N / nd); var rem = P.N - base * nd; var mine = []; var myVisits = [];
@@ -77,7 +79,7 @@
         var byear = P.young && (key === 'ortho' || key === 'consultO' || key === 'appareil') ? 2000 + Math.floor(rnd() * 19) : 1945 + Math.floor(rnd() * 74);
         var bm = 1 + Math.floor(rnd() * 12); var bd = 1 + Math.floor(rnd() * 28);
         var age = MONTH.y - byear; if (MONTH.m + 1 < bm || (MONTH.m + 1 === bm && d < bd)) { age -= 1; }
-        var mins = 600 + Math.round(i * (P.span || 510) / n / 5) * 5;
+        var mins = SLOTS[Math.min(SLOTS.length - 1, Math.floor(i * SLOTS.length / n))];
         var rg = rnd(); var ms = rg < 0.92 ? 'En ordre' : (rg < 0.97 ? 'À vérifier' : 'Non en ordre');
         var reg = rnd() < 0.18 ? 'bim' : 'ord';
         var vis = { vi: visits.length, p: pi, d: d, wd: wd, off: off, time: pad(Math.floor(mins / 60)) + ' h ' + pad(mins % 60), when: WD[wd] + ' ' + dstr,
@@ -134,16 +136,16 @@
   var boxes = Object.keys(BOXMAP).map(function (bk) {
     var vs = visits.filter(function (v) { return BOXMAP[bk][v.wd] === v.p; });
     var perDay = {}; vs.forEach(function (v) { perDay[v.d] = (perDay[v.d] || 0) + 1; });
-    var hrs = 0; Object.keys(perDay).forEach(function (d) { hrs += Math.min(perDay[d] * 0.5, 8.5); });
+    var hrs = 0; Object.keys(perDay).forEach(function (d) { hrs += Math.min(perDay[d] * 0.5, 7.5); });
     var ca = vs.reduce(function (a, v) { return a + v.fee; }, 0);
-    return { key: bk, name: BOXNAMES[bk], visits: vs.length, days: Object.keys(perDay).length, hours: hrs, avail: MONTH.days * 8.5, occ: hrs / (MONTH.days * 8.5), ca: ca };
+    return { key: bk, name: BOXNAMES[bk], visits: vs.length, days: Object.keys(perDay).length, hours: hrs, avail: MONTH.days * 7.5, occ: hrs / (MONTH.days * 7.5), ca: ca };
   });
   var totH = boxes.reduce(function (a, b) { return a + b.hours; }, 0); var totV = boxes.reduce(function (a, b) { return a + b.visits; }, 0);
   boxes.forEach(function (b) {
     b.part = b.ca * CHG.cabPct; b.leasing = CHG.leasingBox; b.conso = CHG.conso * b.visits / totV; b.perso = CHG.perso * b.hours / totH;
     b.margin = b.part - b.leasing - b.conso - b.perso;
   });
-  var occAll = totH / (3 * MONTH.days * 8.5);
+  var occAll = totH / (3 * MONTH.days * 7.5);
 
   // ---- Devis (plans de traitement) ----
   var QK = ['couronne', 'bridge', 'facette', 'implant', 'greffe', 'couronneImpl', 'prothese', 'appareil'];
