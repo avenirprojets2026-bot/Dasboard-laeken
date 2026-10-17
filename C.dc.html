@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>body{margin:0} a{color:#0B5D56}</style>
 </helmet>
-<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:1400px">
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2700px">
 <nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
 <a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
 <a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
@@ -126,10 +126,44 @@
 </div>
 </section>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:18px">Assurances dentaires complémentaires en Belgique</h2>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">L'assurance maladie obligatoire (la mutuelle) rembourse l'INAMI. Ces assurances facultatives s'y ajoutent : elles remboursent au patient une partie de sa quote-part ou des soins peu remboursés (orthodontie, prothèses, implants, parodontologie). Le patient avance en général les frais, puis se fait rembourser : le cabinet n'encaisse rien de plus, mais l'attestation de soins doit être complète pour que le patient soit remboursé. Produits, tarifs et plafonds indicatifs, à vérifier auprès de chaque organisme.</div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
+<sc-for list="{{insKpis}}" as="k" hint-placeholder-count="3">
+<div style="{{k.style}}"><div style="font-size:13px; color:#4A5B57; font-weight:500">{{k.label}}</div><div style="font-size:26px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
+</sc-for>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Produit</th><th style="padding:8px">Type</th><th style="padding:8px">Soins couverts</th><th style="padding:8px">Remboursement et plafond (indicatif)</th><th style="padding:8px">Délai d'attente</th><th style="padding:8px; text-align:right">Patients (fictif)</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{insurances}}" as="i" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 0"><b>{{i.name}}</b><div style="font-size:12px; color:#4A5B57">{{i.org}}</div></td>
+<td style="padding:12px 8px"><span style="{{i.chip}}">{{i.kind}}</span></td>
+<td style="padding:12px 8px">{{i.care}}</td>
+<td style="padding:12px 8px">{{i.cap}}</td>
+<td style="padding:12px 8px">{{i.wait}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{i.pat}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Sources : comparatifs publics (CallmePower, Selectra, Bobex) consultés en octobre 2026. Les mutualités flamandes (Helan, CM Vlaanderen) et Ethias proposent aussi des garanties dentaires : à ajouter si des patients du cabinet en bénéficient. Pour l'accueil : noter dans le dossier le produit du patient pour l'informer de ce qu'il peut se faire rembourser (devis orthodontie, prothèses, implants).</div>
+</section>
+
 <footer style="font-size:13px; color:#4A5B57">Maquette : tous les chiffres sont fictifs. Les vrais chiffres viendront de l'export du logiciel de facturation et des factures des laboratoires.</footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2700}}'>
 class Component extends DCLogic {
   renderVals() {
     const tile = 'background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px;';
@@ -138,7 +172,28 @@ class Component extends DCLogic {
     const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
     const bad = chipBase + ' background:#FBE7E5; color:#A3231A;';
     const info = chipBase + ' background:#E7EDEB; color:#33433F;';
+    const kc = (k) => chipBase + (k === 'Mutualité' ? ' background:#E3F2EF; color:#0B5D56;' : (k === 'Assureur privé' ? ' background:#EFEAF8; color:#4B2F96;' : ' background:#FDF0DC; color:#8A4B08;'));
+    const INS = [
+      ['Dento+', 'Mutualités Chrétiennes', 'Mutualité', 'Contrôles, prothèses, orthodontie', 'Appareils orthodontiques jusqu\'à 750 €, prothèses 175 €', 'Selon l\'âge d\'affiliation', 410],
+      ['Dentimut Plus', 'Solidaris', 'Mutualité', 'Orthodontie, appareils, implants, prothèses', 'Jusqu\'à 1 050 € par an (appareils avant 15 ans, implants et prothèses), sans franchise', 'À confirmer', 330],
+      ['Dentalia Up', 'Partenamut', 'Mutualité', 'Préventif, curatif, orthodontie, prothèses', '1 250 € par an en soins, 2 200 € par an en orthodontie et prothèses (dès la 10e année)', '6 mois en soins curatifs, 12 mois en orthodontie et prothèses', 210],
+      ['Denta Plus', 'Mutualité Libérale', 'Mutualité', 'Préventif, curatif, parodontologie, orthodontie, prothèses', 'Préventif à 100 %, orthodontie à 60 %, prothèses à 50 % ou 80 %', 'À confirmer', 150],
+      ['Dentalis', 'Mutualia', 'Mutualité', 'Préventif, curatif, orthodontie, parodontologie, prothèses', 'Soins de 30 € à 100 € par an, orthodontie 300 à 350 €, prothèses 300 à 850 € selon l\'ancienneté', 'Selon le soin', 90],
+      ['Smile Essential', 'DKV', 'Assureur privé', 'Préventif et curatif, libre choix du dentiste', 'Sur devis, de 121 € à 217 € de prime par an', 'Aucun', 70],
+      ['Smile Comfort', 'DKV', 'Assureur privé', 'Essentiel + orthodontie, parodontologie, prothèses', '70 % pour orthodontie, parodontologie et prothèses', 'Aucun', 55],
+      ['Smile Premium', 'DKV', 'Assureur privé', 'Essentiel + orthodontie, parodontologie, prothèses', '80 % pour orthodontie, parodontologie et prothèses', 'Aucun', 40],
+      ['Dento + (dentaire intégré à l\'hospitalisation)', 'AXA', 'Assureur privé', 'Prévention, soins, prothèses, implants', 'Sur devis, formule liée à l\'hospitalisation', 'Environ 12 mois en moyenne', 35],
+      ['Garantie dentaire facultative', 'Ethias', 'Assureur privé', 'Garantie en complément de Hospi Quality', 'Sur devis', 'Environ 12 mois en moyenne', 25],
+      ['Dental Flex et Ambu Protect / Comfort', 'AG Insurance, AXA (assurance de groupe)', 'Via l\'employeur', 'Soins, prothèses, implants, couronnes, orthodontie selon le contrat', 'Selon le contrat de l\'entreprise du patient', 'Aucun en général', 60]
+    ];
+    const insTot = INS.reduce((a, x) => a + x[6], 0);
     return {
+      insKpis: [
+        { label: 'Patients avec une assurance dentaire', value: String(insTot).replace(/\B(?=(\d{3})+(?!\d))/g, ' '), note: String(Math.round(insTot / 6400 * 1000) / 10).replace('.', ',') + ' % des 6 400 patients actifs (chiffre fictif)', style: tile },
+        { label: 'Produits suivis', value: String(INS.length), note: '5 mutualités, 5 assureurs privés, 1 assurance de groupe', style: tile },
+        { label: 'Plus répandu', value: 'Dento+', note: 'Mutualités Chrétiennes, 410 patients (fictif)', style: tile }
+      ],
+      insurances: INS.map((x) => ({ name: x[0], org: x[1], kind: x[2], chip: kc(x[2]), care: x[3], cap: x[4], wait: x[5], pat: String(x[6]) })),
       kpis: [
         { label: 'En attente de remboursement', value: '42 400 €', note: 'sur 173 100 € facturés', style: tile },
         { label: 'En attente depuis plus de 45 jours', value: '6 800 €', note: 'à relancer', style: alert },
