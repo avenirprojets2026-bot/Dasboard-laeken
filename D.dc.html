@@ -63,7 +63,7 @@
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
-<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 35 740 €</h2>
+<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 173 100 € à 35 210 €</h2>
 <sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
 <div style="display:grid; grid-template-columns:minmax(120px, 230px) 1fr minmax(84px, 110px); gap:12px; align-items:center; font-size:14px">
 <span style="font-weight:500">{{f.label}}</span>
@@ -171,8 +171,8 @@ class Component extends DCLogic {
       const esth = D.rows.filter((r) => r.key === 'blanch' || r.key === 'facette'); const esthTot = esth.reduce((a, r) => a + r.fee, 0);
       const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
       pilotKpis = [
-        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(33500 / ca * 100), '33 500 € de charges sur ' + eur(ca)),
-        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(33500 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(34030 / ca * 100), '34 030 € de charges sur ' + eur(ca)),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(34030 / (ca * 0.4) * 100), 'sur 69 240 € après rétrocession. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
         T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
@@ -186,6 +186,7 @@ class Component extends DCLogic {
     const CAT = [
       { id: 'exp', label: 'Exploitation habituelle', short: 'Charges d\'exploitation habituelles', desc: 'Les dépenses courantes qui reviennent chaque mois pour faire tourner le cabinet.', color: '#0F766E' },
       { id: 'exc', label: 'Exceptionnelles ou moins visibles', short: 'Charges exceptionnelles ou moins visibles', desc: 'Matériel financé, intérêts, impôts et contrôles : des montants que l\'on oublie facilement.', color: '#B45309' },
+      { id: 'rare', label: 'Peu fréquentes mais légitimes', short: 'Dépenses peu fréquentes mais légitimes', desc: 'Contrôles, remises en conformité et remplacements qui ne reviennent pas chaque mois. Les montants sont lissés sur 12 mois (provision mensuelle). L\'AFCN exige notamment une organisation documentée de la radioprotection pour les installations concernées, et les fréquences de contrôle varient selon les équipements, en particulier pour les CBCT : à confirmer.', color: '#B42318' },
       { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' }
     ];
     const LINES = [
@@ -195,7 +196,6 @@ class Component extends DCLogic {
       ['org', 'Assurance accidents du travail, médecine du travail, secrétariat social', 450, 'Obligations de l\'employeur'],
       ['org', 'Chèques-repas et frais de déplacement du personnel', 500, 'Selon les avantages accordés'],
       ['org', 'Remplacement du personnel (congés, maladie)', 600, 'Intérim ou remplaçante quand une secrétaire est absente'],
-      ['org', 'Formation du personnel', 150, 'Formations des secrétaires et du personnel d\'accueil'],
       ['exp', 'Loyer des locaux', 6500, 'Charge fixe mensuelle'],
       ['exp', 'Énergie : eau, chauffage, gaz', 1800, 'Varie selon la saison'],
       ['exp', 'Nettoyage des locaux', 1400, 'Charge fixe mensuelle'],
@@ -215,7 +215,12 @@ class Component extends DCLogic {
       ['exc', 'Leasing scanner, panoramique, CBCT et matériel numérique', 1400, 'Imagerie et équipement numérique financés par leasing, à confirmer'],
       ['exc', 'Intérêts bancaires et frais de financement', 500, 'Crédits d\'équipement ou d\'aménagement, frais de dossier'],
       ['exc', 'Précompte immobilier', 180, 'Dépend de la propriété des locaux et du bail : à vérifier si le propriétaire le refacture'],
-      ['exc', 'Radioprotection (AFCN) et maintenance de la panoramique', 250, 'Contrôles périodiques de l\'appareil de radiographie, à confirmer'],
+      ['rare', 'Radioprotection (AFCN)', 250, 'Contrôles, rapports, autorisations'],
+      ['rare', 'Cybersécurité', 120, 'Protection et sauvegarde des données patients'],
+      ['rare', 'Contrôles électriques', 60, 'Certificats et périodicité'],
+      ['rare', 'Remplacement de l\'autoclave', 250, 'État et historique technique'],
+      ['rare', 'Réparation de l\'aspiration', 100, 'Diagnostic et devis'],
+      ['rare', 'Formation des assistantes', 150, 'Formation suivie et facturée'],
       ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures']
     ];
     const TOT = LINES.reduce((a, l) => a + l[2], 0);
@@ -226,25 +231,25 @@ class Component extends DCLogic {
     const tOff = tabBase + 'background:#EFEAF8; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id }) }));
     const catCards = CAT.map((c) => ({ title: c.short, desc: c.desc, total: eur(sumCat(c.id)), share: pc(sumCat(c.id) / TOT * 100) + ' des charges', bar: 'height:10px; border-radius:999px; background:' + c.color + '; width:' + (sumCat(c.id) / TOT * 100) + '%;', style: 'border:1px solid #DCE5E2; border-top:5px solid ' + c.color + '; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:6px;' }));
-    const ord = { exp: 0, exc: 1, org: 2 };
+    const ord = { exp: 0, exc: 1, rare: 2, org: 3 };
     const shownLines = LINES.filter((l) => ctab === 'all' || l[0] === ctab).sort((x, y) => ord[x[0]] - ord[y[0]]);
     const shownTotal = shownLines.reduce((a, l) => a + l[2], 0);
     const curCat = CAT.filter((c) => c.id === ctab)[0];
-    const charges = shownLines.map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: l[3] }));
+    const charges = shownLines.map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
     return {
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
         { label: "Chiffre d'affaires", value: '173 100 €', note: '1 329 patients vus', style: tile('#0F766E') },
         { label: 'Rétrocessions (60 %)', value: '103 860 €', note: 'versées aux praticiens indépendants', style: tile('#B45309') },
-        { label: 'Charges du cabinet', value: '33 500 €', note: 'dont 12 450 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements) et 4 430 € de charges moins visibles', style: tile('#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '35 740 €', note: '20,6 % du chiffre d\'affaires', style: tile('#15803D') }
+        { label: 'Charges du cabinet', value: '34 030 €', note: 'dont 12 300 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements) et 5 110 € de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '35 210 €', note: '20,3 % du chiffre d\'affaires', style: tile('#15803D') }
       ],
       flow: [
         { label: "Chiffre d'affaires", value: '173 100 €', bar: bar('#0F766E', 0, 100) },
         { label: 'Rétrocessions (60 %)', value: '− 103 860 €', bar: bar('#B45309', 40, 60) },
         { label: 'Marge du cabinet (40 %)', value: '69 240 €', bar: bar('#0F766E', 0, 40) },
-        { label: 'Charges du cabinet', value: '− 33 500 €', bar: bar('#5B3FA8', 20.6, 19.4) },
-        { label: 'Bénéfice', value: '35 740 €', bar: bar('#15803D', 0, 20.6) }
+        { label: 'Charges du cabinet', value: '− 34 030 €', bar: bar('#5B3FA8', 20.3, 19.7) },
+        { label: 'Bénéfice', value: '35 210 €', bar: bar('#15803D', 0, 20.3) }
       ],
       charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les trois familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? 'Total : ' + curCat.short.toLowerCase() : 'Total des charges',
       dentists: [
