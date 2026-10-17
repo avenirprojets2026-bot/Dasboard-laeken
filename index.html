@@ -1,2 +1,95 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><title>Dashboard Laeken</title><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta http-equiv="refresh" content="0;url=Accueil.dc.html"></head><body><a href="Accueil.dc.html">Ouvrir le dashboard</a></body></html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dental Clinique Laeken</title>
+<meta name="theme-color" content="#050a09">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#050a09;color:#fff;overflow:hidden;font-family:'DM Sans',system-ui,sans-serif}
+#scene{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:13vh 24px;background:radial-gradient(ellipse at 50% 42%,#0c3a35 0%,#07201d 38%,#050a09 75%)}
+/* barres cinéma */
+.bar{position:fixed;left:0;right:0;height:11vh;background:#000;z-index:5;transition:transform 2.4s cubic-bezier(.2,.7,.2,1) .3s}
+.bar.t{top:0;transform:translateY(0)}.bar.b{bottom:0}
+body.go .bar.t{transform:translateY(-35%)}body.go .bar.b{transform:translateY(35%)}
+/* faisceau de lumière */
+.beam{position:absolute;top:-20%;left:50%;width:60vmin;height:140%;transform:translateX(-50%) rotate(8deg);background:linear-gradient(90deg,transparent,rgba(120,230,215,.10),transparent);filter:blur(18px);opacity:0;animation:beam 6s ease-in-out .6s infinite alternate}
+@keyframes beam{0%{opacity:.0;transform:translateX(-80%) rotate(14deg)}50%{opacity:1}100%{opacity:.2;transform:translateX(-20%) rotate(4deg)}}
+/* poussière lumineuse */
+canvas#dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+/* icône */
+.logo{position:relative;width:min(30vh,60vw,300px);aspect-ratio:1;opacity:0;transform:scale(.72);animation:logo 3.2s cubic-bezier(.16,.8,.2,1) .5s forwards}
+.logo img{width:100%;height:100%;display:block;border-radius:22%;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 30px 90px rgba(0,0,0,.65),0 0 120px rgba(45,212,191,.35);animation:breathe 7s ease-in-out 3.6s infinite alternate}
+.logo::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.35),transparent 62%);filter:blur(22px);animation:halo 5s ease-in-out 1s infinite alternate;z-index:-1}
+.logo::after{content:"";position:absolute;inset:0;border-radius:22%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);background-size:250% 100%;background-position:150% 0;mix-blend-mode:overlay;animation:shine 4.5s ease-in-out 2.4s infinite}
+@keyframes logo{0%{opacity:0;transform:scale(.7);filter:blur(14px)}60%{opacity:1;filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+@keyframes breathe{from{transform:scale(1)}to{transform:scale(1.035)}}
+@keyframes halo{from{opacity:.55;transform:scale(.96)}to{opacity:1;transform:scale(1.08)}}
+@keyframes shine{0%,55%{background-position:150% 0}100%{background-position:-50% 0}}
+/* textes */
+h1{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-size:clamp(24px,min(5.4vw,6.4vh),58px);letter-spacing:.26em;text-transform:uppercase;margin-top:clamp(18px,3.5vh,40px);opacity:0;animation:rise 2.4s ease 2.3s forwards;padding-left:.26em}
+.sub{font-size:clamp(11px,1.8vw,14px);letter-spacing:.5em;text-transform:uppercase;color:#7fd8cb;margin-top:12px;opacity:0;animation:rise 2s ease 3s forwards;padding-left:.5em}
+.rule{width:0;height:1px;background:linear-gradient(90deg,transparent,#7fd8cb,transparent);margin:clamp(14px,2.6vh,26px) auto clamp(12px,2.2vh,22px);animation:rule 2.4s ease 3.4s forwards}
+@keyframes rule{to{width:min(60vw,360px)}}
+.quote{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:clamp(20px,3.8vw,32px);line-height:1.4;color:#eaf6f3;max-width:22em;opacity:0;filter:blur(8px);animation:quote 3s ease 4s forwards}
+@keyframes quote{to{opacity:1;filter:blur(0)}}
+@keyframes rise{from{opacity:0;transform:translateY(16px);letter-spacing:.7em}to{opacity:1;transform:none}}
+.enter{margin-top:clamp(18px,4vh,44px);opacity:0;animation:rise 2s ease 6s forwards;display:inline-flex;align-items:center;gap:12px;color:#fff;text-decoration:none;border:1px solid rgba(127,216,203,.55);border-radius:999px;padding:15px 34px;font-size:13px;letter-spacing:.32em;text-transform:uppercase;background:rgba(15,118,110,.18);backdrop-filter:blur(6px);min-height:48px;transition:background .3s,transform .3s,box-shadow .3s}
+.enter:hover,.enter:focus-visible{background:rgba(15,118,110,.55);box-shadow:0 0 36px rgba(45,212,191,.35);transform:translateY(-2px);outline:none}
+.skip{position:fixed;right:18px;bottom:calc(11vh + 14px);z-index:6;color:#8aa8a2;font-size:12px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;opacity:.8;padding:10px}
+/* vignette + grain */
+.vig{position:fixed;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.65) 100%)}
+.grain{position:fixed;inset:-50%;z-index:4;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:grain .9s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+/* fondu de sortie */
+#fade{position:fixed;inset:0;background:#050a09;z-index:20;opacity:0;pointer-events:none;transition:opacity 1s ease}
+body.leave #fade{opacity:1}body.leave .logo{transform:scale(1.25);transition:transform 1.2s ease-in}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important}.grain,.beam{display:none}}
+</style>
+</head>
+<body>
+<div class="bar t"></div><div class="bar b"></div>
+<main id="scene">
+  <div class="beam"></div>
+  <canvas id="dust"></canvas>
+  <div class="logo"><img src="icon-512.png" alt="Dental Clinique Laeken"></div>
+  <h1>Dental Clinique Laeken</h1>
+  <p class="sub">Tableau de bord</p>
+  <div class="rule"></div>
+  <p class="quote">« Le sourire n'a d'égal que sa rareté. »</p>
+  <a class="enter" id="enter" href="Accueil.dc.html">Entrer</a>
+</main>
+<a class="skip" id="skip" href="Accueil.dc.html">Passer</a>
+<div class="vig"></div><div class="grain"></div><div id="fade"></div>
+<script>
+(function(){
+  setTimeout(function(){document.body.classList.add('go')},300);
+  function leave(e){e.preventDefault();var h=this.href;document.body.classList.add('leave');setTimeout(function(){location.href=h},950)}
+  document.getElementById('enter').addEventListener('click',leave);
+  document.getElementById('skip').addEventListener('click',leave);
+  var c=document.getElementById('dust'),x=c.getContext('2d'),W,H,P=[],dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){W=c.width=innerWidth*dpr;H=c.height=innerHeight*dpr}
+  size();addEventListener('resize',size);
+  for(var i=0;i<70;i++)P.push({x:Math.random(),y:Math.random(),r:Math.random()*1.8+.4,s:Math.random()*.00006+.00002,a:Math.random()*Math.PI*2,t:Math.random()*.6+.2});
+  var last=0;
+  function f(t){
+    x.clearRect(0,0,W,H);
+    P.forEach(function(p){
+      p.y-=p.s*16;p.x+=Math.sin(t/3000+p.a)*.0002;if(p.y<-.02){p.y=1.02;p.x=Math.random()}
+      var tw=.5+.5*Math.sin(t/900+p.a);
+      x.beginPath();x.fillStyle='rgba(160,240,228,'+(p.t*tw)+')';
+      x.shadowColor='rgba(120,230,215,.9)';x.shadowBlur=8*dpr;
+      x.arc(p.x*W,p.y*H,p.r*dpr,0,6.283);x.fill();
+    });
+    requestAnimationFrame(f);
+  }
+  requestAnimationFrame(f);
+})();
+</script>
+</body>
+</html>
