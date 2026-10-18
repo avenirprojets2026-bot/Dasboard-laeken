@@ -7,9 +7,10 @@
 <meta charset="utf-8">
 <title>Tableau de bord interactif</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=23"></script>
-<script src="./auth.js?v=23"></script>
-<script src="./nav.js?v=23"></script>
+<script src="./data.js?v=24"></script>
+<script src="./acces.js?v=24"></script>
+<script src="./auth.js?v=24"></script>
+<script src="./nav.js?v=24"></script>
 </head>
 <body>
 <x-dc>
@@ -241,12 +242,63 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </section>
 </sc-if>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px">
+<div><h2 style="margin:0; font-size:18px">Explorateur des actes · octobre 2026</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{xCaption}}</div></div>
+<div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{xBtnSide}}" onClick="{{xReset}}">Réinitialiser les filtres</button><button type="button" style="{{xBtnMain}}" onClick="{{xCsv}}">Exporter la sélection (CSV)</button></div>
+</div>
+<sc-if value="{{xHasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{xMsgStyle}}">{{xMsg}}</div></sc-if>
+<div style="display:flex; flex-direction:column; gap:10px">
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Soin</span><sc-for list="{{xFamPills}}" as="f" hint-placeholder-count="11"><button type="button" style="{{f.style}}" onClick="{{f.pick}}"><span style="{{f.dot}}"></span>{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Mutualité</span><sc-for list="{{xMutPills}}" as="f" hint-placeholder-count="8"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Patient</span><sc-for list="{{xRegPills}}" as="f" hint-placeholder-count="3"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Paiement</span><sc-for list="{{xPayPills}}" as="f" hint-placeholder-count="7"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+</div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px">
+<sc-for list="{{xKpis}}" as="k" hint-placeholder-count="5"><div style="background:#F6F9F8; border:1px solid #E2E9E6; border-radius:12px; padding:14px 16px"><div style="font-size:12px; color:#4A5B57">{{k.label}}</div><div style="font-size:22px; font-weight:700; margin-top:4px; font-variant-numeric:tabular-nums">{{k.value}}</div></div></sc-for>
+</div>
+<sc-if value="{{xShowDonut}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex; flex-wrap:wrap; gap:28px; align-items:center; padding:6px 0">
+<div style="{{xDonutStyle}}"><div style="position:absolute; inset:30px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><div style="font-size:11px; color:#4A5B57; text-transform:uppercase; letter-spacing:0.04em">Sélection</div><div style="font-size:20px; font-weight:700">{{xDonutValue}}</div></div></div>
+<div style="flex:1 1 300px; display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px 20px">
+<sc-for list="{{xLegend}}" as="g" hint-placeholder-count="6"><div style="display:flex; align-items:center; gap:8px; font-size:13px"><span style="{{g.dot}}"></span><span style="flex:1">{{g.name}}</span><b>{{g.pct}}</b></div></sc-for>
+</div>
+</div>
+</sc-if>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:13.5px; min-width:980px">
+<thead><tr style="text-align:left">
+<sc-for list="{{xHeads}}" as="h" hint-placeholder-count="9"><th style="{{h.thStyle}}"><button type="button" style="{{h.style}}" onClick="{{h.pick}}">{{h.label}}<span style="color:#0F766E">{{h.arrow}}</span></button></th></sc-for>
+</tr></thead>
+<tbody>
+<sc-for list="{{xRows}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:10px 8px 10px 0; white-space:nowrap">{{r.when}}</td>
+<td style="padding:10px 8px; white-space:nowrap"><b>{{r.doss}}</b><div style="font-size:12px; color:#4A5B57">{{r.dob}}</div></td>
+<td style="padding:10px 8px">{{r.prat}}</td>
+<td style="padding:10px 8px">{{r.label}}<div style="font-size:12px; color:#4A5B57">{{r.code}}</div></td>
+<td style="padding:10px 8px"><span style="{{r.famChip}}">{{r.fam}}</span></td>
+<td style="padding:10px 8px">{{r.mut}}</td>
+<td style="padding:10px 8px">{{r.reg}}</td>
+<td style="padding:10px 8px"><span style="{{r.payChip}}">{{r.pay}}</span></td>
+<td style="padding:10px 0 10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.fee}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; font-size:13px; color:#4A5B57">
+<span>{{xRange}}</span>
+<div style="display:flex; gap:8px"><button type="button" style="{{xPrevStyle}}" onClick="{{xPrev}}">Précédent</button><button type="button" style="{{xNextStyle}}" onClick="{{xNext}}">Suivant</button></div>
+</div>
+</section>
+
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette interactive : tous les chiffres sont fictifs, à remplacer par l'export de facturation du cabinet. Les prestations et devis affichés dans un casier sont des exemples identiques pour chaque praticien.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
 class Component extends DCLogic {
-  state = { month: 5, dentist: -1, conv: 'all', pf: 'all' };
+  state = { month: 5, dentist: -1, conv: 'all', pf: 'all', xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '', xok: true };
 
   renderVals() {
     const S = this.state;
@@ -367,7 +419,74 @@ class Component extends DCLogic {
       { work: 'Gouttière', lab: 'Labo 3', quote: '190 €', invoice: '—', gap: '—', status: 'Non commandé', chip: badC }
     ];
 
-    return {
+    // ---- Explorateur des actes (octobre 2026, détail acte par acte) ----
+    const X = (() => {
+      const L = window.LAEKEN;
+      const empty = { xCaption: 'Données non chargées', xFamPills: [], xMutPills: [], xRegPills: [], xPayPills: [], xKpis: [], xShowDonut: false, xDonutStyle: '', xDonutValue: '', xLegend: [], xHeads: [], xRows: [], xRange: '', xPrev: () => {}, xNext: () => {}, xPrevStyle: '', xNextStyle: '', xReset: () => {}, xCsv: () => {}, xBtnMain: '', xBtnSide: '', xHasMsg: false, xMsg: '', xMsgStyle: '' };
+      if (!L || !L.families) { return empty; }
+      const PRl = L.PR; const FAMS = L.FAMS;
+      const prIdx = idx.map((i) => PRl.findIndex((p) => p.name === D[i].name));
+      const famOf = {}; FAMS.forEach((f, fi) => f[2].forEach((k) => { famOf[k] = fi; }));
+      const payL = { cb: 'Carte', cash: 'Liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
+      const payC = { cb: '#2F6DB5', cash: '#2E8B57', plan: '#5B3FA8', unpaid: '#B42318', zero: '#6B7B77', planned: '#B45309' };
+      const MUTS = ['Mutualités Chrétiennes', 'Solidaris', 'Partenamut', 'Mutualité Libérale', 'Mutualia', 'CAAMI', 'HR Rail'];
+      let rows = L.rows.filter((r) => prIdx.indexOf(r.p) >= 0);
+      if (S.xf >= 0) { rows = rows.filter((r) => famOf[r.key] === S.xf); }
+      if (S.xm) { rows = rows.filter((r) => r.mut === S.xm); }
+      if (S.xr !== 'all') { rows = rows.filter((r) => r.reg === S.xr); }
+      if (S.xp !== 'all') { rows = rows.filter((r) => r.pay === S.xp); }
+      const tmin = (r) => { const m = /(\d+)\s*h\s*(\d*)/.exec(r.time || ''); return m ? parseInt(m[1], 10) * 60 + (parseInt(m[2] || '0', 10) || 0) : 0; };
+      const keyF = { d: (r) => r.d * 10000 + tmin(r), doss: (r) => r.doss, prat: (r) => PRl[r.p].short, label: (r) => r.label, fam: (r) => famOf[r.key], mut: (r) => r.mut, reg: (r) => r.reg, pay: (r) => r.pay, fee: (r) => r.fee };
+      const kf = keyF[S.xs] || keyF.d;
+      rows = rows.slice().sort((a, b) => { const x = kf(a); const y = kf(b); return (x < y ? -1 : (x > y ? 1 : 0)) * S.xd; });
+      const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+      const eur2 = (v) => { const p = (Math.round(v * 100) / 100).toFixed(2).split('.'); return p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ',' + p[1] + ' €'; };
+      const tot = rows.reduce((a, r) => a + r.fee, 0);
+      const pats = {}; rows.forEach((r) => { pats[r.doss] = 1; });
+      const nb = rows.filter((r) => r.reg === 'bim').length;
+      const xp = (o) => setState(Object.assign({ xpg: 0, xmsg: '' }, o));
+      const pb = 'display:inline-flex; align-items:center; gap:6px; min-height:34px; box-sizing:border-box; border-radius:999px; padding:6px 12px; font-size:13px; cursor:pointer; ';
+      const pOff = pb + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+      const pOn = pb + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+      const dot = (c) => c ? 'width:9px; height:9px; border-radius:3px; background:' + c + ';' : 'display:none;';
+      const PER = 15; const pages = Math.max(1, Math.ceil(rows.length / PER)); const pg = Math.min(S.xpg, pages - 1);
+      const chipB = 'display:inline-block; border-radius:999px; padding:2px 9px; font-size:12px; font-weight:700; white-space:nowrap; ';
+      const famStat = FAMS.map((f, fi) => { const rs = rows.filter((r) => famOf[r.key] === fi); return { name: f[0], color: f[1], fee: rs.reduce((a, r) => a + r.fee, 0), n: rs.length }; }).filter((f) => f.n > 0);
+      const ftot = famStat.reduce((a, f) => a + f.fee, 0) || 1; let acc = 0;
+      const stops = famStat.map((f) => { const a = acc / ftot * 100; acc += f.fee; return f.color + ' ' + a.toFixed(2) + '% ' + (acc / ftot * 100).toFixed(2) + '%'; });
+      const btnMain = 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:700; cursor:pointer;';
+      const btnSide = 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:600; cursor:pointer;';
+      const HEADS = [['d', 'Date'], ['doss', 'Dossier'], ['prat', 'Praticien'], ['label', 'Acte'], ['fam', 'Soin'], ['mut', 'Mutualité'], ['reg', 'Statut'], ['pay', 'Paiement'], ['fee', 'Honoraires']];
+      const csvCell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const xCsv = () => {
+        const lines = [['Date', 'Heure', 'N° de dossier', 'Date de naissance', 'Praticien', 'Code INAMI', 'Acte', 'Famille de soins', 'Mutualité', 'Statut patient', 'Paiement', 'Honoraires']].concat(rows.map((r) => [L.pad(r.d) + '/10/2026', r.time, r.doss, r.dob, PRl[r.p].short, r.code, r.work || r.label, FAMS[famOf[r.key]][0], r.mut, r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', payL[r.pay], String(r.fee).replace('.', ',')]));
+        const csv = '﻿' + lines.map((l) => l.map(csvCell).join(';')).join('\r\n');
+        (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+          if (dl) { return dl.save({ filename: 'actes-octobre-2026-selection.csv', data: csv }); }
+          const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'actes-octobre-2026-selection.csv'; document.body.appendChild(a); a.click(); a.remove(); return true;
+        }).then(() => setState({ xmsg: rows.length + ' actes exportés.', xok: true }))
+          .catch((e) => setState({ xmsg: e && e.code === 'declined' ? 'Export annulé.' : 'Le téléchargement n\'est pas disponible dans cet affichage.', xok: false }));
+      };
+      return {
+        xCaption: (S.dentist >= 0 ? D[S.dentist].name : scope.charAt(0).toUpperCase() + scope.slice(1)) + ' · filtres combinables, cliquez sur un en-tête de colonne pour trier',
+        xFamPills: [{ label: 'Tous les soins', style: S.xf < 0 ? pOn : pOff, dot: dot(''), pick: () => xp({ xf: -1 }) }].concat(FAMS.map((f, fi) => ({ label: f[0], style: S.xf === fi ? pOn : pOff, dot: dot(f[1]), pick: () => xp({ xf: fi }) }))),
+        xMutPills: [{ label: 'Toutes', style: !S.xm ? pOn : pOff, pick: () => xp({ xm: '' }) }].concat(MUTS.map((m2) => ({ label: m2, style: S.xm === m2 ? pOn : pOff, pick: () => xp({ xm: m2 }) }))),
+        xRegPills: [['all', 'Tous'], ['ord', 'Ordinaire'], ['bim', 'BIM/VIPO']].map((x) => ({ label: x[1], style: S.xr === x[0] ? pOn : pOff, pick: () => xp({ xr: x[0] }) })),
+        xPayPills: [['all', 'Tous']].concat(Object.keys(payL).map((k) => [k, payL[k]])).map((x) => ({ label: x[1], style: S.xp === x[0] ? pOn : pOff, pick: () => xp({ xp: x[0] }) })),
+        xKpis: [{ label: 'Actes', value: nf(rows.length) }, { label: 'Patients distincts', value: nf(Object.keys(pats).length) }, { label: 'Honoraires', value: fmt(tot) }, { label: 'Moyenne par acte', value: rows.length ? eur2(tot / rows.length) : '—' }, { label: 'Actes BIM/VIPO', value: rows.length ? Math.round(nb / rows.length * 100) + ' %' : '—' }],
+        xShowDonut: famStat.length > 1, xDonutValue: fmt(tot),
+        xDonutStyle: 'position:relative; width:170px; height:170px; flex:none; border-radius:50%; background:conic-gradient(' + (stops.join(', ') || '#E7EDEB 0% 100%') + ');',
+        xLegend: famStat.slice().sort((a, b) => b.fee - a.fee).map((f) => ({ name: f.name, pct: String(Math.round(f.fee / ftot * 1000) / 10).replace('.', ',') + ' %', dot: 'width:10px; height:10px; border-radius:3px; flex:none; background:' + f.color + ';' })),
+        xHeads: HEADS.map((h) => ({ label: h[1], arrow: S.xs === h[0] ? (S.xd > 0 ? ' ▲' : ' ▼') : '', thStyle: h[0] === 'fee' ? 'padding:8px 0 8px 8px; text-align:right;' : (h[0] === 'd' ? 'padding:8px 8px 8px 0;' : 'padding:8px;'), style: 'border:0; background:none; padding:0; font:inherit; font-size:12px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:' + (S.xs === h[0] ? '#14201D' : '#4A5B57') + '; cursor:pointer;', pick: () => setState({ xs: h[0], xd: S.xs === h[0] ? -S.xd : (h[0] === 'fee' ? -1 : 1), xpg: 0 }) })),
+        xRows: rows.slice(pg * PER, pg * PER + PER).map((r) => { const f = FAMS[famOf[r.key]]; return { when: r.when + ' · ' + r.time, doss: r.doss, dob: r.dob, prat: PRl[r.p].short, label: r.work || r.label, code: r.code, fam: f[0], famChip: chipB + 'background:' + f[1] + '1A; color:' + f[1] + ';', mut: r.mut, reg: r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', pay: payL[r.pay], payChip: chipB + 'background:' + payC[r.pay] + '1A; color:' + payC[r.pay] + ';', fee: eur2(r.fee) }; }),
+        xRange: rows.length ? 'Actes ' + (pg * PER + 1) + ' à ' + Math.min(rows.length, pg * PER + PER) + ' sur ' + nf(rows.length) + ' · page ' + (pg + 1) + ' / ' + pages : 'Aucun acte ne correspond à ces filtres.',
+        xPrev: () => { if (pg > 0) { setState({ xpg: pg - 1 }); } }, xNext: () => { if (pg < pages - 1) { setState({ xpg: pg + 1 }); } },
+        xPrevStyle: btnSide + (pg > 0 ? '' : ' opacity:0.4; cursor:default;'), xNextStyle: btnSide + (pg < pages - 1 ? '' : ' opacity:0.4; cursor:default;'),
+        xReset: () => setState({ xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '' }), xCsv: xCsv, xBtnMain: btnMain, xBtnSide: btnSide,
+        xHasMsg: !!S.xmsg, xMsg: S.xmsg, xMsgStyle: 'padding:10px 12px; border-radius:10px; font-size:13px; ' + (S.xok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
+      };
+    })();
+    return Object.assign(X, {
       monthPills: monthPills, chips: chips, convPills: convPills,
       allPick: () => setState({ dentist: -1, conv: 'all', pf: 'all' }),
       allStyle: (S.dentist < 0 && S.conv === 'all') ? pillOn : pillOff,
@@ -380,7 +499,7 @@ class Component extends DCLogic {
       casierTitle: 'Casier de ' + cd.name, casierColor: cd.color,
       casierConv: cd.conv ? 'Conventionné' : 'Non conventionné', casierConvStyle: cd.conv ? csC : nsC,
       pfPills: pfPills, prestations: prestations, labo: labo
-    };
+    });
   }
 }
 </script>
