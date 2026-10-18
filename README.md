@@ -1,4 +1,4 @@
-# Dashboard Dental Clinique Laeken
+# Dashboard Dental Clinic Laeken
 
 Maquette interactive (données fictives). Ouvrir index.html.
 

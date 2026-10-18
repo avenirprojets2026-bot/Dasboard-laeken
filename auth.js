@@ -58,7 +58,7 @@
   function showLogin() {
     style();
     document.documentElement.classList.add('lk-lock');
-    var g = el('<form id="lk-form" autocomplete="on"><img src="icon-512.png" alt=""><h1>Dental Clinique Laeken</h1><p>Accès réservé : gérant, praticiens et secrétariat. Entrez votre e-mail et votre code secret.</p>' +
+    var g = el('<form id="lk-form" autocomplete="on"><img src="icon-512.png" alt=""><h1>Dental Clinic Laeken</h1><p>Accès réservé : gérant, praticiens et secrétariat. Entrez votre e-mail et votre code secret.</p>' +
       '<label>Adresse e-mail<input id="lk-mail" type="email" name="email" autocomplete="username" required inputmode="email"></label>' +
       '<label>Code secret<input id="lk-code" type="password" name="password" autocomplete="current-password" required></label>' +
       '<div id="lk-err" role="alert"></div><button id="lk-go" type="submit">Se connecter</button>' +

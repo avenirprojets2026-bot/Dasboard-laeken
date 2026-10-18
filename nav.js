@@ -32,7 +32,7 @@
     '@media(max-width:999px){#lk-bar{display:flex}#lk-side{display:none;top:56px;width:100%;max-width:340px;box-shadow:6px 0 24px rgba(0,0,0,.35)}#lk-side.open{display:block}#lk-side .lk-t{display:none}body{padding-top:56px!important}}';
   function init() {
     var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
-    var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png" alt="">Dental Clinique Laeken</div>' + html;
+    var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png" alt="">Dental Clinic Laeken</div>' + html;
     var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png" alt=""><b>' + curName + '</b><button type="button">Menu</button>';
     bar.querySelector('button').onclick = function () { side.classList.toggle('open'); };
     document.body.appendChild(side); document.body.appendChild(bar);
