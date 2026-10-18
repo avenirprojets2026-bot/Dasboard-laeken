@@ -151,6 +151,17 @@
     document.body.appendChild(b);
   }
 
+  function welcome() {
+    var k = 'lk-welcome-' + acc.e;
+    try { if (getOv(acc) || localStorage.getItem(k)) { return; } } catch (e) { return; }
+    var done = function () { try { localStorage.setItem(k, '1'); } catch (e) {} };
+    var g = el('<div class="box"><img src="icon-512.png" alt=""><h1>Bienvenue</h1><p>Vous êtes connecté avec le code qui vous a été remis. Pour plus de sécurité, vous pouvez choisir votre propre code de 6 caractères (lettres et chiffres).</p>' +
+      '<button type="button" id="lk-wy">Choisir mon code</button><button type="button" class="s" id="lk-wn">Plus tard</button>' +
+      '<div class="note">Vous pourrez le faire à tout moment avec le bouton « Mon code », en bas à droite.</div></div>');
+    g.querySelector('#lk-wy').onclick = function () { done(); g.remove(); showChange(); };
+    g.querySelector('#lk-wn').onclick = function () { done(); g.remove(); };
+  }
+
   function filterLinks() {
     var a = document.querySelectorAll('a[href$=".dc.html"]');
     for (var i = 0; i < a.length; i++) {
@@ -167,7 +178,7 @@
   if (!acc) { showLogin(); return; }
   if (!allowed(cur)) { showDenied(); return; }
   function ready() {
-    style(); badge(); filterLinks();
+    style(); badge(); filterLinks(); welcome();
     if (window.MutationObserver) { var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(filterLinks, 80); }).observe(document.body, { childList: true, subtree: true }); }
   }
   if (document.body) { ready(); } else { document.addEventListener('DOMContentLoaded', ready); }
