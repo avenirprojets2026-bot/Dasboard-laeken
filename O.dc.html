@@ -80,7 +80,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Les charges du cabinet comprennent déjà une ligne « Logiciel de gestion, facturation électronique et informatique » de 380 € par mois (famille Administration et informatique, page Résultat du gérant). Tant que les devis ne sont pas reçus, les logiciels Corilus sont considérés comme inclus dans cette ligne ; sinon il faudra l'augmenter, ce qui réduit le bénéfice du même montant.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Les charges du cabinet comprennent déjà une ligne « Logiciel de gestion, facturation électronique et informatique » de 380 € par mois (famille Administration et informatique, page Résultat du gérant). CareConnect Dentist (154,45 €) et l'agenda Helena (43,21 € avec les SMS) totalisent 197,66 € par mois et tiennent dans cette ligne. La borne, Allisone AI et Corilus Pay y seront ajoutés dès réception des devis : s'ils la dépassent, il faudra l'augmenter, ce qui réduit le bénéfice du même montant.</div>
 </section>
 
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Prix relevés sur les pages publiques de Corilus et de Helena Pro en octobre 2026 : à confirmer par devis, hors TVA. Aucune donnée réelle n'est connectée.</footer>
@@ -103,7 +103,7 @@ class Component extends DCLogic {
         feeds: 'Les eFact envoyées aux mutuelles : actes (codes INAMI), honoraires, suppléments, parts mutuelle et patient.\nLes retours des mutuelles : acceptés, refusés, payés.\nLes patients vus, par numéro de dossier et date de naissance.',
         pages: 'Mutuelles et labo, Résultat du gérant, Rémunérations et paiements, Patients et paiements, Patients vus par praticien, Import et export.',
         todo: 'Demander à Corilus ou au cabinet un export de facturation anonymisé (CSV ou fichier eFact).\nChoisir un import mensuel ou une connexion automatique, à valider avec Corilus.\nPrévoir un hébergement sécurisé en Europe avant toute donnée réelle.',
-        price: 'Sur devis', priceNote: 'Corilus ne publie pas de tarif pour CareConnect Dentist. Le cabinet l\'utilise déjà : son abonnement est donc probablement compris dans la ligne « Logiciel » des charges (380 € par mois). À vérifier sur la facture.' },
+        price: '154,45 €', priceNote: 'Montant communiqué par le gérant (période et TVA à confirmer sur la facture, probablement par mois hors TVA). Corilus ne publie pas de tarif. Avec l\'agenda (30,58 € + 12,63 € de SMS), on arrive à 197,66 € par mois, soit moins que la ligne « Logiciel » des charges (380 € par mois) : le bénéfice ne change pas.' },
       { tab: 'Helena Pro Kiosk', title: 'Helena Pro Kiosk', status: 'Borne d\'accueil · à configurer',
         what: 'Borne d\'enregistrement dans la salle d\'attente : le patient glisse sa carte d\'identité (eID) ou sa carte ISI+ à son arrivée, et sa présence apparaît dans l\'agenda. Moins de saisie et d\'interruptions à l\'accueil.',
         feeds: 'L\'heure d\'arrivée de chaque patient.\nLes patients en avance, à l\'heure ou en retard.\nLes rendez-vous manqués.',
@@ -134,7 +134,7 @@ class Component extends DCLogic {
       tabs: P.map((x, i) => ({ label: x.tab, style: i === t ? pillOn : pillOff, pick: () => setState({ tab: i }) })),
       p: P[t], statusStyle: chip,
       costs: [
-        { name: 'CareConnect Dentist', price: 'Sur devis', src: 'corilus.be (aucun tarif)', fam: 'Administration et informatique' },
+        { name: 'CareConnect Dentist', price: '154,45 € (montant communiqué, période à confirmer)', src: 'Communiqué par le gérant', fam: 'Administration et informatique' },
         { name: 'Helena Pro Kiosk', price: 'Non publié', src: 'corilus.be (aucun tarif)', fam: 'Administration et informatique' },
         { name: 'Helena Agenda (Calendar)', price: '30,58 € par mois (client CareConnect) + 12,63 € de SMS illimités + 129,35 € d\'activation', src: 'agenda.helenapro.care', fam: 'Administration et informatique' },
         { name: 'Allisone AI', price: 'Sur devis', src: 'Aucun tarif public', fam: 'Administration et informatique' },
