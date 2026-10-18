@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Accès et rôles</title>
+<script src="./support.js"></script>
+<script src="./acces.js"></script>
+<script src="./auth.js"></script>
+<script src="./nav.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2300px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+<a href="N.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Envoi aux praticiens</a>
+<a href="O.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Corilus</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Accès et rôles</span>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Administration</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Accès et rôles</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:560px; line-height:1.5">Qui peut ouvrir quelle page. Chaque personne se connecte avec son e-mail et un code de 6 caractères. Un praticien ne voit que son espace personnel, jamais les autres praticiens ni les charges du cabinet.</div>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px">
+<sc-for list="{{roles}}" as="r" hint-placeholder-count="4">
+<div style="{{r.style}}">
+<div style="font-size:18px; font-weight:700">{{r.name}}</div>
+<div style="font-size:13px; color:#4A5B57; margin-top:6px; line-height:1.5">{{r.desc}}</div>
+<div style="font-size:13px; font-weight:700; margin-top:10px">{{r.count}}</div>
+</div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">Pages ouvertes à chaque rôle</h2>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Page</th><th style="padding:8px; text-align:center">Administrateur</th><th style="padding:8px; text-align:center">Gérant</th><th style="padding:8px; text-align:center">Praticien</th><th style="padding:8px; text-align:center">Secrétariat</th></tr></thead>
+<tbody>
+<sc-for list="{{matrix}}" as="m" hint-placeholder-count="17">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700">{{m.page}}</td><td style="{{m.s0}}">{{m.a}}</td><td style="{{m.s1}}">{{m.g}}</td><td style="{{m.s2}}">{{m.p}}</td><td style="{{m.s3}}">{{m.s}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">« Ses données » : le praticien ne voit que ses propres patients, ses heures, ses travaux de laboratoire et sa rémunération.</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">Comptes et accès</h2>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Compte</th><th style="padding:8px">Rôle</th><th style="padding:8px">Ce qu'il voit</th></tr></thead>
+<tbody>
+<sc-for list="{{accounts}}" as="a" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700">{{a.name}}</td><td style="padding:10px 8px"><span style="{{a.chip}}">{{a.role}}</span></td><td style="padding:10px 8px">{{a.sees}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Les codes ne sont jamais écrits sur cette page ni dans le dépôt : seules des empreintes chiffrées sont stockées. Chacun peut changer son code avec le bouton « Mon code ». Ce contrôle est fait dans le navigateur : suffisant pour une maquette, mais une version avec de vraies données de patients demandera de vrais comptes sur un serveur.</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : comptes et adresses fictifs, sauf celles du gérant et de l'administrateur.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = 'padding:10px 8px; text-align:center; font-weight:700; color:#0B6B3A; background:#F1F9F4;';
+    const own = 'padding:10px 8px; text-align:center; font-weight:700; color:#8A4B08; background:#FFF8EC;';
+    const no = 'padding:10px 8px; text-align:center; color:#9AA8A4;';
+    // [page, admin, gérant, praticien, secrétariat] : 2 = tout, 1 = ses données, 0 = aucun accès
+    const P = [
+      ['Accueil', 2, 2, 2, 2], ['Vue cabinet', 2, 2, 0, 0], ['Casier praticien', 2, 2, 0, 0], ['Mutuelles et labo', 2, 2, 0, 0],
+      ['Résultat du gérant (charges, bénéfice, voitures)', 2, 2, 0, 0], ['Rémunérations et paiements', 2, 2, 0, 0], ['Fauteuils et coût par patient', 2, 2, 0, 0],
+      ['Tableau interactif', 2, 2, 0, 0], ['Patients et paiements', 2, 2, 0, 2], ['Actes par praticien', 2, 2, 0, 0], ['Import et export', 2, 2, 0, 2],
+      ['Nomenclature INAMI', 2, 2, 2, 2], ['Patients vus par praticien', 2, 2, 1, 0], ['Espace praticien', 2, 2, 1, 0],
+      ['Envoi aux praticiens', 2, 2, 0, 0], ['Corilus (logiciels et prix)', 2, 2, 0, 0], ['Accès et rôles', 2, 2, 0, 0]
+    ];
+    const cell = (v) => v === 2 ? ['Oui', ok] : (v === 1 ? ['Ses données', own] : ['Non', no]);
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
+    const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ';
+    const chips = { admin: chipBase + 'background:#EFEAF8; color:#4B2F96;', gerant: chipBase + 'background:#E3F2EF; color:#0B5D56;', praticien: chipBase + 'background:#E3F4EA; color:#0B6B3A;', secretaire: chipBase + 'background:#FDF0DC; color:#8A4B08;' };
+    const A = [
+      ['Karim (administrateur de la maquette)', 'Administrateur', 'admin', 'Toutes les pages, y compris les accès'],
+      ['Dr Mohamed Bochouari (gérant)', 'Gérant', 'gerant', 'Toutes les pages du cabinet, y compris les accès'],
+      ['Dr Aya Turkieh', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['Dr Abde-Ssadic Bochouari', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['Dr Daoud Bouchouari', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['Dr Julien Cabaz', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['Dr Nabila Touil', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['Secrétaire 1', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature'],
+      ['Secrétaire 2', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature'],
+      ['Secrétaire 3', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature']
+    ];
+    return {
+      roles: [
+        { name: 'Administrateur', desc: 'Gère la maquette, les comptes et les codes. Voit toutes les pages.', count: '1 compte', style: tile('#5B3FA8') },
+        { name: 'Gérant', desc: 'Voit tout le cabinet : résultat, charges, rémunérations, mutuelles, laboratoires, box et accès.', count: '1 compte', style: tile('#0F766E') },
+        { name: 'Praticien', desc: 'Ne voit que son espace : ses heures, ses patients, ses travaux de laboratoire et sa rémunération. Rien sur les autres praticiens ni sur les charges.', count: '5 comptes', style: tile('#2E8B57') },
+        { name: 'Secrétariat', desc: 'Voit les patients, les paiements, l\'import et export et la nomenclature. Pas les rémunérations ni les charges.', count: '3 comptes', style: tile('#B45309') }
+      ],
+      matrix: P.map((r) => { const c = [cell(r[1]), cell(r[2]), cell(r[3]), cell(r[4])]; return { page: r[0], a: c[0][0], s0: c[0][1], g: c[1][0], s1: c[1][1], p: c[2][0], s2: c[2][1], s: c[3][0], s3: c[3][1] }; }),
+      accounts: A.map((x) => ({ name: x[0], role: x[1], chip: chips[x[2]], sees: x[3] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

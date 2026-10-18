@@ -11,7 +11,7 @@ window.LKACCES = {
   },
   {
    "n": "Karim (administrateur de la maquette)",
-   "role": "gerant",
+   "role": "admin",
    "pr": -1,
    "e": "1c03ebb24267",
    "s": "56339905a2f36a788d1ab7375a462d24",

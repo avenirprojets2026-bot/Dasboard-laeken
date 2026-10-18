@@ -6,10 +6,10 @@ import hashlib, json, secrets, sys, os
 
 ITER = 120000
 ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-# nom affiché, e-mail, rôle (gerant | praticien | secretaire), index du praticien dans data.js (ou -1)
+# nom affiché, e-mail, rôle (admin | gerant | praticien | secretaire), index du praticien dans data.js (ou -1)
 COMPTES = [
     ('Dr Mohamed Bochouari (gérant)', 'orthobochouari@gmail.com', 'gerant', -1),
-    ('Karim (administrateur de la maquette)', 'avenir.projets2026@gmail.com', 'gerant', -1),
+    ('Karim (administrateur de la maquette)', 'avenir.projets2026@gmail.com', 'admin', -1),
     ('Dr Aya Turkieh', 'aya.turkieh@dental-laeken.be', 'praticien', 0),
     ('Dr Abde-Ssadic Bochouari', 'abde-ssadic.bochouari@dental-laeken.be', 'praticien', 2),
     ('Dr Daoud Bouchouari', 'daoud.bouchouari@dental-laeken.be', 'praticien', 3),

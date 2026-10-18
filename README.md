@@ -12,3 +12,14 @@ Le site demande un e-mail et un code secret. Trois profils : **gérant** (toutes
 
 ### Changer son code
 Une fois connecté, le bouton « Mon code » (en bas à droite) permet de choisir un nouveau code de 6 caractères (lettres et chiffres). Le nouveau code est enregistré dans le navigateur de l'appareil utilisé ; sur un autre appareil, le code d'origine reste valable tant que `acces.js` n'est pas régénéré (`outils/generer-acces.py`).
+
+## Accès et rôles
+
+| Rôle | Pages |
+|---|---|
+| Administrateur | toutes, y compris « Accès et rôles » |
+| Gérant | toutes, y compris « Accès et rôles » |
+| Praticien | Accueil, Espace praticien et Patients vus (ses données), Nomenclature |
+| Secrétariat | Accueil, Patients et paiements, Import et export, Nomenclature |
+
+Détail dans la page P (« Accès et rôles »). Contrôle côté navigateur uniquement (maquette).

@@ -1,11 +1,12 @@
 (function () {
   'use strict';
   var PAGES = {
+    admin: null, // toutes les pages, plus la gestion des accès
     gerant: null, // toutes les pages
     praticien: ['Accueil', 'M', 'L', 'K'],
     secretaire: ['Accueil', 'H', 'J', 'K']
   };
-  var ROLE_LABEL = { gerant: 'Gérant', praticien: 'Praticien', secretaire: 'Secrétariat' };
+  var ROLE_LABEL = { admin: 'Administrateur', gerant: 'Gérant', praticien: 'Praticien', secretaire: 'Secrétariat' };
   var KEY = 'lk-session';
   var cur = (location.pathname.split('/').pop() || 'Accueil.dc.html').replace('.dc.html', '') || 'Accueil';
   var A = window.LKACCES || { iter: 120000, comptes: [] };
@@ -144,7 +145,7 @@
   function badge() {
     var b = document.createElement('div'); b.id = 'lk-who';
     b.innerHTML = '<span></span><button type="button" class="chg">Mon code</button><button type="button">Se déconnecter</button>';
-    b.firstChild.textContent = acc.n;
+    b.firstChild.textContent = acc.n + ' · ' + ROLE_LABEL[acc.role];
     b.querySelector('.chg').onclick = showChange;
     b.lastChild.onclick = window.LKAUTH.logout;
     document.body.appendChild(b);
