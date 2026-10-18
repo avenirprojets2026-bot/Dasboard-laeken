@@ -19,7 +19,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>body{margin:0} a{color:#0B5D56} button{font-family:inherit}</style>
 </helmet>
-<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2300px">
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2500px">
 <nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
 <a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
 <a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
@@ -62,6 +62,12 @@
 <div style="background:#F3F6F5; border-radius:12px; padding:16px"><div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#4A5B57">Pages concernées</div><div style="font-size:14px; line-height:1.55; margin-top:6px; white-space:pre-line">{{p.pages}}</div></div>
 <div style="background:#F3F6F5; border-radius:12px; padding:16px"><div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#4A5B57">À configurer ensuite</div><div style="font-size:14px; line-height:1.55; margin-top:6px; white-space:pre-line">{{p.todo}}</div></div>
 </div>
+<sc-if value="{{p.hasImg}}" hint-placeholder-val="{{ false }}">
+<figure style="margin:0; display:flex; flex-direction:column; gap:8px; align-items:center">
+<img src="allisone.jpg" alt="Allisone : aide au diagnostic, communication patient, détection d'implant, efficacité opérationnelle" style="max-width:100%; width:520px; border-radius:12px; border:1px solid #DCE5E2">
+<figcaption style="font-size:12px; color:#4A5B57; text-align:center; max-width:620px; line-height:1.5">Illustration tirée de la documentation commerciale d'Allisone : aide au diagnostic (caries, lésions périapicales), communication avec le patient, détection d'implants inconnus et efficacité opérationnelle (plan de traitement).</figcaption>
+</figure>
+</sc-if>
 <div style="border:1px solid #E7EDEB; border-radius:12px; padding:16px; display:flex; flex-wrap:wrap; gap:24px; align-items:baseline">
 <div><div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#4A5B57">Prix</div><div style="font-size:26px; font-weight:700; margin-top:2px">{{p.price}}</div></div>
 <div style="font-size:14px; color:#4A5B57; line-height:1.5; flex:1 1 320px">{{p.priceNote}}</div>
@@ -86,7 +92,7 @@
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Prix relevés sur les pages publiques de Corilus et de Helena Pro en octobre 2026 : à confirmer par devis, hors TVA. Aucune donnée réelle n'est connectée.</footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2500}}'>
 class Component extends DCLogic {
   state = { tab: 0 };
 
@@ -117,7 +123,7 @@ class Component extends DCLogic {
         todo: 'Choisir la formule : Calendar (plus de 80 rendez-vous par mois) ou Light.\nOptions de SMS illimités.\nVérifier la liaison avec CareConnect Dentist.',
         price: '30,58 € par mois', priceNote: 'Helena Pro Calendar : 41,47 € par mois (plus de 80 rendez-vous par mois) ou 30,58 € pour un client CareConnect ; version Light 19,14 € par mois (moins de 80 rendez-vous). SMS illimités : 12,63 € par mois (9,57 € en Light). Activation : 129,35 € une fois. Facturation annuelle, essai gratuit de 14 jours. Hors TVA. Le prix par praticien n\'est pas précisé.' },
       { tab: 'Allisone AI', title: 'Allisone AI', status: 'Intelligence artificielle · à configurer',
-        what: 'Aide à la lecture des radiographies : repère des signes de caries, d\'infections ou de perte osseuse. Elle ne remplace pas le jugement clinique du dentiste. Elle se connecte à CareConnect Dentist avec CareConnect Imaging Dentist.',
+        what: 'Dispositif médical français d\'aide au diagnostic sur les radiographies : repère des caries, des lésions périapicales, des infections ou une perte osseuse, reconnaît automatiquement les implants inconnus et propose un plan de traitement à montrer au patient. Elle ne remplace pas le jugement clinique du dentiste. Elle se connecte à CareConnect Dentist avec CareConnect Imaging Dentist.', hasImg: true,
         feeds: 'Le nombre de radiographies analysées par praticien.\nLes types de constats, en statistiques, sans image ni nom de patient.\nLes plans de traitement proposés, pour suivre les devis.',
         pages: 'Actes par praticien, Patients vus par praticien, Mutuelles et labo (devis).',
         todo: 'Obtenir un devis : abonnement par praticien ou par radiographie.\nVérifier la compatibilité avec le matériel de radiographie du cabinet.\nDécider si les résultats alimentent le tableau de bord.',
@@ -132,7 +138,7 @@ class Component extends DCLogic {
     const t = Math.min(S.tab, P.length - 1);
     return {
       tabs: P.map((x, i) => ({ label: x.tab, style: i === t ? pillOn : pillOff, pick: () => setState({ tab: i }) })),
-      p: P[t], statusStyle: chip,
+      p: Object.assign({ hasImg: false }, P[t]), statusStyle: chip,
       costs: [
         { name: 'CareConnect Dentist', price: '154,45 € (montant communiqué, période à confirmer)', src: 'Communiqué par le gérant', fam: 'Administration et informatique' },
         { name: 'Helena Pro Kiosk', price: 'Non publié', src: 'corilus.be (aucun tarif)', fam: 'Administration et informatique' },
