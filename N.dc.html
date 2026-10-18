@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Envoi des relevés aux praticiens</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=26"></script>
-<script src="./auth.js?v=26"></script>
-<script src="./nav.js?v=26"></script>
-<script src="./data.js?v=26"></script>
+<script src="./acces.js?v=27"></script>
+<script src="./auth.js?v=27"></script>
+<script src="./nav.js?v=27"></script>
+<script src="./data.js?v=27"></script>
 </head>
 <body>
 <x-dc>
@@ -109,6 +109,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <a href="{{mailto}}" style="{{btnMain}}">Ouvrir dans ma messagerie</a>
 <button onClick="{{onPatCsv}}" style="{{btnSide}}">Patients vus (CSV)</button>
 <button onClick="{{onLabCsv}}" style="{{btnSide}}">Frais de labo (CSV)</button>
+<button onClick="{{onPrint}}" style="{{btnMain}}">Relevé imprimable (PDF)</button>
 </div>
 </div>
 <div style="background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:16px; font-size:14px; line-height:1.6">
@@ -186,7 +187,7 @@ class Component extends DCLogic {
     const S = this.state;
     const setState = (o) => this.setState(o);
     const D = window.LAEKEN;
-    if (!D) { return { list: [], who: 'Données non chargées', to: '', subject: '', body: '', mailto: '#', pats: [], labs: [], patCount: '', labTotal: '', hasMsg: false, msg: '', msgStyle: '', btnSide: '', btnMain: '', onAllCsv: () => {}, onPatCsv: () => {}, onLabCsv: () => {} }; }
+    if (!D) { return { list: [], who: 'Données non chargées', to: '', subject: '', body: '', mailto: '#', pats: [], labs: [], patCount: '', labTotal: '', hasMsg: false, msg: '', msgStyle: '', btnSide: '', btnMain: '', onAllCsv: () => {}, onPatCsv: () => {}, onPrint: () => {}, onLabCsv: () => {} }; }
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const PR = D.PR; const pad = D.pad;
@@ -234,7 +235,36 @@ class Component extends DCLogic {
     const onPatCsv = () => save('patients-' + slug + '-octobre-2026.csv', [['Date', 'Heure', 'N° de dossier', 'Date de naissance', 'Code INAMI', 'Acte', 'Honoraires', 'Frais de labo', 'Statut patient']].concat(vs.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/10/2026', v.time, v.doss, v.dob, l.code, l.label, num(l.fee), num(l.labo || 0), stLabel[v.reg]])), [])));
     const onLabCsv = () => save('frais-labo-' + slug + '-octobre-2026.csv', [['Date', 'N° de dossier', 'Date de naissance', 'Travail', 'Honoraires de l\'acte', 'Frais de labo']].concat(vs.reduce((acc, v) => acc.concat(v.lines.filter((l) => l.labo > 0).map((l) => [pad(v.d) + '/10/2026', v.doss, v.dob, l.work || l.label, num(l.fee), num(l.labo)])), [])));
     const onAllCsv = () => save('emails-praticiens-dental-clinic.csv', [['Praticien', 'Adresse e-mail', 'Patients vus', 'Honoraires', 'Frais de labo', 'Rémunération']].concat(PR.map((p, i) => [p.name, EM[i], p.visits.length, num(p.visits.reduce((a, r) => a + r.fee, 0)), num(p.visits.reduce((a, r) => a + sumLab(r), 0)), num(p.net)])));
+    const esc = (t) => String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const onPrint = () => {
+      const base = location.href.replace(/[^/]*$/, '');
+      const rowsP = vs.map((v) => '<tr><td>' + esc(v.when) + '<br><small>' + esc(v.time) + '</small></td><td><b>' + esc(v.doss) + '</b><br><small>' + esc(v.dob) + '</small></td><td>' + v.lines.map((l) => esc(l.work || l.label) + ' <small>' + esc(l.code) + '</small>').join('<br>') + '</td><td>' + esc(stLabel[v.reg]) + '</td><td class="n">' + esc(eur(v.fee)) + '</td><td class="n">' + (sumLab(v) ? esc(eur(sumLab(v))) : '—') + '</td></tr>').join('');
+      const rowsL = labs.map((l) => '<tr><td>' + esc(l.when) + '</td><td><b>' + esc(l.doss) + '</b><br><small>' + esc(l.dob) + '</small></td><td>' + esc(l.label) + '</td><td class="n">' + esc(l.fee) + '</td><td class="n">' + esc(l.lab) + '</td></tr>').join('');
+      const html = '<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Relevé ' + esc(P.name) + ' · octobre 2026</title><style>' +
+        '@page{size:A4;margin:16mm 14mm}*{box-sizing:border-box}body{font-family:"DM Sans",Helvetica,Arial,sans-serif;color:#14201D;margin:0;font-size:11.5px}' +
+        'header{display:flex;align-items:center;gap:14px;border-bottom:2px solid #0F766E;padding-bottom:12px;margin-bottom:16px}header img{width:46px;height:46px;border-radius:11px}' +
+        'h1{font-family:Georgia,serif;font-size:22px;margin:0}h2{font-size:14px;margin:22px 0 8px;color:#0B5D56;text-transform:uppercase;letter-spacing:.06em}.sub{color:#4A5B57;font-size:12px}' +
+        '.kp{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.kp div{border:1px solid #DCE5E2;border-radius:8px;padding:8px 10px}.kp b{display:block;font-size:15px;margin-top:2px}.kp .net{background:#E3F2EF;border-color:#0F766E}' +
+        'table{width:100%;border-collapse:collapse}th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#4A5B57;border-bottom:1px solid #C9D6D2;padding:6px 6px}td{padding:6px;border-bottom:1px solid #EEF2F1;vertical-align:top}td.n,th.n{text-align:right;white-space:nowrap}small{color:#6B7B77}tr{break-inside:avoid}' +
+        'footer{margin-top:22px;font-size:10px;color:#6B7B77;border-top:1px solid #DCE5E2;padding-top:8px}.tot td{font-weight:700;border-top:2px solid #14201D}' +
+        '.bar{position:fixed;top:0;left:0;right:0;background:#0F766E;color:#fff;padding:10px 16px;display:flex;gap:12px;align-items:center;font-size:13px}.bar button{background:#fff;color:#0F766E;border:0;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}@media print{.bar{display:none}}@media screen{body{padding:64px 24px 24px;max-width:900px;margin:auto}}' +
+        '</style></head><body><div class="bar">Relevé prêt : choisissez « Enregistrer au format PDF » dans la fenêtre d\'impression.<button onclick="window.print()">Imprimer / PDF</button></div>' +
+        '<header><img src="' + base + 'icon-512.png?v=2" alt=""><div><h1>Dental Clinic Laeken</h1><div class="sub">Relevé mensuel des prestations · octobre 2026</div></div><div style="margin-left:auto;text-align:right"><b style="font-size:14px">' + esc(P.name) + '</b><div class="sub">' + esc(P.spec || '') + '</div></div></header>' +
+        '<div class="kp"><div>Patients vus<b>' + nf(vs.length) + '</b></div><div>Honoraires<b>' + esc(eur(tFee)) + '</b></div><div>Frais de labo<b>' + esc(eur(tLab)) + '</b></div><div>Base (honoraires − labo)<b>' + esc(eur(P.base)) + '</b></div><div class="net">Rémunération (' + rate + ' %)<b>' + esc(eur(P.net)) + '</b></div></div>' +
+        '<p class="sub" style="margin-top:10px">Paiement prévu le 01/12/2026, après réception des remboursements des mutuelles.' + (tSupp ? ' Dont ' + esc(eur(tSupp)) + ' de suppléments d\'honoraires.' : '') + '</p>' +
+        '<h2>Patients vus (' + nf(vs.length) + ')</h2><table><thead><tr><th>Date</th><th>Dossier</th><th>Actes</th><th>Statut</th><th class="n">Honoraires</th><th class="n">Labo</th></tr></thead><tbody>' + rowsP + '<tr class="tot"><td colspan="4">Total</td><td class="n">' + esc(eur(tFee)) + '</td><td class="n">' + esc(eur(tLab)) + '</td></tr></tbody></table>' +
+        (labs.length ? '<h2>Travaux de laboratoire</h2><table><thead><tr><th>Date</th><th>Dossier</th><th>Travail</th><th class="n">Honoraires</th><th class="n">Labo</th></tr></thead><tbody>' + rowsL + '</tbody></table>' : '') +
+        '<footer>Document confidentiel destiné à ' + esc(P.name) + '. Patients identifiés par numéro de dossier et date de naissance. Maquette : données fictives.</footer></body></html>';
+      let w = null; try { w = window.open('', '_blank'); } catch (e) { w = null; }
+      if (w && w.document) { w.document.open(); w.document.write(html); w.document.close(); setTimeout(() => { try { w.focus(); w.print(); } catch (e) {} }, 600); setState({ msg: 'Relevé ouvert dans un nouvel onglet : choisissez « Enregistrer au format PDF ».', msgKind: 'ok' }); return; }
+      const fn = 'releve-' + slug + '-octobre-2026.html';
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+        if (dl) { return dl.save({ filename: fn, data: html }); }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([html], { type: 'text/html;charset=utf-8' })); a.download = fn; document.body.appendChild(a); a.click(); a.remove(); return true;
+      }).then(() => setState({ msg: 'Relevé enregistré : ouvrez-le puis imprimez-le en PDF.', msgKind: 'ok' })).catch(() => setState({ msg: 'Impossible d\'ouvrir le relevé dans cet affichage.', msgKind: 'bad' }));
+    };
     return {
+      onPrint: onPrint,
       list: list, who: P.name, to: EM[pi], subject: subject, body: body, mailto: mailto, pats: pats, labs: labs,
       patCount: nf(vs.length) + ' patients', labTotal: eur(tLab), btnSide: btnSide, btnMain: btnMain,
       onAllCsv: onAllCsv, onPatCsv: onPatCsv, onLabCsv: onLabCsv,

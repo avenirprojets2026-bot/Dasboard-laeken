@@ -1,4 +1,6 @@
 (function () {
+  var dark = false; try { dark = localStorage.getItem('lk-theme') === 'dark'; } catch (e) {}
+  if (dark) { document.documentElement.classList.add('lk-dark'); }
   var G = [
     ['Gérant', [['Vue cabinet', 'Main'], ['Résultat du gérant', 'D'], ['Rémunérations et paiements', 'E'], ['Fauteuils et coût par patient', 'F'], ['Mutuelles et labo', 'C'], ['Envoi aux praticiens', 'N'], ['Corilus', 'O'], ['Accès et rôles', 'P'], ['Tableau interactif', 'G']]],
     ['Accueil et caisse', [['Patients et paiements', 'H'], ['Import et export', 'J']]],
@@ -43,7 +45,7 @@
     });
   });
   var css = 'nav[aria-label="Vues"]{display:none!important}' +
-    '#lk-side{position:fixed;top:0;left:0;bottom:0;width:256px;background:linear-gradient(180deg,#0E1C19 0%,#122421 55%,#0F1F1C 100%);color:#fff;overflow-y:auto;z-index:9000;padding:22px 14px 90px;box-sizing:border-box;font-family:"DM Sans",sans-serif;border-right:1px solid rgba(255,255,255,.06);scrollbar-width:thin;scrollbar-color:#2A3D39 transparent}' +
+    '#lk-side{position:fixed;top:0;left:0;bottom:0;width:256px;background:linear-gradient(180deg,#0E1C19 0%,#122421 55%,#0F1F1C 100%);color:#fff;overflow-y:auto;z-index:9000;padding:22px 14px 16px;box-sizing:border-box;font-family:"DM Sans",sans-serif;border-right:1px solid rgba(255,255,255,.06);scrollbar-width:thin;scrollbar-color:#2A3D39 transparent}' +
     '#lk-side .lk-t{display:flex;align-items:center;gap:12px;margin:0 6px 22px;line-height:1.2}' +
     '#lk-side .lk-t img{width:38px;height:38px;border-radius:10px;outline:1px solid rgba(243,221,166,.35);box-shadow:0 6px 18px -6px rgba(0,0,0,.6)}' +
     '#lk-side .lk-t b{display:block;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:16px;letter-spacing:-.01em}' +
@@ -59,6 +61,9 @@
     '#lk-side .lk-s{display:flex;align-items:center;gap:9px;color:#A9C4BE;text-decoration:none;font-size:12.5px;padding:6px 8px;border-radius:8px}' +
     '#lk-side .lk-s i{width:7px;height:7px;border-radius:2px;flex:none}' +
     '#lk-side .lk-s:hover{background:rgba(255,255,255,.06);color:#fff}#lk-side .lk-s.on{color:#fff;font-weight:700;background:rgba(255,255,255,.07)}' +
+    'html.lk-dark{background:#fff;filter:invert(1) hue-rotate(180deg)}html.lk-dark img,html.lk-dark #lk-side,html.lk-dark #lk-bar,html.lk-dark #lk-who,html.lk-dark #lk-gate{filter:invert(1) hue-rotate(180deg)}html.lk-dark #lk-side img,html.lk-dark #lk-bar img,html.lk-dark #lk-gate img,html.lk-dark #lk-who img{filter:none}' +
+    '#lk-side .lk-theme{position:sticky;bottom:0;margin:22px 4px 0;box-shadow:0 -14px 18px -6px #0F1F1C;background:#1A2D29!important;display:flex;align-items:center;gap:10px;width:calc(100% - 8px);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:#DCE8E5;border-radius:10px;padding:10px 12px;font:inherit;font-size:13px;cursor:pointer}#lk-side .lk-theme:hover{background:rgba(255,255,255,.10)}' +
+    '#lk-bar .lk-tb{background:rgba(255,255,255,.10)!important;padding:0 12px!important}' +
     '#lk-bar{display:none;position:fixed;top:0;left:0;right:0;height:58px;background:rgba(14,28,25,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;align-items:center;gap:12px;padding:0 14px;z-index:9001;font-family:"DM Sans",sans-serif;box-sizing:border-box;border-bottom:1px solid rgba(255,255,255,.06)}' +
     '#lk-bar img{width:32px;height:32px;border-radius:8px}#lk-bar b{flex:1;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
     '#lk-bar button{background:#0F766E;color:#fff;border:0;border-radius:10px;min-height:40px;padding:0 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}' +
@@ -67,8 +72,12 @@
   function init() {
     var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
     var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png?v=2" alt=""><div><b>Dental Clinic Laeken</b><small>Comptabilité du cabinet</small></div></div>' + html;
-    var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png?v=2" alt=""><b>' + curName + '</b><button type="button">Menu</button>';
-    bar.querySelector('button').onclick = function () { side.classList.toggle('open'); };
+    var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png?v=2" alt=""><b>' + curName + '</b><button type="button" class="lk-tb" aria-label="Mode clair ou sombre"></button><button type="button" class="lk-mb">Menu</button>';
+    bar.querySelector('.lk-mb').onclick = function () { side.classList.toggle('open'); };
+    var tb = document.createElement('button'); tb.type = 'button'; tb.className = 'lk-theme'; side.appendChild(tb);
+    var setLbl = function () { var d = document.documentElement.classList.contains('lk-dark'); tb.innerHTML = (d ? '☀' : '☾') + '<span>' + (d ? 'Mode clair' : 'Mode sombre') + '</span>'; bar.querySelector('.lk-tb').textContent = d ? '☀' : '☾'; };
+    var toggle = function () { var d = document.documentElement.classList.toggle('lk-dark'); try { localStorage.setItem('lk-theme', d ? 'dark' : 'light'); } catch (e) {} setLbl(); };
+    tb.onclick = toggle; bar.querySelector('.lk-tb').onclick = toggle; setLbl();
     document.body.appendChild(side); document.body.appendChild(bar);
     var mark = function () { var h = (location.hash || '').replace('#', ''); var l = side.querySelectorAll('.lk-s'); for (var i = 0; i < l.length; i++) { l[i].classList.toggle('on', cur === 'D' && l[i].getAttribute('data-h') === h); } };
     mark(); window.addEventListener('hashchange', mark);

@@ -200,6 +200,42 @@
   // ---- Patients actifs, nouveaux patients, fidélisation (chiffres fictifs) ----
   var pilot = { actifs: 6400, nouveaux: 230, retour: 0.71 };
 
+
+  // ---- Historique mensuel (chiffres fictifs cohérents) : octobre 2025 à octobre 2026 ----
+  // Rémunérations mai à octobre 2026 = page Rémunérations ; chiffre d'affaires et labo déduits du même ratio qu'en octobre 2026.
+  var HIST = (function () {
+    var lab = ['Oct. 2025', 'Nov. 2025', 'Déc. 2025', 'Janv. 2026', 'Févr. 2026', 'Mars 2026', 'Avr. 2026', 'Mai 2026', 'Juin 2026', 'Juil. 2026', 'Août 2026', 'Sept. 2026', 'Oct. 2026'];
+    var rem = [57300, 56800, 47200, 52900, 54100, 57600, 55200, 56500, 56500, 50800, 44500, 58400, 61500];
+    var chg = [37900, 37900, 38600, 38200, 38200, 38200, 38300, 38500, 38500, 38500, 38400, 38720, 38720];
+    var R = 61500 / 121100; var LR = 17700 / 121100; var PP = 963 / 121100;
+    return lab.map(function (l, i) {
+      var ca = i === 12 ? 121100 : Math.round(rem[i] / R / 100) * 100;
+      var labo = i === 12 ? 17700 : Math.round(ca * LR / 100) * 100;
+      var pat = i === 12 ? 963 : Math.round(ca * PP);
+      return { label: l, ca: ca, labo: labo, rem: rem[i], chg: chg[i], ben: ca - labo - rem[i] - chg[i], pat: pat };
+    });
+  })();
+
+  // ---- Occupation des box par jour de semaine et par heure (octobre 2026) ----
+  var heat = (function () {
+    var nDays = [0, 0, 0, 0, 0, 0, 0];
+    for (var dd = 1; dd <= MONTH.days; dd += 1) { nDays[new Date(MONTH.y, MONTH.m, dd).getDay()] += 1; }
+    var out = {};
+    ['all'].concat(Object.keys(BOXMAP)).forEach(function (bk) {
+      var keys = bk === 'all' ? Object.keys(BOXMAP) : [bk];
+      var m = {}; // m[wd][h] = minutes occupées
+      visits.forEach(function (v) {
+        keys.forEach(function (k) {
+          if ((BOXMAP[k][v.wd] || []).indexOf(v.p) >= 0) {
+            var t = /(\d+)\s*h\s*(\d*)/.exec(v.time || ''); if (!t) { return; }
+            var h = parseInt(t[1], 10); m[v.wd] = m[v.wd] || {}; m[v.wd][h] = (m[v.wd][h] || 0) + PR[v.p].step;
+          }
+        });
+      });
+      out[bk] = { m: m, nDays: nDays, nBox: keys.length };
+    });
+    return out;
+  })();
   // ---- Familles de soins (pour les disques de répartition) ----
   var FAMS = [
     ['Examens et consultations', '#0F766E', ['exam', 'consult', 'consultO']],
@@ -219,5 +255,5 @@
       return { name: f[0], color: f[1], n: ls.length, fee: ls.reduce(function (a, l) { return a + l.fee; }, 0) };
     }).filter(function (x) { return x.n > 0; });
   }
-    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad, FAMS: FAMS, families: families };
+    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad, FAMS: FAMS, families: families, HIST: HIST, heat: heat, BOXNAMES: BOXNAMES };
 })();

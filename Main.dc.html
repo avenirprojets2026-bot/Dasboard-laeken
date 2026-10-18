@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=26"></script>
-<script src="./acces.js?v=26"></script>
-<script src="./auth.js?v=26"></script>
-<script src="./nav.js?v=26"></script>
+<script src="./data.js?v=27"></script>
+<script src="./acces.js?v=27"></script>
+<script src="./auth.js?v=27"></script>
+<script src="./nav.js?v=27"></script>
 </head>
 <body>
 <x-dc>
@@ -86,6 +86,20 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </sc-for>
 </section>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Comparaison des périodes</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026 comparé au mois précédent et au même mois l'an dernier</div></div>
+<div style="display:flex; gap:6px; background:#F1F5F4; border-radius:999px; padding:4px"><sc-for list="{{cmpPills}}" as="b" hint-placeholder-count="5"><button type="button" style="{{b.style}}" onClick="{{b.pick}}">{{b.label}}</button></sc-for></div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px">
+<sc-for list="{{cmpCards}}" as="c" hint-placeholder-count="6"><div style="border:1px solid #E2E9E6; border-radius:12px; padding:14px 16px; background:#FBFCFC"><div style="font-size:12px; color:#4A5B57">{{c.label}}</div><div style="font-size:22px; font-weight:700; margin-top:4px; font-variant-numeric:tabular-nums">{{c.value}}</div><div style="display:flex; flex-direction:column; gap:3px; margin-top:8px; font-size:12px"><span style="{{c.s1}}">{{c.d1}}</span><span style="{{c.s2}}">{{c.d2}}</span></div></div></sc-for>
+</div>
+<div><div style="font-size:13px; font-weight:700; margin-bottom:10px">{{trendTitle}}</div>
+<div style="display:flex; align-items:flex-end; gap:6px; height:150px; padding-top:18px; border-bottom:1px solid #DCE5E2; position:relative">
+<sc-for list="{{trend}}" as="t" hint-placeholder-count="13"><div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:4px; min-width:0"><span style="font-size:10px; color:#4A5B57; white-space:nowrap; font-variant-numeric:tabular-nums">{{t.v}}</span><div style="{{t.bar}}"></div></div></sc-for>
+</div>
+<div style="display:flex; gap:6px; margin-top:6px"><sc-for list="{{trend}}" as="t" hint-placeholder-count="13"><span style="flex:1; text-align:center; font-size:10.5px; color:#4A5B57; min-width:0; overflow:hidden; white-space:nowrap">{{t.l}}</span></sc-for></div>
+</div>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:18px">
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px">
 <div><h2 style="margin:0; font-size:18px">Répartition des soins</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{donutCaption}}</div></div>
@@ -146,7 +160,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1120}}'>
 class Component extends DCLogic {
-  state = { who: -1, by: 'fee' };
+  state = { who: -1, by: 'fee', tm: 'ca' };
   renderVals() {
     const S = this.state; const D = window.LAEKEN;
     const eurS = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
@@ -158,6 +172,27 @@ class Component extends DCLogic {
     const legendOf = (fam, by, fmt) => { const tot = fam.reduce((a, f) => a + f[by], 0) || 1; return fam.slice().sort((x, y) => y[by] - x[by]).map((f) => ({ name: f.name, dot: 'width:12px; height:12px; border-radius:4px; flex:none; background:' + f.color + ';', pct: String(Math.round(f[by] / tot * 1000) / 10).replace('.', ',') + ' %', val: fmt(f), bar: 'height:4px; border-radius:2px; background:' + f.color + '; opacity:.85; width:' + Math.max(2, Math.round(f[by] / tot * 100)) + '%;' })); };
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
+    let cmp = { cmpCards: [], cmpPills: [], trend: [], trendTitle: '' };
+    if (D && D.HIST) {
+      const H = D.HIST; const cur = H[12]; const prev = H[11]; const ly = H[0];
+      const eu = (v) => (v < 0 ? '− ' : '') + String(Math.abs(Math.round(v))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+      const MET = [['ca', "Chiffre d'affaires", true, true], ['pat', 'Patients vus', false, true], ['labo', 'Frais de labo', true, false], ['rem', 'Rémunérations', true, false], ['chg', 'Charges', true, false], ['ben', 'Bénéfice', true, true]];
+      const dl = (a, b, money, upGood, lbl) => {
+        const diff = a - b; const pct = b !== 0 ? diff / Math.abs(b) * 100 : 0;
+        const good = diff === 0 ? null : ((diff > 0) === upGood);
+        const txt = (diff > 0 ? '▲ ' : (diff < 0 ? '▼ ' : '= ')) + (money ? eu(Math.abs(diff)).replace('− ', '') : String(Math.abs(diff))) + (b !== 0 ? ' (' + (pct > 0 ? '+' : '') + String(Math.round(pct * 10) / 10).replace('.', ',') + ' %)' : '') + ' ' + lbl;
+        return [txt, 'font-weight:600; color:' + (good === null ? '#4A5B57' : (good ? '#0B6B3A' : '#A3231A')) + ';'];
+      };
+      const seg = (on) => 'border:0; background:' + (on ? '#fff' : 'transparent') + '; color:#14201D; border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:' + (on ? '700' : '500') + '; cursor:pointer; box-shadow:' + (on ? '0 1px 3px rgba(16,32,28,.15)' : 'none') + ';';
+      const tm = S.tm || 'ca'; const tdef = MET.filter((x) => x[0] === tm)[0];
+      const vals = H.map((h) => h[tm]); const mx = Math.max.apply(null, vals.map(Math.abs)) || 1;
+      cmp = {
+        cmpCards: MET.map((x) => { const a = dl(cur[x[0]], prev[x[0]], x[2], x[3], 'vs sept. 2026'); const b = dl(cur[x[0]], ly[x[0]], x[2], x[3], 'vs oct. 2025'); return { label: x[1], value: x[2] ? eu(cur[x[0]]) : String(cur[x[0]]), d1: a[0], s1: a[1], d2: b[0], s2: b[1] }; }),
+        cmpPills: [['ca', "Chiffre d'affaires"], ['ben', 'Bénéfice'], ['rem', 'Rémunérations'], ['chg', 'Charges'], ['pat', 'Patients']].map((x) => ({ label: x[1], style: seg(tm === x[0]), pick: () => this.setState({ tm: x[0] }) })),
+        trendTitle: tdef[1] + ' sur 13 mois',
+        trend: H.map((h, i) => { const v = h[tm]; const neg = v < 0; return { l: h.label.replace(' 20', " '"), v: tdef[2] ? (Math.abs(v) >= 1000 ? (neg ? '−' : '') + String(Math.round(Math.abs(v) / 100) / 10).replace('.', ',') + ' k' : (neg ? '−' : '') + Math.abs(v)) : String(v), bar: 'width:100%; max-width:34px; border-radius:6px 6px 2px 2px; height:' + Math.max(3, Math.round(Math.abs(v) / mx * 100)) + 'px; background:' + (neg ? '#B42318' : (i === 12 ? '#0F766E' : (i === 11 || i === 0 ? '#7FB8AF' : '#C9DDD8'))) + ';' }; })
+      };
+    }
     let donut = { donutStyle: 'display:none', legend: [], whoPills: [], byPills: [], donutLabel: '', donutValue: '', donutSub: '', donutCaption: 'Données non chargées' };
     if (D && D.families) {
       const lines = S.who < 0 ? D.rows : D.PR[S.who].rows;
@@ -176,7 +211,7 @@ class Component extends DCLogic {
         byPills: [{ label: 'Honoraires', style: seg(by === 'fee'), pick: () => this.setState({ by: 'fee' }) }, { label: 'Nombre d\'actes', style: seg(by === 'n'), pick: () => this.setState({ by: 'n' }) }]
       };
     }
-    return Object.assign(donut, {
+    return Object.assign(cmp, donut, {
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
         { label: 'Rémunération des praticiens', value: '61 500 €', note: '(honoraires − labo) × 60 %, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },

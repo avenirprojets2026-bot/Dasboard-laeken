@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Fauteuils et coût par patient</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=26"></script>
-<script src="./auth.js?v=26"></script>
-<script src="./nav.js?v=26"></script>
-<script src="./data.js?v=26"></script>
+<script src="./acces.js?v=27"></script>
+<script src="./auth.js?v=27"></script>
+<script src="./nav.js?v=27"></script>
+<script src="./data.js?v=27"></script>
 </head>
 <body>
 <x-dc>
@@ -151,6 +151,20 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, mardi 2 box, vendredi 1 box, samedi 2 box et dimanche 1 box : c'est là que le 7e praticien peut être placé.</div>
 </div>
 </section>
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Carte de chaleur de l'occupation</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{hCaption}}</div></div>
+<div style="display:flex; gap:6px; background:#F1F5F4; border-radius:999px; padding:4px; flex-wrap:wrap"><sc-for list="{{hPills}}" as="b" hint-placeholder-count="4"><button type="button" style="{{b.style}}" onClick="{{b.pick}}">{{b.label}}</button></sc-for></div></div>
+<div style="overflow-x:auto"><div style="min-width:720px; display:flex; flex-direction:column; gap:4px">
+<div style="display:grid; grid-template-columns:92px repeat(11, 1fr); gap:4px; font-size:11.5px; color:#4A5B57; text-align:center"><span></span><sc-for list="{{hHours}}" as="x" hint-placeholder-count="11"><span>{{x}}</span></sc-for></div>
+<sc-for list="{{hRows}}" as="r" hint-placeholder-count="7">
+<div style="display:grid; grid-template-columns:92px repeat(11, 1fr); gap:4px; align-items:stretch">
+<span style="font-size:13px; font-weight:600; align-self:center">{{r.day}}</span>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="11"><div title="{{c.tip}}" style="{{c.style}}">{{c.txt}}</div></sc-for>
+</div>
+</sc-for>
+</div></div>
+<div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:12px; color:#4A5B57"><span>Faible</span><span style="width:160px; height:10px; border-radius:999px; background:linear-gradient(90deg,#EAF4F2,#9ED3C9,#2BA391,#0F766E,#0A4B45)"></span><span>Plein</span><span style="margin-left:12px; display:inline-flex; align-items:center; gap:6px"><span style="width:14px; height:10px; border-radius:3px; background:repeating-linear-gradient(45deg,#EEF1F0,#EEF1F0 3px,#DDE3E1 3px,#DDE3E1 6px)"></span>Pause de midi</span><span style="margin-left:12px; display:inline-flex; align-items:center; gap:6px"><span style="width:14px; height:10px; border-radius:3px; background:#F6F8F7; border:1px dashed #D3DCD9"></span>Box fermé ou libre</span></div>
+</section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
@@ -207,6 +221,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1800}}'>
 class Component extends DCLogic {
+  state = { hb: 'all' };
   renderVals() {
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
     const P = {
@@ -281,7 +296,29 @@ class Component extends DCLogic {
     const donut = mkDonut([['Aya Turkieh', 5], ['Mohamed Bochouari', 3], ['Abde-Ssadic Bochouari', 2], ['Daoud Bouchouari', 2], ['Julien Cabaz', 2], ['Nabila Touil', 1], ['7e praticien', 1]], (v) => v + (v > 1 ? ' jours' : ' jour'), 'Par semaine', '16 jours');
     const D = window.LAEKEN; const fe = (n) => { const r = Math.round(n); return String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; };
     const boxCards = D ? D.boxes.map((b) => ({ name: b.name, occ: (Math.round(b.occ * 1000) / 10).toString().replace('.', ',') + ' %', bar: 'height:100%; background:' + (b.occ > 0.9 ? '#B45309' : '#0F766E') + '; width:' + Math.min(100, b.occ * 100) + '%', visits: b.visits, hours: Math.round(b.hours), avail: Math.round(b.avail), ca: fe(b.ca), part: fe(b.part), leasing: fe(b.leasing), conso: fe(b.conso), perso: fe(b.perso), margin: fe(b.margin) })) : [];
-    return Object.assign(donut, { boxCards: boxCards,
+    let heatVals = { hPills: [], hHours: [], hRows: [], hCaption: 'Données non chargées' };
+    if (D && D.heat) {
+      const hb = this.state.hb || 'all'; const H = D.heat[hb];
+      const HOURS = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+      const DAYS = [[1, 'Lundi'], [2, 'Mardi'], [3, 'Mercredi'], [4, 'Jeudi'], [5, 'Vendredi'], [6, 'Samedi'], [0, 'Dimanche']];
+      const col = (x) => { const st = [[0, [234, 244, 242]], [0.35, [158, 211, 201]], [0.65, [43, 163, 145]], [0.85, [15, 118, 110]], [1, [10, 75, 69]]]; let i = 0; while (i < st.length - 2 && x > st[i + 1][0]) { i += 1; } const a = st[i]; const b = st[i + 1]; const t = Math.max(0, Math.min(1, (x - a[0]) / (b[0] - a[0]))); return 'rgb(' + a[1].map((v, k) => Math.round(v + (b[1][k] - v) * t)).join(',') + ')'; };
+      const seg = (on) => 'border:0; background:' + (on ? '#fff' : 'transparent') + '; color:#14201D; border-radius:999px; padding:6px 12px; font-size:12.5px; font-weight:' + (on ? '700' : '500') + '; cursor:pointer; box-shadow:' + (on ? '0 1px 3px rgba(16,32,28,.15)' : 'none') + ';';
+      let sumOcc = 0; let sumCap = 0;
+      const rowsH = DAYS.map((dd) => ({ day: dd[1], cells: HOURS.map((hh) => {
+        const base = 'border-radius:6px; min-height:34px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; font-variant-numeric:tabular-nums;';
+        if (hh === 12) { return { txt: '', tip: 'Pause de midi', style: base + 'background:repeating-linear-gradient(45deg,#EEF1F0,#EEF1F0 3px,#DDE3E1 3px,#DDE3E1 6px);' }; }
+        const occ = ((H.m[dd[0]] || {})[hh]) || 0; const cap = H.nDays[dd[0]] * 60 * H.nBox; const x = cap ? occ / cap : 0;
+        if (!occ) { return { txt: '', tip: dd[1] + ' ' + hh + ' h : libre', style: base + 'background:#F6F8F7; border:1px dashed #D3DCD9;' }; }
+        sumOcc += occ; sumCap += cap;
+        return { txt: Math.round(x * 100) + ' %', tip: dd[1] + ' ' + hh + ' h : ' + Math.round(x * 100) + ' % occupé', style: base + 'background:' + col(x) + '; color:' + (x > 0.6 ? '#fff' : '#14201D') + ';' };
+      }) }));
+      heatVals = {
+        hPills: [['all', 'Les 3 box']].concat(Object.keys(D.BOXNAMES).map((k) => [k, D.BOXNAMES[k]])).map((x) => ({ label: x[1], style: seg(hb === x[0]), pick: () => this.setState({ hb: x[0] }) })),
+        hHours: HOURS.map((x) => x + ' h'), hRows: rowsH,
+        hCaption: 'Octobre 2026 · part du temps occupé par des rendez-vous, par jour de semaine et par heure · ' + (hb === 'all' ? 'les 3 box' : D.BOXNAMES[hb])
+      };
+    }
+    return Object.assign(donut, heatVals, { boxCards: boxCards,
       kpis: [
         { label: 'Box dentaires', value: '3', note: 'dont 1 avec microscope et 1 pédiatrique', style: tile('#5B3FA8') },
         { label: 'Journées de praticien', value: '16', note: 'par semaine, 7 praticiens (15 à partir de décembre sans Dr Touil), plus le mardi administratif de Mohamed', style: tile('#0F766E') },
