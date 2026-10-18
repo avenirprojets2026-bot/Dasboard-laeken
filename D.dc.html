@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=25"></script>
-<script src="./auth.js?v=25"></script>
-<script src="./nav.js?v=25"></script>
-<script src="./data.js?v=25"></script>
+<script src="./acces.js?v=26"></script>
+<script src="./auth.js?v=26"></script>
+<script src="./nav.js?v=26"></script>
+<script src="./data.js?v=26"></script>
 </head>
 <body>
 <x-dc>
@@ -111,7 +111,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <div style="display:flex; flex-wrap:wrap; gap:24px; align-items:flex-start">
 
-<section style="flex:1 1 420px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<section id="charges" style="flex:1 1 100%; min-width:0; scroll-margin-top:72px; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <h2 style="margin:0; font-size:18px">Charges du cabinet</h2>
 <div role="tablist" aria-label="Familles de charges" style="display:flex; flex-wrap:wrap; gap:6px">
 <sc-for list="{{cTabs}}" as="t" hint-placeholder-count="4">
@@ -127,6 +127,8 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 </sc-if>
 <sc-if value="{{showCards}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex; flex-wrap:wrap; gap:28px; align-items:center"><div style="{{cDonut}}"><div style="position:absolute; inset:34px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><div style="font-size:11px; color:#4A5B57; text-transform:uppercase; letter-spacing:0.04em">Charges du mois</div><div style="font-size:24px; font-weight:700">{{cDonutTotal}}</div><div style="font-size:12px; color:#4A5B57">5 familles</div></div></div>
+<div style="flex:1 1 360px; display:flex; flex-direction:column; gap:8px"><sc-for list="{{cLegend}}" as="g" hint-placeholder-count="5"><button type="button" onClick="{{g.pick}}" style="display:flex; align-items:center; gap:10px; border:1px solid #E2E9E6; background:#fff; border-radius:10px; padding:10px 12px; cursor:pointer; font:inherit; font-size:14px; text-align:left"><span style="{{g.dot}}"></span><span style="flex:1">{{g.label}}</span><b>{{g.pct}}</b><span style="color:#4A5B57; min-width:84px; text-align:right">{{g.amount}}</span><span style="color:#0F766E">›</span></button></sc-for></div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
 <sc-for list="{{catCards}}" as="k" hint-placeholder-count="3">
 <div style="{{k.style}}"><b style="font-size:14px; line-height:1.3">{{k.title}}</b><div style="font-size:22px; font-weight:700">{{k.total}}</div><div style="background:#EFEAF8; border-radius:999px; height:10px; overflow:hidden"><div style="{{k.bar}}"></div></div><div style="font-size:12px; color:#4A5B57">{{k.share}}</div></div>
@@ -228,9 +230,18 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
 class Component extends DCLogic {
-  state = { ct: 'all', st: 'all', vt: 'all', vs: 'all' };
+  state = { ct: (function () { var m = /ch-(exp|exc|rare|org|veh)/.exec((typeof location !== 'undefined' && location.hash) || ''); return m ? m[1] : 'all'; })(), st: 'all', vt: 'all', vs: 'all' };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
+    if (typeof window !== 'undefined') {
+      window.__lkD = this;
+      if (!window.__lkHash) {
+        window.__lkHash = true;
+        const go = () => { const m = /ch-(exp|exc|rare|org|veh)/.exec(location.hash || ''); if (m && window.__lkD) { window.__lkD.setState({ ct: m[1], st: 'all' }); setTimeout(() => { const el = document.getElementById('charges'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, 60); } };
+        window.addEventListener('hashchange', go);
+        if (/ch-/.test(location.hash || '')) { setTimeout(go, 400); }
+      }
+    }
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
@@ -325,6 +336,10 @@ class Component extends DCLogic {
     const tOn = tabBase + 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #5B3FA8; font-weight:700;';
     const tOff = tabBase + 'background:#EFEAF8; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
+    let accC = 0;
+    const cStops = CAT.map((c) => { const a = accC / TOT * 100; accC += sumCat(c.id); return c.color + ' ' + a.toFixed(2) + '% ' + (accC / TOT * 100 - 0.4).toFixed(2) + '%, #fff ' + (accC / TOT * 100 - 0.4).toFixed(2) + '% ' + (accC / TOT * 100).toFixed(2) + '%'; });
+    const cDonut = 'position:relative; width:210px; height:210px; flex:none; border-radius:50%; background:conic-gradient(' + cStops.join(', ') + '); box-shadow:0 18px 40px -22px rgba(16,32,28,.45);';
+    const cLegend = CAT.map((c) => ({ label: c.short, amount: eur(sumCat(c.id)), pct: pc(sumCat(c.id) / TOT * 100), dot: 'width:12px; height:12px; border-radius:4px; flex:none; background:' + c.color + ';', pick: () => { setState({ ct: c.id, st: 'all' }); try { history.replaceState(null, '', '#ch-' + c.id); } catch (e) {} } }));
     const catCards = CAT.map((c) => ({ title: c.short, desc: c.desc, total: eur(sumCat(c.id)), share: pc(sumCat(c.id) / TOT * 100) + ' des charges', bar: 'height:10px; border-radius:999px; background:' + c.color + '; width:' + (sumCat(c.id) / TOT * 100) + '%;', style: 'border:1px solid #DCE5E2; border-top:5px solid ' + c.color + '; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:6px;' }));
     const carSel = (S && S.vt) || 'all';
     const carSub = (S && S.vs) || 'all';
@@ -356,7 +371,7 @@ class Component extends DCLogic {
     const shownLines = LINES.filter((l) => (ctab === 'all' || l[0] === ctab) && (ctab === 'all' || stab === 'all' || l[4] === stab)).sort((x, y) => ord[x[0]] - ord[y[0]]);
     const shownTotal = shownLines.reduce((a, l) => a + l[2], 0);
     const curCat = CAT.filter((c) => c.id === ctab)[0];
-    const charges = shownLines.map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
+    const charges = (ctab === 'all' ? [] : shownLines).map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
     return {
       carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
@@ -374,7 +389,8 @@ class Component extends DCLogic {
         { label: 'Charges du cabinet', value: '− 38 720 €', bar: bar('#5B3FA8', 2.6, 32.0) },
         { label: 'Bénéfice', value: '3 180 €', bar: bar('#15803D', 0, 2.6) }
       ],
-      charges: charges, cTabs: cTabs, catCards: catCards, showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les cinq familles de charges, puis le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
+      cDonut: cDonut, cDonutTotal: eur(TOT), cLegend: cLegend,
+      charges: charges, cTabs: cTabs, catCards: [], showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les cinq familles de charges. Cliquez sur une famille (ici ou dans le menu) pour voir ses sous-onglets et le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [
         { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '35 400 €', labo: '4 100 €', retro: '18 780 €', share: '12 520 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '13 400 €', labo: '2 200 €', retro: '6 720 €', share: '4 480 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
