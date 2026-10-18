@@ -55,6 +55,24 @@
     pano: [['consult', 0.15]], ortho: [['pano', 0.06]], appareil: [['pano', 0.2]]
   };
   var FREEKEYS = ['couronne', 'bridge', 'facette', 'goutt', 'blanch', 'implant', 'greffe', 'couronneImpl', 'prothese'];
+  // Détail du travail de laboratoire (déterministe, sans toucher au générateur aléatoire)
+  var workDetail = function (key, doss) {
+    var h = 0; var t = String(doss) + key; for (var i = 0; i < t.length; i++) { h = (h * 31 + t.charCodeAt(i)) % 100003; }
+    var pick = function (a, o) { return a[(h + (o || 0)) % a.length]; };
+    var TEETH = ['11', '12', '13', '14', '15', '16', '17', '21', '22', '24', '25', '26', '27', '34', '35', '36', '37', '44', '45', '46', '47'];
+    var tooth = pick(TEETH);
+    var map = {
+      couronne: 'Couronne céramique, dent ' + tooth,
+      couronneImpl: 'Couronne sur implant, dent ' + tooth,
+      bridge: pick(['Bridge 3 éléments céramique, maxillaire supérieur (dents 14-15-16)', 'Bridge 3 éléments céramique, maxillaire inférieur (dents 35-36-37)', 'Bridge 3 éléments céramo-métallique, supérieur (dents 24-25-26)', 'Bridge 3 éléments céramique, inférieur (dents 45-46-47)']),
+      prothese: pick(['Prothèse amovible complète supérieure', 'Prothèse amovible complète inférieure', 'Prothèse partielle supérieure (châssis métallique)', 'Prothèse partielle inférieure (châssis métallique)', 'Prothèses complètes supérieure et inférieure']),
+      facette: 'Facette céramique, dent ' + pick(['11', '12', '13', '21', '22', '23']),
+      goutt: pick(['Gouttière de bruxisme supérieure', 'Gouttière de bruxisme inférieure', 'Gouttière de blanchiment supérieure', 'Gouttière occlusale supérieure']),
+      implant: 'Guide chirurgical et pilier, implant ' + pick(['36', '46', '16', '26', '14', '24']),
+      appareil: pick(['Appareil orthodontique amovible supérieur', 'Appareil orthodontique amovible inférieur', 'Appareil fixe, arcade supérieure', 'Appareil fixe, arcade inférieure', 'Appareil fixe, deux arcades'])
+    };
+    return map[key] || '';
+  };
   var rows = []; var visits = [];
   PR.forEach(function (P, pi) {
     P.dates = [];
@@ -100,6 +118,7 @@
         ks.forEach(function (k, ki) {
           var L = mkLine(k, age); L.vi = vis.vi; L.first = ki === 0;
           ['p', 'd', 'wd', 'off', 'time', 'when', 'doss', 'dob', 'age', 'mut', 'ms', 'reg', 'rp', 'future'].forEach(function (f) { L[f] = vis[f]; });
+          if (L.free) { L.work = workDetail(k, vis.doss); }
           vis.lines.push(L); mine.push(L);
         });
         myVisits.push(vis); visits.push(vis);

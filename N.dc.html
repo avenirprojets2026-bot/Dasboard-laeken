@@ -180,7 +180,7 @@ class Component extends DCLogic {
     });
     const pats = vs.map((v) => ({ when: v.when + ' · ' + v.time, doss: v.doss, dob: v.dob, acts: v.lines.map((l) => l.label + ' (' + l.code + ')').join('\n'), fee: eur(v.fee), lab: sumLab(v) ? eur(sumLab(v)) : '—', st: stLabel[v.reg] }));
     const labs = [];
-    vs.forEach((v) => { v.lines.forEach((l) => { if (l.labo > 0) { labs.push({ when: v.when, doss: v.doss, dob: v.dob, label: l.label, fee: eur(l.fee), lab: eur(l.labo) }); } }); });
+    vs.forEach((v) => { v.lines.forEach((l) => { if (l.labo > 0) { labs.push({ when: v.when, doss: v.doss, dob: v.dob, label: l.work || l.label, fee: eur(l.fee), lab: eur(l.labo) }); } }); });
     const mois = 'octobre 2026 (mois complet)';
     const subject = 'Dental Clinic Laeken · relevé de ' + mois + ' · ' + P.name;
     const rate = Math.round(P.rate * 100);
@@ -204,7 +204,7 @@ class Component extends DCLogic {
     };
     const slug = P.short.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const onPatCsv = () => save('patients-' + slug + '-octobre-2026.csv', [['Date', 'Heure', 'N° de dossier', 'Date de naissance', 'Code INAMI', 'Acte', 'Honoraires', 'Frais de labo', 'Statut patient']].concat(vs.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/10/2026', v.time, v.doss, v.dob, l.code, l.label, num(l.fee), num(l.labo || 0), stLabel[v.reg]])), [])));
-    const onLabCsv = () => save('frais-labo-' + slug + '-octobre-2026.csv', [['Date', 'N° de dossier', 'Date de naissance', 'Travail', 'Honoraires de l\'acte', 'Frais de labo']].concat(vs.reduce((acc, v) => acc.concat(v.lines.filter((l) => l.labo > 0).map((l) => [pad(v.d) + '/10/2026', v.doss, v.dob, l.label, num(l.fee), num(l.labo)])), [])));
+    const onLabCsv = () => save('frais-labo-' + slug + '-octobre-2026.csv', [['Date', 'N° de dossier', 'Date de naissance', 'Travail', 'Honoraires de l\'acte', 'Frais de labo']].concat(vs.reduce((acc, v) => acc.concat(v.lines.filter((l) => l.labo > 0).map((l) => [pad(v.d) + '/10/2026', v.doss, v.dob, l.work || l.label, num(l.fee), num(l.labo)])), [])));
     const onAllCsv = () => save('emails-praticiens-dental-clinic.csv', [['Praticien', 'Adresse e-mail', 'Patients vus', 'Honoraires', 'Frais de labo', 'Rémunération']].concat(PR.map((p, i) => [p.name, EM[i], p.visits.length, num(p.visits.reduce((a, r) => a + r.fee, 0)), num(p.visits.reduce((a, r) => a + sumLab(r), 0)), num(p.net)])));
     return {
       list: list, who: P.name, to: EM[pi], subject: subject, body: body, mailto: mailto, pats: pats, labs: labs,
