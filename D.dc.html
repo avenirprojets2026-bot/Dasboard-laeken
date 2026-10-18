@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=27"></script>
-<script src="./auth.js?v=27"></script>
-<script src="./nav.js?v=27"></script>
-<script src="./data.js?v=27"></script>
+<script src="./acces.js?v=28"></script>
+<script src="./auth.js?v=28"></script>
+<script src="./nav.js?v=28"></script>
+<script src="./data.js?v=28"></script>
 </head>
 <body>
 <x-dc>
@@ -99,7 +99,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
-<h2 style="margin:0; font-size:18px">D'où vient le bénéfice : de 121 100 € à 3 180 €</h2>
+<h2 style="margin:0; font-size:18px">{{flowTitle}}</h2>
 <sc-for list="{{flow}}" as="f" hint-placeholder-count="5">
 <div style="display:grid; grid-template-columns:minmax(120px, 230px) 1fr minmax(84px, 110px); gap:12px; align-items:center; font-size:14px">
 <span style="font-weight:500">{{f.label}}</span>
@@ -157,12 +157,13 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </sc-if>
 <sc-for list="{{charges}}" as="c" hint-placeholder-count="5">
 <div style="display:flex; flex-direction:column; gap:6px">
-<div style="display:flex; justify-content:space-between; gap:12px; font-size:14px"><span>{{c.label}}</span><b>{{c.value}}</b></div>
+<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; flex-wrap:wrap"><span style="flex:1 1 200px">{{c.label}}<sc-if value="{{c.mod}}" hint-placeholder-val="{{ false }}"><span style="margin-left:8px; font-size:11.5px; font-weight:700; color:#8A4B08; background:#FDF0DC; border-radius:999px; padding:2px 8px">{{c.modTxt}}</span></sc-if></span><span style="display:inline-flex; align-items:center; gap:10px"><span style="font-size:12px; color:#4A5B57; white-space:nowrap">{{c.year}}</span><span style="display:inline-flex; align-items:center; gap:4px"><input type="number" min="0" step="10" value="{{c.val}}" onChange="{{c.set}}" aria-label="{{c.aria}}" style="width:96px; text-align:right; border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:14px; font-weight:700; font-variant-numeric:tabular-nums"><span style="font-weight:700">€</span></span></span></div>
 <div style="background:#EFEAF8; border-radius:999px; height:10px; overflow:hidden"><div style="{{c.bar}}"></div></div>
 <div style="font-size:12px; color:#4A5B57">{{c.note}}</div>
 </div>
 </sc-for>
 <div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:16px; font-weight:700"><span>{{cTotalLabel}}</span><span>{{cTotal}}</span></div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px"><span style="font-size:12.5px; color:#4A5B57; max-width:620px; line-height:1.5">{{chNote}}</span><span style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{chBtnSide}}" onClick="{{chReset}}">Revenir aux montants d'origine</button><button type="button" style="{{chBtnMain}}" onClick="{{chCsv}}">Exporter les charges (CSV)</button></span></div>
 </section>
 
 <section style="flex:999 1 520px; min-width:0; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -250,7 +251,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
 class Component extends DCLogic {
-  state = { bud: (function () { try { return JSON.parse(localStorage.getItem('lk-budget') || 'null') || {}; } catch (e) { return {}; } })(), ct: (function () { var m = /ch-(exp|exc|rare|org|veh)/.exec((typeof location !== 'undefined' && location.hash) || ''); return m ? m[1] : 'all'; })(), st: 'all', vt: 'all', vs: 'all' };
+  state = { ch: (function () { try { return JSON.parse(localStorage.getItem('lk-charges') || 'null') || {}; } catch (e) { return {}; } })(), bud: (function () { try { return JSON.parse(localStorage.getItem('lk-budget') || 'null') || {}; } catch (e) { return {}; } })(), ct: (function () { var m = /ch-(exp|exc|rare|org|veh)/.exec((typeof location !== 'undefined' && location.hash) || ''); return m ? m[1] : 'all'; })(), st: 'all', vt: 'all', vs: 'all' };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
     if (typeof window !== 'undefined') {
@@ -269,6 +270,7 @@ class Component extends DCLogic {
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const pc = (x) => (Math.round(x * 10) / 10).toString().replace('.', ',') + ' %';
     const cbar = (w) => 'background:#5B3FA8; height:10px; width:' + w + '%;';
+    const CH0 = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 && Object.keys(S.ch || {}).length ? t : 38720; } catch (e) { return 38720; } })();
     const D = window.LAEKEN; let pilotKpis = []; let pilotRows = [];
     if (D) {
       const nV = D.visits.length; const ca = D.rows.reduce((a, r) => a + r.fee, 0);
@@ -276,8 +278,8 @@ class Component extends DCLogic {
       const esth = D.rows.filter((r) => r.key === 'blanch' || r.key === 'facette'); const esthTot = esth.reduce((a, r) => a + r.fee, 0);
       const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
       pilotKpis = [
-        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(38720 / ca * 100), '38 720 € de charges sur ' + eur(ca)),
-        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(38720 / 41900 * 100), 'sur 41 900 € après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(CH0 / ca * 100), eur(CH0) + ' de charges sur ' + eur(ca)),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(CH0 / 41900 * 100), 'sur 41 900 € après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
         T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
@@ -342,6 +344,10 @@ class Component extends DCLogic {
       ['rare', 'Formation des assistantes', 150, 'Formation suivie et facturée', 'for'],
       ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures', 'fin']
     ];
+    const LBASE = LINES.map((l) => l[2]);
+    LINES.forEach((l, i) => { l[5] = i; const o = S.ch && S.ch[i]; if (o !== undefined && o !== null && !isNaN(o)) { l[2] = Number(o); } });
+    const nMod = LINES.filter((l, i) => l[2] !== LBASE[i]).length;
+    const saveCh = (i, v) => { const nc = Object.assign({}, S.ch || {}); if (v === LBASE[i]) { delete nc[i]; } else { nc[i] = v; } try { localStorage.setItem('lk-charges', JSON.stringify(nc)); localStorage.setItem('lk-charges-tot', String(LINES.reduce((a, l, j) => a + (j === i ? v : l[2]), 0))); if (!Object.keys(nc).length) { localStorage.removeItem('lk-charges-tot'); } } catch (e) {} setState({ ch: nc }); };
     const SUBS = {
       veh: [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']],
       exp: [['loc', 'Locaux et énergie'], ['con', 'Fournitures et consommables'], ['adm', 'Administration et informatique'], ['ass', 'Assurances'], ['mkt', 'Marketing et visibilité']],
@@ -364,7 +370,7 @@ class Component extends DCLogic {
     const realOf = { ca: 121100, labo: 17700, rem: 61500, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh') };
     const bRows = [['ca', "Chiffre d'affaires", 'honoraires facturés', true], ['labo', 'Frais de laboratoire', 'factures des labos', false], ['rem', 'Rémunérations des praticiens', '(honoraires − labo) × rétrocession', false]].concat(CAT.map((c) => [c.id, c.label, 'famille de charges', false]));
     const budBen = BV.ca - BV.labo - BV.rem - BV.exp - BV.exc - BV.rare - BV.org - BV.veh;
-    const realBen = 3180;
+    const realBen = 41900 - TOT;
     const bLine = (id, label, hint, up, bud, real, edit) => {
       const gap = real - bud; const good = gap === 0 ? null : ((gap > 0) === up);
       const pctv = bud ? real / bud * 100 : 0;
@@ -398,7 +404,7 @@ class Component extends DCLogic {
     const carKpis = [
       { label: 'Par mois', value: eur(carMonth), note: carSub === 'all' ? 'tous les postes' : KINDS.filter((k) => k[0] === carSub)[0][1].toLowerCase(), style: 'border:1px solid #DCE5E2; border-top:5px solid #2F6DB5; border-radius:12px; padding:14px 16px;' },
       { label: 'Par an', value: eur(carMonth * 12), note: 'douze mois de charges', style: 'border:1px solid #DCE5E2; border-top:5px solid #5B3FA8; border-radius:12px; padding:14px 16px;' },
-      { label: 'Part des charges du cabinet', value: pc(carMonth / TOT * 100), note: 'sur 38 720 € de charges mensuelles', style: 'border:1px solid #DCE5E2; border-top:5px solid #B45309; border-radius:12px; padding:14px 16px;' }
+      { label: 'Part des charges du cabinet', value: pc(carMonth / TOT * 100), note: 'sur ' + eur(TOT) + ' de charges mensuelles', style: 'border:1px solid #DCE5E2; border-top:5px solid #B45309; border-radius:12px; padding:14px 16px;' }
     ];
     const carDesc = carSel === 'all' ? 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique. Choisissez une voiture, puis un poste de dépense.' : 'Détail de la ' + CARS.filter((c) => c[0] === carSel)[0][1] + ' par poste de dépense.';
     const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4 };
@@ -411,25 +417,31 @@ class Component extends DCLogic {
     const shownLines = LINES.filter((l) => (ctab === 'all' || l[0] === ctab) && (ctab === 'all' || stab === 'all' || l[4] === stab)).sort((x, y) => ord[x[0]] - ord[y[0]]);
     const shownTotal = shownLines.reduce((a, l) => a + l[2], 0);
     const curCat = CAT.filter((c) => c.id === ctab)[0];
-    const charges = (ctab === 'all' ? [] : shownLines).map((l) => ({ label: l[1], value: eur(l[2]), bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
+    const charges = (ctab === 'all' ? [] : shownLines).map((l) => ({ label: l[1], value: eur(l[2]), val: String(l[2]), year: eur(l[2] * 12) + ' par an', mod: l[2] !== LBASE[l[5]], modTxt: l[2] !== LBASE[l[5]] ? 'modifié (origine : ' + eur(LBASE[l[5]]) + ')' : '', aria: 'Montant mensuel : ' + l[1], set: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); saveCh(l[5], v); }, bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
     return {
       carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus', style: tile('#0F766E') },
         { label: 'Rémunération des praticiens', value: '61 500 €', note: '(honoraires − 17 700 € de labo) × 60 %, ou 50 % pour Nabila Touil', style: tile('#B45309') },
-        { label: 'Charges du cabinet', value: '38 720 €', note: 'dont 12 300 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements), 4 690 € pour les 2 BMW et 5 110 € de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '3 180 €', note: '2,6 % du chiffre d\'affaires', style: tile('#15803D') }
+        { label: 'Charges du cabinet', value: eur(TOT), note: (nMod ? nMod + ' montant(s) modifié(s) · ' : '') + 'dont ' + eur(sumCat('org')) + ' de personnel et d\'organisation, ' + eur(sumCat('veh')) + ' pour les 2 BMW et ' + eur(sumCat('exc') + sumCat('rare')) + ' de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: (41900 - TOT < 0 ? '− ' : '') + eur(Math.abs(41900 - TOT)), note: pc((41900 - TOT) / 121100 * 100) + ' du chiffre d\'affaires', style: tile((41900 - TOT) < 0 ? '#B42318' : '#15803D') }
       ],
       flow: [
         { label: "Chiffre d'affaires", value: '121 100 €', bar: bar('#0F766E', 0, 100) },
         { label: 'Frais de laboratoire', value: '− 17 700 €', bar: bar('#8A4B08', 85.4, 14.6) },
         { label: 'Rémunération des praticiens', value: '− 61 500 €', bar: bar('#B45309', 34.6, 50.8) },
         { label: 'Part du cabinet', value: '41 900 €', bar: bar('#0F766E', 0, 34.6) },
-        { label: 'Charges du cabinet', value: '− 38 720 €', bar: bar('#5B3FA8', 2.6, 32.0) },
-        { label: 'Bénéfice', value: '3 180 €', bar: bar('#15803D', 0, 2.6) }
+        { label: 'Charges du cabinet', value: '− ' + eur(TOT), bar: bar('#5B3FA8', Math.max(0, (41900 - TOT) / 1211), Math.min(34.6, TOT / 1211)) },
+        { label: 'Bénéfice', value: (41900 - TOT < 0 ? '− ' : '') + eur(Math.abs(41900 - TOT)), bar: bar((41900 - TOT) < 0 ? '#B42318' : '#15803D', 0, Math.abs(41900 - TOT) / 1211) }
       ],
       budget: budget, bReset: 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:600; cursor:pointer;', bResetFn: () => { try { localStorage.removeItem('lk-budget'); } catch (e) {} setState({ bud: {} }); },
+      flowTitle: 'D\'où vient le bénéfice : de 121 100 € à ' + (41900 - TOT < 0 ? '− ' : '') + eur(Math.abs(41900 - TOT)),
+      chNote: (nMod ? nMod + ' montant(s) modifié(s). ' : '') + 'Modifiez un montant puis validez (Entrée) : les familles, le disque, le total des charges, le bénéfice et le budget se recalculent. Les montants sont enregistrés dans ce navigateur uniquement.',
+      chBtnSide: 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:600; cursor:pointer;' + (nMod ? '' : ' opacity:0.5;'),
+      chBtnMain: 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:700; cursor:pointer;',
+      chReset: () => { try { localStorage.removeItem('lk-charges'); localStorage.removeItem('lk-charges-tot'); } catch (e) {} setState({ ch: {} }); },
+      chCsv: () => { const cell = (v) => { const t = String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; }; const rows = [['Famille', 'Poste', 'Montant mensuel', 'Montant annuel', 'Montant d\'origine', 'Remarque']].concat(LINES.map((l, i) => [CAT.filter((c) => c.id === l[0])[0].label, l[1], l[2], l[2] * 12, LBASE[i], l[3]])).concat([['Total', '', TOT, TOT * 12, LBASE.reduce((a, x) => a + x, 0), '']]); const csv = '\ufeff' + rows.map((r) => r.map(cell).join(';')).join('\r\n'); (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'charges-dental-clinic-laeken.csv', data: csv }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'charges-dental-clinic-laeken.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; }).catch(() => {}); },
       cDonut: cDonut, cDonutTotal: eur(TOT), cLegend: cLegend,
       charges: charges, cTabs: cTabs, catCards: [], showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les cinq familles de charges. Cliquez sur une famille (ici ou dans le menu) pour voir ses sous-onglets et le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [

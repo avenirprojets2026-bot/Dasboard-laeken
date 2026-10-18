@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=27"></script>
-<script src="./acces.js?v=27"></script>
-<script src="./auth.js?v=27"></script>
-<script src="./nav.js?v=27"></script>
+<script src="./data.js?v=28"></script>
+<script src="./acces.js?v=28"></script>
+<script src="./auth.js?v=28"></script>
+<script src="./nav.js?v=28"></script>
 </head>
 <body>
 <x-dc>
@@ -211,7 +211,8 @@ class Component extends DCLogic {
         byPills: [{ label: 'Honoraires', style: seg(by === 'fee'), pick: () => this.setState({ by: 'fee' }) }, { label: 'Nombre d\'actes', style: seg(by === 'n'), pick: () => this.setState({ by: 'n' }) }]
       };
     }
-    return Object.assign(cmp, donut, {
+    const chTot = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 ? t : 0; } catch (e) { return 0; } })();
+    const R = Object.assign(cmp, donut, {
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
         { label: 'Rémunération des praticiens', value: '61 500 €', note: '(honoraires − labo) × 60 %, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
@@ -228,6 +229,11 @@ class Component extends DCLogic {
         { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: '66', billed: '6 300 €', retro: '3 000 €', paidPct: '77 %', paidW: '77%', pending: '1 500 €', labo: '1 300 €', devis: '1', conv: 'Conventionné', convStyle: cs }
       ]
     });
+    if (chTot) {
+      const ben = 41900 - chTot;
+      R.kpis = R.kpis.map((k) => k.label === 'Charges du cabinet' ? Object.assign({}, k, { value: eurS(chTot), note: 'montants modifiés par le gérant (Résultat du gérant), au lieu de 38 720 €' }) : (k.label === 'Bénéfice du cabinet' ? Object.assign({}, k, { value: (ben < 0 ? '− ' : '') + eurS(Math.abs(ben)), note: 'recalculé avec les charges modifiées' }) : k));
+    }
+    return R;
   }
 }
 </script>
