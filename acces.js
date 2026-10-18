@@ -14,8 +14,8 @@ window.LKACCES = {
    "role": "admin",
    "pr": -1,
    "e": "1c03ebb24267",
-   "s": "56339905a2f36a788d1ab7375a462d24",
-   "h": "388e190355d2e9c37ba63137aa44c5e7dffd090b6e2414f215891e5a457fed3a"
+   "s": "6d58434914acda64a1deac9ac17d79c0",
+   "h": "b4b5d78381fe4e36ad18b41c02d77a07a809e50e9c656dfabba984f3e455af41"
   },
   {
    "n": "Dr Aya Turkieh",
