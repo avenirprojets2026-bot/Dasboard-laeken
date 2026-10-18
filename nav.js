@@ -2,7 +2,7 @@
   var dark = false; try { dark = localStorage.getItem('lk-theme') === 'dark'; } catch (e) {}
   if (dark) { document.documentElement.classList.add('lk-dark'); }
   var G = [
-    ['Gérant', [['Vue cabinet', 'Main'], ['Résultat du gérant', 'D'], ['Rémunérations et paiements', 'E'], ['Fauteuils et coût par patient', 'F'], ['Mutuelles et labo', 'C'], ['Envoi aux praticiens', 'N'], ['Corilus', 'O'], ['Accès et rôles', 'P'], ['Tableau interactif', 'G']]],
+    ['Gérant', [['Vue cabinet', 'Main'], ['Résultat du gérant', 'D'], ['Factures fournisseurs', 'Q'], ['Rémunérations et paiements', 'E'], ['Fauteuils et coût par patient', 'F'], ['Mutuelles et labo', 'C'], ['Envoi aux praticiens', 'N'], ['Corilus', 'O'], ['Accès et rôles', 'P'], ['Tableau interactif', 'G']]],
     ['Accueil et caisse', [['Patients et paiements', 'H'], ['Import et export', 'J']]],
     ['Praticien', [['Casier praticien', 'B'], ['Espace praticien', 'M'], ['Patients vus par praticien', 'L'], ['Actes par praticien', 'I']]],
     ['Références', [['Nomenclature INAMI', 'K']]]
@@ -24,6 +24,7 @@
     M: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
     L: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
     I: '<path d="M9 5h11M9 12h11M9 19h11"/><circle cx="4.5" cy="5" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="19" r="1"/>',
+    Q: '<path d="M6 3h9l3 3v15l-3-2-3 2-3-2-3 2V3z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
     K: '<path d="M4 4h11a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h11"/>'
   };
   var ic = function (k) { return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IC[k] || '') + '</svg>'; };

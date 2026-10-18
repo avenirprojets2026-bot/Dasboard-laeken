@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Factures fournisseurs</title>
+<script src="./support.js"></script>
+<script src="./acces.js?v=30"></script>
+<script src="./auth.js?v=30"></script>
+<script src="./nav.js?v=30"></script>
+<script src="./data.js?v=30"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F6F5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0B5D56;transition:color .15s ease} a:hover{color:#063B37}
+button,select,input{font-family:inherit}
+::selection{background:#CFE8E3;color:#0A2622}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-0.02em;font-optical-sizing:auto}
+h2{letter-spacing:-0.01em}
+table{font-variant-numeric:tabular-nums}
+[style*="font-size:26px"],[style*="font-size:28px"],[style*="font-size:30px"],[style*="font-size:34px"],[style*="font-size:36px"]{font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+div[style*="background:#F3F6F5; color:#14201D"]{background:radial-gradient(1100px 380px at 12% -8%,rgba(15,118,110,.10),transparent 70%),linear-gradient(180deg,#EDF3F1 0,#F4F6F5 360px)!important}
+[style*="background:#fff"][style*="border-radius:14px"],[style*="background:#fff"][style*="border-radius:12px"]{border-color:#E2E9E6!important;box-shadow:0 1px 2px rgba(16,32,28,.04),0 10px 30px -18px rgba(16,32,28,.22);transition:box-shadow .2s ease,transform .2s ease}
+[style*="background:#fff"][style*="border-radius:14px"]:hover{box-shadow:0 1px 2px rgba(16,32,28,.05),0 18px 40px -20px rgba(16,32,28,.30)}
+thead th{font-weight:600}
+tbody tr{transition:background-color .12s ease}
+tbody tr:hover{background:#F5F9F8}
+nav[aria-label="Vues"] a{transition:border-color .15s,color .15s,transform .15s}
+nav[aria-label="Vues"] a:hover{border-color:#0F766E!important;transform:translateY(-1px)}
+button{transition:transform .12s ease,filter .15s ease,box-shadow .15s ease}
+button:hover{filter:brightness(1.04)} button:active{transform:translateY(1px)}
+:focus-visible{outline:2px solid #0F766E;outline-offset:2px}
+section{animation:lk-in .5s cubic-bezier(.2,.7,.2,1) both}
+section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-delay:.1s} section:nth-of-type(4){animation-delay:.15s} section:nth-of-type(n+5){animation-delay:.2s}
+@keyframes lk-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+*{scrollbar-width:thin;scrollbar-color:#C5D3CF transparent}
+@media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
+</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2600px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+<a href="N.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Envoi aux praticiens</a>
+<a href="O.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Corilus</a>
+<a href="P.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Accès et rôles</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Factures fournisseurs</span>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Gérant</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Factures fournisseurs</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:560px; line-height:1.5">Le registre des factures reçues en octobre 2026, rattachées aux postes de charges. On compare ce qui était prévu à ce qui a réellement été facturé, et on suit ce qui reste à payer.</div>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
+<div style="{{k.style}}"><div style="font-size:13px; color:#4A5B57; font-weight:500">{{k.label}}</div><div style="font-size:26px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12.5px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
+</sc-for>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px">
+<div><h2 style="margin:0; font-size:18px">Registre des factures</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Modifiez un montant (puis Entrée) ou cliquez sur un statut pour le changer : tout se recalcule.</div></div>
+<div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{btnSide}}" onClick="{{onReset}}">Revenir à la démonstration</button><button type="button" style="{{btnMain}}" onClick="{{onCsv}}">Exporter CSV</button></div>
+</div>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{msgStyle}}">{{msg}}</div></sc-if>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:80px">Statut</span><sc-for list="{{stPills}}" as="f" hint-placeholder-count="5"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:80px">Famille</span><sc-for list="{{famPills}}" as="f" hint-placeholder-count="7"><button type="button" style="{{f.style}}" onClick="{{f.pick}}"><span style="{{f.dot}}"></span>{{f.label}}</button></sc-for></div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Référence</th><th style="padding:8px">Date</th><th style="padding:8px">Fournisseur</th><th style="padding:8px">Poste de charges</th><th style="padding:8px">Échéance</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">Statut</th></tr></thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:10px 8px 10px 0; font-weight:700; white-space:nowrap">{{r.ref}}</td>
+<td style="padding:10px 8px; white-space:nowrap">{{r.date}}</td>
+<td style="padding:10px 8px">{{r.sup}}</td>
+<td style="padding:10px 8px">{{r.poste}}<div><span style="{{r.famChip}}">{{r.fam}}</span></div></td>
+<td style="padding:10px 8px; white-space:nowrap"><span style="{{r.dueStyle}}">{{r.due}}</span></td>
+<td style="padding:10px 8px; text-align:right; white-space:nowrap"><input type="number" min="0" step="1" value="{{r.val}}" onChange="{{r.set}}" aria-label="{{r.aria}}" style="width:92px; text-align:right; border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:14px; font-weight:700; font-variant-numeric:tabular-nums"> €</td>
+<td style="padding:10px 8px"><button type="button" title="Cliquer pour changer le statut" style="{{r.stStyle}}" onClick="{{r.cycle}}">{{r.st}}</button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:16px; font-weight:700"><span>{{totLabel}}</span><span>{{totValue}}</span></div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div><h2 style="margin:0; font-size:18px">Nouvelle facture</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Ajoutez une facture reçue : elle rejoint le registre et la comparaison avec les charges prévues.</div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px; align-items:end">
+<label style="display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#33433F">Fournisseur<input type="text" value="{{dSup}}" onChange="{{setSup}}" placeholder="Nom du fournisseur" style="{{field}}"></label>
+<label style="display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#33433F">Poste de charges<select onChange="{{setPoste}}" style="{{field}}"><sc-for list="{{posteOpts}}" as="o" hint-placeholder-count="10"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<label style="display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#33433F">Montant (€)<input type="number" min="0" value="{{dAmt}}" onChange="{{setAmt}}" style="{{field}}"></label>
+<label style="display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#33433F">Date de la facture<input type="date" value="{{dDate}}" onChange="{{setDate}}" style="{{field}}"></label>
+<label style="display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#33433F">Échéance<input type="date" value="{{dDue}}" onChange="{{setDue}}" style="{{field}}"></label>
+<button type="button" style="{{btnMain}}" onClick="{{onAdd}}">Ajouter la facture</button>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div><h2 style="margin:0; font-size:18px">Prévu et facturé, par poste</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Le montant prévu vient des charges du Résultat du gérant (y compris les montants modifiés par le gérant sur cet appareil).</div></div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Poste</th><th style="padding:8px; text-align:right">Prévu</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px; text-align:right">Écart</th><th style="padding:8px">Lecture</th></tr></thead>
+<tbody>
+<sc-for list="{{cmp}}" as="c" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:600">{{c.poste}}<div><span style="{{c.famChip}}">{{c.fam}}</span></div></td><td style="padding:10px 8px; text-align:right">{{c.plan}}</td><td style="padding:10px 8px; text-align:right; font-weight:700">{{c.inv}}</td><td style="padding:10px 8px; text-align:right"><span style="{{c.gapStyle}}">{{c.gap}}</span></td><td style="padding:10px 8px; font-size:13px; color:#4A5B57">{{c.read}}</td></tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : factures, références et fournisseurs fictifs. Les modifications et les factures ajoutées sont enregistrées dans ce navigateur uniquement. Pour un vrai suivi partagé, il faudra une base de données sur un serveur.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2600}}'>
+class Component extends DCLogic {
+  state = (() => {
+    const DEF = [
+      ['F-2026-0987', '2026-09-20', 'Opérateur télécom', 29, 150, '2026-10-05', 'apayer'],
+      ['F-2026-1001', '2026-10-01', 'Bailleur des locaux (bail commercial)', 18, 6500, '2026-10-05', 'payee'],
+      ['F-2026-1002', '2026-10-03', 'Secrétariat social', 15, 450, '2026-10-15', 'payee'],
+      ['F-2026-1003', '2026-10-05', 'Fournisseur dentaire', 21, 2980, '2026-10-20', 'payee'],
+      ['F-2026-1004', '2026-10-06', 'Fournisseur dentaire (2e livraison)', 21, 410, '2026-11-05', 'apayer'],
+      ['F-2026-1005', '2026-10-07', 'Maintenance dentaire', 45, 710, '2026-11-06', 'apayer'],
+      ['F-2026-1006', '2026-10-08', 'Fournisseur d\'énergie', 19, 1760, '2026-10-22', 'payee'],
+      ['F-2026-1007', '2026-10-09', 'Société de nettoyage', 20, 1400, '2026-10-09', 'payee'],
+      ['F-2026-1008', '2026-10-10', 'Leasing automobile A', 0, 1750, '2026-10-10', 'payee'],
+      ['F-2026-1009', '2026-10-10', 'Leasing automobile B', 6, 1350, '2026-10-10', 'payee'],
+      ['F-2026-1010', '2026-10-10', 'Leasing de matériel dentaire', 33, 1950, '2026-10-10', 'payee'],
+      ['F-2026-1011', '2026-10-12', 'Prestataire informatique', 47, 240, '2026-10-15', 'apayer'],
+      ['F-2026-1012', '2026-10-13', 'Collecte des déchets médicaux', 24, 335, '2026-11-12', 'apayer'],
+      ['F-2026-1013', '2026-10-15', 'Cabinet comptable', 26, 450, '2026-11-14', 'apayer'],
+      ['F-2026-1014', '2026-10-16', 'Dépannage informatique', 52, 175, '2026-10-31', 'conteste'],
+      ['F-2026-1015', '2026-10-16', 'Organisme de contrôle (radioprotection)', 37, 250, '2026-11-15', 'apayer'],
+      ['F-2026-1016', '2026-10-17', 'Agence web', 32, 350, '2026-11-16', 'apayer'],
+      ['F-2026-1017', '2026-10-17', 'Assureur (franchise dégât des eaux)', 50, 300, '2026-11-16', 'apayer']
+    ].map((x) => ({ ref: x[0], date: x[1], sup: x[2], p: x[3], amt: x[4], due: x[5], st: x[6] }));
+    let inv = null; try { inv = JSON.parse(localStorage.getItem('lk-factures') || 'null'); } catch (e) { inv = null; }
+    return { inv: inv && inv.length ? inv : DEF, def: DEF, fs: 'all', ff: 'all', dSup: '', dPoste: 21, dAmt: '', dDate: '2026-10-17', dDue: '2026-11-16', msg: '', ok: true };
+  })();
+
+  renderVals() {
+    const S = this.state; const setState = (o) => this.setState(o);
+    const POSTES = [[0,"Leasing BMW Série 7 hybride","veh",1750],[1,"Assurance BMW Série 7 hybride","veh",260],[2,"Réparations BMW Série 7 hybride","veh",110],[3,"Entretien BMW Série 7 hybride","veh",130],[4,"Taxe de circulation BMW Série 7 hybride","veh",70],[5,"Carburant et recharge BMW Série 7 hybride","veh",480],[6,"Leasing BMW Série 5 électrique","veh",1350],[7,"Assurance BMW Série 5 électrique","veh",210],[8,"Réparations BMW Série 5 électrique","veh",80],[9,"Entretien BMW Série 5 électrique","veh",60],[10,"Taxe de circulation BMW Série 5 électrique","veh",0],[11,"Recharge électrique BMW Série 5 électrique","veh",190],[12,"Rémunération brute des 3 secrétaires salariées","org",7200],[13,"Cotisations patronales ONSS (environ 25 %)","org",1800],[14,"Pécule de vacances et prime de fin d'année (provision)","org",1750],[15,"Assurance accidents du travail, médecine du travail, secrétariat social","org",450],[16,"Chèques-repas et frais de déplacement du personnel","org",500],[17,"Remplacement du personnel (congés, maladie)","org",600],[18,"Loyer des locaux","exp",6500],[19,"Énergie : eau, chauffage, gaz","exp",1800],[20,"Nettoyage des locaux","exp",1400],[21,"Matériaux consommables","exp",3200],[22,"Catering","exp",600],[23,"Lavage des blouses de travail","exp",350],[24,"Déchets médicaux et entretien de l'autoclave","exp",320],[25,"Assurances du cabinet","exp",450],[26,"Comptabilité et gestion administrative","exp",450],[27,"Fournitures administratives","exp",120],[28,"Logiciel de gestion, facturation électronique et informatique","exp",380],[29,"Télécom, internet, téléphone","exp",150],[30,"Frais bancaires et terminaux de paiement par carte","exp",300],[31,"Marketing et publicité","exp",250],[32,"Site web et visibilité sur Google","exp",350],[33,"Leasing des 3 fauteuils dentaires","exc",1950],[34,"Leasing scanner, panoramique, CBCT et matériel numérique","exc",1400],[35,"Intérêts bancaires et frais de financement","exc",500],[36,"Précompte immobilier","exc",180],[37,"Radioprotection (AFCN)","rare",250],[38,"Cybersécurité","rare",120],[39,"Contrôles électriques","rare",60],[40,"Remplacement de l'autoclave","rare",250],[41,"Réparation de l'aspiration","rare",100],[42,"Formation des assistantes","rare",150],[43,"Taxes communales et frais divers","exc",150],[44,"Charges locatives","exp",0],[45,"Entretien des fauteuils","exc",0],[46,"Maintenance CBCT et microscope","exc",0],[47,"Maintenance informatique","exp",0],[48,"Petit matériel (instruments)","exc",0],[49,"Recouvrement des impayés","exp",0],[50,"Litiges et franchises","imp",0],[51,"Imprévus immobiliers","imp",0],[52,"Incidents informatiques","imp",0],[53,"Autres imprévus","imp",0]];
+    const CAT = { exp: ['Exploitation habituelle', '#0F766E'], exc: ['Exceptionnelles', '#B45309'], rare: ['Peu fréquentes', '#B42318'], org: ['Praticiens et organisation', '#5B3FA8'], veh: ['Véhicules', '#2F6DB5'], imp: ['Imprévus', '#0E7490'] };
+    let ov = {}; try { ov = JSON.parse(localStorage.getItem('lk-charges') || 'null') || {}; } catch (e) { ov = {}; }
+    const planOf = (i) => (ov[i] !== undefined && ov[i] !== null && !isNaN(ov[i])) ? Number(ov[i]) : POSTES[i][3];
+    const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
+    const fd = (iso) => { const p = String(iso || '').split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : '—'; };
+    const TODAY = '2026-10-17';
+    const status = (f) => f.st === 'apayer' && f.due < TODAY ? 'retard' : f.st;
+    const ST = { payee: ['Payée', '#0B6B3A', '#E3F4EA'], apayer: ['À payer', '#8A4B08', '#FDF0DC'], retard: ['En retard', '#A3231A', '#FBE7E5'], conteste: ['Contestée', '#4B2F96', '#EFEAF8'] };
+    const save = (inv, extra) => { try { localStorage.setItem('lk-factures', JSON.stringify(inv)); } catch (e) {} setState(Object.assign({ inv: inv }, extra || {})); };
+    const chipB = 'display:inline-block; border-radius:999px; padding:2px 9px; font-size:11.5px; font-weight:700; white-space:nowrap; margin-top:3px; ';
+    const famChip = (c) => chipB + 'background:' + CAT[c][1] + '1A; color:' + CAT[c][1] + ';';
+    const pb = 'display:inline-flex; align-items:center; gap:6px; min-height:34px; box-sizing:border-box; border-radius:999px; padding:6px 12px; font-size:13px; cursor:pointer; ';
+    const pOff = pb + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+    const pOn = pb + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:16px 18px;';
+    const btnMain = 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:42px; padding:0 16px; font-size:14px; font-weight:700; cursor:pointer;';
+    const btnSide = 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:42px; padding:0 16px; font-size:14px; font-weight:600; cursor:pointer;';
+    const inv = S.inv;
+    const tot = inv.reduce((a, f) => a + f.amt, 0);
+    const sum = (k) => inv.filter((f) => status(f) === k).reduce((a, f) => a + f.amt, 0);
+    const cnt = (k) => inv.filter((f) => status(f) === k).length;
+    const toPay = sum('apayer') + sum('retard');
+    const kpis = [
+      { label: 'Factures reçues', value: String(inv.length), note: 'octobre 2026 (et septembre non réglé)', style: tile('#14201D') },
+      { label: 'Total facturé', value: eur(tot), note: 'toutes factures confondues', style: tile('#0F766E') },
+      { label: 'Payé', value: eur(sum('payee')), note: cnt('payee') + ' factures réglées', style: tile('#15803D') },
+      { label: 'Reste à payer', value: eur(toPay), note: (cnt('apayer') + cnt('retard')) + ' factures', style: tile('#B45309') },
+      { label: 'En retard', value: eur(sum('retard')), note: cnt('retard') + ' facture(s) dont l\'échéance est passée', style: tile('#B42318') },
+      { label: 'Contestées', value: eur(sum('conteste')), note: cnt('conteste') + ' facture(s) en discussion', style: tile('#5B3FA8') }
+    ];
+    let list = inv.map((f, i) => Object.assign({ i: i }, f));
+    if (S.fs !== 'all') { list = list.filter((f) => S.fs === 'apayer' ? (status(f) === 'apayer' || status(f) === 'retard') : status(f) === S.fs); }
+    if (S.ff !== 'all') { list = list.filter((f) => POSTES[f.p] && POSTES[f.p][2] === S.ff); }
+    list.sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : (a.ref < b.ref ? 1 : -1)));
+    const cycleNext = { apayer: 'payee', payee: 'conteste', conteste: 'apayer' };
+    const rows = list.map((f) => { const s = status(f); const P = POSTES[f.p] || [f.p, 'Poste inconnu', 'exp', 0]; return {
+      ref: f.ref, date: fd(f.date), sup: f.sup, poste: P[1], fam: CAT[P[2]][0], famChip: famChip(P[2]), due: fd(f.due),
+      dueStyle: s === 'retard' ? 'color:#A3231A; font-weight:700;' : '', val: String(f.amt), aria: 'Montant de la facture ' + f.ref,
+      set: (e) => { const v = Math.max(0, Math.round((Number(e && e.target ? e.target.value : 0) || 0) * 100) / 100); const n = inv.slice(); n[f.i] = Object.assign({}, n[f.i], { amt: v }); save(n); },
+      st: ST[s][0], stStyle: 'border:0; border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:700; cursor:pointer; color:' + ST[s][1] + '; background:' + ST[s][2] + ';',
+      cycle: () => { const n = inv.slice(); n[f.i] = Object.assign({}, n[f.i], { st: cycleNext[f.st] || 'apayer' }); save(n); } }; });
+    const lt = list.reduce((a, f) => a + f.amt, 0);
+    const stPills = [['all', 'Toutes'], ['apayer', 'À payer'], ['retard', 'En retard'], ['payee', 'Payées'], ['conteste', 'Contestées']].map((x) => ({ label: x[1], style: S.fs === x[0] ? pOn : pOff, pick: () => setState({ fs: x[0] }) }));
+    const famPills = [{ label: 'Toutes', style: S.ff === 'all' ? pOn : pOff, dot: 'display:none;', pick: () => setState({ ff: 'all' }) }].concat(Object.keys(CAT).map((k) => ({ label: CAT[k][0], style: S.ff === k ? pOn : pOff, dot: 'width:9px; height:9px; border-radius:3px; background:' + CAT[k][1] + ';', pick: () => setState({ ff: k }) })));
+    const byP = {}; inv.forEach((f) => { byP[f.p] = (byP[f.p] || 0) + f.amt; });
+    const cmp = Object.keys(byP).map(Number).sort((a, b) => (byP[b] - planOf(b)) - (byP[a] - planOf(a))).map((p) => {
+      const plan = planOf(p); const iv = byP[p]; const gap = iv - plan; const P = POSTES[p];
+      return { poste: P[1], fam: CAT[P[2]][0], famChip: famChip(P[2]), plan: eur(plan), inv: eur(iv),
+        gap: (gap > 0 ? '+' : (gap < 0 ? '−' : '')) + eur(Math.abs(gap)), gapStyle: 'font-weight:700; color:' + (gap > 0 ? '#A3231A' : (gap < 0 ? '#0B6B3A' : '#4A5B57')) + ';',
+        read: plan === 0 ? 'Rien n\'était prévu : à ajouter dans les charges' : (gap > 0 ? 'Facturé au-dessus du prévu (' + Math.round(gap / plan * 100) + ' %)' : (gap < 0 ? 'Sous le montant prévu' : 'Conforme au prévu')) };
+    });
+    const posteOpts = POSTES.map((P) => ({ v: String(P[0]), l: CAT[P[2]][0] + ' · ' + P[1], sel: Number(S.dPoste) === P[0] }));
+    const csvCell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+    const onCsv = () => {
+      const lines = [['Référence', 'Date', 'Fournisseur', 'Famille', 'Poste', 'Échéance', 'Montant', 'Statut']].concat(inv.map((f) => { const P = POSTES[f.p]; return [f.ref, fd(f.date), f.sup, CAT[P[2]][0], P[1], fd(f.due), String(f.amt).replace('.', ','), ST[status(f)][0]]; }));
+      const csv = '﻿' + lines.map((l) => l.map(csvCell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+        if (dl) { return dl.save({ filename: 'factures-fournisseurs-octobre-2026.csv', data: csv }); }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'factures-fournisseurs-octobre-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true;
+      }).then(() => setState({ msg: 'Registre exporté.', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
+    };
+    const onAdd = () => {
+      const amt = Number(S.dAmt); const sup = String(S.dSup || '').trim();
+      if (!sup || !(amt > 0)) { setState({ msg: 'Indiquez au moins le fournisseur et un montant.', ok: false }); return; }
+      const nums = inv.map((f) => parseInt(String(f.ref).split('-').pop(), 10) || 0); const ref = 'F-2026-' + (Math.max.apply(null, nums.concat([1000])) + 1);
+      save(inv.concat([{ ref: ref, date: S.dDate || TODAY, sup: sup, p: Number(S.dPoste), amt: Math.round(amt * 100) / 100, due: S.dDue || S.dDate || TODAY, st: 'apayer' }]), { dSup: '', dAmt: '', msg: 'Facture ' + ref + ' ajoutée.', ok: true });
+    };
+    const field = 'min-height:42px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 12px; font:inherit; font-size:14px; font-weight:500; background:#fff; color:#14201D;';
+    return {
+      kpis: kpis, rows: rows, stPills: stPills, famPills: famPills, cmp: cmp, posteOpts: posteOpts,
+      totLabel: list.length === inv.length ? 'Total des ' + inv.length + ' factures' : 'Total de la sélection (' + list.length + ' factures)', totValue: eur(lt),
+      btnMain: btnMain, btnSide: btnSide, field: field, onCsv: onCsv, onAdd: onAdd,
+      onReset: () => { try { localStorage.removeItem('lk-factures'); } catch (e) {} setState({ inv: S.def, msg: 'Données de démonstration rétablies.', ok: true }); },
+      dSup: S.dSup, dAmt: String(S.dAmt), dDate: S.dDate, dDue: S.dDue,
+      setSup: (e) => setState({ dSup: e && e.target ? e.target.value : '' }), setAmt: (e) => setState({ dAmt: e && e.target ? e.target.value : '' }),
+      setDate: (e) => setState({ dDate: e && e.target ? e.target.value : '' }), setDue: (e) => setState({ dDue: e && e.target ? e.target.value : '' }),
+      setPoste: (e) => setState({ dPoste: Number(e && e.target ? e.target.value : 21) }),
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 12px; border-radius:10px; font-size:13.5px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
+    };
+  }
+}
+</script>
+</body>
+</html>
