@@ -6,8 +6,8 @@ window.LKACCES = {
    "role": "gerant",
    "pr": -1,
    "e": "554441a283a9",
-   "s": "f9132acf1a348396a3ffc0de6e62ad68",
-   "h": "b1cfd256bd725ba53c0bb75f9d7354e9242eb09bad97ce5ed0fd6e4dc43df8c3"
+   "s": "760c59fe9f445832916972a7f2b15c15",
+   "h": "c63e1f751b552e8a3280265324f6fe3a1797fee0540379faa741d908107fab08"
   },
   {
    "n": "Karim (administrateur de la maquette)",
