@@ -1,5 +1,5 @@
 /* Jeu de données unique (fictif) : octobre 2026 (mois en cours, projection complète), tel que le modèle du cabinet.
-   Total honoraires 173 100 €, 1 175 patients (pause de midi 12 h à 13 h déduite), frais de labo 28 600 €. */
+   Total honoraires 173 100 €, 963 patients (pause de midi 12 h à 13 h déduite), frais de labo 28 600 €. */
 (function () {
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var mul = function (a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
@@ -34,16 +34,16 @@
   var PR = [
     { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 325, T: 50500, LAB: 7800, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
-    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 2, 4, 5, 0], N: 325, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
+    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 4, 0], N: 210, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
       mix: { consultO: 3, exam: 1, pano: 2, consult: 1, ortho: 8, appareil: 1.3, goutt: 0.5, blanch: 0.3 } },
     { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 116, T: 19200, LAB: 3100, young: 0,
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
     { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 130, T: 18300, LAB: 2900, young: 0,
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
-    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], span: 600, N: 147, T: 18900, LAB: 3000, young: 0,
-      mix: { implant: 0.26, greffe: 0.08, consult: 2, pano: 2, couronneImpl: 0.2, couronne: 0.05, exam: 1 } },
-    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], N: 66, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
-      mix: { detart: 4, exam: 3, obt: 3, consult: 2, blanch: 0.9, facette: 0.5, couronne: 0.6 } },
+    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], step: 60, end: 1200, fridayStart: 900, N: 70, T: 18900, LAB: 3000, young: 0,
+      mix: { implant: 0.55, greffe: 0.15, consult: 1.5, pano: 1.5, couronneImpl: 0.35, couronne: 0.1, exam: 0.7 } },
+    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], end: 900, N: 46, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
+      mix: { detart: 3, exam: 2, obt: 3, consult: 1.5, blanch: 1.4, facette: 1.0, couronne: 1.5 } },
     { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 66, T: 9000, LAB: 2700, young: 0,
       mix: { consult: 3, obt: 3, detart: 3, extr: 2, exam: 2, couronne: 1.8, bridge: 0.5, prothese: 0.5 } }
   ];
@@ -59,11 +59,21 @@
   PR.forEach(function (P, pi) {
     P.dates = [];
     for (var d = 1; d <= MONTH.days; d += 1) { if (P.days.indexOf(new Date(MONTH.y, MONTH.m, d).getDay()) >= 0) { P.dates.push(d); } }
-    // créneaux de 30 minutes, pause de midi de 12 h à 13 h (aucun rendez-vous)
-    var SLOTS = []; for (var sm = 600; sm < 600 + (P.span || 510); sm += 30) { if (sm < 720 || sm >= 780) { SLOTS.push(sm); } }
+    // horaires : 9 h à 18 h 30 (Cabaz : rendez-vous d'une heure, 9 h à 20 h, le vendredi de 15 h à 20 h après Touil ; Touil : 9 h à 15 h), pause de midi 12 h à 13 h sans rendez-vous
+    var step = P.step || 30;
+    P.win = function (wd) { return [(P.fridayStart && wd === 5) ? P.fridayStart : 540, P.end || 1110]; };
+    P.openHours = function (wd) { var w = P.win(wd); return (w[1] - w[0]) / 60 - ((w[0] < 720 && w[1] > 780) ? 1 : 0); };
+    P.slotsFor = function (wd) { var w = P.win(wd); var a = []; for (var sm = w[0]; sm + step <= w[1]; sm += step) { if (sm + step <= 720 || sm >= 780) { a.push(sm); } } return a; };
+    P.step = step;
     var rnd = mul(pi * 7919 + 101);
     var keys = Object.keys(P.mix); var wsum = keys.reduce(function (a, k) { return a + P.mix[k]; }, 0);
-    var nd = P.dates.length; var base = Math.floor(P.N / nd); var rem = P.N - base * nd; var mine = []; var myVisits = [];
+    var nd = P.dates.length; var mine = []; var myVisits = [];
+    // effectif de chaque journée proportionnel au nombre de créneaux disponibles
+    var capD = P.dates.map(function (d) { return P.slotsFor(new Date(MONTH.y, MONTH.m, d).getDay()).length; });
+    var capT = capD.reduce(function (a, x) { return a + x; }, 0);
+    var nDay = capD.map(function (c) { return Math.floor(P.N * c / capT); });
+    var left = P.N - nDay.reduce(function (a, x) { return a + x; }, 0);
+    for (var li = 0; left > 0; li = (li + 1) % nd) { if (nDay[li] < capD[li]) { nDay[li] += 1; left -= 1; } }
     var mkLine = function (key, age) {
       var L = { key: key, labo: 0 };
       if (ACT[key]) { var t = ACT[key](age); L.code = t[0]; L.label = t[1]; L.tarif = t[2]; L.suph = P.supRate ? Math.round(t[2] * P.supRate * 100) / 100 : 0; L.fee = Math.round((t[2] + L.suph) * 100) / 100; L.ib = t[3]; L.io = t[4]; L.free = false; }
@@ -71,7 +81,7 @@
       return L;
     };
     P.dates.forEach(function (d, di) {
-      var n = base + (di < rem ? 1 : 0); var wd = new Date(MONTH.y, MONTH.m, d).getDay();
+      var n = nDay[di]; var wd = new Date(MONTH.y, MONTH.m, d).getDay(); var SLOTS = P.slotsFor(wd);
       var dstr = pad(d) + '/' + pad(MONTH.m + 1); var off = wd === 0 || wd === 6 || HOL.indexOf(dstr) >= 0;
       for (var i = 0; i < n; i += 1) {
         var r = rnd() * wsum; var key = keys[0];
@@ -131,21 +141,22 @@
 
   // ---- Box (fauteuils) : occupation et marge ----
   var BOXNAMES = { ped: 'Box pédiatrique', mic: 'Box microscope', b3: 'Box 3' };
-  var BOXMAP = { ped: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }, mic: { 1: 2, 2: 2, 4: 3, 5: 5, 6: 4, 0: 3 }, b3: { 1: 1, 2: 1, 4: 1, 5: 1, 0: 1, 6: 6 } };
+  // Mohamed : lundi, jeudi, dimanche (mardi administratif, sans box). Vendredi : Aya (pédiatrique), Nabila de 9 h à 15 h puis Julien de 15 h à 20 h dans le Box 3 (polyvalent)
+  var BOXMAP = { ped: { 1: [0], 2: [0], 3: [0], 4: [0], 5: [0] }, mic: { 1: [2], 2: [2], 4: [3], 6: [4], 0: [3] }, b3: { 1: [1], 4: [1], 5: [5, 4], 0: [1], 6: [6] } };
   var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.3384 };
   var boxes = Object.keys(BOXMAP).map(function (bk) {
-    var vs = visits.filter(function (v) { return BOXMAP[bk][v.wd] === v.p; });
-    var perDay = {}; vs.forEach(function (v) { perDay[v.d] = (perDay[v.d] || 0) + 1; });
-    var hrs = 0; Object.keys(perDay).forEach(function (d) { hrs += Math.min(perDay[d] * 0.5, 7.5); });
+    var vs = visits.filter(function (v) { return (BOXMAP[bk][v.wd] || []).indexOf(v.p) >= 0; });
+    var perDay = {}; vs.forEach(function (v) { perDay[v.d] = (perDay[v.d] || 0) + PR[v.p].step / 60; });
+    var hrs = 0; Object.keys(perDay).forEach(function (d) { hrs += perDay[d]; });
     var ca = vs.reduce(function (a, v) { return a + v.fee; }, 0);
-    return { key: bk, name: BOXNAMES[bk], visits: vs.length, days: Object.keys(perDay).length, hours: hrs, avail: MONTH.days * 7.5, occ: hrs / (MONTH.days * 7.5), ca: ca };
+    return { key: bk, name: BOXNAMES[bk], visits: vs.length, days: Object.keys(perDay).length, hours: hrs, avail: MONTH.days * 8.5, occ: hrs / (MONTH.days * 8.5), ca: ca };
   });
   var totH = boxes.reduce(function (a, b) { return a + b.hours; }, 0); var totV = boxes.reduce(function (a, b) { return a + b.visits; }, 0);
   boxes.forEach(function (b) {
     b.part = b.ca * CHG.cabPct; b.leasing = CHG.leasingBox; b.conso = CHG.conso * b.visits / totV; b.perso = CHG.perso * b.hours / totH;
     b.margin = b.part - b.leasing - b.conso - b.perso;
   });
-  var occAll = totH / (3 * MONTH.days * 7.5);
+  var occAll = totH / (3 * MONTH.days * 8.5);
 
   // ---- Devis (plans de traitement) ----
   var QK = ['couronne', 'bridge', 'facette', 'implant', 'greffe', 'couronneImpl', 'prothese', 'appareil'];

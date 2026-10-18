@@ -219,7 +219,7 @@ class Component extends DCLogic {
         T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(38720 / ca * 100), '38 720 € de charges sur ' + eur(ca)),
         T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(38720 / 58570 * 100), 'sur 58 570 € après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
-        T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 7.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
+        T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
         T('#15803D', 'Nouveaux patients', String(D.pilot.nouveaux), pc(D.pilot.nouveaux / D.pilot.actifs * 100) + ' des ' + D.pilot.actifs + ' patients actifs (chiffre fictif)'),
         T('#15803D', 'Fidélisation à 12 mois', pc(D.pilot.retour * 100), 'des patients vus il y a un an sont revenus (chiffre fictif)'),
@@ -332,7 +332,7 @@ class Component extends DCLogic {
       carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
-        { label: "Chiffre d'affaires", value: '173 100 €', note: '1 175 patients vus', style: tile('#0F766E') },
+        { label: "Chiffre d'affaires", value: '173 100 €', note: '963 patients vus', style: tile('#0F766E') },
         { label: 'Rémunération des praticiens', value: '85 930 €', note: '(honoraires − 28 600 € de labo) × 60 %, ou 50 % pour Nabila Touil', style: tile('#B45309') },
         { label: 'Charges du cabinet', value: '38 720 €', note: 'dont 12 300 € de personnel et d\'organisation (3 secrétaires, ONSS, remplacements), 4 690 € pour les 2 BMW et 5 110 € de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
         { label: 'Bénéfice du cabinet', value: '19 850 €', note: '11,5 % du chiffre d\'affaires', style: tile('#15803D') }
@@ -349,7 +349,7 @@ class Component extends DCLogic {
       dentists: [
         { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '50 500 €', labo: '7 800 €', retro: '25 620 €', share: '17 080 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '19 200 €', labo: '3 100 €', retro: '9 660 €', share: '6 440 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 5 jours par semaine', billed: '47 900 €', labo: '7 500 €', retro: '24 240 €', share: '16 160 €', rate: '60 %', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', billed: '47 900 €', labo: '7 500 €', retro: '24 240 €', share: '16 160 €', rate: '60 %', conv: 'Non conventionné', convStyle: ns },
         { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: '9 300 €', labo: '1 600 €', retro: '3 850 €', share: '3 850 €', rate: '50 %', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: '18 900 €', labo: '3 000 €', retro: '9 540 €', share: '6 360 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: '18 300 €', labo: '2 900 €', retro: '9 240 €', share: '6 160 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },

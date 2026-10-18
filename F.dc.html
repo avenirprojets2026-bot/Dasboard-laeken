@@ -60,7 +60,7 @@
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
 <h2 style="margin:0 0 4px; font-size:18px">Qui travaille quel jour</h2>
-<div style="font-size:13px; color:#4A5B57">Un patient toutes les 30 minutes, de 10 h à 18 h 30, avec une pause de midi de 12 h à 13 h : 15 patients au maximum par praticien et par jour.</div>
+<div style="font-size:13px; color:#4A5B57">Un patient toutes les 30 minutes, de 9 h à 18 h 30, avec une pause de midi de 12 h à 13 h : 17 patients au maximum par praticien et par jour. Dr Cabaz : rendez-vous d'une heure, de 9 h à 20 h.</div>
 <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px">
 <sc-for list="{{legend}}" as="l" hint-placeholder-count="3">
 <span style="{{l.style}}">{{l.label}}</span>
@@ -90,7 +90,7 @@
 </div>
 </div>
 </div>
-<div style="font-size:13px; color:#4A5B57">Les cases « ? » sont les jours à confirmer pour le 7e praticien (1 jour). Julien Cabaz travaille le vendredi et le samedi, de 10 h à 20 h.</div>
+<div style="font-size:13px; color:#4A5B57">Les cases « ? » sont les jours à confirmer pour le 7e praticien (1 jour). Julien Cabaz travaille le vendredi de 15 h à 20 h (après Nabila, dans le même box) et le samedi de 9 h à 20 h.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -118,15 +118,15 @@
 </div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px">
-<div style="background:#FBE7E5; color:#7A1A12; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Conflit le vendredi.</b> Aya, Mohamed, Nabila et Julien (10 h à 20 h) travaillent le même jour pour 3 box. À arbitrer avec ton frère : partager un box par tranches horaires ou déplacer un praticien. Le conflit disparaît à partir de décembre, puisque Dr Nabila Touil quitte le cabinet le 1er décembre.</div>
-<div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, samedi 2 box et dimanche 1 box : c'est là que le 7e praticien peut être placé.</div>
+<div style="background:#E3F4EA; color:#0B6B3A; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Vendredi organisé.</b> Aya dans le box pédiatrique, Nabila de 9 h à 15 h puis Julien de 15 h à 20 h dans le Box 3, le box polyvalent. Le box microscope reste libre (Daoud est absent ce jour-là) : aucun conflit. À partir de décembre, Nabila Touil quitte le cabinet : le Box 3 est libre le vendredi matin.</div>
+<div style="background:#FDF0DC; color:#5A3205; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5"><b>Places libres.</b> Mercredi 2 box, mardi 2 box, vendredi 1 box, samedi 2 box et dimanche 1 box : c'est là que le 7e praticien peut être placé.</div>
 </div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
 <h2 style="margin:0 0 4px; font-size:18px">Ce que coûte et rapporte un patient</h2>
-<div style="font-size:13px; color:#4A5B57">Moyenne du mois d'octobre, sur 1 175 patients vus. Chaque barre montre la part du chiffre d'affaires.</div>
+<div style="font-size:13px; color:#4A5B57">Moyenne du mois d'octobre, sur 963 patients vus. Chaque barre montre la part du chiffre d'affaires.</div>
 </div>
 <sc-for list="{{perPatient}}" as="p" hint-placeholder-count="5">
 <div style="display:grid; grid-template-columns:minmax(120px, 240px) 1fr minmax(70px, 90px); gap:12px; align-items:center; font-size:14px">
@@ -138,7 +138,7 @@
 </section>
 
 <section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px; font-size:14px; line-height:1.5; color:#5A3205">
-<b>Ce qui est confirmé et ce qui ne l'est pas.</b> Confirmé : les jours d'Aya, Mohamed, Abde-Ssadic, Daoud, Nabila et Julien (vendredi et samedi, 10 h à 20 h), et les 3 box dont un avec microscope et un pédiatrique. À confirmer : les jours du 7e praticien, et le box de Julien le vendredi. Proposé par moi : le choix du box pour Mohamed, Abde-Ssadic et Nabila, puisqu'ils peuvent travailler partout.
+<b>Ce qui est confirmé et ce qui ne l'est pas.</b> Confirmé : les jours d'Aya, Mohamed, Abde-Ssadic, Daoud, Nabila (vendredi, 9 h à 15 h) et Julien (vendredi de 15 h à 20 h et samedi de 9 h à 20 h), et les 3 box dont un avec microscope et un pédiatrique. À confirmer : les jours du 7e praticien, et le box de Julien le vendredi. Proposé par moi : le choix du box pour Mohamed, Abde-Ssadic et Nabila, puisqu'ils peuvent travailler partout.
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
@@ -158,7 +158,7 @@
 </div>
 </section>
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
-<div><h2 style="margin:0; font-size:18px">Occupation et marge par fauteuil</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026. Heures occupées sur les heures ouvertes (10 h à 18 h 30, pause de midi de 12 h à 13 h déduite). La marge est la part du cabinet (après frais de labo et rémunération des praticiens) moins le leasing, les consommables et le personnel répartis selon l'usage du box.</div></div>
+<div><h2 style="margin:0; font-size:18px">Occupation et marge par fauteuil</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Octobre 2026. Heures occupées sur les heures ouvertes (9 h à 18 h 30, pause de midi de 12 h à 13 h déduite). La marge est la part du cabinet (après frais de labo et rémunération des praticiens) moins le leasing, les consommables et le personnel répartis selon l'usage du box.</div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px">
 <sc-for list="{{boxCards}}" as="b" hint-placeholder-count="3">
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px">
@@ -192,16 +192,16 @@ class Component extends DCLogic {
     const freeStyle = 'display:flex; align-items:center; justify-content:center; background:#fff; color:#4A5B57; border:1px dashed #C9D6D2; border-radius:8px; padding:14px 4px; font-size:12px;';
     const assign = {
       ped: ['Aya', 'Aya', 'Aya', 'Aya', 'Aya', null, null],
-      mic: ['Abde-Ssadic', 'Abde-Ssadic', null, 'Daoud', 'Nabila', 'Julien', 'Daoud'],
-      b3: ['Mohamed', 'Mohamed', null, 'Mohamed', 'Mohamed', null, 'Mohamed']
+      mic: ['Abde-Ssadic', 'Abde-Ssadic', null, 'Daoud', null, 'Julien', 'Daoud'],
+      b3: ['Mohamed', null, null, 'Mohamed', 'Nabila', null, 'Mohamed']
     };
     const people = [
       { name: 'Dr Aya Turkieh', key: 'Aya' },
-      { name: 'Dr Mohamed Bochouari', key: 'Mohamed' },
+      { name: 'Dr Mohamed Bochouari', key: 'Mohamed', adminDay: 1 },
       { name: 'Dr Abde-Ssadic Bochouari', key: 'Abde-Ssadic' },
       { name: 'Dr Daoud Bouchouari', key: 'Daoud' },
       { name: 'Dr Nabila Touil', key: 'Nabila' },
-      { name: 'Dr Julien Cabaz', key: 'Julien', conflictDay: 4 },
+      { name: 'Dr Julien Cabaz', key: 'Julien', sharedDay: 4 },
       { name: '7e praticien (à confirmer)', tbd: '1 (à placer)' }
     ];
     const days7 = [0, 1, 2, 3, 4, 5, 6];
@@ -213,8 +213,9 @@ class Component extends DCLogic {
       let n = 0;
       const cells = days7.map((i) => {
         const k = boxOf(p.key, i);
-        if (p.conflictDay === i) { n += 1; return { style: cellBase + 'background:#FDF0DC; color:#8A4B08; border:2px dashed #B45309;', label: 'Julien', sub: '10 h – 20 h, sans box' }; }
-        if (k) { n += 1; return { style: boxStyle(k), label: P[k].short, sub: p.key === 'Julien' ? '10 h – 20 h' : '10 h – 18 h 30' }; }
+        if (p.sharedDay === i) { n += 1; return { style: boxStyle('b3'), label: P.b3.short, sub: '15 h – 20 h' }; }
+        if (p.adminDay === i) { return { style: cellBase + 'background:#EFEAF8; color:#4B2F96; border:1px dashed #8E79C9;', label: 'Administratif', sub: 'présent, sans box' }; }
+        if (k) { n += 1; const sub = p.key === 'Julien' ? '9 h – 20 h' : (p.key === 'Nabila' ? '9 h – 15 h' : '9 h – 18 h 30'); return { style: boxStyle(k), label: P[k].short, sub: sub }; }
         return { style: offStyle, label: 'repos', sub: '' };
       });
       return { name: p.name, days: n, cells: cells };
@@ -222,7 +223,6 @@ class Component extends DCLogic {
     const totals = days7.map((i) => {
       const n = ['ped', 'mic', 'b3'].filter((k) => assign[k][i]).length;
       const free = 3 - n;
-      if (i === 4) { return { value: '4 / 3', note: 'conflit', style: 'display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; padding:8px 4px; background:#FBE7E5; color:#A3231A;' }; }
       return {
         value: n + ' / 3',
         note: free === 0 ? 'complet' : (free + (free > 1 ? ' libres' : ' libre')),
@@ -235,7 +235,7 @@ class Component extends DCLogic {
     }));
     const ruleStyle = 'display:inline-block; align-self:flex-start; margin-top:4px; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700; background:#fff; color:#14201D;';
     const head = (k) => 'display:flex; flex-direction:column; justify-content:center; gap:2px; padding:10px 12px; border-radius:10px; background:' + P[k].bg + '; border:1px solid ' + P[k].bd + '; color:' + P[k].fg + ';';
-    const boxCells = (k) => assign[k].map((who) => who ? { style: boxStyle(k), label: who, sub: '' } : { style: freeStyle, label: 'libre', sub: '' });
+    const boxCells = (k) => assign[k].map((who) => who === 'Nabila' ? { style: boxStyle(k), label: 'Nabila puis Julien', sub: '9 h – 15 h, puis 15 h – 20 h' } : who ? { style: boxStyle(k), label: who, sub: '' } : { style: freeStyle, label: 'libre', sub: '' });
     const boxes = [
       { name: 'Box pédiatrique', desc: 'Écran TV OLED côté rue', rule: 'Prioritaire : Aya', ruleStyle: ruleStyle, headStyle: head('ped'), cells: boxCells('ped') },
       { name: 'Box microscope', desc: 'Microscope électronique', rule: 'Prioritaire : Daoud', ruleStyle: ruleStyle, headStyle: head('mic'), cells: boxCells('mic') },
@@ -249,27 +249,27 @@ class Component extends DCLogic {
       const legend = items.map((x, i) => ({ sw: 'display:inline-block; width:14px; height:14px; border-radius:3px; background:' + DCOL[i % DCOL.length] + ';', name: x[0], value: fmtv(x[1]), pct: (Math.round(x[1] / sumv * 1000) / 10).toString().replace('.', ',') + ' %' }));
       return { donutSegs: segs, donutLegend: legend, donutLabel: label, donutValue: total };
     };
-    const donut = mkDonut([['Aya Turkieh', 5], ['Mohamed Bochouari', 5], ['Abde-Ssadic Bochouari', 2], ['Daoud Bouchouari', 2], ['Julien Cabaz', 2], ['Nabila Touil', 1], ['7e praticien', 1]], (v) => v + (v > 1 ? ' jours' : ' jour'), 'Par semaine', '18 jours');
+    const donut = mkDonut([['Aya Turkieh', 5], ['Mohamed Bochouari', 3], ['Abde-Ssadic Bochouari', 2], ['Daoud Bouchouari', 2], ['Julien Cabaz', 2], ['Nabila Touil', 1], ['7e praticien', 1]], (v) => v + (v > 1 ? ' jours' : ' jour'), 'Par semaine', '16 jours');
     const D = window.LAEKEN; const fe = (n) => { const r = Math.round(n); return String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; };
     const boxCards = D ? D.boxes.map((b) => ({ name: b.name, occ: (Math.round(b.occ * 1000) / 10).toString().replace('.', ',') + ' %', bar: 'height:100%; background:' + (b.occ > 0.9 ? '#B45309' : '#0F766E') + '; width:' + Math.min(100, b.occ * 100) + '%', visits: b.visits, hours: Math.round(b.hours), avail: Math.round(b.avail), ca: fe(b.ca), part: fe(b.part), leasing: fe(b.leasing), conso: fe(b.conso), perso: fe(b.perso), margin: fe(b.margin) })) : [];
     return Object.assign(donut, { boxCards: boxCards,
       kpis: [
         { label: 'Box dentaires', value: '3', note: 'dont 1 avec microscope et 1 pédiatrique', style: tile('#5B3FA8') },
-        { label: 'Journées de praticien', value: '18', note: 'par semaine, 7 praticiens (17 à partir de décembre sans Dr Touil)', style: tile('#0F766E') },
-        { label: 'Box déjà occupés', value: '76 %', note: '16 journées de box sur 21, 7 jours sur 7 (sans le vendredi de Julien)', style: tile('#B45309') },
-        { label: 'Patients par semaine', value: '265', note: 'environ 15 par journée de praticien, pause de midi déduite', style: tile('#15803D') }
+        { label: 'Journées de praticien', value: '16', note: 'par semaine, 7 praticiens (15 à partir de décembre sans Dr Touil), plus le mardi administratif de Mohamed', style: tile('#0F766E') },
+        { label: 'Box déjà occupés', value: '67 %', note: '14 journées de box sur 21 : le box microscope est libre le mercredi et le vendredi', style: tile('#B45309') },
+        { label: 'Patients par semaine', value: '217', note: 'environ 13 par journée de praticien, pause de midi déduite', style: tile('#15803D') }
       ],
       rows: rows,
       totals: totals,
       legend: legend,
       boxes: boxes,
       perPatient: [
-        { label: "Chiffre d'affaires", value: '147,3 €', bar: bar(100, '#0F766E') },
-        { label: 'Frais de laboratoire', value: '24,3 €', bar: bar(16.5, '#8A4B08') },
-        { label: 'Rémunération du praticien (60 %, 50 % Touil)', value: '73,1 €', bar: bar(49.6, '#B45309') },
-        { label: 'Charges du cabinet (dont 2 BMW)', value: '33 €', bar: bar(22.4, '#5B3FA8') },
-        { label: 'Dont salaires des secrétaires', value: '10 €', bar: bar(6.8, '#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: '16,9 €', bar: bar(11.5, '#15803D') }
+        { label: "Chiffre d'affaires", value: '179,8 €', bar: bar(100, '#0F766E') },
+        { label: 'Frais de laboratoire', value: '29,7 €', bar: bar(16.5, '#8A4B08') },
+        { label: 'Rémunération du praticien (60 %, 50 % Touil)', value: '89,2 €', bar: bar(49.6, '#B45309') },
+        { label: 'Charges du cabinet (dont 2 BMW)', value: '40,2 €', bar: bar(22.4, '#5B3FA8') },
+        { label: 'Dont salaires des secrétaires', value: '12,2 €', bar: bar(6.8, '#5B3FA8') },
+        { label: 'Bénéfice du cabinet', value: '20,6 €', bar: bar(11.5, '#15803D') }
       ]
     });
   }
