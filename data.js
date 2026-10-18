@@ -29,12 +29,12 @@
   var MUT = ['Mutualités Chrétiennes', 'Solidaris', 'Partenamut', 'Mutualité Libérale', 'Mutualia', 'CAAMI', 'HR Rail'];
 
   // supRate = supplément d'honoraires appliqué sur les actes de la nomenclature (dentiste non conventionné) ; leaves = date de départ du praticien
-  // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil)
+  // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil, 100 % pour le gérant Dr Mohamed Bochouari)
   // Rémunération du praticien = (T − LAB) × rate ; part du cabinet = (T − LAB) × (1 − rate)
   var PR = [
     { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 325, T: 35400, LAB: 4100, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
-    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 4, 0], N: 210, T: 33500, LAB: 5300, supRate: 0.35, young: 1,
+    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 4, 0], N: 210, T: 33500, LAB: 5300, supRate: 0.35, rate: 1, young: 1,
       mix: { consultO: 3, exam: 1, pano: 2, consult: 1, ortho: 8, appareil: 1.3, goutt: 0.5, blanch: 0.3 } },
     { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 116, T: 13400, LAB: 2200, young: 0,
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
@@ -162,7 +162,7 @@
   var BOXNAMES = { ped: 'Box pédiatrique', mic: 'Box microscope', b3: 'Box 3' };
   // Mohamed : lundi, jeudi, dimanche (mardi administratif, sans box). Vendredi : Aya (pédiatrique), Nabila de 9 h à 15 h puis Julien de 15 h à 20 h dans le Box 3 (polyvalent)
   var BOXMAP = { ped: { 1: [0], 2: [0], 3: [0], 4: [0], 5: [0] }, mic: { 1: [2], 2: [2], 4: [3], 6: [4], 0: [3] }, b3: { 1: [1], 4: [1], 5: [5, 4], 0: [1], 6: [6] } };
-  var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.3384 };
+  var CHG = { leasingBox: 650, conso: 3200, perso: 11700, cabPct: 0.2528 };
   var boxes = Object.keys(BOXMAP).map(function (bk) {
     var vs = visits.filter(function (v) { return (BOXMAP[bk][v.wd] || []).indexOf(v.p) >= 0; });
     var perDay = {}; vs.forEach(function (v) { perDay[v.d] = (perDay[v.d] || 0) + PR[v.p].step / 60; });
@@ -210,9 +210,11 @@
     var R = 61500 / 121100; var LR = 17700 / 121100; var PP = 963 / 121100;
     return lab.map(function (l, i) {
       var ca = i === 12 ? 121100 : Math.round(rem[i] / R / 100) * 100;
+      var REM2 = { 7: 67170, 8: 67050, 9: 60370, 10: 52960, 11: 69500, 12: 72780 }; // gérant à 100 % (= page Rémunérations)
+      var rem2 = REM2[i] || Math.round(rem[i] * 72780 / 61500 / 100) * 100;
       var labo = i === 12 ? 17700 : Math.round(ca * LR / 100) * 100;
       var pat = i === 12 ? 963 : Math.round(ca * PP);
-      return { label: l, ca: ca, labo: labo, rem: rem[i], chg: chg[i], ben: ca - labo - rem[i] - chg[i], pat: pat };
+      return { label: l, ca: ca, labo: labo, rem: rem2, chg: chg[i], ben: ca - labo - rem2 - chg[i], pat: pat };
     });
   })();
 
