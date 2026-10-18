@@ -18,7 +18,7 @@
   function setFails(f) { try { sessionStorage.setItem('lk-fails', JSON.stringify(f)); } catch (e) {} }
 
   function ovKey(c) { return 'lk-ov-' + c.e; }
-  function getOv(c) { try { var o = JSON.parse(localStorage.getItem(ovKey(c)) || 'null'); return o && o.s && o.h ? o : null; } catch (e) { return null; } }
+  function getOv(c) { try { var o = JSON.parse(localStorage.getItem(ovKey(c)) || 'null'); if (o && o.s && o.h && o.base === c.h) { return o; } if (o) { localStorage.removeItem(ovKey(c)); } return null; } catch (e) { return null; } }
   function setOv(c, o) { try { localStorage.setItem(ovKey(c), JSON.stringify(o)); return true; } catch (e) { return false; } }
   function currentCred(c) { return getOv(c) || c; }
 
@@ -130,7 +130,7 @@
       }).then(function (h) {
         if (h !== cr.h) { throw 'code'; }
         var salt = randHex(16);
-        return derive(email, c1, { s: salt }).then(function (nh) { if (!setOv(c, { s: salt, h: nh })) { throw 'store'; } });
+        return derive(email, c1, { s: salt }).then(function (nh) { if (!setOv(c, { s: salt, h: nh, base: c.h })) { throw 'store'; } });
       }).then(function () {
         err.style.color = '#0B6B3A'; err.textContent = 'Code modifié. Utilisez-le à la prochaine connexion.';
         setTimeout(function () { g.remove(); }, 1500);
