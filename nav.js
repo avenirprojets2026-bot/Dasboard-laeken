@@ -41,7 +41,7 @@
   var css = 'nav[aria-label="Vues"]{display:none!important}' +
     '#lk-side{position:fixed;top:0;left:0;bottom:0;width:256px;background:linear-gradient(180deg,#0E1C19 0%,#122421 55%,#0F1F1C 100%);color:#fff;overflow-y:auto;z-index:9000;padding:22px 14px 90px;box-sizing:border-box;font-family:"DM Sans",sans-serif;border-right:1px solid rgba(255,255,255,.06);scrollbar-width:thin;scrollbar-color:#2A3D39 transparent}' +
     '#lk-side .lk-t{display:flex;align-items:center;gap:12px;margin:0 6px 22px;line-height:1.2}' +
-    '#lk-side .lk-t img{width:38px;height:38px;border-radius:10px;box-shadow:0 6px 18px -6px rgba(0,0,0,.6)}' +
+    '#lk-side .lk-t img{width:38px;height:38px;border-radius:10px;outline:1px solid rgba(243,221,166,.35);box-shadow:0 6px 18px -6px rgba(0,0,0,.6)}' +
     '#lk-side .lk-t b{display:block;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:16px;letter-spacing:-.01em}' +
     '#lk-side .lk-t small{display:block;font-size:11.5px;color:#8FB3AB;margin-top:2px}' +
     '#lk-side .lk-g{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6F948C;margin:20px 10px 6px}' +
@@ -58,8 +58,8 @@
     '@media(max-width:999px){#lk-bar{display:flex}#lk-side{display:none;top:58px;width:100%;max-width:340px;box-shadow:12px 0 40px rgba(0,0,0,.4)}#lk-side.open{display:block}#lk-side .lk-t{display:none}body{padding-top:58px!important}}';
   function init() {
     var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
-    var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png" alt=""><div><b>Dental Clinic Laeken</b><small>Comptabilité du cabinet</small></div></div>' + html;
-    var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png" alt=""><b>' + curName + '</b><button type="button">Menu</button>';
+    var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png?v=2" alt=""><div><b>Dental Clinic Laeken</b><small>Comptabilité du cabinet</small></div></div>' + html;
+    var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png?v=2" alt=""><b>' + curName + '</b><button type="button">Menu</button>';
     bar.querySelector('button').onclick = function () { side.classList.toggle('open'); };
     document.body.appendChild(side); document.body.appendChild(bar);
   }

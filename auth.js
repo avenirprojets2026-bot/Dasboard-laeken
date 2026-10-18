@@ -65,7 +65,7 @@
   function showLogin() {
     style();
     document.documentElement.classList.add('lk-lock');
-    var g = el('<form id="lk-form" autocomplete="on"><img src="icon-512.png" alt=""><h1>Dental Clinic Laeken</h1><p>Accès réservé : gérant, praticiens et secrétariat. Entrez votre e-mail et votre code secret.</p>' +
+    var g = el('<form id="lk-form" autocomplete="on"><img src="icon-512.png?v=2" alt=""><h1>Dental Clinic Laeken</h1><p>Accès réservé : gérant, praticiens et secrétariat. Entrez votre e-mail et votre code secret.</p>' +
       '<label>Adresse e-mail<input id="lk-mail" type="email" name="email" autocomplete="username" required inputmode="email"></label>' +
       '<label>Code secret<input id="lk-code" type="password" name="password" autocomplete="current-password" required></label>' +
       '<div id="lk-err" role="alert"></div><button id="lk-go" type="submit">Se connecter</button>' +
@@ -97,7 +97,7 @@
   function showDenied() {
     style();
     document.documentElement.classList.add('lk-lock');
-    el('<div class="box"><img src="icon-512.png" alt=""><h1>Accès non autorisé</h1><p>Cette page n\'est pas prévue pour votre profil (' + ROLE_LABEL[acc.role] + ').</p><a class="b" href="Accueil.dc.html">Retour à l\'accueil</a><button class="s" id="lk-out">Se déconnecter</button></div>');
+    el('<div class="box"><img src="icon-512.png?v=2" alt=""><h1>Accès non autorisé</h1><p>Cette page n\'est pas prévue pour votre profil (' + ROLE_LABEL[acc.role] + ').</p><a class="b" href="Accueil.dc.html">Retour à l\'accueil</a><button class="s" id="lk-out">Se déconnecter</button></div>');
     document.getElementById('lk-out').onclick = window.LKAUTH.logout;
   }
 
@@ -105,7 +105,7 @@
 
   function showChange() {
     style();
-    var g = el('<form id="lk-form2"><img src="icon-512.png" alt=""><h1>Changer mon code secret</h1><p>Choisissez un nouveau code de 6 caractères (lettres et chiffres).</p>' +
+    var g = el('<form id="lk-form2"><img src="icon-512.png?v=2" alt=""><h1>Changer mon code secret</h1><p>Choisissez un nouveau code de 6 caractères (lettres et chiffres).</p>' +
       '<label>Adresse e-mail<input id="lk-m2" type="email" autocomplete="username" required inputmode="email"></label>' +
       '<label>Code actuel<input id="lk-c0" type="password" autocomplete="current-password" required></label>' +
       '<label>Nouveau code (6 caractères)<input id="lk-c1" type="password" autocomplete="new-password" required maxlength="6" minlength="6" pattern="[A-Za-z0-9]{6}"></label>' +
@@ -156,7 +156,7 @@
     var k = 'lk-welcome-' + acc.e;
     try { if (getOv(acc) || localStorage.getItem(k)) { return; } } catch (e) { return; }
     var done = function () { try { localStorage.setItem(k, '1'); } catch (e) {} };
-    var g = el('<div class="box"><img src="icon-512.png" alt=""><h1>Bienvenue</h1><p>Vous êtes connecté avec le code qui vous a été remis. Pour plus de sécurité, vous pouvez choisir votre propre code de 6 caractères (lettres et chiffres).</p>' +
+    var g = el('<div class="box"><img src="icon-512.png?v=2" alt=""><h1>Bienvenue</h1><p>Vous êtes connecté avec le code qui vous a été remis. Pour plus de sécurité, vous pouvez choisir votre propre code de 6 caractères (lettres et chiffres).</p>' +
       '<button type="button" id="lk-wy">Choisir mon code</button><button type="button" class="s" id="lk-wn">Plus tard</button>' +
       '<div class="note">Vous pourrez le faire à tout moment avec le bouton « Mon code », en bas à droite.</div></div>');
     g.querySelector('#lk-wy').onclick = function () { done(); g.remove(); showChange(); };
