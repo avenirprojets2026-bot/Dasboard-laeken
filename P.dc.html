@@ -16,8 +16,34 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
-<style>body{margin:0} a{color:#0B5D56} button{font-family:inherit}</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F6F5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0B5D56;transition:color .15s ease} a:hover{color:#063B37}
+button,select,input{font-family:inherit}
+::selection{background:#CFE8E3;color:#0A2622}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-0.02em;font-optical-sizing:auto}
+h2{letter-spacing:-0.01em}
+table{font-variant-numeric:tabular-nums}
+[style*="font-size:26px"],[style*="font-size:28px"],[style*="font-size:30px"],[style*="font-size:34px"],[style*="font-size:36px"]{font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+div[style*="background:#F3F6F5; color:#14201D"]{background:radial-gradient(1100px 380px at 12% -8%,rgba(15,118,110,.10),transparent 70%),linear-gradient(180deg,#EDF3F1 0,#F4F6F5 360px)!important}
+[style*="background:#fff"][style*="border-radius:14px"],[style*="background:#fff"][style*="border-radius:12px"]{border-color:#E2E9E6!important;box-shadow:0 1px 2px rgba(16,32,28,.04),0 10px 30px -18px rgba(16,32,28,.22);transition:box-shadow .2s ease,transform .2s ease}
+[style*="background:#fff"][style*="border-radius:14px"]:hover{box-shadow:0 1px 2px rgba(16,32,28,.05),0 18px 40px -20px rgba(16,32,28,.30)}
+thead th{font-weight:600}
+tbody tr{transition:background-color .12s ease}
+tbody tr:hover{background:#F5F9F8}
+nav[aria-label="Vues"] a{transition:border-color .15s,color .15s,transform .15s}
+nav[aria-label="Vues"] a:hover{border-color:#0F766E!important;transform:translateY(-1px)}
+button{transition:transform .12s ease,filter .15s ease,box-shadow .15s ease}
+button:hover{filter:brightness(1.04)} button:active{transform:translateY(1px)}
+:focus-visible{outline:2px solid #0F766E;outline-offset:2px}
+section{animation:lk-in .5s cubic-bezier(.2,.7,.2,1) both}
+section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-delay:.1s} section:nth-of-type(4){animation-delay:.15s} section:nth-of-type(n+5){animation-delay:.2s}
+@keyframes lk-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+*{scrollbar-width:thin;scrollbar-color:#C5D3CF transparent}
+@media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
+</style>
 </helmet>
 <div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2300px">
 <nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">

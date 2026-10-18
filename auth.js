@@ -46,8 +46,8 @@
     '#lk-gate button:disabled{opacity:.6;cursor:default}' +
     '#lk-err{min-height:20px;font-size:13px;color:#A3231A;text-align:center}' +
     '#lk-gate .note{font-size:12px;color:#6B7B77}' +
-    '#lk-who{position:fixed;right:12px;bottom:12px;z-index:9500;background:#14201D;color:#fff;border-radius:999px;padding:6px 8px 6px 14px;font:500 13px "DM Sans",system-ui,sans-serif;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.3)}' +
-    '#lk-who button{background:#0F766E;color:#fff;border:0;border-radius:999px;min-height:32px;padding:0 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}';
+    '#lk-who{position:fixed;right:16px;bottom:16px;z-index:9500;background:rgba(15,30,27,.88);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:6px 6px 6px 16px;font:500 13px "DM Sans",system-ui,sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 12px 32px -8px rgba(0,0,0,.35)}' +
+    '#lk-who button.chg{background:rgba(255,255,255,.10)}#lk-who button{background:#0F766E;color:#fff;border:0;border-radius:999px;min-height:32px;padding:0 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}';
 
   function style() { var s = document.createElement('style'); s.textContent = css; (document.head || document.documentElement).appendChild(s); }
   function el(html) { var d = document.createElement('div'); d.id = 'lk-gate'; d.innerHTML = html; document.documentElement.appendChild(d); return d; }
@@ -167,7 +167,7 @@
   if (!acc) { showLogin(); return; }
   if (!allowed(cur)) { showDenied(); return; }
   function ready() {
-    badge(); filterLinks();
+    style(); badge(); filterLinks();
     if (window.MutationObserver) { var t; new MutationObserver(function () { clearTimeout(t); t = setTimeout(filterLinks, 80); }).observe(document.body, { childList: true, subtree: true }); }
   }
   if (document.body) { ready(); } else { document.addEventListener('DOMContentLoaded', ready); }
