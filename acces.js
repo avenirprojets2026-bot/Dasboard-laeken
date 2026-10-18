@@ -14,72 +14,72 @@ window.LKACCES = {
    "role": "gerant",
    "pr": -1,
    "e": "1c03ebb24267",
-   "s": "3e2ebe5b8647b8546aab88c8a30937ef",
-   "h": "5d04e8f8de4c1ac33f38ca5e1388b386a170ccf0f9e3e883e7e3f0518567f987"
+   "s": "56339905a2f36a788d1ab7375a462d24",
+   "h": "388e190355d2e9c37ba63137aa44c5e7dffd090b6e2414f215891e5a457fed3a"
   },
   {
    "n": "Dr Aya Turkieh",
    "role": "praticien",
    "pr": 0,
    "e": "89ef512da757",
-   "s": "2a85dc657f838cf428ef7c639d5c6bb0",
-   "h": "39968c0f229f1738ed96ac1f71b629e79744bdb417c274aeda6363475cde0bf7"
+   "s": "c40b3de7efd188f01144dda859b39359",
+   "h": "f6330540f9af3d32933c6b396ffe71eaeef57e6005694b5a32f45e9032ac75ee"
   },
   {
    "n": "Dr Abde-Ssadic Bochouari",
    "role": "praticien",
    "pr": 2,
    "e": "2e8f8574df1d",
-   "s": "bb3b31ab934c437009eb0c8fc9260a13",
-   "h": "1225a8c7c9e19db29fcb7c9232c6d847f6954874c03304f6e3e821b065837c6c"
+   "s": "017010f81f3e9165f1478c5882926b85",
+   "h": "4a0904c97bd9903f1d9a3ea04ac0859681d6faa9c22f85c3930b835acaaf2dc4"
   },
   {
    "n": "Dr Daoud Bouchouari",
    "role": "praticien",
    "pr": 3,
    "e": "c9fe0e2d97d0",
-   "s": "8bb18f93444a660ebec53ab914181d23",
-   "h": "7b82f3ef19551b0e8587b1c222d9232e1a590120c638672383bcc7da476917fd"
+   "s": "30856a1938fb948ebfcbf928cdf0a166",
+   "h": "9e78990a5907f8927620da9e905e3e66fa2e44948cfdcbec7b22a7e1c29fa789"
   },
   {
    "n": "Dr Julien Cabaz",
    "role": "praticien",
    "pr": 4,
    "e": "ad8653d629fb",
-   "s": "38eda7fd74ffd7a49b5b85682b2d260e",
-   "h": "ef6b243c38fe162473609d3c9762db3c6b4e07eb56dbbb8bdab5faa1764402f7"
+   "s": "ad59efe483ef579a27e7683837706724",
+   "h": "5111064ab0645dbf4e4985c208dfc4b522462c68da8402c85aa99abddea2eea5"
   },
   {
    "n": "Dr Nabila Touil",
    "role": "praticien",
    "pr": 5,
    "e": "bffb3e4e60e0",
-   "s": "97ee828139f3276008a242d1863b32fb",
-   "h": "e70a37794d3b033f4ea12f118b2c67b68a25a77b030091b92736c134936383ec"
+   "s": "3da63fe6b2ac2263964da3c2c9283d14",
+   "h": "32bfbd7e08cf004945e0d38391d616ff27a56a90231ae676211c7d7884c107ac"
   },
   {
    "n": "Secrétaire 1",
    "role": "secretaire",
    "pr": -1,
    "e": "c2a020a9c7c2",
-   "s": "f82608a7f0e823439a3488a91f68222b",
-   "h": "905666dacbdf17f6a5cabc3adb844504e39543f42a95b187266477d62a6b9e05"
+   "s": "81e1b1a148eb933199bcb9ad6345e079",
+   "h": "97ec4f13d97f83b4463f065cad5e04ed36e44aa75d0fe14305b75abac2f15c19"
   },
   {
    "n": "Secrétaire 2",
    "role": "secretaire",
    "pr": -1,
    "e": "3abe854c75e8",
-   "s": "dedce8cc06cf7ce4e35a166d96f05575",
-   "h": "2c34735539e6aa48d7639e4d47128bc8a00a938702e7e1f8b16ae0d56e4dd57b"
+   "s": "9e3afa5963538375e7f20b730cff9392",
+   "h": "867abff9f8080bf0bb6a58677c55e942360b55de197f377faf9047ca001f64ea"
   },
   {
    "n": "Secrétaire 3",
    "role": "secretaire",
    "pr": -1,
    "e": "ce5c6a77b801",
-   "s": "c66f0d6dcd75aba1505cc086b5678247",
-   "h": "be22e4110194ad6570bc1fc59b37fcab6e73c347c6d290b4c629a10a8a9e48b2"
+   "s": "bbcfcfd938e6e8fed9aa0c44c37d0b50",
+   "h": "9fae7ded60fc7bdb78abe2c159459e082b3059a16f2c6b65fee63a23c8de43e7"
   }
  ]
 };

@@ -21,8 +21,7 @@ COMPTES = [
 ]
 
 def code():
-    c = ''.join(secrets.choice(ALPHA) for _ in range(10))
-    return c[:5] + '-' + c[5:]
+    return ''.join(secrets.choice(ALPHA) for _ in range(6))
 
 out = []
 print('E-mail ; code secret ; rôle')
