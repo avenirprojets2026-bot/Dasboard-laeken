@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Accès et rôles</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=20"></script>
-<script src="./auth.js?v=20"></script>
-<script src="./nav.js?v=20"></script>
-<script src="./data.js?v=20"></script>
+<script src="./acces.js?v=21"></script>
+<script src="./auth.js?v=21"></script>
+<script src="./nav.js?v=21"></script>
+<script src="./data.js?v=21"></script>
 </head>
 <body>
 <x-dc>
@@ -104,7 +104,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:640px">
 <thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Compte</th><th style="padding:8px">Rôle</th><th style="padding:8px">Ce qu'il voit</th></tr></thead>
 <tbody>
-<sc-for list="{{accounts}}" as="a" hint-placeholder-count="10">
+<sc-for list="{{accounts}}" as="a" hint-placeholder-count="11">
 <tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700">{{a.name}}</td><td style="padding:10px 8px"><span style="{{a.chip}}">{{a.role}}</span></td><td style="padding:10px 8px">{{a.sees}}</td></tr>
 </sc-for>
 </tbody>
@@ -142,6 +142,7 @@ class Component extends DCLogic {
       ['Dr Daoud Bouchouari', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
       ['Dr Julien Cabaz', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
       ['Dr Nabila Touil', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
+      ['7e praticien (à confirmer)', 'Praticien', 'praticien', 'Son espace, ses patients vus, la nomenclature'],
       ['Secrétaire 1', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature'],
       ['Secrétaire 2', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature'],
       ['Secrétaire 3', 'Secrétariat', 'secretaire', 'Patients et paiements, import et export, nomenclature']
@@ -150,7 +151,7 @@ class Component extends DCLogic {
       roles: [
         { name: 'Administrateur', desc: 'Gère la maquette, les comptes et les codes. Voit toutes les pages.', count: '1 compte', style: tile('#5B3FA8') },
         { name: 'Gérant', desc: 'Voit tout le cabinet : résultat, charges, rémunérations, mutuelles, laboratoires, box et accès.', count: '1 compte', style: tile('#0F766E') },
-        { name: 'Praticien', desc: 'Ne voit que son espace : ses heures, ses patients, ses travaux de laboratoire et sa rémunération. Rien sur les autres praticiens ni sur les charges.', count: '5 comptes', style: tile('#2E8B57') },
+        { name: 'Praticien', desc: 'Ne voit que son espace : ses heures, ses patients, ses travaux de laboratoire et sa rémunération. Rien sur les autres praticiens ni sur les charges.', count: '6 comptes', style: tile('#2E8B57') },
         { name: 'Secrétariat', desc: 'Voit les patients, les paiements, l\'import et export et la nomenclature. Pas les rémunérations ni les charges.', count: '3 comptes', style: tile('#B45309') }
       ],
       matrix: P.map((r) => { const c = [cell(r[1]), cell(r[2]), cell(r[3]), cell(r[4])]; return { page: r[0], a: c[0][0], s0: c[0][1], g: c[1][0], s1: c[1][1], p: c[2][0], s2: c[2][1], s: c[3][0], s3: c[3][1] }; }),

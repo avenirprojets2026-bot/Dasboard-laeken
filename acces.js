@@ -21,41 +21,49 @@ window.LKACCES = {
    "n": "Dr Aya Turkieh",
    "role": "praticien",
    "pr": 0,
-   "e": "89ef512da757",
-   "s": "c40b3de7efd188f01144dda859b39359",
-   "h": "f6330540f9af3d32933c6b396ffe71eaeef57e6005694b5a32f45e9032ac75ee"
+   "e": "0f2b5d016036",
+   "s": "f37b92eba9c460c53bd2fbb9f84074ab",
+   "h": "92a4a9c6a09418164aa4cf47cd47c2addced0f13bfd6cb64ab4060199889ff40"
   },
   {
    "n": "Dr Abde-Ssadic Bochouari",
    "role": "praticien",
    "pr": 2,
-   "e": "2e8f8574df1d",
-   "s": "017010f81f3e9165f1478c5882926b85",
-   "h": "4a0904c97bd9903f1d9a3ea04ac0859681d6faa9c22f85c3930b835acaaf2dc4"
+   "e": "f0a46a3a98b1",
+   "s": "927f1f3d511d277f164c08e0c80eba79",
+   "h": "6e18721f3e8415499c3b71bfc0346edccbf16fb4493d9b76ec64dc4929695d8b"
   },
   {
    "n": "Dr Daoud Bouchouari",
    "role": "praticien",
    "pr": 3,
-   "e": "c9fe0e2d97d0",
-   "s": "30856a1938fb948ebfcbf928cdf0a166",
-   "h": "9e78990a5907f8927620da9e905e3e66fa2e44948cfdcbec7b22a7e1c29fa789"
+   "e": "87c76d9f9ad5",
+   "s": "a5f0ccd298df672c53ec3d71148741e5",
+   "h": "d69e9a8f02bd69ac4361bfe20e5719699309615907e96dc9709042a3766d62cf"
   },
   {
    "n": "Dr Julien Cabaz",
    "role": "praticien",
    "pr": 4,
-   "e": "ad8653d629fb",
-   "s": "ad59efe483ef579a27e7683837706724",
-   "h": "5111064ab0645dbf4e4985c208dfc4b522462c68da8402c85aa99abddea2eea5"
+   "e": "e805c605800e",
+   "s": "d323f5caeed51f4c04cb4906e42e512a",
+   "h": "d33f11b36223c3a6d73ce3a7bd046a717e9035845983f2a5988676a1f56da928"
   },
   {
    "n": "Dr Nabila Touil",
    "role": "praticien",
    "pr": 5,
-   "e": "bffb3e4e60e0",
-   "s": "3da63fe6b2ac2263964da3c2c9283d14",
-   "h": "32bfbd7e08cf004945e0d38391d616ff27a56a90231ae676211c7d7884c107ac"
+   "e": "5348b2767f49",
+   "s": "f612d8d74e737145f0e330f8870ca62f",
+   "h": "6bafbb97e81e21f90ee08bd77eafe86501dfcebed0d12b7a2234bc0708f5e7c2"
+  },
+  {
+   "n": "7e praticien (à confirmer)",
+   "role": "praticien",
+   "pr": 6,
+   "e": "31f09f2af6cb",
+   "s": "3fb84d2a63a55c80b2616f40a6cea52c",
+   "h": "eb9fc2f2c61e0256dd38ecaad848110fcc991da126de73339c737c70bd1a68d1"
   },
   {
    "n": "Secrétaire 1",
