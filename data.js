@@ -199,5 +199,25 @@
 
   // ---- Patients actifs, nouveaux patients, fidélisation (chiffres fictifs) ----
   var pilot = { actifs: 6400, nouveaux: 230, retour: 0.71 };
-    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad };
+
+  // ---- Familles de soins (pour les disques de répartition) ----
+  var FAMS = [
+    ['Examens et consultations', '#0F766E', ['exam', 'consult', 'consultO']],
+    ['Prévention et détartrage', '#5EB8A8', ['detart']],
+    ['Radiologie', '#8A9A96', ['pano']],
+    ['Soins conservateurs (obturations)', '#2F6DB5', ['obt']],
+    ['Endodontie (traitements de canal)', '#5B3FA8', ['canal']],
+    ['Chirurgie et extractions', '#B42318', ['extr', 'extrS', 'greffe']],
+    ['Implantologie', '#B7892B', ['implant', 'couronneImpl']],
+    ['Couronnes, bridges et prothèses', '#C2410C', ['couronne', 'bridge', 'prothese']],
+    ['Esthétique (facettes, blanchiment)', '#D4789C', ['facette', 'blanch']],
+    ['Orthodontie et gouttières', '#15803D', ['ortho', 'appareil', 'goutt']]
+  ];
+  function families(lines) {
+    return FAMS.map(function (f) {
+      var ls = lines.filter(function (l) { return f[2].indexOf(l.key) >= 0; });
+      return { name: f[0], color: f[1], n: ls.length, fee: ls.reduce(function (a, l) { return a + l.fee; }, 0) };
+    }).filter(function (x) { return x.n > 0; });
+  }
+    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad, FAMS: FAMS, families: families };
 })();

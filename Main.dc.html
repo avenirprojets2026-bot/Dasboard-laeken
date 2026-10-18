@@ -7,9 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=22"></script>
-<script src="./auth.js?v=22"></script>
-<script src="./nav.js?v=22"></script>
+<script src="./data.js?v=23"></script>
+<script src="./acces.js?v=23"></script>
+<script src="./auth.js?v=23"></script>
+<script src="./nav.js?v=23"></script>
 </head>
 <body>
 <x-dc>
@@ -85,6 +86,25 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </sc-for>
 </section>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:18px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px">
+<div><h2 style="margin:0; font-size:18px">Répartition des soins</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{donutCaption}}</div></div>
+<div style="display:flex; gap:6px; background:#F1F5F4; border-radius:999px; padding:4px"><sc-for list="{{byPills}}" as="b" hint-placeholder-count="2"><button type="button" style="{{b.style}}" onClick="{{b.pick}}">{{b.label}}</button></sc-for></div>
+</div>
+<div style="display:flex; flex-wrap:wrap; gap:8px"><sc-for list="{{whoPills}}" as="w" hint-placeholder-count="8"><button type="button" style="{{w.style}}" onClick="{{w.pick}}">{{w.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
+<div style="{{donutStyle}}"><div style="position:absolute; inset:38px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; box-shadow:inset 0 0 0 1px #E7EDEB"><div style="font-size:12px; color:#4A5B57; letter-spacing:0.04em; text-transform:uppercase">{{donutLabel}}</div><div style="font-size:26px; font-weight:700; margin-top:2px">{{donutValue}}</div><div style="font-size:12px; color:#4A5B57; margin-top:2px">{{donutSub}}</div></div></div>
+<div style="flex:1 1 320px; min-width:0; display:flex; flex-direction:column; gap:10px">
+<sc-for list="{{legend}}" as="g" hint-placeholder-count="8">
+<div style="display:flex; flex-direction:column; gap:5px">
+<div style="display:flex; align-items:center; gap:10px; font-size:14px"><span style="{{g.dot}}"></span><span style="flex:1; min-width:0">{{g.name}}</span><b style="font-variant-numeric:tabular-nums">{{g.pct}}</b><span style="color:#4A5B57; min-width:92px; text-align:right; font-variant-numeric:tabular-nums">{{g.val}}</span></div>
+<div style="background:#F1F5F4; border-radius:2px"><div style="{{g.bar}}"></div></div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
 <section style="display:flex; flex-direction:column; gap:12px">
 <h2 style="margin:0; font-size:18px">Un casier par praticien</h2>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); gap:16px">
@@ -126,14 +146,41 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1120}}'>
 class Component extends DCLogic {
+  state = { who: -1, by: 'fee' };
   renderVals() {
+    const S = this.state; const D = window.LAEKEN;
+    const eurS = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const donutOf = (fam, by) => {
+      const tot = fam.reduce((a, f) => a + f[by], 0) || 1; let acc = 0;
+      const stops = fam.map((f) => { const a = acc / tot * 100; acc += f[by]; const b = acc / tot * 100; return f.color + ' ' + a.toFixed(2) + '% ' + (b - 0.35).toFixed(2) + '%, #fff ' + (b - 0.35).toFixed(2) + '% ' + b.toFixed(2) + '%'; });
+      return 'position:relative; width:230px; height:230px; flex:none; border-radius:50%; background:conic-gradient(' + stops.join(', ') + '); box-shadow:0 18px 40px -22px rgba(16,32,28,.45);';
+    };
+    const legendOf = (fam, by, fmt) => { const tot = fam.reduce((a, f) => a + f[by], 0) || 1; return fam.slice().sort((x, y) => y[by] - x[by]).map((f) => ({ name: f.name, dot: 'width:12px; height:12px; border-radius:4px; flex:none; background:' + f.color + ';', pct: String(Math.round(f[by] / tot * 1000) / 10).replace('.', ',') + ' %', val: fmt(f), bar: 'height:4px; border-radius:2px; background:' + f.color + '; opacity:.85; width:' + Math.max(2, Math.round(f[by] / tot * 100)) + '%;' })); };
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
-    return {
+    let donut = { donutStyle: 'display:none', legend: [], whoPills: [], byPills: [], donutLabel: '', donutValue: '', donutSub: '', donutCaption: 'Données non chargées' };
+    if (D && D.families) {
+      const lines = S.who < 0 ? D.rows : D.PR[S.who].rows;
+      const fam = D.families(lines); const by = S.by;
+      const totF = fam.reduce((a, f) => a + f.fee, 0); const totN = fam.reduce((a, f) => a + f.n, 0);
+      const pill = (on) => 'border:1px solid ' + (on ? '#14201D' : '#C9D6D2') + '; background:' + (on ? '#14201D' : '#fff') + '; color:' + (on ? '#fff' : '#14201D') + '; border-radius:999px; padding:8px 14px; font-size:13px; font-weight:' + (on ? '700' : '500') + '; cursor:pointer; min-height:36px;';
+      const seg = (on) => 'border:0; background:' + (on ? '#fff' : 'transparent') + '; color:#14201D; border-radius:999px; padding:7px 14px; font-size:13px; font-weight:' + (on ? '700' : '500') + '; cursor:pointer; box-shadow:' + (on ? '0 1px 3px rgba(16,32,28,.15)' : 'none') + ';';
+      donut = {
+        donutStyle: donutOf(fam, by),
+        legend: legendOf(fam, by, (f) => by === 'fee' ? eurS(f.fee) : f.n + ' actes'),
+        donutLabel: by === 'fee' ? 'Honoraires' : 'Actes',
+        donutValue: by === 'fee' ? eurS(totF) : String(totN),
+        donutSub: S.who < 0 ? 'tout le cabinet' : D.PR[S.who].short,
+        donutCaption: (S.who < 0 ? 'Tout le cabinet' : D.PR[S.who].name) + ' · octobre 2026 · ' + totN + ' actes, ' + eurS(totF) + ' d\'honoraires',
+        whoPills: [{ label: 'Tout le cabinet', style: pill(S.who < 0), pick: () => this.setState({ who: -1 }) }].concat(D.PR.map((p, i) => ({ label: p.short, style: pill(S.who === i), pick: () => this.setState({ who: i }) }))),
+        byPills: [{ label: 'Honoraires', style: seg(by === 'fee'), pick: () => this.setState({ by: 'fee' }) }, { label: 'Nombre d\'actes', style: seg(by === 'n'), pick: () => this.setState({ by: 'n' }) }]
+      };
+    }
+    return Object.assign(donut, {
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
         { label: 'Rémunération des praticiens', value: '61 500 €', note: '(honoraires − labo) × 60 %, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
-        { label: 'Charges du cabinet', value: '38 720 €', note: 'personnel avec ONSS et remplacements, 2 véhicules BMW (leasing, assurance, entretien, taxe, énergie), loyer, leasing fauteuils et matériel numérique, intérêts, précompte immobilier, énergie, consommables, assurances, comptabilité, marketing, visibilité Google, cybersécurité, contrôles et remplacements de matériel, AFCN et autres charges belges' },
+        { label: 'Charges du cabinet', value: '38 720 €', note: 'personnel et ONSS, loyer, leasing, 2 véhicules, énergie, consommables et autres charges (détail dans Résultat du gérant)' },
         { label: 'Bénéfice du cabinet', value: '3 180 €', note: 'après frais de labo, rémunérations et charges' }
       ],
       dentists: [
@@ -145,7 +192,7 @@ class Component extends DCLogic {
         { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', patients: '130', billed: '12 800 €', retro: '6 720 €', paidPct: '75 %', paidW: '75%', pending: '3 200 €', labo: '1 600 €', devis: '2', conv: 'Conventionné', convStyle: cs },
         { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: '66', billed: '6 300 €', retro: '3 000 €', paidPct: '77 %', paidW: '77%', pending: '1 500 €', labo: '1 300 €', devis: '1', conv: 'Conventionné', convStyle: cs }
       ]
-    };
+    });
   }
 }
 </script>

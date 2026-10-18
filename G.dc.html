@@ -7,9 +7,9 @@
 <meta charset="utf-8">
 <title>Tableau de bord interactif</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=22"></script>
-<script src="./auth.js?v=22"></script>
-<script src="./nav.js?v=22"></script>
+<script src="./acces.js?v=23"></script>
+<script src="./auth.js?v=23"></script>
+<script src="./nav.js?v=23"></script>
 </head>
 <body>
 <x-dc>
@@ -255,13 +255,13 @@ class Component extends DCLogic {
     const monthsShort = ['Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.'];
     const paidDates = ['01/07/2026', '01/08/2026', '01/09/2026', '01/10/2026', '01/11/2026', '01/12/2026'];
     const D = [
-      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [24010, 23590, 21310, 18690, 25030, 25620], t: 50500, rate: 0.6, labo: 7800 },
-      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [9140, 9390, 8220, 6790, 9220, 9660], t: 19200, rate: 0.6, labo: 3100 },
-      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', conv: false, color: '#B45309', v: [22860, 22600, 20500, 18130, 23780, 24240], t: 47900, rate: 0.6, labo: 7500 },
-      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', conv: true, color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850], t: 9300, rate: 0.5, labo: 1600 },
-      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [8920, 8750, 8160, 7230, 9170, 9540], t: 18900, rate: 0.6, labo: 3000 },
-      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [8670, 9090, 7990, 7070, 8920, 9240], t: 18300, rate: 0.6, labo: 2900 },
-      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780], t: 9000, rate: 0.6, labo: 2700 }
+      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [17220, 16910, 15260, 13410, 17950, 18780], t: 35400, rate: 0.6, labo: 4100 },
+      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [6220, 6390, 5590, 4620, 6260, 6720], t: 13400, rate: 0.6, labo: 2200 },
+      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', conv: false, color: '#B45309', v: [15610, 15430, 13980, 12390, 16220, 16920], t: 33500, rate: 0.6, labo: 5300 },
+      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', conv: true, color: '#B42318', v: [2470, 2560, 2220, 1940, 2560, 2700], t: 6500, rate: 0.5, labo: 1100 },
+      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [6090, 5980, 5570, 4940, 6250, 6660], t: 13200, rate: 0.6, labo: 2100 },
+      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [6170, 6460, 5680, 5030, 6340, 6720], t: 12800, rate: 0.6, labo: 1600 },
+      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [2720, 2770, 2500, 2170, 2820, 3000], t: 6300, rate: 0.6, labo: 1300 }
     ];
 
     const pillBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';

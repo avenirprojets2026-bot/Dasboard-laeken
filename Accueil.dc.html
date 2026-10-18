@@ -4,8 +4,9 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<script src="./acces.js?v=22"></script>
-<script src="./auth.js?v=22"></script>
+<script src="./acces.js?v=23"></script>
+<script src="./auth.js?v=23"></script>
+<script src="./nav.js?v=23"></script>
 <meta charset="utf-8">
 <title>Accueil</title>
 <script src="./support.js"></script>
@@ -51,8 +52,8 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </header>
 <section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; align-items:start">
 <section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #0F766E; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Gérant (administrateur)</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Tous les chiffres du cabinet : résultat, charges, rémunérations, mutuelles, laboratoires et occupation des box.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Accès complet</div>
+<div><h2 style="margin:0; font-size:20px">Gérant et administrateur</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Tous les chiffres du cabinet : résultat, charges, rémunérations, mutuelles, laboratoires et occupation des box.</div></div>
+<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Accès complet, y compris les accès</div>
 <div style="display:flex; flex-direction:column; gap:8px">
 <a href="Main.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Vue cabinet</a>
 <a href="B.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Casier praticien</a>
@@ -71,27 +72,34 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Accès limité à ses propres données</div>
 <div style="display:flex; flex-direction:column; gap:8px">
 <a href="M.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Espace praticien</a>
+<a href="L.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Mes patients vus</a>
 </div>
 </section>
 <section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #B45309; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Accueil et caisse</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Suivi des paiements, amendes de rendez-vous manqués et liste des patients vus.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Gérant et accueil</div>
+<div><h2 style="margin:0; font-size:20px">Accueil et caisse</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Paiements des patients, amendes de rendez-vous manqués, devis, import et export.</div></div>
+<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Secrétariat et gérant</div>
 <div style="display:flex; flex-direction:column; gap:8px">
 <a href="H.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Patients et paiements</a>
-<a href="L.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Patients vus par praticien</a>
+<a href="J.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Import et export</a>
 </div>
 </section>
 <section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #2F6DB5; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Données et références</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Actes par praticien, import et export Excel ou CSV, nomenclature INAMI des dentistes.</div></div>
+<div><h2 style="margin:0; font-size:20px">Analyses du gérant</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Actes de chaque praticien et casiers comptables.</div></div>
 <div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Gérant</div>
 <div style="display:flex; flex-direction:column; gap:8px">
 <a href="I.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Actes par praticien</a>
-<a href="J.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Import et export</a>
+<a href="B.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Casier praticien</a>
+</div>
+</section>
+<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #8A9A96; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
+<div><h2 style="margin:0; font-size:20px">Références</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Nomenclature INAMI des dentistes : codes, libellés et tarifs.</div></div>
+<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Tous les profils</div>
+<div style="display:flex; flex-direction:column; gap:8px">
 <a href="K.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Nomenclature INAMI</a>
 </div>
 </section>
 </section>
-<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Accès sécurisé : chaque utilisateur se connecte avec son e-mail et son code secret et ne voit que les pages de son profil (gérant, praticien, secrétariat). Un praticien ne voit que ses propres données. Patients identifiés par numéro de dossier et date de naissance, données fictives.</footer>
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Accès sécurisé : chaque utilisateur se connecte avec son e-mail et son code secret et ne voit que les pages de son rôle (administrateur, gérant, praticien, secrétariat). Un praticien ne voit que ses propres données. Patients identifiés par numéro de dossier et date de naissance, données fictives.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>

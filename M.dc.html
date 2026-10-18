@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Espace praticien</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=22"></script>
-<script src="./auth.js?v=22"></script>
-<script src="./nav.js?v=22"></script>
-<script src="./data.js?v=22"></script>
+<script src="./acces.js?v=23"></script>
+<script src="./auth.js?v=23"></script>
+<script src="./nav.js?v=23"></script>
+<script src="./data.js?v=23"></script>
 </head>
 <body>
 <x-dc>
@@ -122,6 +122,19 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
 <h3 style="margin:0; font-size:18px">Répartition de mes actes</h3>
+<div style="font-size:13px; color:#4A5B57; margin-top:-4px">Par famille de soins, en part de mes honoraires</div>
+<div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
+<div style="{{donutStyle}}"><div style="position:absolute; inset:38px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; box-shadow:inset 0 0 0 1px #E7EDEB"><div style="font-size:12px; color:#4A5B57; letter-spacing:0.04em; text-transform:uppercase">{{donutLabel}}</div><div style="font-size:26px; font-weight:700; margin-top:2px">{{donutValue}}</div><div style="font-size:12px; color:#4A5B57; margin-top:2px">{{donutSub}}</div></div></div>
+<div style="flex:1 1 320px; min-width:0; display:flex; flex-direction:column; gap:10px">
+<sc-for list="{{legend}}" as="g" hint-placeholder-count="8">
+<div style="display:flex; flex-direction:column; gap:5px">
+<div style="display:flex; align-items:center; gap:10px; font-size:14px"><span style="{{g.dot}}"></span><span style="flex:1; min-width:0">{{g.name}}</span><b style="font-variant-numeric:tabular-nums">{{g.pct}}</b><span style="color:#4A5B57; min-width:92px; text-align:right; font-variant-numeric:tabular-nums">{{g.val}}</span></div>
+<div style="background:#F1F5F4; border-radius:2px"><div style="{{g.bar}}"></div></div>
+</div>
+</sc-for>
+</div>
+</div>
+<h4 style="margin:12px 0 0; font-size:15px">Détail des actes</h4>
 <sc-for list="{{actBars}}" as="a" hint-placeholder-count="6">
 <div style="display:grid; grid-template-columns:minmax(150px, 280px) 1fr 60px; gap:12px; align-items:center; font-size:14px">
 <span>{{a.label}}</span>
@@ -212,7 +225,7 @@ class Component extends DCLogic {
     const setState = (o) => this.setState(o);
     const D = window.LAEKEN;
     if (!D) {
-      return { prPills: [], moPills: [], stPills: [], who: 'Données non chargées', spec: '', daysTxt: '', kpis: [], actBars: [], rows: [], hours: [], works: [], hasWorks: false, noWorks: false, onCsv: () => {}, btnSide: '', range: '', onPrev: () => {}, onNext: () => {}, prevStyle: '', nextStyle: '', hasMsg: true, msg: 'Le fichier de données data.js n\'est pas chargé.', msgStyle: 'padding:12px; background:#FDF0DC; color:#8A4B08; border-radius:10px;' };
+      return { prPills: [], moPills: [], stPills: [], who: 'Données non chargées', spec: '', daysTxt: '', kpis: [], actBars: [], legend: [], donutStyle: 'display:none', donutLabel: '', donutValue: '', donutSub: '', rows: [], hours: [], works: [], hasWorks: false, noWorks: false, onCsv: () => {}, btnSide: '', range: '', onPrev: () => {}, onNext: () => {}, prevStyle: '', nextStyle: '', hasMsg: true, msg: 'Le fichier de données data.js n\'est pas chargé.', msgStyle: 'padding:12px; background:#FDF0DC; color:#8A4B08; border-radius:10px;' };
     }
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
@@ -256,6 +269,15 @@ class Component extends DCLogic {
     const nActs = all.reduce((a, v) => a + v.nact, 0);
     const entries = Object.keys(byAct).map((k) => [k, byAct[k]]).sort((a, b) => b[1] - a[1]);
     const mx = entries.length ? entries[0][1] : 1;
+    const donutOf = (fam, by) => {
+      const tot = fam.reduce((a, f) => a + f[by], 0) || 1; let acc = 0;
+      const stops = fam.map((f) => { const a = acc / tot * 100; acc += f[by]; const b = acc / tot * 100; return f.color + ' ' + a.toFixed(2) + '% ' + (b - 0.35).toFixed(2) + '%, #fff ' + (b - 0.35).toFixed(2) + '% ' + b.toFixed(2) + '%'; });
+      return 'position:relative; width:230px; height:230px; flex:none; border-radius:50%; background:conic-gradient(' + stops.join(', ') + '); box-shadow:0 18px 40px -22px rgba(16,32,28,.45);';
+    };
+    const legendOf = (fam, by, fmt) => { const tot = fam.reduce((a, f) => a + f[by], 0) || 1; return fam.slice().sort((x, y) => y[by] - x[by]).map((f) => ({ name: f.name, dot: 'width:12px; height:12px; border-radius:4px; flex:none; background:' + f.color + ';', pct: String(Math.round(f[by] / tot * 1000) / 10).replace('.', ',') + ' %', val: fmt(f), bar: 'height:4px; border-radius:2px; background:' + f.color + '; opacity:.85; width:' + Math.max(2, Math.round(f[by] / tot * 100)) + '%;' })); };
+    const eurS = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const famM = D.families ? D.families(all.reduce((a, v) => a.concat(v.lines), [])) : [];
+    const totFM = famM.reduce((a, f) => a + f.fee, 0);
     const actBars = entries.map((e) => ({ label: e[0], n: String(e[1]), bar: 'background:#2E8B57; height:12px; width:' + Math.round(e[1] / mx * 100) + '%;' }));
     const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const onCsv = () => {
@@ -289,6 +311,7 @@ class Component extends DCLogic {
     ];
     return {
       prPills: prPills, moPills: moPills, stPills: stPills, who: P.name, spec: P.spec, daysTxt: 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') + (pi === 1 ? ' · orthodontiste, début à 9 h' : '') + (P.leaves ? ' · quitte le cabinet le 1er décembre 2026' : '') + (P.supRate ? ' · non conventionné : suppléments d\'honoraires autorisés' : ''),
+      donutStyle: famM.length ? donutOf(famM, 'fee') : 'display:none', legend: legendOf(famM, 'fee', (f) => eurS(f.fee) + ' · ' + f.n), donutLabel: 'Honoraires', donutValue: eurS(totFM), donutSub: famM.reduce((a, f) => a + f.n, 0) + ' actes',
       kpis: kpis, actBars: actBars, hours: hours, works: works, hasWorks: works.length > 0, noWorks: works.length === 0, rows: rows, onCsv: onCsv, btnSide: btnSide,
       range: (all.length ? (page * PAGE + 1) : 0) + ' à ' + Math.min(all.length, page * PAGE + PAGE) + ' sur ' + nf(all.length),
       onPrev: () => { if (page > 0) { setState({ page: page - 1 }); } }, onNext: () => { if (page < pages - 1) { setState({ page: page + 1 }); } },
