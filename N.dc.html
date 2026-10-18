@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Envoi des relevés aux praticiens</title>
+<script src="./support.js"></script>
+<script src="./acces.js"></script>
+<script src="./auth.js"></script>
+<script src="./nav.js"></script>
+<script src="./data.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0} a{color:#0B5D56} button{font-family:inherit}</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:3400px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Envoi aux praticiens</span>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Gérant</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Envoi des relevés aux praticiens</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:520px; line-height:1.5">Chaque praticien reçoit par e-mail ses prestations et ses honoraires, avec en pièces jointes le tableau complet de ses patients vus et le détail de ses frais de laboratoire. Adresses fictives de la forme prénom.nom@dentalclinic.com.</div>
+</header>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px">
+<h2 style="margin:0; font-size:18px">Les 7 praticiens et leur adresse e-mail</h2>
+<button onClick="{{onAllCsv}}" style="{{btnSide}}">Télécharger la liste des e-mails (CSV)</button>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px">Adresse e-mail</th><th style="padding:8px; text-align:right">Patients</th><th style="padding:8px; text-align:right">Honoraires</th><th style="padding:8px; text-align:right">Frais de labo</th><th style="padding:8px; text-align:right">Rémunération</th><th style="padding:8px">Relevé</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{list}}" as="r" hint-placeholder-count="7">
+<tr style="{{r.rowStyle}}">
+<td style="padding:12px 8px 12px 0; font-weight:700">{{r.name}}</td>
+<td style="padding:12px 8px">{{r.email}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.pat}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.fee}}</td>
+<td style="padding:12px 8px; text-align:right">{{r.lab}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.net}}</td>
+<td style="padding:12px 8px"><button onClick="{{r.pick}}" style="{{r.btn}}">{{r.btnLabel}}</button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #0F766E; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:12px">
+<div><h2 style="margin:0; font-size:18px">E-mail préparé pour {{who}}</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Aperçu du message. L'envoi réel se fait depuis votre messagerie ; les adresses de la maquette sont fictives.</div></div>
+<div style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="{{mailto}}" style="{{btnMain}}">Ouvrir dans ma messagerie</a>
+<button onClick="{{onPatCsv}}" style="{{btnSide}}">Patients vus (CSV)</button>
+<button onClick="{{onLabCsv}}" style="{{btnSide}}">Frais de labo (CSV)</button>
+</div>
+</div>
+<div style="background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:16px; font-size:14px; line-height:1.6">
+<div><b style="color:#4A5B57">À :</b> {{to}}</div>
+<div><b style="color:#4A5B57">De :</b> gerance@dentalclinic.com</div>
+<div style="margin-bottom:10px"><b style="color:#4A5B57">Objet :</b> {{subject}}</div>
+<div style="white-space:pre-line; border-top:1px solid #DCE5E2; padding-top:10px">{{body}}</div>
+</div>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}">
+<div style="{{msgStyle}}">{{msg}}</div>
+</sc-if>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">Pièce jointe 1 : tableau complet des patients vus ({{patCount}})</h2>
+<div style="font-size:13px; color:#4A5B57">Patients identifiés par numéro de dossier et date de naissance. Défilement dans le tableau.</div>
+<div style="overflow:auto; max-height:640px; border:1px solid #E7EDEB; border-radius:10px">
+<table style="width:100%; border-collapse:collapse; font-size:13px; min-width:1000px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; position:sticky; top:0; background:#F3F6F5">
+<th style="padding:10px 8px">Date</th><th style="padding:10px 8px">N° de dossier</th><th style="padding:10px 8px">Naissance</th><th style="padding:10px 8px">Actes</th><th style="padding:10px 8px; text-align:right">Honoraires</th><th style="padding:10px 8px; text-align:right">Frais de labo</th><th style="padding:10px 8px">Statut</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{pats}}" as="p" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB; vertical-align:top">
+<td style="padding:8px; white-space:nowrap">{{p.when}}</td>
+<td style="padding:8px; white-space:nowrap">{{p.doss}}</td>
+<td style="padding:8px; white-space:nowrap">{{p.dob}}</td>
+<td style="padding:8px; white-space:pre-line">{{p.acts}}</td>
+<td style="padding:8px; text-align:right; font-weight:700; white-space:nowrap">{{p.fee}}</td>
+<td style="padding:8px; text-align:right; white-space:nowrap">{{p.lab}}</td>
+<td style="padding:8px; white-space:nowrap">{{p.st}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:18px">Pièce jointe 2 : détail des frais de laboratoire ({{labTotal}})</h2>
+<div style="font-size:13px; color:#4A5B57">Frais de labo par acte, répartis selon les travaux réalisés. Total identique à celui du relevé et de la page Résultat du gérant.</div>
+<div style="overflow:auto; max-height:520px; border:1px solid #E7EDEB; border-radius:10px">
+<table style="width:100%; border-collapse:collapse; font-size:13px; min-width:760px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; position:sticky; top:0; background:#F3F6F5">
+<th style="padding:10px 8px">Date</th><th style="padding:10px 8px">N° de dossier</th><th style="padding:10px 8px">Naissance</th><th style="padding:10px 8px">Travail</th><th style="padding:10px 8px; text-align:right">Honoraires de l'acte</th><th style="padding:10px 8px; text-align:right">Frais de labo</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{labs}}" as="l" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:8px; white-space:nowrap">{{l.when}}</td>
+<td style="padding:8px; white-space:nowrap">{{l.doss}}</td>
+<td style="padding:8px; white-space:nowrap">{{l.dob}}</td>
+<td style="padding:8px">{{l.label}}</td>
+<td style="padding:8px; text-align:right; white-space:nowrap">{{l.fee}}</td>
+<td style="padding:8px; text-align:right; font-weight:700; white-space:nowrap">{{l.lab}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : praticiens, adresses et patients fictifs. Dans la vraie version, l'envoi serait automatique chaque mois après la clôture, sans nom de patient dans le corps du message : uniquement les numéros de dossier dans les pièces jointes sécurisées.</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3400}}'>
+class Component extends DCLogic {
+  state = { pr: 0, msg: '', msgKind: 'ok' };
+
+  renderVals() {
+    const S = this.state;
+    const setState = (o) => this.setState(o);
+    const D = window.LAEKEN;
+    if (!D) { return { list: [], who: 'Données non chargées', to: '', subject: '', body: '', mailto: '#', pats: [], labs: [], patCount: '', labTotal: '', hasMsg: false, msg: '', msgStyle: '', btnSide: '', btnMain: '', onAllCsv: () => {}, onPatCsv: () => {}, onLabCsv: () => {} }; }
+    const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
+    const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const PR = D.PR; const pad = D.pad;
+    const EM = ['aya.turkieh', 'mohamed.bochouari', 'abde-ssadic.bochouari', 'daoud.bouchouari', 'julien.cabaz', 'nabila.touil', 'nouveau.praticien'].map((x) => x + '@dentalclinic.com');
+    const btnBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:10px; padding:10px 18px; font-size:14px; font-weight:700; cursor:pointer; text-decoration:none; ';
+    const btnSide = btnBase + 'background:#fff; color:#14201D; border:1px solid #C9D6D2;';
+    const btnMain = btnBase + 'background:#0F766E; color:#fff; border:1px solid #0F766E;';
+    const pi = Math.min(S.pr, PR.length - 1);
+    const P = PR[pi];
+    const vs = P.visits.slice().sort((a, b) => (a.d - b.d) || a.time.localeCompare(b.time));
+    const sumLab = (v) => v.lines.reduce((a, l) => a + (l.labo || 0), 0);
+    const tLab = vs.reduce((a, v) => a + sumLab(v), 0);
+    const tFee = vs.reduce((a, v) => a + v.fee, 0);
+    const tSupp = vs.reduce((a, v) => a + v.lines.reduce((b, l) => b + (l.suph || 0), 0), 0);
+    const stLabel = { ord: 'Ordinaire', bim: 'BIM/VIPO' };
+    const list = PR.map((p, i) => {
+      const v = p.visits; const f = v.reduce((a, r) => a + r.fee, 0); const l = v.reduce((a, r) => a + sumLab(r), 0);
+      return { name: p.name, email: EM[i], pat: nf(v.length), fee: eur(f), lab: eur(l), net: eur(p.net), rowStyle: 'border-top:1px solid #E7EDEB;' + (i === pi ? ' background:#E3F2EF;' : ''), btn: btnSide + ' min-height:36px; padding:6px 14px;' + (i === pi ? ' background:#14201D; color:#fff;' : ''), btnLabel: i === pi ? 'Affiché' : 'Voir le relevé', pick: () => setState({ pr: i, msg: '' }) };
+    });
+    const pats = vs.map((v) => ({ when: v.when + ' · ' + v.time, doss: v.doss, dob: v.dob, acts: v.lines.map((l) => l.label + ' (' + l.code + ')').join('\n'), fee: eur(v.fee), lab: sumLab(v) ? eur(sumLab(v)) : '—', st: stLabel[v.reg] }));
+    const labs = [];
+    vs.forEach((v) => { v.lines.forEach((l) => { if (l.labo > 0) { labs.push({ when: v.when, doss: v.doss, dob: v.dob, label: l.label, fee: eur(l.fee), lab: eur(l.labo) }); } }); });
+    const mois = 'octobre 2026 (mois complet)';
+    const subject = 'Dental Clinic Laeken · relevé de ' + mois + ' · ' + P.name;
+    const rate = Math.round(P.rate * 100);
+    const body = 'Bonjour ' + P.name + ',\n\nVoici votre relevé de ' + mois + ' :\n' +
+      '• Patients vus : ' + nf(vs.length) + '\n' +
+      '• Honoraires facturés : ' + eur(tFee) + (tSupp ? ' (dont ' + eur(tSupp) + ' de suppléments d\'honoraires)' : '') + '\n' +
+      '• Frais de laboratoire : ' + eur(tLab) + '\n' +
+      '• Base de calcul (honoraires moins labo) : ' + eur(P.base) + '\n' +
+      '• Votre rémunération (' + rate + ' %) : ' + eur(P.net) + ', payable le 01/12/2026\n\n' +
+      'En pièces jointes : le tableau complet de vos patients vus (numéro de dossier et date de naissance) et le détail de vos frais de laboratoire.\n\nCordialement,\nLa gérance de la Dental Clinic Laeken';
+    const mailto = 'mailto:' + EM[pi] + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const num = (n) => String(n).replace('.', ',');
+    const save = (filename, rows) => {
+      const csv = '\ufeff' + rows.map((l) => l.map(csvCell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+        if (!dl) { throw { code: 'unavailable' }; }
+        return dl.save({ filename: filename, data: csv });
+      }).then(() => setState({ msg: 'Fichier enregistré.', msgKind: 'ok' }))
+        .catch((e) => setState({ msg: e && e.code === 'declined' ? 'Enregistrement annulé.' : 'Le téléchargement n\'est pas disponible dans cet affichage.', msgKind: 'bad' }));
+    };
+    const slug = P.short.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const onPatCsv = () => save('patients-' + slug + '-octobre-2026.csv', [['Date', 'Heure', 'N° de dossier', 'Date de naissance', 'Code INAMI', 'Acte', 'Honoraires', 'Frais de labo', 'Statut patient']].concat(vs.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/10/2026', v.time, v.doss, v.dob, l.code, l.label, num(l.fee), num(l.labo || 0), stLabel[v.reg]])), [])));
+    const onLabCsv = () => save('frais-labo-' + slug + '-octobre-2026.csv', [['Date', 'N° de dossier', 'Date de naissance', 'Travail', 'Honoraires de l\'acte', 'Frais de labo']].concat(vs.reduce((acc, v) => acc.concat(v.lines.filter((l) => l.labo > 0).map((l) => [pad(v.d) + '/10/2026', v.doss, v.dob, l.label, num(l.fee), num(l.labo)])), [])));
+    const onAllCsv = () => save('emails-praticiens-dental-clinic.csv', [['Praticien', 'Adresse e-mail', 'Patients vus', 'Honoraires', 'Frais de labo', 'Rémunération']].concat(PR.map((p, i) => [p.name, EM[i], p.visits.length, num(p.visits.reduce((a, r) => a + r.fee, 0)), num(p.visits.reduce((a, r) => a + sumLab(r), 0)), num(p.net)])));
+    return {
+      list: list, who: P.name, to: EM[pi], subject: subject, body: body, mailto: mailto, pats: pats, labs: labs,
+      patCount: nf(vs.length) + ' patients', labTotal: eur(tLab), btnSide: btnSide, btnMain: btnMain,
+      onAllCsv: onAllCsv, onPatCsv: onPatCsv, onLabCsv: onLabCsv,
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'border-radius:10px; padding:12px 14px; font-size:14px; ' + (S.msgKind === 'bad' ? 'background:#FDF0DC; color:#8A4B08;' : 'background:#E3F4EA; color:#0B6B3A;')
+    };
+  }
+}
+</script>
+</body>
+</html>

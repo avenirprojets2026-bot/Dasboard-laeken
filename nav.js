@@ -1,6 +1,6 @@
 (function () {
   var G = [
-    ['Gérant', [['Vue cabinet', 'Main'], ['Résultat du gérant', 'D'], ['Rémunérations et paiements', 'E'], ['Fauteuils et coût par patient', 'F'], ['Mutuelles et labo', 'C'], ['Tableau interactif', 'G']]],
+    ['Gérant', [['Vue cabinet', 'Main'], ['Résultat du gérant', 'D'], ['Rémunérations et paiements', 'E'], ['Fauteuils et coût par patient', 'F'], ['Mutuelles et labo', 'C'], ['Envoi aux praticiens', 'N'], ['Tableau interactif', 'G']]],
     ['Accueil et caisse', [['Patients et paiements', 'H'], ['Import et export', 'J']]],
     ['Praticien', [['Casier praticien', 'B'], ['Espace praticien', 'M'], ['Patients vus par praticien', 'L'], ['Actes par praticien', 'I']]],
     ['Références', [['Nomenclature INAMI', 'K']]]
