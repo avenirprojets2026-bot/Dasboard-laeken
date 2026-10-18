@@ -7,9 +7,10 @@
 <meta charset="utf-8">
 <title>Suivi mutuelles et labo</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=30"></script>
-<script src="./auth.js?v=30"></script>
-<script src="./nav.js?v=30"></script>
+<script src="./data.js?v=31"></script>
+<script src="./acces.js?v=31"></script>
+<script src="./auth.js?v=31"></script>
+<script src="./nav.js?v=31"></script>
 </head>
 <body>
 <x-dc>
@@ -44,7 +45,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 @media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
 </style>
 </helmet>
-<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2700px">
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:3600px">
 <nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
 <a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
 <a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
@@ -134,6 +135,52 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </aside>
 </div>
 
+<section id="suivi" style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; flex-wrap:wrap; gap:4px; border-bottom:1px solid #DCE5E2">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2"><button type="button" role="tab" style="{{t.style}}" onClick="{{t.pick}}">{{t.label}}<span style="{{t.badgeStyle}}">{{t.badge}}</span></button></sc-for>
+</div>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{msgStyle}}">{{msg}}</div></sc-if>
+
+<sc-if value="{{tabCr}}" hint-placeholder-val="{{ true }}">
+<div style="display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Suivi des créances des mutualités</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Une ligne par envoi (bordereau eFact). Saisissez ce qui a été reçu ou refusé (puis Entrée) : solde, état et totaux se recalculent.</div></div>
+<div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{btnSide}}" onClick="{{crReset}}">Revenir à la démonstration</button><button type="button" style="{{btnMain}}" onClick="{{crCsv}}">Exporter les créances (CSV)</button></div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px"><sc-for list="{{crKpis}}" as="k" hint-placeholder-count="5"><div style="{{k.style}}"><div style="font-size:12.5px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:3px">{{k.note}}</div></div></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Mutualité</span><sc-for list="{{crMutPills}}" as="f" hint-placeholder-count="8"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">État</span><sc-for list="{{crStPills}}" as="f" hint-placeholder-count="6"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Référence</th><th style="padding:8px">Mutualité</th><th style="padding:8px">Envoyé le</th><th style="padding:8px; text-align:right">Âge</th><th style="padding:8px; text-align:right">Créance</th><th style="padding:8px; text-align:right">Reçu</th><th style="padding:8px; text-align:right">Refusé</th><th style="padding:8px; text-align:right">Solde</th><th style="padding:8px">État</th></tr></thead>
+<tbody><sc-for list="{{crRows}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:10px 8px 10px 0; font-weight:700; white-space:nowrap">{{r.ref}}</td><td style="padding:10px 8px">{{r.mut}}</td><td style="padding:10px 8px; white-space:nowrap">{{r.date}}</td>
+<td style="padding:10px 8px; text-align:right"><span style="{{r.ageStyle}}">{{r.age}}</span></td><td style="padding:10px 8px; text-align:right">{{r.amt}}</td>
+<td style="padding:10px 8px; text-align:right"><input type="number" min="0" step="10" value="{{r.rec}}" onChange="{{r.setRec}}" aria-label="{{r.ariaRec}}" style="width:90px; text-align:right; border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:14px; font-variant-numeric:tabular-nums"></td>
+<td style="padding:10px 8px; text-align:right"><input type="number" min="0" step="10" value="{{r.ref2}}" onChange="{{r.setRef}}" aria-label="{{r.ariaRef}}" style="width:84px; text-align:right; border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:14px; font-variant-numeric:tabular-nums"></td>
+<td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.sol}}</td>
+<td style="padding:10px 8px"><span style="{{r.stStyle}}">{{r.st}}</span><sc-if value="{{r.relance}}" hint-placeholder-val="{{ false }}"><div style="font-size:11.5px; font-weight:700; color:#A3231A; margin-top:3px">À relancer</div></sc-if></td>
+</tr></sc-for></tbody></table></div>
+<div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:15px; font-weight:700"><span>{{crTotLabel}}</span><span>{{crTotVal}}</span></div>
+</div>
+</sc-if>
+
+<sc-if value="{{tabLab}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Travaux et factures de laboratoire · octobre 2026</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Chaque travail confié au laboratoire, par praticien. Cliquez sur l'état pour le faire avancer (commandé, reçu, posé).</div></div>
+<div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{btnSide}}" onClick="{{labReset}}">Revenir à la démonstration</button><button type="button" style="{{btnMain}}" onClick="{{labCsv}}">Exporter le laboratoire (CSV)</button></div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px"><sc-for list="{{labKpis}}" as="k" hint-placeholder-count="4"><div style="{{k.style}}"><div style="font-size:12.5px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:3px">{{k.note}}</div></div></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Praticien</span><sc-for list="{{labPrPills}}" as="f" hint-placeholder-count="8"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Type</span><sc-for list="{{labTyPills}}" as="f" hint-placeholder-count="6"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Référence</th><th style="padding:8px">Date</th><th style="padding:8px">Praticien</th><th style="padding:8px">Patient</th><th style="padding:8px">Travail</th><th style="padding:8px">Dent / arcade</th><th style="padding:8px">Labo</th><th style="padding:8px; text-align:right">Facture labo</th><th style="padding:8px">État</th></tr></thead>
+<tbody><sc-for list="{{labRows}}" as="r" hint-placeholder-count="12">
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700; white-space:nowrap">{{r.ref}}</td><td style="padding:10px 8px; white-space:nowrap">{{r.when}}</td><td style="padding:10px 8px">{{r.prat}}</td><td style="padding:10px 8px; white-space:nowrap"><b>{{r.doss}}</b><div style="font-size:12px; color:#4A5B57">{{r.dob}}</div></td><td style="padding:10px 8px">{{r.work}}</td><td style="padding:10px 8px">{{r.where}}</td><td style="padding:10px 8px">{{r.lab}}</td><td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.cost}}</td><td style="padding:10px 8px"><button type="button" title="Cliquer pour faire avancer" style="{{r.stStyle}}" onClick="{{r.cycle}}">{{r.st}}</button></td></tr>
+</sc-for></tbody></table></div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; font-size:13px; color:#4A5B57"><span>{{labRange}}</span><div style="display:flex; gap:8px"><button type="button" style="{{labPrevStyle}}" onClick="{{labPrev}}">Précédent</button><button type="button" style="{{labNextStyle}}" onClick="{{labNext}}">Suivant</button></div></div>
+<div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:15px; font-weight:700"><span>{{labTotLabel}}</span><span>{{labTotVal}}</span></div>
+</div>
+</sc-if>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
 <h2 style="margin:0 0 4px; font-size:18px">Laboratoire : devis estimés et factures réelles, par praticien</h2>
 <div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Total devis 17 200 € · total facturé 17 700 € · écart +500 €</div>
@@ -195,9 +242,98 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <footer style="font-size:13px; color:#4A5B57">Maquette : tous les chiffres sont fictifs. Les vrais chiffres viendront de l'export du logiciel de facturation et des factures des laboratoires.</footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2700}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3600}}'>
 class Component extends DCLogic {
+  state = (() => {
+    const D0 = [
+      ['B-2026-0912', 'Mutualités Chrétiennes', 58, 6100, 6100, 0], ['B-2026-0961', 'Mutualités Chrétiennes', 34, 3300, 0, 0], ['B-2026-1003', 'Mutualités Chrétiennes', 12, 5200, 0, 0],
+      ['B-2026-0905', 'Solidaris', 63, 4800, 4800, 0], ['B-2026-0957', 'Solidaris', 38, 3000, 0, 0], ['B-2026-1006', 'Solidaris', 9, 4100, 0, 0],
+      ['B-2026-0954', 'Partenamut', 41, 4000, 2100, 0], ['B-2026-0988', 'Partenamut', 19, 2600, 0, 0],
+      ['B-2026-0898', 'Mutualité Libérale', 70, 2900, 2900, 0], ['B-2026-0941', 'Mutualité Libérale', 52, 1200, 0, 0], ['B-2026-0950', 'Mutualité Libérale', 44, 1300, 0, 0], ['B-2026-0981', 'Mutualité Libérale', 26, 1400, 0, 0],
+      ['B-2026-0928', 'Mutualia', 61, 1850, 0, 450], ['B-2026-0985', 'Mutualia', 22, 1300, 0, 0],
+      ['B-2026-0916', 'CAAMI', 78, 1600, 0, 400], ['B-2026-1001', 'CAAMI', 14, 700, 0, 0],
+      ['B-2026-0880', 'HR Rail', 96, 1300, 0, 300]
+    ].map((x) => ({ ref0: x[0], mut: x[1], age: x[2], amt: x[3], rec: x[4], ref: x[5] }));
+    let cr = null; try { cr = JSON.parse(localStorage.getItem('lk-creances') || 'null'); } catch (e) { cr = null; }
+    let ls = {}; try { ls = JSON.parse(localStorage.getItem('lk-labo-etat') || 'null') || {}; } catch (e) { ls = {}; }
+    return { tab: 'cr', cr: cr && cr.length ? cr : D0, crDef: D0, cm: '', cs: 'all', lp: -1, lt: 'all', lpg: 0, ls: ls, msg: '', ok: true };
+  })();
   renderVals() {
+    // ---- Onglets : créances des mutualités et travaux de laboratoire ----
+    const S = this.state; const setState = (o) => this.setState(o);
+    const eu = (n) => (n < 0 ? '− ' : '') + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const pb = 'display:inline-flex; align-items:center; gap:6px; min-height:34px; box-sizing:border-box; border-radius:999px; padding:6px 12px; font-size:13px; cursor:pointer; ';
+    const pOff = pb + 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;';
+    const pOn = pb + 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;';
+    const tl = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:5px solid ' + c + '; border-radius:12px; padding:14px 16px;';
+    const btnMain = 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:40px; padding:0 14px; font-size:13.5px; font-weight:700; cursor:pointer;';
+    const btnSide = 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:40px; padding:0 14px; font-size:13.5px; font-weight:600; cursor:pointer;';
+    const chip = (fg, bg) => 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; color:' + fg + '; background:' + bg + ';';
+    const csvSave = (fn, rows, okMsg) => { const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; }; const csv = '﻿' + rows.map((r) => r.map(cell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: fn, data: csv }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = fn; document.body.appendChild(a); a.click(); a.remove(); return true; })
+        .then(() => setState({ msg: okMsg, ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false })); };
+    const ddmmyyyy = (age) => { const d = new Date(2026, 9, 17); d.setDate(d.getDate() - age); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); };
+    // créances
+    const CR = S.cr;
+    const stOf = (c) => { const sol = c.amt - c.rec - c.ref; if (sol <= 0) { return 'solde'; } if (c.ref > 0) { return 'refus'; } if (c.rec > 0) { return 'partiel'; } return 'attente'; };
+    const STL = { attente: ['En attente', '#8A4B08', '#FDF0DC'], partiel: ['Payé en partie', '#1B3F73', '#D6E6FA'], refus: ['Refus partiel', '#A3231A', '#FBE7E5'], solde: ['Soldé', '#0B6B3A', '#E3F4EA'] };
+    const saveCr = (n) => { try { localStorage.setItem('lk-creances', JSON.stringify(n)); } catch (e) {} setState({ cr: n, msg: '' }); };
+    let crl = CR.map((c, i) => Object.assign({ i: i }, c));
+    if (S.cm) { crl = crl.filter((c) => c.mut === S.cm); }
+    if (S.cs !== 'all') { crl = crl.filter((c) => S.cs === 'relance' ? (stOf(c) !== 'solde' && c.age > 45) : stOf(c) === S.cs); }
+    crl.sort((a, b) => b.age - a.age);
+    const open = CR.filter((c) => stOf(c) !== 'solde');
+    const solT = open.reduce((a, c) => a + (c.amt - c.rec - c.ref), 0);
+    const old = open.filter((c) => c.age > 45);
+    const refT = CR.reduce((a, c) => a + c.ref, 0); const nRef = CR.filter((c) => c.ref > 0).length;
+    const MUTS = ['Mutualités Chrétiennes', 'Solidaris', 'Partenamut', 'Mutualité Libérale', 'Mutualia', 'CAAMI', 'HR Rail'];
+    const crRows = crl.map((c) => { const st = stOf(c); const sol = c.amt - c.rec - c.ref; return { ref: c.ref0, mut: c.mut, date: ddmmyyyy(c.age), age: c.age + ' j', ageStyle: c.age > 45 && st !== 'solde' ? 'color:#A3231A; font-weight:700;' : '', amt: eu(c.amt), rec: String(c.rec), ref2: String(c.ref), sol: eu(Math.max(0, sol)),
+      st: STL[st][0], stStyle: chip(STL[st][1], STL[st][2]), relance: st !== 'solde' && c.age > 45, ariaRec: 'Reçu ' + c.ref0, ariaRef: 'Refusé ' + c.ref0,
+      setRec: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); const n = CR.slice(); n[c.i] = Object.assign({}, n[c.i], { rec: Math.min(v, c.amt - c.ref) }); saveCr(n); },
+      setRef: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); const n = CR.slice(); n[c.i] = Object.assign({}, n[c.i], { ref: Math.min(v, c.amt - c.rec) }); saveCr(n); } }; });
+    const crSel = crl.reduce((a, c) => a + Math.max(0, c.amt - c.rec - c.ref), 0);
+    // laboratoire
+    const L = window.LAEKEN; let labVals = { labKpis: [], labPrPills: [], labTyPills: [], labRows: [], labRange: '', labPrev: () => {}, labNext: () => {}, labPrevStyle: btnSide, labNextStyle: btnSide, labTotLabel: '', labTotVal: '', labReset: () => {}, labCsv: () => {} };
+    if (L) {
+      const TY = [['all', 'Tous'], ['cour', 'Couronnes'], ['impl', 'Implants'], ['bridge', 'Bridges'], ['proth', 'Prothèses amovibles'], ['gout', 'Gouttières et appareils']];
+      const tyOf = (w) => /implant/i.test(w) ? 'impl' : (/bridge/i.test(w) ? 'bridge' : (/prothèse|amovible/i.test(w) ? 'proth' : (/gouttière|appareil|contention|facette/i.test(w) ? 'gout' : 'cour')));
+      const whereOf = (w) => { const m = /(dent|implant)\s+(\d{2})/i.exec(w); if (m) { return (m[1].toLowerCase() === 'implant' ? 'Implant ' : 'Dent ') + m[2]; } if (/supérieur/i.test(w)) { return 'Arcade supérieure'; } if (/inférieur/i.test(w)) { return 'Arcade inférieure'; } return '—'; };
+      const LABS = ['Laboratoire A', 'Laboratoire B', 'Laboratoire C'];
+      const all = L.rows.filter((r) => r.labo > 0).map((r, k) => ({ k: k, r: r, w: r.work || r.label, ty: tyOf(r.work || r.label), lab: LABS[(r.d + r.p + k) % 3] }));
+      const defSt = (x) => x.r.d <= 9 ? 'pose' : (x.r.d <= 15 ? 'recu' : 'commande');
+      const LST = { commande: ['Commandé', '#8A4B08', '#FDF0DC'], recu: ['Reçu', '#1B3F73', '#D6E6FA'], pose: ['Posé', '#0B6B3A', '#E3F4EA'] };
+      const nxt = { commande: 'recu', recu: 'pose', pose: 'commande' };
+      const lst = (x) => (S.ls && S.ls[x.k]) || defSt(x);
+      let ll = all.filter((x) => (S.lp < 0 || x.r.p === S.lp) && (S.lt === 'all' || x.ty === S.lt));
+      const per = 15; const pages = Math.max(1, Math.ceil(ll.length / per)); const pg = Math.min(S.lpg, pages - 1);
+      const tot = ll.reduce((a, x) => a + x.r.labo, 0);
+      const cnt = (s) => ll.filter((x) => lst(x) === s).length;
+      const ref = (x) => 'LAB-' + L.PR[x.r.p].short.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + String(all.filter((y) => y.r.p === x.r.p && y.k <= x.k).length).padStart(2, '0');
+      labVals = {
+        labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur 17 700 € pour le cabinet', style: tl('#8A4B08') }, { label: 'En attente du labo', value: String(cnt('commande')), note: 'commandés, pas encore reçus', style: tl('#B45309') }, { label: 'Reçus, à poser', value: String(cnt('recu')), note: cnt('pose') + ' déjà posés', style: tl('#2F6DB5') }],
+        labPrPills: [{ label: 'Tous les praticiens', style: S.lp < 0 ? pOn : pOff, pick: () => setState({ lp: -1, lpg: 0 }) }].concat(L.PR.map((p, i) => ({ label: p.name, style: S.lp === i ? pOn : pOff, pick: () => setState({ lp: i, lpg: 0 }) }))),
+        labTyPills: TY.map((t) => ({ label: t[1], style: S.lt === t[0] ? pOn : pOff, pick: () => setState({ lt: t[0], lpg: 0 }) })),
+        labRows: ll.slice(pg * per, pg * per + per).map((x) => { const s = lst(x); return { ref: ref(x), when: x.r.when, prat: L.PR[x.r.p].name, doss: x.r.doss, dob: x.r.dob, work: x.w.replace(/,\s*(dent|implant)\s+\d{2}/i, ''), where: whereOf(x.w), lab: x.lab, cost: eu(x.r.labo), st: LST[s][0], stStyle: 'border:0; cursor:pointer; ' + chip(LST[s][1], LST[s][2]), cycle: () => { const ns = Object.assign({}, S.ls || {}); ns[x.k] = nxt[s]; try { localStorage.setItem('lk-labo-etat', JSON.stringify(ns)); } catch (e) {} setState({ ls: ns }); } }; }),
+        labRange: ll.length ? 'Travaux ' + (pg * per + 1) + ' à ' + Math.min(ll.length, pg * per + per) + ' sur ' + ll.length + ' · page ' + (pg + 1) + ' / ' + pages : 'Aucun travail pour ce filtre.',
+        labPrev: () => { if (pg > 0) { setState({ lpg: pg - 1 }); } }, labNext: () => { if (pg < pages - 1) { setState({ lpg: pg + 1 }); } },
+        labPrevStyle: btnSide + (pg > 0 ? '' : ' opacity:0.4; cursor:default;'), labNextStyle: btnSide + (pg < pages - 1 ? '' : ' opacity:0.4; cursor:default;'),
+        labTotLabel: 'Total des factures de laboratoire (' + ll.length + ' travaux)', labTotVal: eu(tot),
+        labReset: () => { try { localStorage.removeItem('lk-labo-etat'); } catch (e) {} setState({ ls: {}, msg: 'États de démonstration rétablis.', ok: true }); },
+        labCsv: () => csvSave('travaux-laboratoire-octobre-2026.csv', [['Référence', 'Date', 'Praticien', 'N° de dossier', 'Date de naissance', 'Travail', 'Dent / arcade', 'Laboratoire', 'Facture labo', 'Honoraires de l\'acte', 'État']].concat(ll.map((x) => [ref(x), x.r.when, L.PR[x.r.p].name, x.r.doss, x.r.dob, x.w, whereOf(x.w), x.lab, String(x.r.labo).replace('.', ','), String(x.r.fee).replace('.', ','), LST[lst(x)][0]])), 'Liste du laboratoire exportée.')
+      };
+    }
+    const tabBase = 'border:0; background:none; padding:10px 14px; font:inherit; font-size:15px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; margin-bottom:-1px; border-bottom:3px solid ';
+    const tabVals = Object.assign({
+      tabs: [['cr', 'Créances des mutualités', open.length + ' ouvertes'], ['lab', 'Travaux de laboratoire', '126']].map((t) => ({ label: t[1], badge: t[2], style: tabBase + (S.tab === t[0] ? '#0F766E; font-weight:700; color:#14201D;' : 'transparent; font-weight:500; color:#4A5B57;'), badgeStyle: 'font-size:11.5px; font-weight:700; border-radius:999px; padding:2px 8px; background:' + (S.tab === t[0] ? '#E3F2EF' : '#F1F5F4') + '; color:#0B5D56;', pick: () => setState({ tab: t[0], msg: '' }) })),
+      tabCr: S.tab === 'cr', tabLab: S.tab === 'lab', btnMain: btnMain, btnSide: btnSide,
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 12px; border-radius:10px; font-size:13.5px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;'),
+      crKpis: [{ label: 'Reste à recevoir', value: eu(solT), note: open.length + ' envois non soldés', style: tl('#B45309') }, { label: 'Plus de 45 jours', value: eu(old.reduce((a, c) => a + c.amt - c.rec - c.ref, 0)), note: old.length + ' envois à relancer', style: tl('#B42318') }, { label: 'Refusé', value: eu(refT), note: nRef + ' envois avec refus à corriger', style: tl('#5B3FA8') }, { label: 'Déjà reçu', value: eu(CR.reduce((a, c) => a + c.rec, 0)), note: 'sur les envois listés', style: tl('#15803D') }, { label: 'Délai moyen des envois ouverts', value: (open.length ? Math.round(open.reduce((a, c) => a + c.age, 0) / open.length) : 0) + ' jours', note: 'depuis l\'envoi à la mutualité', style: tl('#0F766E') }],
+      crMutPills: [{ label: 'Toutes', style: !S.cm ? pOn : pOff, pick: () => setState({ cm: '' }) }].concat(MUTS.map((m) => ({ label: m, style: S.cm === m ? pOn : pOff, pick: () => setState({ cm: m }) }))),
+      crStPills: [['all', 'Tous'], ['attente', 'En attente'], ['partiel', 'Payé en partie'], ['refus', 'Refus partiel'], ['relance', 'À relancer'], ['solde', 'Soldés']].map((x) => ({ label: x[1], style: S.cs === x[0] ? pOn : pOff, pick: () => setState({ cs: x[0] }) })),
+      crRows: crRows, crTotLabel: 'Solde de la sélection (' + crl.length + ' envois)', crTotVal: eu(crSel),
+      crReset: () => { try { localStorage.removeItem('lk-creances'); } catch (e) {} setState({ cr: S.crDef, msg: 'Créances de démonstration rétablies.', ok: true }); },
+      crCsv: () => csvSave('creances-mutualites.csv', [['Référence', 'Mutualité', 'Envoyé le', 'Âge (jours)', 'Créance', 'Reçu', 'Refusé', 'Solde', 'État', 'À relancer']].concat(CR.map((c) => [c.ref0, c.mut, ddmmyyyy(c.age), c.age, c.amt, c.rec, c.ref, Math.max(0, c.amt - c.rec - c.ref), STL[stOf(c)][0], stOf(c) !== 'solde' && c.age > 45 ? 'oui' : 'non'])), 'Créances exportées.')
+    }, labVals);
     const tile = 'background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px;';
     const alert = 'background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px;';
     const chipBase = 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap;';
@@ -219,7 +355,7 @@ class Component extends DCLogic {
       ['Dental Flex et Ambu Protect / Comfort', 'AG Insurance, AXA (assurance de groupe)', 'Via l\'employeur', 'Soins, prothèses, implants, couronnes, orthodontie selon le contrat', 'Selon le contrat de l\'entreprise du patient', 'Aucun en général', 60]
     ];
     const insTot = INS.reduce((a, x) => a + x[6], 0);
-    return {
+    return Object.assign(tabVals, {
       insKpis: [
         { label: 'Patients avec une assurance dentaire', value: String(insTot).replace(/\B(?=(\d{3})+(?!\d))/g, ' '), note: String(Math.round(insTot / 6400 * 1000) / 10).replace('.', ',') + ' % des 6 400 patients actifs (chiffre fictif)', style: tile },
         { label: 'Produits suivis', value: String(INS.length), note: '5 mutualités, 5 assureurs privés, 1 assurance de groupe', style: tile },
@@ -261,7 +397,7 @@ class Component extends DCLogic {
         { name: 'Dr Daoud Bouchouari', quote: '1 600 €', invoice: '1 600 €', gap: '0 €' },
         { name: '7e praticien (à confirmer)', quote: '1 200 €', invoice: '1 300 €', gap: '+100 €' }
       ]
-    };
+    });
   }
 }
 </script>
