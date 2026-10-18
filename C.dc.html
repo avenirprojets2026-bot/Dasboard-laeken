@@ -106,7 +106,7 @@
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
 <h2 style="margin:0 0 4px; font-size:18px">Laboratoire : devis estimés et factures réelles, par praticien</h2>
-<div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Total devis 28 000 € · total facturé 28 600 € · écart +600 €</div>
+<div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Total devis 17 200 € · total facturé 17 700 € · écart +500 €</div>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
 <thead>
@@ -197,39 +197,39 @@ class Component extends DCLogic {
       ],
       insurances: INS.map((x) => ({ name: x[0], org: x[1], kind: x[2], chip: kc(x[2]), care: x[3], cap: x[4], wait: x[5], pat: String(x[6]) })),
       kpis: [
-        { label: 'En attente de remboursement', value: '42 400 €', note: 'sur 173 100 € facturés', style: tile },
-        { label: 'En attente depuis plus de 45 jours', value: '6 800 €', note: 'à relancer', style: alert },
+        { label: 'En attente de remboursement', value: '29 600 €', note: 'sur 121 100 € facturés', style: tile },
+        { label: 'En attente depuis plus de 45 jours', value: '4 800 €', note: 'à relancer', style: alert },
         { label: 'Prestations refusées', value: '3', note: '1 150 € à corriger', style: tile },
         { label: 'Devis labo à valider', value: '18', note: 'répartis sur 7 praticiens', style: tile }
       ],
       mutuelles: [
-        { name: 'Mutualités Chrétiennes', filed: '52 300 €', paid: '40 100 €', pending: '12 200 €', delay: '38 jours' },
-        { name: 'Solidaris (Brabant)', filed: '41 800 €', paid: '31 600 €', pending: '10 200 €', delay: '41 jours' },
-        { name: 'Partenamut', filed: '28 900 €', paid: '22 500 €', pending: '6 400 €', delay: '35 jours' },
-        { name: 'Mutualité Libérale (ML Mutplus)', filed: '21 400 €', paid: '15 800 €', pending: '5 600 €', delay: '44 jours' },
-        { name: 'Mutualia (mutualité neutre)', filed: '14 200 €', paid: '10 400 €', pending: '3 800 €', delay: '43 jours' },
-        { name: 'CAAMI (caisse auxiliaire)', filed: '9 500 €', paid: '6 800 €', pending: '2 700 €', delay: '52 jours' },
-        { name: 'HR Rail (soins de santé)', filed: '5 000 €', paid: '3 500 €', pending: '1 500 €', delay: '36 jours' }
+        { name: 'Mutualités Chrétiennes', filed: '36 500 €', paid: '28 000 €', pending: '8 500 €', delay: '38 jours' },
+        { name: 'Solidaris (Brabant)', filed: '29 300 €', paid: '22 200 €', pending: '7 100 €', delay: '41 jours' },
+        { name: 'Partenamut', filed: '20 200 €', paid: '15 700 €', pending: '4 500 €', delay: '35 jours' },
+        { name: 'Mutualité Libérale (ML Mutplus)', filed: '15 000 €', paid: '11 100 €', pending: '3 900 €', delay: '44 jours' },
+        { name: 'Mutualia (mutualité neutre)', filed: '9 900 €', paid: '7 200 €', pending: '2 700 €', delay: '43 jours' },
+        { name: 'CAAMI (caisse auxiliaire)', filed: '6 700 €', paid: '4 800 €', pending: '1 900 €', delay: '52 jours' },
+        { name: 'HR Rail (soins de santé)', filed: '3 500 €', paid: '2 500 €', pending: '1 000 €', delay: '36 jours' }
       ],
       aging: [
-        { label: '0 à 30 jours', value: '21 800 €', bar: 'background:#0F766E; height:12px; width:51%' },
-        { label: '30 à 45 jours', value: '13 800 €', bar: 'background:#B45309; height:12px; width:33%' },
-        { label: 'Plus de 45 j', value: '6 800 €', bar: 'background:#B42318; height:12px; width:16%' }
+        { label: '0 à 30 jours', value: '15 300 €', bar: 'background:#0F766E; height:12px; width:51%' },
+        { label: '30 à 45 jours', value: '9 500 €', bar: 'background:#B45309; height:12px; width:33%' },
+        { label: 'Plus de 45 j', value: '4 800 €', bar: 'background:#B42318; height:12px; width:16%' }
       ],
       todo: [
-        { tag: 'Relance', tact: '', chip: wait, text: 'Relancer les mutuelles pour 6 800 € en attente depuis plus de 45 jours.' },
+        { tag: 'Relance', tact: '', chip: wait, text: 'Relancer les mutuelles pour 4 800 € en attente depuis plus de 45 jours.' },
         { tag: 'Refus', chip: bad, text: '3 prestations refusées : vérifier la nomenclature et renvoyer.' },
         { tag: 'Devis', chip: info, text: '18 devis de prothèses attendent une validation avant commande au labo.' },
         { tag: 'Labo', chip: wait, text: 'Dr Mohamed Bochouari : écart de +300 € entre devis et factures du labo ce mois.' }
       ],
       labo: [
-        { name: 'Dr Aya Turkieh', quote: '7 600 €', invoice: '7 800 €', gap: '+200 €' },
-        { name: 'Dr Abde-Ssadic Bochouari', quote: '3 100 €', invoice: '3 100 €', gap: '0 €' },
-        { name: 'Dr Mohamed Bochouari', quote: '7 200 €', invoice: '7 500 €', gap: '+300 €' },
-        { name: 'Dr Nabila Touil', quote: '1 500 €', invoice: '1 600 €', gap: '+100 €' },
-        { name: 'Dr Julien Cabaz', quote: '3 100 €', invoice: '3 000 €', gap: '−100 €' },
-        { name: 'Dr Daoud Bouchouari', quote: '2 900 €', invoice: '2 900 €', gap: '0 €' },
-        { name: '7e praticien (à confirmer)', quote: '2 600 €', invoice: '2 700 €', gap: '+100 €' }
+        { name: 'Dr Aya Turkieh', quote: '4 000 €', invoice: '4 100 €', gap: '+100 €' },
+        { name: 'Dr Abde-Ssadic Bochouari', quote: '2 200 €', invoice: '2 200 €', gap: '0 €' },
+        { name: 'Dr Mohamed Bochouari', quote: '5 000 €', invoice: '5 300 €', gap: '+300 €' },
+        { name: 'Dr Nabila Touil', quote: '1 000 €', invoice: '1 100 €', gap: '+100 €' },
+        { name: 'Dr Julien Cabaz', quote: '2 200 €', invoice: '2 100 €', gap: '−100 €' },
+        { name: 'Dr Daoud Bouchouari', quote: '1 600 €', invoice: '1 600 €', gap: '0 €' },
+        { name: '7e praticien (à confirmer)', quote: '1 200 €', invoice: '1 300 €', gap: '+100 €' }
       ]
     };
   }

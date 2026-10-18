@@ -158,7 +158,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Dr Mohamed Bochouari (non conventionné) facture des suppléments d'honoraires de 35 % au-dessus du tarif INAMI sur les actes de la nomenclature, soit environ 3 583 € sur ses 47 900 € d'honoraires : ils sont inclus dans la base de calcul. Hypothèse à confirmer : les frais de laboratoire sont déduits des honoraires avant le calcul de la rétrocession, donc partagés entre le praticien et le cabinet selon le taux (60/40, ou 50/50 pour Nabila Touil). Les montants du calendrier des paiements ci-dessous sont déjà nets de labo.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Dr Mohamed Bochouari (non conventionné) facture des suppléments d'honoraires de 35 % au-dessus du tarif INAMI sur les actes de la nomenclature, soit environ 2 506 € sur ses 33 500 € d'honoraires : ils sont inclus dans la base de calcul. Hypothèse à confirmer : les frais de laboratoire sont déduits des honoraires avant le calcul de la rétrocession, donc partagés entre le praticien et le cabinet selon le taux (60/40, ou 50/50 pour Nabila Touil). Les montants du calendrier des paiements ci-dessous sont déjà nets de labo.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -193,7 +193,7 @@
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
 <h3 style="margin:0; font-size:18px">Répartition des rémunérations nettes</h3>
-<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 85 930 € nets à payer (honoraires moins frais de laboratoire, puis 60 %, ou 50 % pour Nabila Touil).</div>
+<div style="font-size:13px; color:#4A5B57">Part de chaque praticien dans les 61 500 € nets à payer (honoraires moins frais de laboratoire, puis 60 %, ou 50 % pour Nabila Touil).</div>
 <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
 <div style="position:relative; width:240px; height:240px; flex:0 0 240px"><svg viewBox="0 0 200 200" width="240" height="240" role="img" aria-label="Disque des rémunérations nettes par praticien">
 <sc-for list="{{donutSegs}}" as="s" hint-placeholder-count="7">
@@ -234,18 +234,18 @@ class Component extends DCLogic {
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const data = [
-      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [24010, 23590, 21310, 18690, 25030, 25620] },
-      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', color: '#B45309', v: [22860, 22600, 20500, 18130, 23780, 24240] },
-      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [9140, 9390, 8220, 6790, 9220, 9660] },
-      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [8670, 9090, 7990, 7070, 8920, 9240] },
-      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [8920, 8750, 8160, 7230, 9170, 9540] },
-      { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [3590, 3730, 3240, 2830, 3730, 3850] },
-      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [3500, 3570, 3220, 2800, 3640, 3780] }
+      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [16810, 16510, 14920, 13080, 17520, 17940] },
+      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', color: '#B45309', v: [16000, 15820, 14350, 12690, 16650, 16920] },
+      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [6400, 6570, 5750, 4750, 6450, 6720] },
+      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [6070, 6360, 5590, 4950, 6240, 6480] },
+      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [6240, 6120, 5710, 5060, 6420, 6660] },
+      { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [2510, 2610, 2270, 1980, 2610, 2700] },
+      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, 2640] }
     ];
-    const TL = { 'Dr Aya Turkieh': [50500, 7800, 0.6], 'Dr Mohamed Bochouari': [47900, 7500, 0.6], 'Dr Abde-Ssadic Bochouari': [19200, 3100, 0.6], 'Dr Daoud Bouchouari': [18300, 2900, 0.6], 'Dr Julien Cabaz': [18900, 3000, 0.6], 'Dr Nabila Touil': [9300, 1600, 0.5], '7e praticien (à confirmer)': [9000, 2700, 0.6] };
+    const TL = { 'Dr Aya Turkieh': [35400, 4100, 0.6], 'Dr Mohamed Bochouari': [33500, 5300, 0.6], 'Dr Abde-Ssadic Bochouari': [13400, 2200, 0.6], 'Dr Daoud Bouchouari': [12800, 1600, 0.6], 'Dr Julien Cabaz': [13200, 2100, 0.6], 'Dr Nabila Touil': [6500, 1100, 0.5], '7e praticien (à confirmer)': [6300, 1300, 0.6] };
     const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - t[1] / t[0]) * t[2])); });
     const isB = S.view === 'billed';
-    const top = isB ? 64000 : 32000;
+    const top = isB ? 45000 : 22000;
     const step = top / 4;
     const yTicks = [0, 1, 2, 3, 4].map((k) => ({ style: 'position:absolute; left:0; width:7%; top:' + ((20 + k * 75) / 360 * 100) + '%; transform:translateY(-50%); text-align:right; font-size:13px; color:#4A5B57;', label: fmt(top - k * step) }));
     const series = data.map((d) => {
@@ -255,7 +255,7 @@ class Component extends DCLogic {
     });
     const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
     const viewPills = [['net', 'Rémunération nette versée'], ['billed', 'Honoraires facturés (avant labo et rétrocession)']].map((x) => ({ label: x[1], style: pillBase + (S.view === x[0] ? 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;'), pick: () => this.setState({ view: x[0] }) }));
-    const viewNote = isB ? 'Honoraires facturés chaque mois par praticien, avant frais de laboratoire et rétrocession. Octobre : 173 100 € au total, identique aux pages Vue cabinet et Patients vus. Les mois précédents sont reconstitués à partir de la rémunération versée.' : 'Rémunération due à chaque praticien pour les prestations du mois : (honoraires − frais de laboratoire) × 60 % (50 % pour Nabila Touil). Octobre : 85 930 € au total. Septembre et octobre sont provisoires, car les mutuelles n\'ont pas encore tout remboursé.';
+    const viewNote = isB ? 'Honoraires facturés chaque mois par praticien, avant frais de laboratoire et rétrocession. Octobre : 121 100 € au total, identique aux pages Vue cabinet et Patients vus. Les mois précédents sont reconstitués à partir de la rémunération versée.' : 'Rémunération due à chaque praticien pour les prestations du mois : (honoraires − frais de laboratoire) × 60 % (50 % pour Nabila Touil). Octobre : 61 500 € au total. Septembre et octobre sont provisoires, car les mutuelles n\'ont pas encore tout remboursé.';
     const cards = data.map((d) => {
       const min = Math.min.apply(null, d.v);
       const max = Math.max.apply(null, d.v);
@@ -276,20 +276,20 @@ class Component extends DCLogic {
     const wait = chipBase + ' background:#FDF0DC; color:#8A4B08;';
     const bar = (w, c) => 'background:' + c + '; height:8px; width:' + w + '%;';
     const payments = [
-      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/07/2026', total: '80 690 €', status: 'Payé', chip: ok },
-      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/08/2026', total: '80 720 €', status: 'Payé', chip: ok },
-      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/09/2026', total: '72 640 €', status: 'Payé', chip: ok },
-      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '01/10/2026', total: '63 540 €', status: 'Payé', chip: ok },
-      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 01/11/2026', total: '83 490 €', status: 'En attente des mutuelles', chip: wait },
-      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 01/12/2026', total: '85 930 €', status: 'En attente des mutuelles', chip: wait }
+      { month: 'Mai 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/07/2026', total: '56 500 €', status: 'Payé', chip: ok },
+      { month: 'Juin 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/08/2026', total: '56 500 €', status: 'Payé', chip: ok },
+      { month: 'Juillet 2026', recv: '100 %', bar: bar(100, '#15803D'), date: '01/09/2026', total: '50 800 €', status: 'Payé', chip: ok },
+      { month: 'Août 2026', recv: '97 %', bar: bar(97, '#15803D'), date: '01/10/2026', total: '44 500 €', status: 'Payé', chip: ok },
+      { month: 'Septembre 2026', recv: '71 %', bar: bar(71, '#B45309'), date: 'prévu le 01/11/2026', total: '58 400 €', status: 'En attente des mutuelles', chip: wait },
+      { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 01/12/2026', total: '61 500 €', status: 'En attente des mutuelles', chip: wait }
     ];
     const cd = [
-      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 50500, 7800, 0.6],
-      ['Dr Mohamed Bochouari', 'Orthodontiste', 47900, 7500, 0.6],
-      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 19200, 3100, 0.6],
-      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 18300, 2900, 0.6],
-      ['Dr Julien Cabaz', 'Implantologue', 18900, 3000, 0.6],
-      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer) · départ le 1er décembre 2026', 9300, 1600, 0.5],
+      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 35400, 4100, 0.6],
+      ['Dr Mohamed Bochouari', 'Orthodontiste', 33500, 5300, 0.6],
+      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 13400, 2200, 0.6],
+      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 12800, 1600, 0.6],
+      ['Dr Julien Cabaz', 'Implantologue', 13200, 2100, 0.6],
+      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer) · départ le 1er décembre 2026', 6500, 1100, 0.5],
       ['7e praticien (à confirmer)', 'jours à confirmer', 9000, 2700, 0.6]
     ];
     const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';

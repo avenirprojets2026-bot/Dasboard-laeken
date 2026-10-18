@@ -206,13 +206,13 @@ class Component extends DCLogic {
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
 
     const PRACT = [
-      { name: 'Dr Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', keys: ['aya', 'turkieh'], pat: 325, billed: 50500, labo: 7800 },
-      { name: 'Dr Mohamed Bochouari', spec: 'Orthodontiste', keys: ['mohamed'], pat: 210, billed: 47900, labo: 7500 },
-      { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: 116, billed: 19200, labo: 3100 },
-      { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: 130, billed: 18300, labo: 2900 },
-      { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: 70, billed: 18900, labo: 3000 },
-      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 46, billed: 9300, labo: 1600, rate: 0.5 },
-      { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: 66, billed: 9000, labo: 2700 }
+      { name: 'Dr Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', keys: ['aya', 'turkieh'], pat: 325, billed: 35400, labo: 4100 },
+      { name: 'Dr Mohamed Bochouari', spec: 'Orthodontiste', keys: ['mohamed'], pat: 210, billed: 33500, labo: 5300 },
+      { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: 116, billed: 13400, labo: 2200 },
+      { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: 130, billed: 12800, labo: 1600 },
+      { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: 70, billed: 13200, labo: 2100 },
+      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 46, billed: 6500, labo: 1100, rate: 0.5 },
+      { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: 66, billed: 6300, labo: 1300 }
     ];
 
     const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };

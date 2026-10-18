@@ -1,5 +1,5 @@
 /* Jeu de données unique (fictif) : octobre 2026 (mois en cours, projection complète), tel que le modèle du cabinet.
-   Total honoraires 173 100 €, 963 patients (pause de midi 12 h à 13 h déduite), frais de labo 28 600 €. */
+   Total honoraires 121 100 €, 963 patients (pause de midi 12 h à 13 h déduite), frais de labo 20 100 €. */
 (function () {
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var mul = function (a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; var t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
@@ -32,19 +32,19 @@
   // N = patients du mois, T = honoraires facturés, LAB = frais de labo (modèle du cabinet), rate = taux de rétrocession (60 % par défaut, 50 % pour Touil)
   // Rémunération du praticien = (T − LAB) × rate ; part du cabinet = (T − LAB) × (1 − rate)
   var PR = [
-    { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 325, T: 50500, LAB: 7800, young: 0,
+    { name: 'Dr Aya Turkieh', short: 'Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', days: [1, 2, 3, 4, 5], N: 325, T: 35400, LAB: 4100, young: 0,
       mix: { exam: 3, consult: 2, obt: 4, canal: 2, extr: 1, extrS: 1, pano: 2, detart: 2, couronne: 1.5, implant: 0.45, greffe: 0.2, goutt: 0.3, blanch: 0.5, couronneImpl: 0.3 } },
-    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 4, 0], N: 210, T: 47900, LAB: 7500, supRate: 0.35, young: 1,
+    { name: 'Dr Mohamed Bochouari', short: 'Mohamed Bochouari', spec: 'Orthodontiste', days: [1, 4, 0], N: 210, T: 33500, LAB: 5300, supRate: 0.35, young: 1,
       mix: { consultO: 3, exam: 1, pano: 2, consult: 1, ortho: 8, appareil: 1.3, goutt: 0.5, blanch: 0.3 } },
-    { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 116, T: 19200, LAB: 3100, young: 0,
+    { name: 'Dr Abde-Ssadic Bochouari', short: 'Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', days: [1, 2], N: 116, T: 13400, LAB: 2200, young: 0,
       mix: { extr: 3, extrS: 0.6, obt: 4, detart: 3, consult: 2, exam: 2, couronne: 2.2, bridge: 0.5, prothese: 0.5 } },
-    { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 130, T: 18300, LAB: 2900, young: 0,
+    { name: 'Dr Daoud Bouchouari', short: 'Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', days: [4, 0], N: 130, T: 12800, LAB: 1600, young: 0,
       mix: { canal: 1.0, extrS: 0.3, obt: 1.6, pano: 1.0, consult: 2, exam: 0.8, couronne: 1.1, facette: 0.5 } },
-    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], step: 60, end: 1200, fridayStart: 900, N: 70, T: 18900, LAB: 3000, young: 0,
+    { name: 'Dr Julien Cabaz', short: 'Julien Cabaz', spec: 'Implantologue', days: [5, 6], step: 60, end: 1200, fridayStart: 900, N: 70, T: 13200, LAB: 2100, young: 0,
       mix: { implant: 0.55, greffe: 0.15, consult: 1.5, pano: 1.5, couronneImpl: 0.35, couronne: 0.1, exam: 0.7 } },
-    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], end: 900, N: 46, T: 9300, LAB: 1600, rate: 0.5, leaves: '01/12/2026', young: 0,
+    { name: 'Dr Nabila Touil', short: 'Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', days: [5], end: 900, N: 46, T: 6500, LAB: 1100, rate: 0.5, leaves: '01/12/2026', young: 0,
       mix: { detart: 3, exam: 2, obt: 3, consult: 1.5, blanch: 1.4, facette: 1.0, couronne: 1.5 } },
-    { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 66, T: 9000, LAB: 2700, young: 0,
+    { name: '7e praticien (à confirmer)', short: '7e praticien', spec: 'jours à confirmer', days: [6], N: 66, T: 6300, LAB: 1300, young: 0,
       mix: { consult: 3, obt: 3, detart: 3, extr: 2, exam: 2, couronne: 1.8, bridge: 0.5, prothese: 0.5 } }
   ];
 

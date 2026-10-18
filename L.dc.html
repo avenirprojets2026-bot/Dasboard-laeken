@@ -138,7 +138,7 @@
 </div>
 </section>
 
-<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : patients, rendez-vous et paiements fictifs, mais les totaux de octobre 2026 sont ceux du modèle du cabinet : 963 patients, 173 100 € d'honoraires, 28 600 € de frais de labo. Jours de présence de Julien Cabaz (mercredi, samedi) et du 7e praticien (samedi) supposés. Les suppléments week-end ne sont pas inclus dans les honoraires.</footer>
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : patients, rendez-vous et paiements fictifs, mais les totaux de octobre 2026 sont ceux du modèle du cabinet : 963 patients, 121 100 € d'honoraires, 17 700 € de frais de labo. Jours de présence de Julien Cabaz (mercredi, samedi) et du 7e praticien (samedi) supposés. Les suppléments week-end ne sont pas inclus dans les honoraires.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
@@ -222,7 +222,7 @@ class Component extends DCLogic {
     ];
     return {
       prPills: prPills, moPills: moPills, stPills: stPills, who: P ? P.name : 'Tous les praticiens', spec: P ? P.spec : 'Total du cabinet, identique à la vue cabinet et au résultat du gérant',
-      daysTxt: P ? 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') : '963 patients · 173 100 € d\'honoraires · 28 600 € de labo (octobre 2026, mois complet)',
+      daysTxt: P ? 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') : '963 patients · 121 100 € d\'honoraires · 17 700 € de labo (octobre 2026, mois complet)',
       kpis: kpis, actBars: actBars, rows: rows, onCsv: onCsv, btnSide: btnSide,
       range: (all.length ? (page * PAGE + 1) : 0) + ' à ' + Math.min(all.length, page * PAGE + PAGE) + ' sur ' + nf(all.length),
       onPrev: () => { if (page > 0) { setState({ page: page - 1 }); } }, onNext: () => { if (page < pages - 1) { setState({ page: page + 1 }); } },

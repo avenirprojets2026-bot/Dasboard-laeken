@@ -86,8 +86,8 @@
 <h3 style="margin:0; font-size:18px">Total cabinet</h3>
 <div style="font-size:13px; color:#C9D6D2">7 praticiens (6 à partir de décembre) · temps plein et partiel</div>
 </div>
-<div style="font-size:30px; font-weight:700">19 850 €</div>
-<div style="font-size:13px; color:#C9D6D2">bénéfice après frais de labo, rémunérations des praticiens et charges (dont 2 BMW) · environ 75 600 € de part mutuelles à recevoir pour octobre</div>
+<div style="font-size:30px; font-weight:700">3 180 €</div>
+<div style="font-size:13px; color:#C9D6D2">bénéfice après frais de labo, rémunérations des praticiens et charges (dont 2 BMW) · environ 52 900 € de part mutuelles à recevoir pour octobre</div>
 </article>
 </div>
 </section>
@@ -102,19 +102,19 @@ class Component extends DCLogic {
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     return {
       kpis: [
-        { label: "Chiffre d'affaires", value: '173 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
-        { label: 'Rémunération des praticiens', value: '85 930 €', note: '(honoraires − labo) × 60 %, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
+        { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
+        { label: 'Rémunération des praticiens', value: '61 500 €', note: '(honoraires − labo) × 60 %, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
         { label: 'Charges du cabinet', value: '38 720 €', note: 'personnel avec ONSS et remplacements, 2 véhicules BMW (leasing, assurance, entretien, taxe, énergie), loyer, leasing fauteuils et matériel numérique, intérêts, précompte immobilier, énergie, consommables, assurances, comptabilité, marketing, visibilité Google, cybersécurité, contrôles et remplacements de matériel, AFCN et autres charges belges' },
-        { label: 'Bénéfice du cabinet', value: '19 850 €', note: 'après frais de labo, rémunérations et charges' }
+        { label: 'Bénéfice du cabinet', value: '3 180 €', note: 'après frais de labo, rémunérations et charges' }
       ],
       dentists: [
-        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', patients: '325', billed: '50 500 €', retro: '25 620 €', paidPct: '75 %', paidW: '75%', pending: '12 400 €', labo: '7 800 €', devis: '5', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', patients: '116', billed: '19 200 €', retro: '9 660 €', paidPct: '76 %', paidW: '76%', pending: '4 700 €', labo: '3 100 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', patients: '210', billed: '47 900 €', retro: '24 240 €', paidPct: '75 %', paidW: '75%', pending: '11 800 €', labo: '7 500 €', devis: '5', conv: 'Non conventionné', convStyle: ns },
-        { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', patients: '46', billed: '9 300 €', retro: '3 850 €', paidPct: '75 %', paidW: '75%', pending: '2 300 €', labo: '1 600 €', devis: '1', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', patients: '70', billed: '18 900 €', retro: '9 540 €', paidPct: '76 %', paidW: '76%', pending: '4 600 €', labo: '3 000 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', patients: '130', billed: '18 300 €', retro: '9 240 €', paidPct: '75 %', paidW: '75%', pending: '4 500 €', labo: '2 900 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: '66', billed: '9 000 €', retro: '3 780 €', paidPct: '77 %', paidW: '77%', pending: '2 100 €', labo: '2 700 €', devis: '1', conv: 'Conventionné', convStyle: cs }
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', patients: '325', billed: '35 400 €', retro: '18 780 €', paidPct: '75 %', paidW: '75%', pending: '8 700 €', labo: '4 100 €', devis: '5', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', patients: '116', billed: '13 400 €', retro: '6 720 €', paidPct: '76 %', paidW: '76%', pending: '3 300 €', labo: '2 200 €', devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', patients: '210', billed: '33 500 €', retro: '16 920 €', paidPct: '75 %', paidW: '75%', pending: '8 300 €', labo: '5 300 €', devis: '5', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', patients: '46', billed: '6 500 €', retro: '2 700 €', paidPct: '75 %', paidW: '75%', pending: '1 600 €', labo: '1 100 €', devis: '1', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', patients: '70', billed: '13 200 €', retro: '6 660 €', paidPct: '76 %', paidW: '76%', pending: '3 200 €', labo: '2 100 €', devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', patients: '130', billed: '12 800 €', retro: '6 720 €', paidPct: '75 %', paidW: '75%', pending: '3 200 €', labo: '1 600 €', devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: '66', billed: '6 300 €', retro: '3 000 €', paidPct: '77 %', paidW: '77%', pending: '1 500 €', labo: '1 300 €', devis: '1', conv: 'Conventionné', convStyle: cs }
       ]
     };
   }
