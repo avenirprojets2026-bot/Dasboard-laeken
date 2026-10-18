@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=28"></script>
-<script src="./auth.js?v=28"></script>
-<script src="./nav.js?v=28"></script>
-<script src="./data.js?v=28"></script>
+<script src="./acces.js?v=29"></script>
+<script src="./auth.js?v=29"></script>
+<script src="./nav.js?v=29"></script>
+<script src="./data.js?v=29"></script>
 </head>
 <body>
 <x-dc>
@@ -147,7 +147,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 </sc-if>
 <sc-if value="{{showCards}}" hint-placeholder-val="{{ true }}">
-<div style="display:flex; flex-wrap:wrap; gap:28px; align-items:center"><div style="{{cDonut}}"><div style="position:absolute; inset:34px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><div style="font-size:11px; color:#4A5B57; text-transform:uppercase; letter-spacing:0.04em">Charges du mois</div><div style="font-size:24px; font-weight:700">{{cDonutTotal}}</div><div style="font-size:12px; color:#4A5B57">5 familles</div></div></div>
+<div style="display:flex; flex-wrap:wrap; gap:28px; align-items:center"><div style="{{cDonut}}"><div style="position:absolute; inset:34px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center"><div style="font-size:11px; color:#4A5B57; text-transform:uppercase; letter-spacing:0.04em">Charges du mois</div><div style="font-size:24px; font-weight:700">{{cDonutTotal}}</div><div style="font-size:12px; color:#4A5B57">6 familles</div></div></div>
 <div style="flex:1 1 360px; display:flex; flex-direction:column; gap:8px"><sc-for list="{{cLegend}}" as="g" hint-placeholder-count="5"><button type="button" onClick="{{g.pick}}" style="display:flex; align-items:center; gap:10px; border:1px solid #E2E9E6; background:#fff; border-radius:10px; padding:10px 12px; cursor:pointer; font:inherit; font-size:14px; text-align:left"><span style="{{g.dot}}"></span><span style="flex:1">{{g.label}}</span><b>{{g.pct}}</b><span style="color:#4A5B57; min-width:84px; text-align:right">{{g.amount}}</span><span style="color:#0F766E">›</span></button></sc-for></div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
 <sc-for list="{{catCards}}" as="k" hint-placeholder-count="3">
@@ -251,14 +251,14 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
 class Component extends DCLogic {
-  state = { ch: (function () { try { return JSON.parse(localStorage.getItem('lk-charges') || 'null') || {}; } catch (e) { return {}; } })(), bud: (function () { try { return JSON.parse(localStorage.getItem('lk-budget') || 'null') || {}; } catch (e) { return {}; } })(), ct: (function () { var m = /ch-(exp|exc|rare|org|veh)/.exec((typeof location !== 'undefined' && location.hash) || ''); return m ? m[1] : 'all'; })(), st: 'all', vt: 'all', vs: 'all' };
+  state = { ch: (function () { try { return JSON.parse(localStorage.getItem('lk-charges') || 'null') || {}; } catch (e) { return {}; } })(), bud: (function () { try { return JSON.parse(localStorage.getItem('lk-budget') || 'null') || {}; } catch (e) { return {}; } })(), ct: (function () { var m = /ch-(exp|exc|rare|org|veh|imp)/.exec((typeof location !== 'undefined' && location.hash) || ''); return m ? m[1] : 'all'; })(), st: 'all', vt: 'all', vs: 'all' };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
     if (typeof window !== 'undefined') {
       window.__lkD = this;
       if (!window.__lkHash) {
         window.__lkHash = true;
-        const go = () => { const m = /ch-(exp|exc|rare|org|veh)/.exec(location.hash || ''); if (m && window.__lkD) { window.__lkD.setState({ ct: m[1], st: 'all' }); setTimeout(() => { const el = document.getElementById('charges'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, 60); } };
+        const go = () => { const m = /ch-(exp|exc|rare|org|veh|imp)/.exec(location.hash || ''); if (m && window.__lkD) { window.__lkD.setState({ ct: m[1], st: 'all' }); setTimeout(() => { const el = document.getElementById('charges'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, 60); } };
         window.addEventListener('hashchange', go);
         if (/ch-/.test(location.hash || '')) { setTimeout(go, 400); }
       }
@@ -296,7 +296,8 @@ class Component extends DCLogic {
       { id: 'exc', label: 'Exceptionnelles ou moins visibles', short: 'Charges exceptionnelles ou moins visibles', desc: 'Matériel financé, intérêts, impôts et contrôles : des montants que l\'on oublie facilement.', color: '#B45309' },
       { id: 'rare', label: 'Peu fréquentes mais légitimes', short: 'Dépenses peu fréquentes mais légitimes', desc: 'Contrôles, remises en conformité et remplacements qui ne reviennent pas chaque mois. Les montants sont lissés sur 12 mois (provision mensuelle). L\'AFCN exige notamment une organisation documentée de la radioprotection pour les installations concernées, et les fréquences de contrôle varient selon les équipements, en particulier pour les CBCT : à confirmer.', color: '#B42318' },
       { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' },
-      { id: 'veh', label: 'Véhicules du cabinet', short: 'Véhicules du cabinet (2 BMW)', desc: 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique : leasing, assurance, réparations, entretien, taxe de circulation et énergie. La déductibilité fiscale, l\'avantage de toute nature en cas d\'usage privé et la cotisation de solidarité CO2 sont à confirmer avec le comptable.', color: '#2F6DB5' }
+      { id: 'veh', label: 'Véhicules du cabinet', short: 'Véhicules du cabinet (2 BMW)', desc: 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique : leasing, assurance, réparations, entretien, taxe de circulation et énergie. La déductibilité fiscale, l\'avantage de toute nature en cas d\'usage privé et la cotisation de solidarité CO2 sont à confirmer avec le comptable.', color: '#2F6DB5' },
+      { id: 'imp', label: 'Imprévus', short: 'Imprévus (provision)', desc: 'Une réserve pour les dépenses qu\'on ne peut pas prévoir : litiges, dégâts au bâtiment, pannes informatiques. Montants à 0 € au départ : à compléter par le gérant.', color: '#0E7490' },
     ];
     const LINES = [
       ['veh', 'Leasing BMW Série 7 hybride', 1750, 'Loyer mensuel de leasing (estimation)', 'b7'],
@@ -342,13 +343,24 @@ class Component extends DCLogic {
       ['rare', 'Remplacement de l\'autoclave', 250, 'État et historique technique', 'equ'],
       ['rare', 'Réparation de l\'aspiration', 100, 'Diagnostic et devis', 'equ'],
       ['rare', 'Formation des assistantes', 150, 'Formation suivie et facturée', 'for'],
-      ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures', 'fin']
+      ['exc', 'Taxes communales et frais divers', 150, 'Taxes locales, petites fournitures', 'fin'],
+      ['exp', 'Charges locatives', 0, 'Charges communes de l\'immeuble, à compléter par le gérant', 'loc'],
+      ['exc', 'Entretien des fauteuils', 0, 'Contrat d\'entretien des 3 fauteuils, à compléter', 'mat'],
+      ['exc', 'Maintenance CBCT et microscope', 0, 'Contrats de maintenance de l\'imagerie et du microscope, à compléter', 'mat'],
+      ['exp', 'Maintenance informatique', 0, 'Support informatique, mises à jour, à compléter', 'adm'],
+      ['exc', 'Petit matériel (instruments)', 0, 'Instruments, fraises, petit équipement renouvelé, à compléter', 'mat'],
+      ['exp', 'Recouvrement des impayés', 0, 'Rappels, huissier ou société de recouvrement, à compléter', 'adm'],
+      ['imp', 'Litiges et franchises', 0, 'Franchises d\'assurance, frais juridiques, à compléter', 'jur'],
+      ['imp', 'Imprévus immobiliers', 0, 'Dégâts des eaux, serrurerie, réparations urgentes du bâtiment, à compléter', 'bat'],
+      ['imp', 'Incidents informatiques', 0, 'Panne, perte de données, intervention urgente, à compléter', 'bat'],
+      ['imp', 'Autres imprévus', 0, 'Réserve pour les dépenses non prévues, à compléter', 'div']
     ];
     const LBASE = LINES.map((l) => l[2]);
     LINES.forEach((l, i) => { l[5] = i; const o = S.ch && S.ch[i]; if (o !== undefined && o !== null && !isNaN(o)) { l[2] = Number(o); } });
     const nMod = LINES.filter((l, i) => l[2] !== LBASE[i]).length;
     const saveCh = (i, v) => { const nc = Object.assign({}, S.ch || {}); if (v === LBASE[i]) { delete nc[i]; } else { nc[i] = v; } try { localStorage.setItem('lk-charges', JSON.stringify(nc)); localStorage.setItem('lk-charges-tot', String(LINES.reduce((a, l, j) => a + (j === i ? v : l[2]), 0))); if (!Object.keys(nc).length) { localStorage.removeItem('lk-charges-tot'); } } catch (e) {} setState({ ch: nc }); };
     const SUBS = {
+      imp: [['jur', 'Litiges et assurances'], ['bat', 'Bâtiment et informatique'], ['div', 'Divers']],
       veh: [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']],
       exp: [['loc', 'Locaux et énergie'], ['con', 'Fournitures et consommables'], ['adm', 'Administration et informatique'], ['ass', 'Assurances'], ['mkt', 'Marketing et visibilité']],
       exc: [['mat', 'Matériel et leasings'], ['fin', 'Financement, impôts et divers']],
@@ -364,12 +376,12 @@ class Component extends DCLogic {
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
 
     // ---- Budget et réel ----
-    const BDEF = { ca: 125000, labo: 17500, rem: 63000, exp: 16000, exc: 4200, rare: 1000, org: 12000, veh: 4700 };
+    const BDEF = { ca: 125000, labo: 17500, rem: 63000, exp: 16000, exc: 4200, rare: 1000, org: 12000, veh: 4700, imp: 0 };
     const BV = Object.assign({}, BDEF, S.bud || {});
     const saveB = (o) => { const nb = Object.assign({}, S.bud || {}, o); try { localStorage.setItem('lk-budget', JSON.stringify(nb)); } catch (e) {} setState({ bud: nb }); };
-    const realOf = { ca: 121100, labo: 17700, rem: 61500, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh') };
+    const realOf = { ca: 121100, labo: 17700, rem: 61500, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh'), imp: sumCat('imp') };
     const bRows = [['ca', "Chiffre d'affaires", 'honoraires facturés', true], ['labo', 'Frais de laboratoire', 'factures des labos', false], ['rem', 'Rémunérations des praticiens', '(honoraires − labo) × rétrocession', false]].concat(CAT.map((c) => [c.id, c.label, 'famille de charges', false]));
-    const budBen = BV.ca - BV.labo - BV.rem - BV.exp - BV.exc - BV.rare - BV.org - BV.veh;
+    const budBen = BV.ca - BV.labo - BV.rem - BV.exp - BV.exc - BV.rare - BV.org - BV.veh - BV.imp;
     const realBen = 41900 - TOT;
     const bLine = (id, label, hint, up, bud, real, edit) => {
       const gap = real - bud; const good = gap === 0 ? null : ((gap > 0) === up);
@@ -407,7 +419,7 @@ class Component extends DCLogic {
       { label: 'Part des charges du cabinet', value: pc(carMonth / TOT * 100), note: 'sur ' + eur(TOT) + ' de charges mensuelles', style: 'border:1px solid #DCE5E2; border-top:5px solid #B45309; border-radius:12px; padding:14px 16px;' }
     ];
     const carDesc = carSel === 'all' ? 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique. Choisissez une voiture, puis un poste de dépense.' : 'Détail de la ' + CARS.filter((c) => c[0] === carSel)[0][1] + ' par poste de dépense.';
-    const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4 };
+    const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4, imp: 5 };
     const stab = (S && S.st) || 'all';
     const subDefs = ctab === 'all' ? [] : SUBS[ctab];
     const sTabBase = 'display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:999px; padding:4px 12px; font-size:13px; cursor:pointer; ';
@@ -443,7 +455,7 @@ class Component extends DCLogic {
       chReset: () => { try { localStorage.removeItem('lk-charges'); localStorage.removeItem('lk-charges-tot'); } catch (e) {} setState({ ch: {} }); },
       chCsv: () => { const cell = (v) => { const t = String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; }; const rows = [['Famille', 'Poste', 'Montant mensuel', 'Montant annuel', 'Montant d\'origine', 'Remarque']].concat(LINES.map((l, i) => [CAT.filter((c) => c.id === l[0])[0].label, l[1], l[2], l[2] * 12, LBASE[i], l[3]])).concat([['Total', '', TOT, TOT * 12, LBASE.reduce((a, x) => a + x, 0), '']]); const csv = '\ufeff' + rows.map((r) => r.map(cell).join(';')).join('\r\n'); (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'charges-dental-clinic-laeken.csv', data: csv }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'charges-dental-clinic-laeken.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; }).catch(() => {}); },
       cDonut: cDonut, cDonutTotal: eur(TOT), cLegend: cLegend,
-      charges: charges, cTabs: cTabs, catCards: [], showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les cinq familles de charges. Cliquez sur une famille (ici ou dans le menu) pour voir ses sous-onglets et le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
+      charges: charges, cTabs: cTabs, catCards: [], showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les six familles de charges. Cliquez sur une famille (ici ou dans le menu) pour voir ses sous-onglets et le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [
         { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '35 400 €', labo: '4 100 €', retro: '18 780 €', share: '12 520 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
         { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '13 400 €', labo: '2 200 €', retro: '6 720 €', share: '4 480 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },

@@ -27,7 +27,7 @@
     K: '<path d="M4 4h11a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><path d="M4 17a3 3 0 0 1 3-3h11"/>'
   };
   var ic = function (k) { return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IC[k] || '') + '</svg>'; };
-  var SUB = [['exp', 'Exploitation habituelle', '#0F766E'], ['exc', 'Exceptionnelles, moins visibles', '#B45309'], ['rare', 'Peu fréquentes', '#B42318'], ['org', 'Praticiens et organisation', '#5B3FA8'], ['veh', 'Véhicules du cabinet', '#2F6DB5']];
+  var SUB = [['exp', 'Exploitation habituelle', '#0F766E'], ['exc', 'Exceptionnelles, moins visibles', '#B45309'], ['rare', 'Peu fréquentes', '#B42318'], ['org', 'Praticiens et organisation', '#5B3FA8'], ['veh', 'Véhicules du cabinet', '#2F6DB5'], ['imp', 'Imprévus', '#0E7490']];
   var cur = (location.pathname.split('/').pop() || '').replace('.dc.html', '');
   var curName = (cur === 'Accueil' || cur === '' || cur === 'index') ? 'Accueil' : 'Menu';
   var html = '<a class="lk-i' + (cur === 'Accueil' || cur === '' || cur === 'index' ? ' on' : '') + '" href="Accueil.dc.html">' + ic('Accueil') + '<span>Accueil</span></a>';
