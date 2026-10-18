@@ -44,7 +44,7 @@
 <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Gérant</div>
 <h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Corilus : les logiciels du cabinet</h1>
 </div>
-<div style="font-size:14px; color:#4A5B57; max-width:540px; line-height:1.5">Les cinq produits Corilus que le cabinet utilise ou envisage, ce que chacun apporterait au tableau de bord et ce qu'il coûte. La connexion n'est pas encore configurée : cette page prépare le terrain.</div>
+<div style="font-size:14px; color:#4A5B57; max-width:540px; line-height:1.5">Les quatre produits Corilus que le cabinet utilise ou envisage, ce que chacun apporterait au tableau de bord et ce qu'il coûte. La connexion n'est pas encore configurée : cette page prépare le terrain.</div>
 </header>
 
 <section style="display:flex; flex-wrap:wrap; gap:8px">
@@ -76,7 +76,7 @@
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
-<h2 style="margin:0; font-size:18px">Coût des cinq logiciels et place dans les charges</h2>
+<h2 style="margin:0; font-size:18px">Coût des quatre logiciels et place dans les charges</h2>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
 <thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Produit</th><th style="padding:8px">Prix publié (hors TVA)</th><th style="padding:8px">Source</th><th style="padding:8px">Famille de charges</th></tr></thead>
@@ -87,7 +87,7 @@
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Les charges du cabinet comprennent déjà une ligne « Logiciel de gestion, facturation électronique et informatique » de 380 € par mois (famille Administration et informatique, page Résultat du gérant). CareConnect Dentist (154,45 €) et l'agenda Helena (43,21 € avec les SMS) totalisent 197,66 € par mois et tiennent dans cette ligne. La borne, Allisone AI et Corilus Pay y seront ajoutés dès réception des devis : s'ils la dépassent, il faudra l'augmenter, ce qui réduit le bénéfice du même montant.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Les charges du cabinet comprennent déjà une ligne « Logiciel de gestion, facturation électronique et informatique » de 380 € par mois (famille Administration et informatique, page Résultat du gérant). CareConnect Dentist (154,45 €) et l'agenda Helena (43,21 € avec les SMS) totalisent 197,66 € par mois et tiennent dans cette ligne. La borne et Allisone AI y seront ajoutés dès réception des devis : s'ils la dépassent, il faudra l'augmenter, ce qui réduit le bénéfice du même montant.</div>
 </section>
 
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Prix relevés sur les pages publiques de Corilus et de Helena Pro en octobre 2026 : à confirmer par devis, hors TVA. Aucune donnée réelle n'est connectée.</footer>
@@ -128,13 +128,7 @@ class Component extends DCLogic {
         feeds: 'Le nombre de radiographies analysées par praticien.\nLes types de constats, en statistiques, sans image ni nom de patient.\nLes plans de traitement proposés, pour suivre les devis.',
         pages: 'Actes par praticien, Patients vus par praticien, Mutuelles et labo (devis).',
         todo: 'Obtenir un devis : abonnement par praticien ou par radiographie.\nVérifier la compatibilité avec le matériel de radiographie du cabinet.\nDécider si les résultats alimentent le tableau de bord.',
-        price: 'Sur devis', priceNote: 'Aucun tarif public trouvé. Corilus et Allisone indiquent seulement des offres promotionnelles et renvoient vers un contact commercial.' },
-      { tab: 'Corilus Pay', title: 'Corilus Pay', status: 'Paiement des patients · à vérifier',
-        what: 'Solution de paiement liée au logiciel du cabinet (terminal carte, paiement du patient rapproché de la facture). Je n\'ai trouvé aucune page publique décrivant ce produit : le contenu ci-dessous est un cadrage à confirmer avec Corilus.',
-        feeds: 'Les paiements encaissés par patient (carte, Bancontact, liquide).\\nLes factures non payées et les étalements.\\nLes commissions de paiement.',
-        pages: 'Patients et paiements, Patients vus par praticien (statut de paiement), Résultat du gérant (frais bancaires).',
-        todo: 'Demander à Corilus la description, le tarif et les commissions de Corilus Pay.\\nComparer avec le terminal actuel (ligne « Frais bancaires et terminaux » : 300 € par mois).\\nVérifier que le paiement est rapproché automatiquement de la facture dans CareConnect.',
-        price: 'À confirmer', priceNote: 'Aucun tarif trouvé. Comptez en général un loyer de terminal et une commission par paiement ; ils iraient dans la ligne « Frais bancaires et terminaux de paiement par carte » des charges (300 € par mois aujourd\'hui).' }
+        price: 'Sur devis', priceNote: 'Aucun tarif public trouvé. Corilus et Allisone indiquent seulement des offres promotionnelles et renvoient vers un contact commercial.' }
     ];
     const t = Math.min(S.tab, P.length - 1);
     return {
@@ -144,8 +138,7 @@ class Component extends DCLogic {
         { name: 'CareConnect Dentist', price: '154,45 € (montant communiqué, période à confirmer)', src: 'Communiqué par le gérant', fam: 'Administration et informatique' },
         { name: 'Helena Pro Kiosk', price: 'Non publié', src: 'corilus.be (aucun tarif)', fam: 'Administration et informatique' },
         { name: 'Helena Agenda (Calendar)', price: '30,58 € par mois (client CareConnect) + 12,63 € de SMS illimités + 129,35 € d\'activation', src: 'agenda.helenapro.care', fam: 'Administration et informatique' },
-        { name: 'Allisone AI', price: 'Sur devis', src: 'Aucun tarif public', fam: 'Administration et informatique' },
-        { name: 'Corilus Pay', price: 'À confirmer', src: 'Aucune page publique trouvée', fam: 'Frais bancaires et terminaux de paiement' }
+        { name: 'Allisone AI', price: 'Sur devis', src: 'Aucun tarif public', fam: 'Administration et informatique' }
       ]
     };
   }
