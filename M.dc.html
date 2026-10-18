@@ -261,7 +261,7 @@ class Component extends DCLogic {
       { label: 'Honoraires pas encore encaissés', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }
     ];
     return {
-      prPills: prPills, moPills: moPills, stPills: stPills, who: P.name, spec: P.spec, daysTxt: 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') + (P.leaves ? ' · quitte le cabinet le 1er décembre 2026' : '') + (P.supRate ? ' · non conventionné : suppléments d\'honoraires autorisés' : ''),
+      prPills: prPills, moPills: moPills, stPills: stPills, who: P.name, spec: P.spec, daysTxt: 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') + (pi === 1 ? ' · orthodontiste, début à 9 h' : '') + (P.leaves ? ' · quitte le cabinet le 1er décembre 2026' : '') + (P.supRate ? ' · non conventionné : suppléments d\'honoraires autorisés' : ''),
       kpis: kpis, actBars: actBars, hours: hours, works: works, hasWorks: works.length > 0, noWorks: works.length === 0, rows: rows, onCsv: onCsv, btnSide: btnSide,
       range: (all.length ? (page * PAGE + 1) : 0) + ' à ' + Math.min(all.length, page * PAGE + PAGE) + ' sur ' + nf(all.length),
       onPrev: () => { if (page > 0) { setState({ page: page - 1 }); } }, onNext: () => { if (page < pages - 1) { setState({ page: page + 1 }); } },
