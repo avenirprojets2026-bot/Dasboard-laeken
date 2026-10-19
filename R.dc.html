@@ -102,13 +102,26 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </section>
 </sc-for>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:6px 22px 16px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px; margin-top:14px"><h2 style="margin:0; font-size:20px; font-family:'Fraunces',Georgia,serif; font-weight:600">Parcours de test manuel</h2><span style="font-size:13px; color:#4A5B57">{{recLine}}</span></div>
+<div style="font-size:13px; color:#4A5B57; margin:4px 0 10px">Les contrôles automatiques ne remplacent pas un essai à la main. Cochez chaque étape une fois testée : la date est enregistrée dans ce navigateur.</div>
+<sc-for list="{{recette}}" as="r" hint-placeholder-count="6">
+<div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-top:1px solid #EEF2F1">
+<button type="button" onClick="{{r.toggle}}" style="{{r.boxStyle}}" aria-label="Marquer l'étape comme faite">{{r.box}}</button>
+<div style="flex:1; min-width:0"><div style="font-weight:600; font-size:14.5px"><span style="color:#0F766E">{{r.n}} · </span>{{r.title}}</div><div style="font-size:13px; color:#4A5B57; margin-top:2px; line-height:1.45">{{r.text}}</div></div>
+<span style="{{r.doneStyle}}">{{r.done}}</span>
+</div>
+</sc-for>
+<button type="button" onClick="{{recReset}}" style="margin-top:6px; min-height:38px; border:1px solid #C9D6D2; border-radius:10px; background:#fff; font:inherit; font-size:13px; font-weight:600; padding:0 14px; cursor:pointer">Tout décocher</button>
+</section>
+
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Les contrôles portent sur les données fictives du modèle (octobre 2026) et sur les saisies enregistrées dans ce navigateur. Ils ne remplacent pas un contrôle comptable. La sécurité du site reste un contrôle côté navigateur : avant toute donnée réelle, il faudra de vrais comptes sur un serveur.</footer>
 
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
 class Component extends DCLogic {
-  state = { f: 'all', msg: '', ok: true };
+  state = { f: 'all', msg: '', ok: true, rv: null };
   renderVals() {
     const S = this.state; const setState = (o) => this.setState(o);
     const L = window.LAEKEN; const A = window.LKAUTH; const AC = window.LKACCES;
@@ -138,6 +151,9 @@ class Component extends DCLogic {
       add('d', 'Historique sur 13 mois', bad.length ? 'ko' : 'ok', bad.length ? bad.length + ' mois où le résultat ne correspond pas au calcul' : 'Chaque mois : résultat = honoraires − labo − rémunérations − charges', 'Main.dc.html');
       res = part - chg; const last = H[H.length - 1];
       add('d', 'Résultat d\'octobre', last.chg === chg ? 'ok' : 'warn', 'Part du cabinet ' + eu(part) + ' − charges ' + eu(chg) + ' = ' + eu(res) + (last.chg === chg ? ' · identique à l\'historique' : ' · charges modifiées par le gérant : l\'historique reste à ' + eu(last.chg)), 'D.dc.html');
+      const badId = L.rows.filter((r) => !/^D-\d{5}$/.test(r.doss) || !/^\d{2}\/\d{2}\/\d{4}$/.test(r.dob));
+      const nameKeys = Object.keys(L.rows[0] || {}).filter((k) => /nom|name|prenom|first_?name|adresse|address|tel|phone|mail|niss|rrn/i.test(k) && k !== 'first');
+      add('a', 'Anonymisation des patients', badId.length || nameKeys.length ? 'ko' : 'ok', nf(L.rows.length) + ' actes · ' + nf(Object.keys(dos).length) + ' dossiers identifiés uniquement par numéro (D-xxxxx) et date de naissance · aucun nom, adresse, téléphone ni numéro national', 'G.dc.html');
     } else { add('d', 'Données du modèle', 'ko', 'Le fichier de données ne s\'est pas chargé.', ''); }
     // saisies
     const ch = ls('lk-charges') || {}; const chNeg = Object.keys(ch).filter((k) => !(Number(ch[k]) >= 0));
@@ -168,10 +184,13 @@ class Component extends DCLogic {
       const plain = AC.comptes.filter((c) => Object.keys(c).some((k) => /code|pin|pass|mail/i.test(k)) || !/^[0-9a-f]{64}$/.test(c.h || ''));
       add('a', 'Aucun code ni e-mail en clair', plain.length ? 'ko' : 'ok', AC.comptes.length + ' comptes · seules des empreintes chiffrées sont stockées (PBKDF2, ' + nf(AC.iter) + ' itérations)', 'P.dc.html');
     }
-    const ST = { ok: ['Conforme', '#0B6B3A', '#E3F4EA'], warn: ['À vérifier', '#8A4B08', '#FDF0DC'], ko: ['Anomalie', '#A3231A', '#FBE7E5'], na: ['Non applicable', '#33433F', '#E7EDEB'] };
-    const GR = [['d', 'Cohérence des chiffres', 'Les totaux de chaque page sont recalculés et comparés entre eux.'], ['s', 'Saisies enregistrées', 'Valeurs modifiées dans ce navigateur : charges, budget, factures, créances, paiements, versements.'], ['a', 'Accès et sécurité', 'Pages autorisées par rôle et stockage des codes d\'accès.']];
+    add('f', 'Sécurité réelle', 'todo', 'La connexion actuelle est un contrôle dans le navigateur, suffisant pour une démonstration. Avant toute donnée réelle : comptes sur un serveur, droits vérifiés côté serveur, journal des accès, chiffrement, conformité RGPD.', 'P.dc.html');
+    add('f', 'Données réelles via Corilus', 'todo', 'Brancher un export anonymisé de CareConnect (CSV ou Excel) à la place des données fictives, après validation du format.', 'O.dc.html');
+    add('f', 'Hypothèses à confirmer', 'todo', 'Taux ONSS (25 %), salaire des secrétaires (brut ou net), montants des véhicules, supplément d\'honoraires de 35 %, règles de cumul INAMI, adresses e-mail réelles des praticiens.', 'D.dc.html');
+    const ST = { todo: ['À finaliser', '#4B2F96', '#EFEAF8'], ok: ['Conforme', '#0B6B3A', '#E3F4EA'], warn: ['À vérifier', '#8A4B08', '#FDF0DC'], ko: ['Anomalie', '#A3231A', '#FBE7E5'], na: ['Non applicable', '#33433F', '#E7EDEB'] };
+    const GR = [['d', 'Cohérence des chiffres', 'Les totaux de chaque page sont recalculés et comparés entre eux.'], ['s', 'Saisies enregistrées', 'Valeurs modifiées dans ce navigateur : charges, budget, factures, créances, paiements, versements.'], ['a', 'Accès et sécurité', 'Pages autorisées par rôle, anonymisation des patients et stockage des codes d\'accès.'], ['f', 'À finaliser avant la mise en service', 'Points qui ne dépendent pas du tableau de bord : ils demandent une décision ou une vérification extérieure.']];
     const shown = C.filter((c) => S.f === 'all' || (S.f === 'pb' ? (c.st === 'ko' || c.st === 'warn') : c.g === S.f));
-    const nOk = C.filter((c) => c.st === 'ok').length; const nTest = C.filter((c) => c.st !== 'na').length; const nPb = C.filter((c) => c.st === 'ko' || c.st === 'warn').length;
+    const nOk = C.filter((c) => c.st === 'ok').length; const nTest = C.filter((c) => c.st !== 'na' && c.st !== 'todo').length; const nPb = C.filter((c) => c.st === 'ko' || c.st === 'warn').length;
     const pill = 'display:inline-flex; align-items:center; gap:6px; min-height:40px; box-sizing:border-box; border-radius:999px; padding:6px 14px; font-size:14px; cursor:pointer; ';
     const vS = (c) => 'font-size:clamp(22px, 5.6vw, 30px); font-weight:700; line-height:1.15; margin-top:8px; white-space:nowrap; letter-spacing:-0.02em; color:' + c + ';';
     const csv = () => {
@@ -181,6 +200,19 @@ class Component extends DCLogic {
       (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'controles-coherence-octobre-2026.csv', data: data }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=utf-8' })); a.download = 'controles-coherence-octobre-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; })
         .then(() => setState({ msg: 'Rapport exporté (' + C.length + ' contrôles).', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
     };
+    const RC = [
+      ['Changer de rôle', 'Se connecter avec un compte praticien puis secrétariat : seules leurs pages apparaissent dans le menu.'],
+      ['Tester les filtres', 'Changer le mois, la mutualité, le praticien et la famille de soins dans les tableaux.'],
+      ['Contrôler la caisse', 'Saisir un paiement partiel dans Patients et paiements, vérifier le solde, puis exporter le CSV.'],
+      ['Tester sur téléphone', 'Ouvrir le site sur Chrome et Samsung Internet : menu ☰, tableaux et boutons.'],
+      ['Tester l\'impression', 'Imprimer un relevé praticien depuis Envoi aux praticiens.'],
+      ['Vérifier les totaux', 'Modifier une charge dans Résultat du gérant et vérifier le résultat sur l\'accueil et la vue cabinet.']
+    ];
+    const RV = S.rv || ls('lk-recette') || {};
+    const saveRV = (o) => { try { localStorage.setItem('lk-recette', JSON.stringify(o)); } catch (e) {} setState({ rv: o }); };
+    const today = (() => { const d = new Date(); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); })();
+    const recette = RC.map((x, i) => { const done = RV[i]; return { n: String(i + 1).padStart(2, '0'), title: x[0], text: x[1], done: done ? 'Fait le ' + done : 'À faire', doneStyle: 'flex:none; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; ' + (done ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#F3F6F5; color:#4A5B57;'), box: done ? '✓' : '', boxStyle: 'flex:none; width:30px; height:30px; border-radius:9px; font-size:16px; font-weight:700; cursor:pointer; ' + (done ? 'background:#0F766E; color:#fff; border:1px solid #0F766E;' : 'background:#fff; color:#0F766E; border:1.5px solid #9DB8B1;'), toggle: () => { const o = Object.assign({}, RV); if (o[i]) { delete o[i]; } else { o[i] = today; } saveRV(o); } }; });
+    const recN = RC.filter((x, i) => RV[i]).length;
     return {
       kpis: [
         { label: 'Contrôles conformes', value: nOk + ' / ' + nTest, note: nPb ? nPb + ' point(s) à regarder' : 'aucune anomalie', vStyle: vS(nPb ? '#B45309' : '#0B6B3A') },
@@ -188,8 +220,9 @@ class Component extends DCLogic {
         { label: 'Charges du mois', value: eu(chg), note: chg === 33615 ? 'valeurs du modèle' : 'modifiées par le gérant', vStyle: vS('#0B3B36') },
         { label: 'Résultat du mois', value: eu(res), note: 'octobre 2026', vStyle: vS(res < 0 ? '#A3231A' : '#0B6B3A') }
       ],
-      filters: [['all', 'Tous', C.length], ['pb', 'À regarder', nPb], ['d', 'Chiffres', C.filter((c) => c.g === 'd').length], ['s', 'Saisies', C.filter((c) => c.g === 's').length], ['a', 'Accès', C.filter((c) => c.g === 'a').length]].map((x) => ({ label: x[1], n: String(x[2]), style: pill + (S.f === x[0] ? 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;'), pick: () => setState({ f: x[0] }) })),
+      filters: [['all', 'Tous', C.length], ['pb', 'À regarder', nPb], ['d', 'Chiffres', C.filter((c) => c.g === 'd').length], ['s', 'Saisies', C.filter((c) => c.g === 's').length], ['a', 'Accès', C.filter((c) => c.g === 'a').length], ['f', 'À finaliser', C.filter((c) => c.g === 'f').length]].map((x) => ({ label: x[1], n: String(x[2]), style: pill + (S.f === x[0] ? 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;'), pick: () => setState({ f: x[0] }) })),
       groups: GR.map((g) => ({ title: g[1], note: g[2], rows: shown.filter((c) => c.g === g[0]).map((c) => ({ name: c.n, detail: c.d, status: ST[c.st][0], chip: 'flex:none; min-width:104px; text-align:center; display:inline-block; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; color:' + ST[c.st][1] + '; background:' + ST[c.st][2] + ';', href: c.h || '#', linkStyle: c.h ? 'flex:none; font-size:13px; font-weight:600; color:#0B5D56; padding:4px 2px;' : 'display:none;' })) })).filter((g) => g.rows.length),
+      recette: recette, recLine: recN + ' / ' + RC.length + ' étapes faites', recReset: () => saveRV({}),
       csv: csv, btnMain: 'min-height:44px; border:0; border-radius:12px; padding:0 18px; font-size:14px; font-weight:700; background:#0B3B36; color:#fff; cursor:pointer;',
       hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 14px; border-radius:12px; font-size:14px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
     };
