@@ -64,17 +64,28 @@
     '#lk-side .lk-s:hover{background:rgba(255,255,255,.06);color:#fff}#lk-side .lk-s.on{color:#fff;font-weight:700;background:rgba(255,255,255,.07)}' +
     'html.lk-dark{background:#fff;filter:invert(1) hue-rotate(180deg)}html.lk-dark img,html.lk-dark #lk-side,html.lk-dark #lk-bar,html.lk-dark #lk-who,html.lk-dark #lk-gate{filter:invert(1) hue-rotate(180deg)}html.lk-dark #lk-side img,html.lk-dark #lk-bar img,html.lk-dark #lk-gate img,html.lk-dark #lk-who img{filter:none}' +
     '#lk-side .lk-theme{position:sticky;bottom:0;margin:22px 4px 0;box-shadow:0 -14px 18px -6px #0F1F1C;background:#1A2D29!important;display:flex;align-items:center;gap:10px;width:calc(100% - 8px);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);color:#DCE8E5;border-radius:10px;padding:10px 12px;font:inherit;font-size:13px;cursor:pointer}#lk-side .lk-theme:hover{background:rgba(255,255,255,.10)}' +
-    '#lk-bar .lk-tb{background:rgba(255,255,255,.10)!important;padding:0 12px!important}' +
-    '#lk-bar{display:none;position:fixed;top:0;left:0;right:0;height:58px;background:rgba(14,28,25,.94);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;align-items:center;gap:12px;padding:0 14px;z-index:9001;font-family:"DM Sans",sans-serif;box-sizing:border-box;border-bottom:1px solid rgba(255,255,255,.06)}' +
-    '#lk-bar img{width:32px;height:32px;border-radius:8px}#lk-bar b{flex:1;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
-    '#lk-bar button{background:#0F766E;color:#fff;border:0;border-radius:10px;min-height:40px;padding:0 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}' +
-    '@media(min-width:1000px){body{padding-left:256px!important}}' +
-    '@media(max-width:999px){#lk-bar{display:flex}#lk-side{display:none;top:58px;width:100%;max-width:340px;box-shadow:12px 0 40px rgba(0,0,0,.4)}#lk-side.open{display:block}#lk-side .lk-t{display:none}body{padding-top:58px!important}}';
+    '#lk-bar{display:flex;position:fixed;top:0;left:0;right:0;height:62px;background:linear-gradient(90deg,#0B2E2A,#123F39);color:#fff;align-items:center;gap:12px;padding:0 16px;z-index:9001;font-family:"DM Sans",sans-serif;box-sizing:border-box;box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}' +
+    '#lk-bar .lk-mb{width:44px;height:44px;flex:none;display:flex;align-items:center;justify-content:center;background:#E8F1EF;color:#0B2E2A;border:0;border-radius:12px;cursor:pointer;padding:0;transition:transform .12s,background .15s}#lk-bar .lk-mb:hover{background:#fff}#lk-bar .lk-mb:active{transform:scale(.96)}' +
+    '#lk-bar img{width:34px;height:34px;border-radius:9px;outline:1px solid rgba(243,221,166,.35)}' +
+    '#lk-bar .lk-bt{flex:1;min-width:0;line-height:1.15}#lk-bar .lk-bt b{display:block;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#lk-bar .lk-bt small{display:block;font-size:12px;color:#A9CEC6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}' +
+    '#lk-bar .lk-tb{flex:none;background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.14);border-radius:12px;min-height:42px;padding:0 14px;font-size:15px;cursor:pointer;font-family:inherit}' +
+    '#lk-side{top:62px!important}#lk-side .lk-t{display:none}body{padding-top:62px!important}' +
+    '@media(min-width:1000px){body{padding-left:256px!important;transition:padding-left .2s}#lk-side{transition:transform .2s}html.lk-sideoff body{padding-left:0!important}html.lk-sideoff #lk-side{transform:translateX(-100%)}}' +
+    '@media(max-width:999px){#lk-side{display:none;width:100%;max-width:340px;box-shadow:12px 0 40px rgba(0,0,0,.4)}#lk-side.open{display:block}#lk-bar img{display:none}}';
   function init() {
     var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
     var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png?v=2" alt=""><div><b>Dental Clinic Laeken</b><small>Comptabilité du cabinet</small></div></div>' + html;
-    var bar = document.createElement('div'); bar.id = 'lk-bar'; bar.innerHTML = '<img src="icon-512.png?v=2" alt=""><b>' + curName + '</b><button type="button" class="lk-tb" aria-label="Mode clair ou sombre"></button><button type="button" class="lk-mb">Menu</button>';
-    bar.querySelector('.lk-mb').onclick = function () { side.classList.toggle('open'); };
+    var bar = document.createElement('div'); bar.id = 'lk-bar';
+    var pageT = (document.title || '').replace(/'\s*\+.*$/, '');
+    bar.innerHTML = '<button type="button" class="lk-mb" aria-label="Ouvrir ou fermer le menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><img src="icon-512.png?v=2" alt=""><div class="lk-bt"><b>Dental Clinic Laeken</b><small>' + (pageT || curName) + '</small></div><button type="button" class="lk-tb" aria-label="Mode clair ou sombre"></button>';
+    try { if (localStorage.getItem('lk-side') === 'off') { document.documentElement.classList.add('lk-sideoff'); } } catch (e) {}
+    var mb = bar.querySelector('.lk-mb');
+    mb.onclick = function (ev) {
+      ev.stopPropagation();
+      if (window.matchMedia('(min-width:1000px)').matches) { var off = document.documentElement.classList.toggle('lk-sideoff'); try { localStorage.setItem('lk-side', off ? 'off' : 'on'); } catch (e) {} mb.setAttribute('aria-expanded', off ? 'false' : 'true'); }
+      else { var o = side.classList.toggle('open'); mb.setAttribute('aria-expanded', o ? 'true' : 'false'); }
+    };
+    document.addEventListener('click', function (ev) { if (side.classList.contains('open') && !side.contains(ev.target) && !bar.contains(ev.target)) { side.classList.remove('open'); mb.setAttribute('aria-expanded', 'false'); } });
     var tb = document.createElement('button'); tb.type = 'button'; tb.className = 'lk-theme'; side.appendChild(tb);
     var setLbl = function () { var d = document.documentElement.classList.contains('lk-dark'); tb.innerHTML = (d ? '☀' : '☾') + '<span>' + (d ? 'Mode clair' : 'Mode sombre') + '</span>'; bar.querySelector('.lk-tb').textContent = d ? '☀' : '☾'; };
     var toggle = function () { var d = document.documentElement.classList.toggle('lk-dark'); try { localStorage.setItem('lk-theme', d ? 'dark' : 'light'); } catch (e) {} setLbl(); };

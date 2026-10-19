@@ -4,12 +4,13 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
-<script src="./acces.js?v=36"></script>
-<script src="./auth.js?v=36"></script>
-<script src="./nav.js?v=36"></script>
+<script src="./acces.js?v=37"></script>
+<script src="./auth.js?v=37"></script>
+<script src="./nav.js?v=37"></script>
 <meta charset="utf-8">
 <title>Accueil</title>
 <script src="./support.js"></script>
+<script src="./data.js?v=37"></script>
 </head>
 <body>
 <x-dc>
@@ -42,70 +43,78 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 *{scrollbar-width:thin;scrollbar-color:#C5D3CF transparent}
 @media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
+.lk-qg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}.lk-q{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid #DCE5E2;border-radius:14px;padding:14px 16px;text-decoration:none;color:#14201D;transition:border-color .15s,transform .15s,box-shadow .15s}.lk-q:hover{border-color:#0F766E;transform:translateY(-1px);box-shadow:0 10px 24px -16px rgba(16,32,28,.35)}.lk-q b{font-size:14.5px}.lk-q span{font-size:12.5px;color:#4A5B57}
 </style>
 </helmet>
-<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:1100px">
-<header>
-<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Maquette</div>
-<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Accueil : choisissez votre espace</h1>
-<div style="font-size:14px; color:#4A5B57; margin-top:8px; max-width:720px; line-height:1.5">Le gérant garde le tableau de bord complet. Chaque praticien n'a accès qu'à son espace personnel. Les chiffres de toutes les pages viennent du même modèle : octobre 2026, 963 patients, 121 100 € d'honoraires, 17 700 € de frais de labo, 72 780 € de rémunérations (dont 28 200 € pour le gérant, à 100 %).</div>
-</header>
-<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; align-items:start">
-<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #0F766E; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Gérant et administrateur</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Tous les chiffres du cabinet : résultat, charges, rémunérations, mutuelles, laboratoires et occupation des box.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Accès complet, y compris les accès</div>
-<div style="display:flex; flex-direction:column; gap:8px">
-<a href="Main.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Vue cabinet</a>
-<a href="B.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Casier praticien</a>
-<a href="C.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Mutuelles et labo</a>
-<a href="D.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Résultat du gérant</a>
-<a href="Q.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Factures fournisseurs</a>
-<a href="E.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Rémunérations et paiements</a>
-<a href="F.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Fauteuils et coût par patient</a>
-<a href="N.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Envoi aux praticiens</a>
-<a href="O.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Corilus</a>
-<a href="P.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Accès et rôles</a>
-<a href="G.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Tableau interactif</a>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:1400px">
+<section style="position:relative; overflow:hidden; border-radius:22px; padding:30px 32px; color:#fff; background:linear-gradient(120deg,#0B2E2A 0%,#13463F 55%,#1E6B60 100%); box-shadow:0 24px 50px -28px rgba(11,46,42,.7)">
+<div style="position:absolute; right:-60px; top:-80px; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(243,221,166,.18),transparent 70%)"></div>
+<div style="position:relative; display:flex; align-items:center; gap:22px; flex-wrap:wrap">
+<img src="icon-512.png?v=2" alt="" style="width:64px; height:64px; border-radius:16px; outline:1px solid rgba(243,221,166,.4); box-shadow:0 10px 24px -8px rgba(0,0,0,.6)">
+<div style="flex:1 1 280px">
+<div style="font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#BFE3DC">Dental Clinic Laeken · octobre 2026</div>
+<h1 style="margin:8px 0 0; font-size:clamp(24px,4.4vw,34px); line-height:1.15; color:#fff">Le sourire n'a d'égal que sa rareté.</h1>
+<div style="font-size:15px; color:#D7ECE8; margin-top:10px">{{hello}}</div>
+</div>
 </div>
 </section>
-<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #5B3FA8; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Praticien</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Mes heures, mes patients, mes travaux de laboratoire et ma rémunération. Rien sur les autres praticiens ni sur les charges du cabinet.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Accès limité à ses propres données</div>
-<div style="display:flex; flex-direction:column; gap:8px">
-<a href="M.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Espace praticien</a>
-<a href="L.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Mes patients vus</a>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<a href="{{k.href}}" style="display:block; text-decoration:none; color:inherit; background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:20px 22px"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="{{k.vStyle}}">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:6px">{{k.note}}</div></a>
+</sc-for>
+</section>
+
+<div style="display:flex; flex-direction:column; gap:22px">
+<h2 style="margin:6px 0 -6px; font-size:22px; font-family:'Fraunces',Georgia,serif; font-weight:600">Accès rapides</h2>
+<section class="lk-grp"><h2 style="margin:0 0 12px; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#0F766E">Gérant et administrateur</h2><div class="lk-qg"><a href="Main.dc.html" class="lk-q"><b>Vue cabinet</b><span>Indicateurs et comparaisons</span></a><a href="D.dc.html" class="lk-q"><b>Résultat du gérant</b><span>Charges, budget, véhicules</span></a><a href="E.dc.html" class="lk-q"><b>Rémunérations</b><span>Calculs et versements</span></a><a href="Q.dc.html" class="lk-q"><b>Factures fournisseurs</b><span>Registre et échéances</span></a><a href="C.dc.html" class="lk-q"><b>Mutuelles et labo</b><span>Créances et travaux</span></a><a href="F.dc.html" class="lk-q"><b>Fauteuils</b><span>Occupation et coût par patient</span></a><a href="N.dc.html" class="lk-q"><b>Envoi aux praticiens</b><span>Relevés mensuels</span></a><a href="G.dc.html" class="lk-q"><b>Tableau interactif</b><span>Explorateur des actes</span></a><a href="O.dc.html" class="lk-q"><b>Corilus</b><span>Logiciels du cabinet</span></a><a href="P.dc.html" class="lk-q"><b>Accès et rôles</b><span>Comptes et autorisations</span></a></div></section><section class="lk-grp"><h2 style="margin:0 0 12px; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#5B3FA8">Praticien</h2><div class="lk-qg"><a href="M.dc.html" class="lk-q"><b>Espace praticien</b><span>Mes heures et ma rémunération</span></a><a href="L.dc.html" class="lk-q"><b>Mes patients vus</b><span>Détail des actes</span></a></div></section><section class="lk-grp"><h2 style="margin:0 0 12px; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#B45309">Accueil et caisse</h2><div class="lk-qg"><a href="H.dc.html" class="lk-q"><b>Patients et paiements</b><span>Paiements, rendez-vous, devis</span></a><a href="J.dc.html" class="lk-q"><b>Import et export</b><span>Fichiers comptables</span></a></div></section><section class="lk-grp"><h2 style="margin:0 0 12px; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#2F6DB5">Analyses et références</h2><div class="lk-qg"><a href="I.dc.html" class="lk-q"><b>Actes par praticien</b><span>Répartition des soins</span></a><a href="B.dc.html" class="lk-q"><b>Casier praticien</b><span>Casiers comptables</span></a><a href="K.dc.html" class="lk-q"><b>Nomenclature INAMI</b><span>Codes et tarifs</span></a></div></section>
 </div>
-</section>
-<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #B45309; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Accueil et caisse</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Paiements des patients, amendes de rendez-vous manqués, devis, import et export.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Secrétariat et gérant</div>
-<div style="display:flex; flex-direction:column; gap:8px">
-<a href="H.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Patients et paiements</a>
-<a href="J.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Import et export</a>
-</div>
-</section>
-<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #2F6DB5; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Analyses du gérant</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Actes de chaque praticien et casiers comptables.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Gérant</div>
-<div style="display:flex; flex-direction:column; gap:8px">
-<a href="I.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Actes par praticien</a>
-<a href="B.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Casier praticien</a>
-</div>
-</section>
-<section style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid #8A9A96; border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:20px">Références</h2><div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Nomenclature INAMI des dentistes : codes, libellés et tarifs.</div></div>
-<div style="display:inline-block; align-self:flex-start; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; background:#E7EDEB; color:#33433F">Tous les profils</div>
-<div style="display:flex; flex-direction:column; gap:8px">
-<a href="K.dc.html" style="display:block; background:#F3F6F5; border:1px solid #DCE5E2; border-radius:10px; padding:12px 14px; font-size:14px; font-weight:500; text-decoration:none; min-height:20px">Nomenclature INAMI</a>
-</div>
-</section>
-</section>
-<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Accès sécurisé : chaque utilisateur se connecte avec son e-mail et son code secret et ne voit que les pages de son rôle (administrateur, gérant, praticien, secrétariat). Un praticien ne voit que ses propres données. Patients identifiés par numéro de dossier et date de naissance, données fictives.</footer>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Accès sécurisé : chacun se connecte avec son e-mail et son code et ne voit que les pages de son rôle. Patients identifiés uniquement par numéro de dossier et date de naissance. Données fictives.</footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1400}}'>
 class Component extends DCLogic {
-  renderVals() { return {}; }
+  renderVals() {
+    const L = window.LAEKEN; const A = window.LKAUTH; const u = A && A.user ? A.user() : null;
+    const role = u ? u.role : 'admin';
+    const eur = (n) => (n < 0 ? '−' : '') + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const v = (c) => 'font-size:clamp(22px, 5.6vw, 30px); font-weight:700; line-height:1.15; margin-top:8px; white-space:nowrap; font-variant-numeric:tabular-nums; letter-spacing:-0.02em; color:' + (c || '#0B3B36') + ';';
+    let tot = 39885; try { const t = Number(localStorage.getItem('lk-charges-tot')); if (t > 0) { tot = t; } } catch (e) {}
+    const first = u && u.n ? u.n.replace(/\s*\(.*\)$/, '') : '';
+    let kpis; let space = 'pilotage financier et opérationnel';
+    if (role === 'praticien' && L && L.PR[u.pr]) {
+      const P = L.PR[u.pr]; space = 'votre activité et votre rémunération';
+      kpis = [
+        { label: 'Mes honoraires', value: eur(P.T), note: 'octobre 2026', vStyle: v(), href: 'M.dc.html' },
+        { label: 'Mes patients vus', value: nf(P.N), note: 'sur le mois', vStyle: v(), href: 'L.dc.html' },
+        { label: 'Frais de laboratoire', value: eur(P.LAB), note: 'déduits avant calcul', vStyle: v('#8A4B08'), href: 'M.dc.html' },
+        { label: 'Ma rémunération', value: eur(P.retro), note: 'payable le 01/12/2026', vStyle: v('#0B6B3A'), href: 'M.dc.html' }
+      ];
+    } else if (role === 'secretaire') {
+      space = 'accueil, caisse et rendez-vous';
+      kpis = [
+        { label: 'Patients vus', value: '963', note: 'octobre 2026', vStyle: v(), href: 'H.dc.html' },
+        { label: 'Solde patients à percevoir', value: '2 089 €', note: 'paiements de l\'échantillon', vStyle: v('#A3231A'), href: 'H.dc.html' },
+        { label: 'Devis en attente', value: '28', note: 'proposés ou en attente', vStyle: v('#B45309'), href: 'H.dc.html' },
+        { label: 'Rendez-vous manqués', value: '10', note: 'du 2 au 16 octobre', vStyle: v('#A3231A'), href: 'H.dc.html' }
+      ];
+    } else {
+      const res = 121100 - 17700 - 72780 - tot;
+      kpis = [
+        { label: 'Honoraires facturés', value: '121 100 €', note: 'octobre 2026', vStyle: v(), href: 'Main.dc.html' },
+        { label: 'Patients vus', value: '963', note: '7 praticiens', vStyle: v(), href: 'Main.dc.html' },
+        { label: 'Rémunérations', value: '72 780 €', note: 'dont 28 200 € pour le gérant', vStyle: v(), href: 'E.dc.html' },
+        { label: 'Résultat du cabinet', value: eur(res), note: 'après ' + eur(tot) + ' de charges', vStyle: v(res < 0 ? '#A3231A' : '#0B6B3A'), href: 'D.dc.html' }
+      ];
+    }
+    return {
+      hello: (first ? 'Bonjour ' + first + ' · ' : '') + 'Votre espace : ' + space,
+      kpis: kpis
+
+    };
+  }
 }
 </script>
 </body>
