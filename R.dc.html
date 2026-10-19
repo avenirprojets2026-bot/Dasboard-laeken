@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Contrôles de cohérence</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=43"></script>
-<script src="./auth.js?v=43"></script>
-<script src="./nav.js?v=43"></script>
-<script src="./data.js?v=43"></script>
+<script src="./acces.js?v=45"></script>
+<script src="./auth.js?v=45"></script>
+<script src="./nav.js?v=45"></script>
+<script src="./data.js?v=45"></script>
 </head>
 <body>
 <x-dc>
@@ -161,8 +161,8 @@ class Component extends DCLogic {
     add('s', 'Charges modifiées', chNeg.length ? 'ko' : 'ok', Object.keys(ch).length + ' ligne(s) modifiée(s)' + (chNeg.length ? ', dont ' + chNeg.length + ' négative(s) ou vide(s)' : ', aucune valeur négative'), 'D.dc.html');
     const bu = ls('lk-budget') || {}; const buNeg = Object.keys(bu).filter((k) => !(Number(bu[k]) >= 0));
     add('s', 'Budget prévu', buNeg.length ? 'ko' : 'ok', Object.keys(bu).length ? Object.keys(bu).length + ' poste(s) saisi(s)' + (buNeg.length ? ', ' + buNeg.length + ' négatif(s)' : ', aucun négatif') : 'Budget de démonstration, aucune saisie', 'D.dc.html#budget');
-    const fa = ls('lk-factures'); const faBad = fa ? fa.filter((x) => !(Number(x[4]) >= 0)) : [];
-    add('s', 'Factures fournisseurs', faBad.length ? 'ko' : 'ok', fa ? fa.length + ' facture(s) enregistrée(s)' + (faBad.length ? ', ' + faBad.length + ' montant(s) invalide(s)' : ', montants valides') : 'Registre de démonstration, aucune saisie', 'Q.dc.html');
+    const fa = ls('lk-factures2'); const faBad = fa ? fa.filter((x) => !(Number(x.ttc) >= 0)) : [];
+    add('s', 'Factures et justificatifs', faBad.length ? 'ko' : 'ok', fa && fa.length ? fa.length + ' facture(s) ajoutée(s)' + (faBad.length ? ', ' + faBad.length + ' montant(s) invalide(s)' : ', montants valides') : 'Aucune facture ajoutée à la main', 'Q.dc.html');
     const cr = ls('lk-creances'); const crBad = cr ? cr.filter((c) => c.rec < 0 || c.ref < 0 || c.rec + c.ref > c.amt) : [];
     add('s', 'Créances des mutualités', crBad.length ? 'ko' : 'ok', cr ? cr.length + ' envoi(s) · ' + (crBad.length ? crBad.length + ' où reçu + refusé dépasse la créance' : 'reçu + refusé ne dépasse jamais la créance') : 'Registre de démonstration, aucune saisie', 'C.dc.html#suivi');
     const pp = ls('lk-patpay') || {}; const ppBad = Object.keys(pp).filter((k) => pp[k].recu != null && !(pp[k].recu >= 0));
