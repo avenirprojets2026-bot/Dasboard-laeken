@@ -88,6 +88,46 @@ window.LKACCES = {
    "e": "ce5c6a77b801",
    "s": "bbcfcfd938e6e8fed9aa0c44c37d0b50",
    "h": "9fae7ded60fc7bdb78abe2c159459e082b3059a16f2c6b65fee63a23c8de43e7"
+  },
+  {
+   "n": "Dr Aya Turkieh",
+   "role": "praticien",
+   "pr": 0,
+   "e": "0f2b5d016036",
+   "s": "89ef43c5330210e9dc8778c442589eaa",
+   "h": "746dec1e7fb47933d27688ec9b518f825f0b6ae76f362910dac01db511f6fd9c"
+  },
+  {
+   "n": "Dr Abde-Ssadic Bochouari",
+   "role": "praticien",
+   "pr": 2,
+   "e": "f0a46a3a98b1",
+   "s": "e3fe03ea9bfad6b05296b11a528079ce",
+   "h": "4fc3bba6a2b0a54dc3320b379abaf85af8f43c9bb0928a1d1dc7658abc6bcccf"
+  },
+  {
+   "n": "Dr Daoud Bouchouari",
+   "role": "praticien",
+   "pr": 3,
+   "e": "87c76d9f9ad5",
+   "s": "521baa1b6a6d484f9df9919b06f1c2ec",
+   "h": "9279205d84f0e0afb5c330fc616418604d5b0814540da997881daba460b7b628"
+  },
+  {
+   "n": "Dr Julien Cabaz",
+   "role": "praticien",
+   "pr": 4,
+   "e": "e805c605800e",
+   "s": "f200c37c4aa8de7ca23bca318925d09d",
+   "h": "c88a044b317bd11a3244826d240a55baf7d4dc1971977f84ffab6b35fbad43aa"
+  },
+  {
+   "n": "Dr Nabila Touil",
+   "role": "praticien",
+   "pr": 5,
+   "e": "5348b2767f49",
+   "s": "b00fc79104822146e35d6f0029e25028",
+   "h": "ca3b3b53265f73d3ea0d09d5647b98f017b979a5770583e2ee448cfca1f6caf6"
   }
  ]
 };
