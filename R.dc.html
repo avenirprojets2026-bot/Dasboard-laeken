@@ -104,15 +104,16 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:6px 22px 16px">
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px; margin-top:14px"><h2 style="margin:0; font-size:20px; font-family:'Fraunces',Georgia,serif; font-weight:600">Parcours de test manuel</h2><span style="font-size:13px; color:#4A5B57">{{recLine}}</span></div>
-<div style="font-size:13px; color:#4A5B57; margin:4px 0 10px">Les contrôles automatiques ne remplacent pas un essai à la main. Cochez chaque étape une fois testée : la date est enregistrée dans ce navigateur.</div>
-<sc-for list="{{recette}}" as="r" hint-placeholder-count="6">
+<div style="height:8px; background:#E7EDEB; border-radius:999px; overflow:hidden; margin-top:10px"><div style="{{recBar}}"></div></div>
+<div style="font-size:13px; color:#4A5B57; margin:8px 0 10px">Les contrôles automatiques ne remplacent pas un essai à la main. Cochez chaque étape une fois testée : la date est enregistrée dans ce navigateur.</div>
+<sc-for list="{{recette}}" as="r" hint-placeholder-count="8">
 <div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-top:1px solid #EEF2F1">
 <button type="button" onClick="{{r.toggle}}" style="{{r.boxStyle}}" aria-label="Marquer l'étape comme faite">{{r.box}}</button>
 <div style="flex:1; min-width:0"><div style="font-weight:600; font-size:14.5px"><span style="color:#0F766E">{{r.n}} · </span>{{r.title}}</div><div style="font-size:13px; color:#4A5B57; margin-top:2px; line-height:1.45">{{r.text}}</div></div>
 <span style="{{r.doneStyle}}">{{r.done}}</span>
 </div>
 </sc-for>
-<button type="button" onClick="{{recReset}}" style="margin-top:6px; min-height:38px; border:1px solid #C9D6D2; border-radius:10px; background:#fff; font:inherit; font-size:13px; font-weight:600; padding:0 14px; cursor:pointer">Tout décocher</button>
+<button type="button" onClick="{{recReset}}" style="margin-top:6px; min-height:38px; border:1px solid #C9D6D2; border-radius:10px; background:#fff; font:inherit; font-size:13px; font-weight:600; padding:0 14px; cursor:pointer">Réinitialiser les coches</button>
 </section>
 
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Les contrôles portent sur les données fictives du modèle (octobre 2026) et sur les saisies enregistrées dans ce navigateur. Ils ne remplacent pas un contrôle comptable. La sécurité du site reste un contrôle côté navigateur : avant toute donnée réelle, il faudra de vrais comptes sur un serveur.</footer>
@@ -193,36 +194,38 @@ class Component extends DCLogic {
     const nOk = C.filter((c) => c.st === 'ok').length; const nTest = C.filter((c) => c.st !== 'na' && c.st !== 'todo').length; const nPb = C.filter((c) => c.st === 'ko' || c.st === 'warn').length;
     const pill = 'display:inline-flex; align-items:center; gap:6px; min-height:40px; box-sizing:border-box; border-radius:999px; padding:6px 14px; font-size:14px; cursor:pointer; ';
     const vS = (c) => 'font-size:clamp(22px, 5.6vw, 30px); font-weight:700; line-height:1.15; margin-top:8px; white-space:nowrap; letter-spacing:-0.02em; color:' + c + ';';
-    const csv = () => {
-      const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
-      const rows = [['Groupe', 'Contrôle', 'Résultat', 'Détail']].concat(C.map((c) => [GR.filter((g) => g[0] === c.g)[0][1], c.n, ST[c.st][0], c.d]));
-      const data = '﻿' + rows.map((r) => r.map(cell).join(';')).join('\r\n');
-      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'controles-coherence-octobre-2026.csv', data: data }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=utf-8' })); a.download = 'controles-coherence-octobre-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; })
-        .then(() => setState({ msg: 'Rapport exporté (' + C.length + ' contrôles).', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
-    };
     const RC = [
-      ['Changer de rôle', 'Se connecter avec un compte praticien puis secrétariat : seules leurs pages apparaissent dans le menu.'],
-      ['Tester les filtres', 'Changer le mois, la mutualité, le praticien et la famille de soins dans les tableaux.'],
-      ['Contrôler la caisse', 'Saisir un paiement partiel dans Patients et paiements, vérifier le solde, puis exporter le CSV.'],
-      ['Tester sur téléphone', 'Ouvrir le site sur Chrome et Samsung Internet : menu ☰, tableaux et boutons.'],
-      ['Tester l\'impression', 'Imprimer un relevé praticien depuis Envoi aux praticiens.'],
-      ['Vérifier les totaux', 'Modifier une charge dans Résultat du gérant et vérifier le résultat sur l\'accueil et la vue cabinet.']
+      ['Navigation', 'Ouvrir chaque rubrique depuis le menu ☰ et revenir à l\'accueil.'],
+      ['Profils', 'Se connecter en administrateur, gérant, praticien puis secrétariat : seules les pages du rôle apparaissent.'],
+      ['Finances', 'Comparer honoraires, laboratoire, rémunérations et résultat entre l\'accueil, la vue cabinet et le résultat du gérant.'],
+      ['Charges et budget', 'Modifier une charge ou un poste du budget dans Résultat du gérant et vérifier que tout se recalcule.'],
+      ['Caisse', 'Saisir un paiement partiel dans Patients et paiements, vérifier le solde, puis exporter le CSV.'],
+      ['Mutualités et labo', 'Filtrer les créances, saisir un montant reçu, faire avancer un travail de laboratoire.'],
+      ['Samsung Galaxy Z Fold', 'Ouvrir le site dans Chrome et Samsung Internet, téléphone plié puis déplié : menu, tableaux et boutons.'],
+      ['Impression', 'Imprimer un relevé praticien depuis Envoi aux praticiens.']
     ];
     const RV = S.rv || ls('lk-recette') || {};
     const saveRV = (o) => { try { localStorage.setItem('lk-recette', JSON.stringify(o)); } catch (e) {} setState({ rv: o }); };
     const today = (() => { const d = new Date(); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); })();
     const recette = RC.map((x, i) => { const done = RV[i]; return { n: String(i + 1).padStart(2, '0'), title: x[0], text: x[1], done: done ? 'Fait le ' + done : 'À faire', doneStyle: 'flex:none; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; ' + (done ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#F3F6F5; color:#4A5B57;'), box: done ? '✓' : '', boxStyle: 'flex:none; width:30px; height:30px; border-radius:9px; font-size:16px; font-weight:700; cursor:pointer; ' + (done ? 'background:#0F766E; color:#fff; border:1px solid #0F766E;' : 'background:#fff; color:#0F766E; border:1.5px solid #9DB8B1;'), toggle: () => { const o = Object.assign({}, RV); if (o[i]) { delete o[i]; } else { o[i] = today; } saveRV(o); } }; });
     const recN = RC.filter((x, i) => RV[i]).length;
+    const csv = () => {
+      const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const rows = [['Groupe', 'Contrôle', 'Résultat', 'Détail']].concat(C.map((c) => [GR.filter((g) => g[0] === c.g)[0][1], c.n, ST[c.st][0], c.d])).concat(RC.map((x, i) => ['Parcours de test manuel', x[0], RV[i] ? 'Fait le ' + RV[i] : 'À faire', x[1]]));
+      const data = '﻿' + rows.map((r) => r.map(cell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'controles-coherence-octobre-2026.csv', data: data }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=utf-8' })); a.download = 'controles-coherence-octobre-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; })
+        .then(() => setState({ msg: 'Rapport exporté (' + C.length + ' contrôles et ' + RC.length + ' étapes de test).', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
+    };
     return {
       kpis: [
-        { label: 'Contrôles conformes', value: nOk + ' / ' + nTest, note: nPb ? nPb + ' point(s) à regarder' : 'aucune anomalie', vStyle: vS(nPb ? '#B45309' : '#0B6B3A') },
-        { label: 'Part du cabinet', value: eu(part), note: 'après labo et rémunérations', vStyle: vS('#0B3B36') },
+        { label: 'Contrôles automatiques', value: nOk + ' / ' + nTest, note: nPb ? nPb + ' point(s) à regarder' : 'aucune anomalie', vStyle: vS(nPb ? '#B45309' : '#0B6B3A') },
+        { label: 'Tests manuels', value: recN + ' / ' + RC.length, note: recN === RC.length ? 'parcours terminé' : 'étapes cochées', vStyle: vS(recN === RC.length ? '#0B6B3A' : '#4B2F96') },
         { label: 'Charges du mois', value: eu(chg), note: chg === 33615 ? 'valeurs du modèle' : 'modifiées par le gérant', vStyle: vS('#0B3B36') },
         { label: 'Résultat du mois', value: eu(res), note: 'octobre 2026', vStyle: vS(res < 0 ? '#A3231A' : '#0B6B3A') }
       ],
       filters: [['all', 'Tous', C.length], ['pb', 'À regarder', nPb], ['d', 'Chiffres', C.filter((c) => c.g === 'd').length], ['s', 'Saisies', C.filter((c) => c.g === 's').length], ['a', 'Accès', C.filter((c) => c.g === 'a').length], ['f', 'À finaliser', C.filter((c) => c.g === 'f').length]].map((x) => ({ label: x[1], n: String(x[2]), style: pill + (S.f === x[0] ? 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;'), pick: () => setState({ f: x[0] }) })),
       groups: GR.map((g) => ({ title: g[1], note: g[2], rows: shown.filter((c) => c.g === g[0]).map((c) => ({ name: c.n, detail: c.d, status: ST[c.st][0], chip: 'flex:none; min-width:104px; text-align:center; display:inline-block; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; color:' + ST[c.st][1] + '; background:' + ST[c.st][2] + ';', href: c.h || '#', linkStyle: c.h ? 'flex:none; font-size:13px; font-weight:600; color:#0B5D56; padding:4px 2px;' : 'display:none;' })) })).filter((g) => g.rows.length),
-      recette: recette, recLine: recN + ' / ' + RC.length + ' étapes faites', recReset: () => saveRV({}),
+      recette: recette, recLine: recN + ' / ' + RC.length + ' étapes faites', recBar: 'height:100%; border-radius:999px; background:linear-gradient(90deg,#0F766E,#2DD4BF); width:' + Math.round(recN / RC.length * 100) + '%; transition:width .3s;', recReset: () => saveRV({}),
       csv: csv, btnMain: 'min-height:44px; border:0; border-radius:12px; padding:0 18px; font-size:14px; font-weight:700; background:#0B3B36; color:#fff; cursor:pointer;',
       hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 14px; border-radius:12px; font-size:14px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
     };
