@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=35"></script>
-<script src="./acces.js?v=35"></script>
-<script src="./auth.js?v=35"></script>
-<script src="./nav.js?v=35"></script>
+<script src="./data.js?v=36"></script>
+<script src="./acces.js?v=36"></script>
+<script src="./auth.js?v=36"></script>
+<script src="./nav.js?v=36"></script>
 </head>
 <body>
 <x-dc>
@@ -150,8 +150,8 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <h3 style="margin:0; font-size:18px">Total cabinet</h3>
 <div style="font-size:13px; color:#C9D6D2">7 praticiens (6 à partir de décembre) · temps plein et partiel</div>
 </div>
-<div style="font-size:30px; font-weight:700">− 8 100 €</div>
-<div style="font-size:13px; color:#C9D6D2">bénéfice après frais de labo, rémunérations des praticiens et charges (dont 2 BMW) · environ 52 900 € de part mutuelles à recevoir pour octobre</div>
+<div style="font-size:30px; font-weight:700">− 9 265 €</div>
+<div style="font-size:13px; color:#C9D6D2">bénéfice après frais de labo, rémunérations des praticiens et charges (dont 2 BMW et 1 utilitaire) · environ 52 900 € de part mutuelles à recevoir pour octobre</div>
 </article>
 </div>
 </section>
@@ -219,8 +219,8 @@ class Component extends DCLogic {
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
         { label: 'Rémunération des praticiens', value: '72 780 €', note: '(honoraires − labo) × 60 % ; 100 % pour le gérant, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
-        { label: 'Charges du cabinet', value: '38 720 €', note: 'personnel et ONSS, loyer, leasing, 2 véhicules, énergie, consommables et autres charges (détail dans Résultat du gérant)' },
-        { label: 'Bénéfice du cabinet', value: '− 8 100 €', note: 'gérant rémunéré à 100 % de ses honoraires ; après frais de labo, rémunérations et charges' }
+        { label: 'Charges du cabinet', value: '39 885 €', note: 'personnel et ONSS, loyer, leasing, 3 véhicules, énergie, consommables et autres charges (détail dans Résultat du gérant)' },
+        { label: 'Bénéfice du cabinet', value: '− 9 265 €', note: 'gérant rémunéré à 100 % de ses honoraires ; après frais de labo, rémunérations et charges' }
       ],
       dentists: [
         { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', patients: '325', billed: '35 400 €', retro: '18 780 €', paidPct: '75 %', paidW: '75%', pending: '8 700 €', labo: '4 100 €', devis: '5', conv: 'Conventionné', convStyle: cs },
@@ -234,7 +234,7 @@ class Component extends DCLogic {
     });
     if (chTot) {
       const ben = 30620 - chTot;
-      R.kpis = R.kpis.map((k) => k.label === 'Charges du cabinet' ? Object.assign({}, k, { value: eurS(chTot), note: 'montants modifiés par le gérant (Résultat du gérant), au lieu de 38 720 €' }) : (k.label === 'Bénéfice du cabinet' ? Object.assign({}, k, { value: (ben < 0 ? '− ' : '') + eurS(Math.abs(ben)), note: 'recalculé avec les charges modifiées' }) : k));
+      R.kpis = R.kpis.map((k) => k.label === 'Charges du cabinet' ? Object.assign({}, k, { value: eurS(chTot), note: 'montants modifiés par le gérant (Résultat du gérant), au lieu de 39 885 €' }) : (k.label === 'Bénéfice du cabinet' ? Object.assign({}, k, { value: (ben < 0 ? '− ' : '') + eurS(Math.abs(ben)), note: 'recalculé avec les charges modifiées' }) : k));
     }
     return R;
   }

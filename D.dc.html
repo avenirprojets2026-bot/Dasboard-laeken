@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=35"></script>
-<script src="./auth.js?v=35"></script>
-<script src="./nav.js?v=35"></script>
-<script src="./data.js?v=35"></script>
+<script src="./acces.js?v=36"></script>
+<script src="./auth.js?v=36"></script>
+<script src="./nav.js?v=36"></script>
+<script src="./data.js?v=36"></script>
 </head>
 <body>
 <x-dc>
@@ -96,7 +96,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:8px">
 <h2 style="margin:0; font-size:18px; color:#5C3A06">À partir de décembre : départ de Dr Nabila Touil</h2>
-<div style="font-size:14px; line-height:1.6; color:#5C3A06">Dr Touil (1 jour par semaine, 50 % de rétrocession) quitte le cabinet le 1er décembre 2026. Il reste 6 praticiens. Sa dernière rémunération porte sur les prestations de novembre, payée le 01/01/2027. Projection mensuelle si personne ne la remplace et si les charges restent identiques : chiffre d'affaires − 6 500 €, frais de labo − 1 100 €, part du cabinet − 2 700 €, soit un <b>résultat de − 10 800 € par mois</b> (contre − 8 100 €). Le vendredi redevient moins chargé : le conflit de box du vendredi disparaît.</div>
+<div style="font-size:14px; line-height:1.6; color:#5C3A06">Dr Touil (1 jour par semaine, 50 % de rétrocession) quitte le cabinet le 1er décembre 2026. Il reste 6 praticiens. Sa dernière rémunération porte sur les prestations de novembre, payée le 01/01/2027. Projection mensuelle si personne ne la remplace et si les charges restent identiques : chiffre d'affaires − 6 500 €, frais de labo − 1 100 €, part du cabinet − 2 700 €, soit un <b>résultat de − 11 965 € par mois</b> (contre − 9 265 €). Le vendredi redevient moins chargé : le conflit de box du vendredi disparaît.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -197,22 +197,30 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
-<div><h2 style="margin:0; font-size:18px">Voitures de leasing du cabinet</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{carDesc}}</div></div>
+<div><h2 style="margin:0; font-size:18px">Véhicules du cabinet</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{carDesc}}</div></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; border-bottom:1px solid #DCE5E2">
 <sc-for list="{{carTabs}}" as="t" hint-placeholder-count="3">
 <button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}} <b>{{t.amount}}</b></button>
 </sc-for>
 </div>
-<div style="display:flex; flex-wrap:wrap; gap:8px">
+<sc-if value="{{carAll}}" hint-placeholder-val="{{ true }}">
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px">
+<sc-for list="{{carCards}}" as="c" hint-placeholder-count="3"><button type="button" onClick="{{c.pick}}" style="{{c.style}}"><b style="font-size:15px">{{c.title}}</b><span style="font-size:22px; font-weight:700">{{c.total}}</span><span style="font-size:12.5px; color:#4A5B57">{{c.year}}</span><span style="font-size:12.5px; color:#4A5B57; line-height:1.5">{{c.lines}}</span><span style="font-size:12.5px; font-weight:700; color:#0F766E">Voir le détail ›</span></button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{carOne}}" hint-placeholder-val="{{ false }}">
+<div style="display:flex; flex-wrap:wrap; gap:8px; padding-left:8px; border-left:3px solid #DCE5E2">
 <sc-for list="{{carSubs}}" as="t" hint-placeholder-count="7">
 <button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}} <b>{{t.amount}}</b></button>
 </sc-for>
 </div>
+</sc-if>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
 <sc-for list="{{carKpis}}" as="k" hint-placeholder-count="3">
 <div style="{{k.style}}"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
 </sc-for>
 </div>
+<sc-if value="{{carOne}}" hint-placeholder-val="{{ false }}">
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
 <thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Voiture</th><th style="padding:8px">Poste</th><th style="padding:8px">Remarque</th><th style="padding:8px; text-align:right">Par mois</th><th style="padding:8px; text-align:right">Par an</th></tr></thead>
@@ -223,6 +231,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </tbody>
 </table>
 </div>
+</sc-if>
 <div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Montants fictifs et estimés. À confirmer avec les contrats de leasing : loyers, franchises, avantage de toute nature, déductibilité fiscale et taxe de circulation du véhicule électrique selon la Région.</div>
 </section>
 
@@ -271,7 +280,7 @@ class Component extends DCLogic {
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const pc = (x) => (Math.round(x * 10) / 10).toString().replace('.', ',') + ' %';
     const cbar = (w) => 'background:#5B3FA8; height:10px; width:' + w + '%;';
-    const CH0 = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 && Object.keys(S.ch || {}).length ? t : 38720; } catch (e) { return 38720; } })();
+    const CH0 = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 && Object.keys(S.ch || {}).length ? t : 39885; } catch (e) { return 39885; } })();
     const D = window.LAEKEN; let pilotKpis = []; let pilotRows = [];
     if (D) {
       const nV = D.visits.length; const ca = D.rows.reduce((a, r) => a + r.fee, 0);
@@ -297,7 +306,7 @@ class Component extends DCLogic {
       { id: 'exc', label: 'Exceptionnelles ou moins visibles', short: 'Charges exceptionnelles ou moins visibles', desc: 'Matériel financé, intérêts, impôts et contrôles : des montants que l\'on oublie facilement.', color: '#B45309' },
       { id: 'rare', label: 'Peu fréquentes mais légitimes', short: 'Dépenses peu fréquentes mais légitimes', desc: 'Contrôles, remises en conformité et remplacements qui ne reviennent pas chaque mois. Les montants sont lissés sur 12 mois (provision mensuelle). L\'AFCN exige notamment une organisation documentée de la radioprotection pour les installations concernées, et les fréquences de contrôle varient selon les équipements, en particulier pour les CBCT : à confirmer.', color: '#B42318' },
       { id: 'org', label: 'Praticiens et organisation', short: 'Charges liées aux praticiens et à l\'organisation du cabinet', desc: 'Personnel salarié, remplacements, formation et avantages. Les cotisations sociales des dentistes indépendants restent à leur charge.', color: '#5B3FA8' },
-      { id: 'veh', label: 'Véhicules du cabinet', short: 'Véhicules du cabinet (2 BMW)', desc: 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique : leasing, assurance, réparations, entretien, taxe de circulation et énergie. La déductibilité fiscale, l\'avantage de toute nature en cas d\'usage privé et la cotisation de solidarité CO2 sont à confirmer avec le comptable.', color: '#2F6DB5' },
+      { id: 'veh', label: 'Véhicules du cabinet', short: 'Véhicules du cabinet (2 BMW et 1 utilitaire)', desc: 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique : leasing, assurance, réparations, entretien, taxe de circulation et énergie. La déductibilité fiscale, l\'avantage de toute nature en cas d\'usage privé et la cotisation de solidarité CO2 sont à confirmer avec le comptable.', color: '#2F6DB5' },
       { id: 'imp', label: 'Imprévus', short: 'Imprévus (provision)', desc: 'Une réserve pour les dépenses qu\'on ne peut pas prévoir : litiges, dégâts au bâtiment, pannes informatiques. Montants à 0 € au départ : à compléter par le gérant.', color: '#0E7490' },
     ];
     const LINES = [
@@ -354,7 +363,13 @@ class Component extends DCLogic {
       ['imp', 'Litiges et franchises', 0, 'Franchises d\'assurance, frais juridiques, à compléter', 'jur'],
       ['imp', 'Imprévus immobiliers', 0, 'Dégâts des eaux, serrurerie, réparations urgentes du bâtiment, à compléter', 'bat'],
       ['imp', 'Incidents informatiques', 0, 'Panne, perte de données, intervention urgente, à compléter', 'bat'],
-      ['imp', 'Autres imprévus', 0, 'Réserve pour les dépenses non prévues, à compléter', 'div']
+      ['imp', 'Autres imprévus', 0, 'Réserve pour les dépenses non prévues, à compléter', 'div'],
+      ['veh', 'Leasing Ford Transit Custom', 650, 'Loyer mensuel de leasing de la camionnette utilitaire (estimation)', 'ford'],
+      ['veh', 'Assurance Ford Transit Custom', 140, 'Responsabilité civile et omnium, usage professionnel', 'ford'],
+      ['veh', 'Réparations Ford Transit Custom', 50, 'Provision lissée sur 12 mois', 'ford'],
+      ['veh', 'Entretien Ford Transit Custom', 60, 'Révisions, pneus et contrôle technique', 'ford'],
+      ['veh', 'Taxe de circulation Ford Transit Custom', 45, 'Taxe annuelle régionale divisée par 12 (utilitaire)', 'ford'],
+      ['veh', 'Carburant Ford Transit Custom', 220, 'Diesel, livraisons et courses du cabinet', 'ford']
     ];
     const LBASE = LINES.map((l) => l[2]);
     LINES.forEach((l, i) => { l[5] = i; const o = S.ch && S.ch[i]; if (o !== undefined && o !== null && !isNaN(o)) { l[2] = Number(o); } });
@@ -362,7 +377,7 @@ class Component extends DCLogic {
     const saveCh = (i, v) => { const nc = Object.assign({}, S.ch || {}); if (v === LBASE[i]) { delete nc[i]; } else { nc[i] = v; } try { localStorage.setItem('lk-charges', JSON.stringify(nc)); localStorage.setItem('lk-charges-tot', String(LINES.reduce((a, l, j) => a + (j === i ? v : l[2]), 0))); if (!Object.keys(nc).length) { localStorage.removeItem('lk-charges-tot'); } } catch (e) {} setState({ ch: nc }); };
     const SUBS = {
       imp: [['jur', 'Litiges et assurances'], ['bat', 'Bâtiment et informatique'], ['div', 'Divers']],
-      veh: [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']],
+      veh: [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique'], ['ford', 'Ford Transit (utilitaire)']],
       exp: [['loc', 'Locaux et énergie'], ['con', 'Fournitures et consommables'], ['adm', 'Administration et informatique'], ['ass', 'Assurances'], ['mkt', 'Marketing et visibilité']],
       exc: [['mat', 'Matériel et leasings'], ['fin', 'Financement, impôts et divers']],
       rare: [['conf', 'Conformité et sécurité'], ['equ', 'Remplacement de matériel'], ['for', 'Formation']],
@@ -377,7 +392,7 @@ class Component extends DCLogic {
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
 
     // ---- Budget et réel ----
-    const BDEF = { ca: 125000, labo: 17500, rem: 74500, exp: 16000, exc: 4200, rare: 1000, org: 12000, veh: 4700, imp: 0 };
+    const BDEF = { ca: 125000, labo: 17500, rem: 74500, exp: 16000, exc: 4200, rare: 1000, org: 12000, veh: 5900, imp: 0 };
     const BV = Object.assign({}, BDEF, S.bud || {});
     const saveB = (o) => { const nb = Object.assign({}, S.bud || {}, o); try { localStorage.setItem('lk-budget', JSON.stringify(nb)); } catch (e) {} setState({ bud: nb }); };
     const realOf = { ca: 121100, labo: 17700, rem: 72780, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh'), imp: sumCat('imp') };
@@ -403,23 +418,24 @@ class Component extends DCLogic {
     const carSel = (S && S.vt) || 'all';
     const carSub = (S && S.vs) || 'all';
     const carKind = (l) => l[1].indexOf('Leasing') === 0 ? 'lea' : l[1].indexOf('Assurance') === 0 ? 'ass' : l[1].indexOf('Réparations') === 0 ? 'rep' : l[1].indexOf('Entretien') === 0 ? 'ent' : l[1].indexOf('Taxe') === 0 ? 'tax' : 'car';
-    const CARS = [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique']];
+    const CARS = [['b7', 'BMW Série 7 hybride'], ['b5', 'BMW Série 5 électrique'], ['ford', 'Ford Transit Custom (utilitaire)']];
     const KINDS = [['lea', 'Leasing'], ['ass', 'Assurance'], ['rep', 'Réparations'], ['ent', 'Entretien'], ['tax', 'Taxe de circulation'], ['car', 'Carburant et recharge']];
     const VL = LINES.filter((l) => l[0] === 'veh');
     const vSum = (c, k) => VL.filter((l) => (c === 'all' || l[4] === c) && (k === 'all' || carKind(l) === k)).reduce((a, l) => a + l[2], 0);
     const vTabBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:12px 12px 0 0; padding:8px 14px; font-size:14px; cursor:pointer; ';
     const vSubBase = 'display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:999px; padding:4px 12px; font-size:13px; cursor:pointer; ';
-    const carTabs = [['all', 'Les deux voitures']].concat(CARS).map((c) => ({ label: c[1], amount: eur(vSum(c[0], 'all')) + ' / mois', style: vTabBase + (carSel === c[0] ? 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #2F6DB5; font-weight:700;' : 'background:#E8F0FA; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;'), pick: () => setState({ vt: c[0], vs: 'all' }) }));
+    const carTabs = [['all', 'Tous les véhicules']].concat(CARS).map((c) => ({ label: c[1], amount: eur(vSum(c[0], 'all')) + ' / mois', style: vTabBase + (carSel === c[0] ? 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #2F6DB5; font-weight:700;' : 'background:#E8F0FA; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;'), pick: () => setState({ vt: c[0], vs: 'all' }) }));
     const carSubs = [['all', 'Tout']].concat(KINDS).map((k) => ({ label: k[1], amount: eur(vSum(carSel, k[0])), style: vSubBase + (carSub === k[0] ? 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;' : 'background:#fff; color:#33433F; border:1px solid #C9D6D2; font-weight:500;'), pick: () => setState({ vs: k[0] }) }));
     const carRowsRaw = VL.filter((l) => (carSel === 'all' || l[4] === carSel) && (carSub === 'all' || carKind(l) === carSub));
-    const carRows = carRowsRaw.map((l) => ({ car: l[4] === 'b7' ? 'Série 7 hybride' : 'Série 5 électrique', item: KINDS.filter((k) => k[0] === carKind(l))[0][1], note: l[3], month: eur(l[2]), year: eur(l[2] * 12) }));
+    const carRows = carRowsRaw.map((l) => ({ car: l[4] === 'b7' ? 'Série 7 hybride' : (l[4] === 'b5' ? 'Série 5 électrique' : 'Ford Transit'), item: KINDS.filter((k) => k[0] === carKind(l))[0][1], note: l[3], month: eur(l[2]), year: eur(l[2] * 12) }));
     const carMonth = carRowsRaw.reduce((a, l) => a + l[2], 0);
     const carKpis = [
       { label: 'Par mois', value: eur(carMonth), note: carSub === 'all' ? 'tous les postes' : KINDS.filter((k) => k[0] === carSub)[0][1].toLowerCase(), style: 'border:1px solid #DCE5E2; border-top:5px solid #2F6DB5; border-radius:12px; padding:14px 16px;' },
       { label: 'Par an', value: eur(carMonth * 12), note: 'douze mois de charges', style: 'border:1px solid #DCE5E2; border-top:5px solid #5B3FA8; border-radius:12px; padding:14px 16px;' },
       { label: 'Part des charges du cabinet', value: pc(carMonth / TOT * 100), note: 'sur ' + eur(TOT) + ' de charges mensuelles', style: 'border:1px solid #DCE5E2; border-top:5px solid #B45309; border-radius:12px; padding:14px 16px;' }
     ];
-    const carDesc = carSel === 'all' ? 'Une BMW Série 7 hybride rechargeable et une BMW Série 5 entièrement électrique. Choisissez une voiture, puis un poste de dépense.' : 'Détail de la ' + CARS.filter((c) => c[0] === carSel)[0][1] + ' par poste de dépense.';
+    const carCards = CARS.map((c) => ({ title: c[1], total: eur(vSum(c[0], 'all')) + ' / mois', year: eur(vSum(c[0], 'all') * 12) + ' par an', lines: KINDS.filter((k) => vSum(c[0], k[0]) > 0).map((k) => k[1] + ' ' + eur(vSum(c[0], k[0]))).join(' · '), style: 'text-align:left; border:1px solid #DCE5E2; border-top:5px solid ' + (c[0] === 'ford' ? '#B45309' : '#2F6DB5') + '; border-radius:12px; padding:16px; background:#fff; cursor:pointer; font:inherit; display:flex; flex-direction:column; gap:6px;', pick: () => setState({ vt: c[0], vs: 'all' }) }));
+    const carDesc = carSel === 'all' ? 'Deux BMW (Série 7 hybride et Série 5 électrique) et une camionnette utilitaire Ford Transit Custom. Choisissez un véhicule pour voir ses postes de dépense.' : 'Détail de la ' + CARS.filter((c) => c[0] === carSel)[0][1] + ' par poste de dépense.';
     const ord = { exp: 0, exc: 1, rare: 2, org: 3, veh: 4, imp: 5 };
     const stab = (S && S.st) || 'all';
     const subDefs = ctab === 'all' ? [] : SUBS[ctab];
@@ -432,12 +448,13 @@ class Component extends DCLogic {
     const curCat = CAT.filter((c) => c.id === ctab)[0];
     const charges = (ctab === 'all' ? [] : shownLines).map((l) => ({ label: l[1], value: eur(l[2]), val: String(l[2]), year: eur(l[2] * 12) + ' par an', mod: l[2] !== LBASE[l[5]], modTxt: l[2] !== LBASE[l[5]] ? 'modifié (origine : ' + eur(LBASE[l[5]]) + ')' : '', aria: 'Montant mensuel : ' + l[1], set: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); saveCh(l[5], v); }, bar: 'height:10px; width:' + Math.round(l[2] / 7200 * 1000) / 10 + '%; background:' + CAT.filter((c) => c.id === l[0])[0].color + ';', note: (l[0] === 'rare' ? 'Vérification : ' : '') + l[3] }));
     return {
+      carCards: carCards, carAll: carSel === 'all', carOne: carSel !== 'all',
       carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
         { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus', style: tile('#0F766E') },
         { label: 'Rémunération des praticiens', value: '72 780 €', note: '(honoraires − 17 700 € de labo) × 60 % ; 100 % pour Dr Mohamed Bochouari (gérant), ou 50 % pour Nabila Touil', style: tile('#B45309') },
-        { label: 'Charges du cabinet', value: eur(TOT), note: (nMod ? nMod + ' montant(s) modifié(s) · ' : '') + 'dont ' + eur(sumCat('org')) + ' de personnel et d\'organisation, ' + eur(sumCat('veh')) + ' pour les 2 BMW et ' + eur(sumCat('exc') + sumCat('rare')) + ' de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
+        { label: 'Charges du cabinet', value: eur(TOT), note: (nMod ? nMod + ' montant(s) modifié(s) · ' : '') + 'dont ' + eur(sumCat('org')) + ' de personnel et d\'organisation, ' + eur(sumCat('veh')) + ' pour les 3 véhicules et ' + eur(sumCat('exc') + sumCat('rare')) + ' de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
         { label: 'Bénéfice du cabinet', value: (30620 - TOT < 0 ? '− ' : '') + eur(Math.abs(30620 - TOT)), note: pc((30620 - TOT) / 121100 * 100) + ' du chiffre d\'affaires', style: tile((30620 - TOT) < 0 ? '#B42318' : '#15803D') }
       ],
       flow: [
