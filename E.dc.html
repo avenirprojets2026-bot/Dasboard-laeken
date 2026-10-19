@@ -130,7 +130,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </section>
 
 <section style="display:flex; flex-direction:column; gap:12px">
-<h2 style="margin:0; font-size:18px">Une courbe par praticien</h2>
+<h2 style="margin:0; font-size:18px">Rémunération par praticien</h2>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(270px, 1fr)); gap:16px">
 <sc-for list="{{cards}}" as="c" hint-placeholder-count="7">
 <article style="background:#fff; border:1px solid #DCE5E2; border-top:6px solid {{c.color}}; border-radius:14px; padding:16px 18px; display:flex; flex-direction:column; gap:10px">
@@ -142,12 +142,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 <span style="background:#E3F4EA; color:#0B6B3A; border-radius:999px; padding:3px 10px; font-size:13px; font-weight:700; white-space:nowrap">{{c.delta}}</span>
 </div>
-<svg viewBox="0 0 300 110" style="width:100%; height:auto; display:block" role="img" aria-label="Évolution mensuelle de la rémunération">
-<polygon points="{{c.area}}" fill="{{c.color}}" fill-opacity="0.12"></polygon>
-<polyline points="{{c.points}}" fill="none" stroke="{{c.color}}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></polyline>
-<circle cx="290" cy="{{c.cy}}" r="5" fill="{{c.color}}"></circle>
-</svg>
-<div style="display:flex; justify-content:space-between; font-size:12px; color:#4A5B57"><span>Mai</span><span>Juin</span><span>Juil.</span><span>Août</span><span>Sept.</span><span>Oct.</span></div>
+
 <div style="font-size:14px; border-top:1px solid #E7EDEB; padding-top:10px; display:flex; flex-direction:column; gap:4px">
 <div style="display:flex; justify-content:space-between"><span style="color:#4A5B57">Octobre (en cours)</span><b>{{c.last}}</b></div>
 <div style="display:flex; justify-content:space-between; align-items:center; gap:8px"><span style="color:#4A5B57">Août <span style="display:inline-block; border-radius:999px; padding:2px 8px; font-size:12px; font-weight:700; background:#E3F4EA; color:#0B6B3A">Payé</span></span><b>{{c.paid}}</b></div>
