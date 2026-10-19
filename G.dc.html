@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Tableau de bord interactif</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=32"></script>
-<script src="./acces.js?v=32"></script>
-<script src="./auth.js?v=32"></script>
-<script src="./nav.js?v=32"></script>
+<script src="./data.js?v=33"></script>
+<script src="./acces.js?v=33"></script>
+<script src="./auth.js?v=33"></script>
+<script src="./nav.js?v=33"></script>
 </head>
 <body>
 <x-dc>
@@ -43,6 +43,9 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 *{scrollbar-width:thin;scrollbar-color:#C5D3CF transparent}
 @media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
+
+.lk-xs{display:none}
+@media (max-width:760px){.lk-xp{display:none!important}.lk-xs{display:grid!important}}
 </style>
 </helmet>
 <div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2300px">
@@ -249,7 +252,17 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{xBtnSide}}" onClick="{{xReset}}">Réinitialiser les filtres</button><button type="button" style="{{xBtnMain}}" onClick="{{xCsv}}">Exporter la sélection (CSV)</button></div>
 </div>
 <sc-if value="{{xHasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{xMsgStyle}}">{{xMsg}}</div></sc-if>
-<div style="display:flex; flex-direction:column; gap:10px">
+<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap"><input type="search" value="{{xQ}}" onInput="{{xSearch}}" onChange="{{xSearch}}" placeholder="Rechercher : dossier, soin ou code INAMI" aria-label="Rechercher un dossier ou un soin" style="flex:1 1 320px; min-height:42px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 14px; font:inherit; font-size:14px; background:#fff"><sc-if value="{{xHasQ}}" hint-placeholder-val="{{ false }}"><button type="button" style="{{xBtnSide}}" onClick="{{xClearQ}}">Effacer</button></sc-if></div>
+<div class="lk-xs" style="grid-template-columns:1fr 1fr; gap:8px">
+<select onChange="{{xSelPr}}" aria-label="Praticien" style="{{xField}}"><sc-for list="{{xOptPr}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<select onChange="{{xSelFam}}" aria-label="Soin" style="{{xField}}"><sc-for list="{{xOptFam}}" as="o" hint-placeholder-count="11"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<select onChange="{{xSelMut}}" aria-label="Mutualité" style="{{xField}}"><sc-for list="{{xOptMut}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<select onChange="{{xSelReg}}" aria-label="Statut du patient" style="{{xField}}"><sc-for list="{{xOptReg}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<select onChange="{{xSelPay}}" aria-label="Paiement" style="{{xField}}"><sc-for list="{{xOptPay}}" as="o" hint-placeholder-count="7"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<select onChange="{{xSelSort}}" aria-label="Trier" style="{{xField}}"><sc-for list="{{xOptSort}}" as="o" hint-placeholder-count="9"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
+<button type="button" style="{{xBtnSide}}" onClick="{{xToggleDir}}">{{xDirLabel}}</button>
+</div>
+<div class="lk-xp" style="display:flex; flex-direction:column; gap:10px">
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Soin</span><sc-for list="{{xFamPills}}" as="f" hint-placeholder-count="11"><button type="button" style="{{f.style}}" onClick="{{f.pick}}"><span style="{{f.dot}}"></span>{{f.label}}</button></sc-for></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Mutualité</span><sc-for list="{{xMutPills}}" as="f" hint-placeholder-count="8"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:110px">Patient</span><sc-for list="{{xRegPills}}" as="f" hint-placeholder-count="3"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
@@ -299,7 +312,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
 class Component extends DCLogic {
-  state = { month: 5, dentist: -1, conv: 'all', pf: 'all', xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '', xok: true };
+  state = { month: 5, dentist: -1, conv: 'all', pf: 'all', xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '', xok: true, xq: '' };
 
   renderVals() {
     const S = this.state;
@@ -308,13 +321,13 @@ class Component extends DCLogic {
     const monthsShort = ['Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.'];
     const paidDates = ['01/07/2026', '01/08/2026', '01/09/2026', '01/10/2026', '01/11/2026', '01/12/2026'];
     const D = [
-      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [17220, 16910, 15260, 13410, 17950, 18780], t: 35400, rate: 0.6, labo: 4100 },
-      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [6220, 6390, 5590, 4620, 6260, 6720], t: 13400, rate: 0.6, labo: 2200 },
-      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', conv: false, color: '#B45309', v: [26280, 25980, 23550, 20850, 27320, 28200], t: 33500, rate: 1, labo: 5300 },
-      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', conv: true, color: '#B42318', v: [2470, 2560, 2220, 1940, 2560, 2700], t: 6500, rate: 0.5, labo: 1100 },
-      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [6090, 5980, 5570, 4940, 6250, 6660], t: 13200, rate: 0.6, labo: 2100 },
-      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [6170, 6460, 5680, 5030, 6340, 6720], t: 12800, rate: 0.6, labo: 1600 },
-      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [2720, 2770, 2500, 2170, 2820, 3000], t: 6300, rate: 0.6, labo: 1300 }
+      { name: 'Dr Aya Turkieh', label: 'Aya Turkieh', days: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', conv: true, color: '#0F766E', v: [16830, 16520, 14910, 13110, 17510, 18780], t: 35400, rate: 0.6, labo: 4100 },
+      { name: 'Dr Abde-Ssadic Bochouari', label: 'Abde-Ssadic Bochouari', days: 'Chirurgien dentaire · 2 jours par semaine', conv: true, color: '#5B3FA8', v: [6400, 6570, 5740, 4750, 6440, 6720], t: 13400, rate: 0.6, labo: 2200 },
+      { name: 'Dr Mohamed Bochouari', label: 'Mohamed Bochouari', days: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', conv: false, color: '#B45309', v: [26670, 26370, 23920, 21150, 27750, 28200], t: 33500, rate: 1, labo: 5300 },
+      { name: 'Dr Nabila Touil', label: 'Nabila Touil', days: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', conv: true, color: '#B42318', v: [2510, 2610, 2270, 1980, 2610, 2700], t: 6500, rate: 0.5, labo: 1100 },
+      { name: 'Dr Julien Cabaz', label: 'Julien Cabaz', days: 'Implantologue · 2 jours par semaine', conv: true, color: '#15803D', v: [6240, 6120, 5700, 5060, 6410, 6660], t: 13200, rate: 0.6, labo: 2100 },
+      { name: 'Dr Daoud Bouchouari', label: 'Daoud Bouchouari', days: 'Endodontiste et chirurgie orale · 2 jours par semaine', conv: true, color: '#1D4ED8', v: [6070, 6360, 5580, 4950, 6230, 6720], t: 12800, rate: 0.6, labo: 1600 },
+      { name: '7e praticien (à confirmer)', label: '7e praticien', days: 'jours à confirmer', conv: true, color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, 3000], t: 6300, rate: 0.6, labo: 1300 }
     ];
 
     const pillBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
@@ -423,7 +436,7 @@ class Component extends DCLogic {
     // ---- Explorateur des actes (octobre 2026, détail acte par acte) ----
     const X = (() => {
       const L = window.LAEKEN;
-      const empty = { xCaption: 'Données non chargées', xFamPills: [], xMutPills: [], xRegPills: [], xPayPills: [], xKpis: [], xShowDonut: false, xDonutStyle: '', xDonutValue: '', xLegend: [], xHeads: [], xRows: [], xRange: '', xPrev: () => {}, xNext: () => {}, xPrevStyle: '', xNextStyle: '', xReset: () => {}, xCsv: () => {}, xBtnMain: '', xBtnSide: '', xHasMsg: false, xMsg: '', xMsgStyle: '' };
+      const empty = { xQ: '', xHasQ: false, xSearch: () => {}, xClearQ: () => {}, xField: '', xOptPr: [], xOptFam: [], xOptMut: [], xOptReg: [], xOptPay: [], xOptSort: [], xSelPr: () => {}, xSelFam: () => {}, xSelMut: () => {}, xSelReg: () => {}, xSelPay: () => {}, xSelSort: () => {}, xToggleDir: () => {}, xDirLabel: '', xCaption: 'Données non chargées', xFamPills: [], xMutPills: [], xRegPills: [], xPayPills: [], xKpis: [], xShowDonut: false, xDonutStyle: '', xDonutValue: '', xLegend: [], xHeads: [], xRows: [], xRange: '', xPrev: () => {}, xNext: () => {}, xPrevStyle: '', xNextStyle: '', xReset: () => {}, xCsv: () => {}, xBtnMain: '', xBtnSide: '', xHasMsg: false, xMsg: '', xMsgStyle: '' };
       if (!L || !L.families) { return empty; }
       const PRl = L.PR; const FAMS = L.FAMS;
       const prIdx = idx.map((i) => PRl.findIndex((p) => p.name === D[i].name));
@@ -436,6 +449,8 @@ class Component extends DCLogic {
       if (S.xm) { rows = rows.filter((r) => r.mut === S.xm); }
       if (S.xr !== 'all') { rows = rows.filter((r) => r.reg === S.xr); }
       if (S.xp !== 'all') { rows = rows.filter((r) => r.pay === S.xp); }
+      const q = String(S.xq || '').trim().toLowerCase();
+      if (q) { rows = rows.filter((r) => (r.doss + ' ' + r.dob + ' ' + (r.work || r.label) + ' ' + r.code + ' ' + FAMS[famOf[r.key]][0]).toLowerCase().indexOf(q) >= 0); }
       const tmin = (r) => { const m = /(\d+)\s*h\s*(\d*)/.exec(r.time || ''); return m ? parseInt(m[1], 10) * 60 + (parseInt(m[2] || '0', 10) || 0) : 0; };
       const keyF = { d: (r) => r.d * 10000 + tmin(r), doss: (r) => r.doss, prat: (r) => PRl[r.p].short, label: (r) => r.label, fam: (r) => famOf[r.key], mut: (r) => r.mut, reg: (r) => r.reg, pay: (r) => r.pay, fee: (r) => r.fee };
       const kf = keyF[S.xs] || keyF.d;
@@ -483,7 +498,18 @@ class Component extends DCLogic {
         xRange: rows.length ? 'Actes ' + (pg * PER + 1) + ' à ' + Math.min(rows.length, pg * PER + PER) + ' sur ' + nf(rows.length) + ' · page ' + (pg + 1) + ' / ' + pages : 'Aucun acte ne correspond à ces filtres.',
         xPrev: () => { if (pg > 0) { setState({ xpg: pg - 1 }); } }, xNext: () => { if (pg < pages - 1) { setState({ xpg: pg + 1 }); } },
         xPrevStyle: btnSide + (pg > 0 ? '' : ' opacity:0.4; cursor:default;'), xNextStyle: btnSide + (pg < pages - 1 ? '' : ' opacity:0.4; cursor:default;'),
-        xReset: () => setState({ xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '' }), xCsv: xCsv, xBtnMain: btnMain, xBtnSide: btnSide,
+        xReset: () => setState({ xf: -1, xm: '', xr: 'all', xp: 'all', xs: 'd', xd: 1, xpg: 0, xmsg: '', xq: '' }), xCsv: xCsv, xBtnMain: btnMain, xBtnSide: btnSide,
+        xQ: S.xq || '', xHasQ: !!S.xq, xSearch: (e) => setState({ xq: e && e.target ? e.target.value : '', xpg: 0 }), xClearQ: () => setState({ xq: '', xpg: 0 }),
+        xField: 'min-height:42px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 10px; font:inherit; font-size:14px; background:#fff; color:#14201D; width:100%;',
+        xOptPr: [{ v: '-1', l: 'Tous les praticiens', sel: S.dentist < 0 }].concat(D.map((d, i) => ({ v: String(i), l: d.name, sel: S.dentist === i }))),
+        xOptFam: [{ v: '-1', l: 'Tous les soins', sel: S.xf < 0 }].concat(FAMS.map((f, fi) => ({ v: String(fi), l: f[0], sel: S.xf === fi }))),
+        xOptMut: [{ v: '', l: 'Toutes les mutualités', sel: !S.xm }].concat(MUTS.map((m2) => ({ v: m2, l: m2, sel: S.xm === m2 }))),
+        xOptReg: [['all', 'Tous les statuts'], ['ord', 'Ordinaire'], ['bim', 'BIM/VIPO']].map((x) => ({ v: x[0], l: x[1], sel: S.xr === x[0] })),
+        xOptPay: [['all', 'Tous les paiements']].concat(Object.keys(payL).map((k) => [k, payL[k]])).map((x) => ({ v: x[0], l: x[1], sel: S.xp === x[0] })),
+        xOptSort: HEADS.map((h) => ({ v: h[0], l: 'Trier : ' + h[1].toLowerCase(), sel: S.xs === h[0] })),
+        xSelPr: (e) => setState({ dentist: Number(e.target.value), conv: 'all', xpg: 0 }), xSelFam: (e) => xp({ xf: Number(e.target.value) }), xSelMut: (e) => xp({ xm: e.target.value }),
+        xSelReg: (e) => xp({ xr: e.target.value }), xSelPay: (e) => xp({ xp: e.target.value }), xSelSort: (e) => setState({ xs: e.target.value, xpg: 0 }),
+        xToggleDir: () => setState({ xd: -S.xd, xpg: 0 }), xDirLabel: S.xd > 0 ? 'Croissant ▲' : 'Décroissant ▼',
         xHasMsg: !!S.xmsg, xMsg: S.xmsg, xMsgStyle: 'padding:10px 12px; border-radius:10px; font-size:13px; ' + (S.xok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
       };
     })();

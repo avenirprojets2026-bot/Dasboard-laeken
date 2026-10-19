@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Rémunérations et paiements</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=32"></script>
-<script src="./auth.js?v=32"></script>
-<script src="./nav.js?v=32"></script>
-<script src="./data.js?v=32"></script>
+<script src="./acces.js?v=33"></script>
+<script src="./auth.js?v=33"></script>
+<script src="./nav.js?v=33"></script>
+<script src="./data.js?v=33"></script>
 </head>
 <body>
 <x-dc>
@@ -252,25 +252,47 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Le délai des mutuelles (1 à 1,5 mois) et la répartition 75 / 25 sont une hypothèse à confirmer avec l'historique réel. Les étalements viennent de la page Patients et paiements. Ne comprend pas les patients qui n'ont encore rien payé.</div>
 </section>
 
+<section id="versements" style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Suivi des versements aux praticiens</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Pour chaque mois de prestations : ce qui est dû, ce qui a déjà été versé (acompte ou totalité) et ce qu'il reste à verser. Saisissez un montant ou une date puis validez (Entrée).</div></div>
+<div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{vBtnSide}}" onClick="{{vReset}}">Revenir à la démonstration</button><button type="button" style="{{vBtnSide}}" onClick="{{vPrint}}">Imprimer</button><button type="button" style="{{vBtnMain}}" onClick="{{vCsv}}">Exporter le suivi (CSV)</button></div></div>
+<sc-if value="{{vHasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{vMsgStyle}}">{{vMsg}}</div></sc-if>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:150px">Mois de prestations</span><sc-for list="{{vMonths}}" as="m" hint-placeholder-count="6"><button type="button" style="{{m.style}}" onClick="{{m.pick}}">{{m.label}}</button></sc-for></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px"><sc-for list="{{vKpis}}" as="k" hint-placeholder-count="4"><div style="{{k.style}}"><div style="font-size:12.5px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:3px">{{k.note}}</div></div></sc-for></div>
+<div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:900px">
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Praticien</th><th style="padding:8px; text-align:right">Taux</th><th style="padding:8px; text-align:right">Dû</th><th style="padding:8px; text-align:right">Déjà versé</th><th style="padding:8px">Versé le</th><th style="padding:8px; text-align:right">Reste à verser</th><th style="padding:8px">Statut</th></tr></thead>
+<tbody><sc-for list="{{vRows}}" as="r" hint-placeholder-count="7">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:10px 8px 10px 0; font-weight:700">{{r.name}}</td>
+<td style="padding:10px 8px; text-align:right">{{r.rate}}</td>
+<td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.due}}</td>
+<td style="padding:10px 8px; text-align:right; white-space:nowrap"><input type="number" min="0" step="10" value="{{r.paid}}" onChange="{{r.setPaid}}" aria-label="{{r.aria}}" style="width:100px; text-align:right; border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:14px; font-variant-numeric:tabular-nums"> €<div style="margin-top:4px"><button type="button" style="{{r.allStyle}}" onClick="{{r.payAll}}">Tout versé</button></div></td>
+<td style="padding:10px 8px"><input type="date" value="{{r.date}}" onChange="{{r.setDate}}" aria-label="Date du versement" style="border:1px solid #C9D6D2; border-radius:8px; padding:6px 8px; font:inherit; font-size:13.5px"></td>
+<td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap"><span style="{{r.restStyle}}">{{r.rest}}</span></td>
+<td style="padding:10px 8px"><span style="{{r.stStyle}}">{{r.st}}</span></td>
+</tr></sc-for></tbody></table></div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; border-top:2px solid #14201D; padding-top:12px; font-size:15px; font-weight:700"><span>{{vTotLabel}}</span><span>{{vTotVal}}</span></div>
+<div style="font-size:12.5px; color:#4A5B57; line-height:1.5">Les montants dus viennent du calcul (honoraires − labo) × taux : 60 %, 50 % pour Dr Touil, 100 % pour Dr Mohamed Bochouari (gérant). Les versements saisis sont enregistrés dans ce navigateur uniquement.</div>
+</section>
+
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette : tous les montants et dates de paiement sont fictifs. Les vraies dates viendront des virements réellement effectués par le gérant.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1950}}'>
 class Component extends DCLogic {
-  state = { view: 'net' };
+  state = (() => { let vp = {}; try { vp = JSON.parse(localStorage.getItem('lk-versements') || 'null') || {}; } catch (e) { vp = {}; } return { view: 'net', vm: 5, vp: vp, vmsg: '', vok: true }; })();
   renderVals() {
     const S = this.state;
     const cs = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#E3F2EF; color:#0B5D56;';
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const data = [
-      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [16810, 16510, 14920, 13080, 17520, 17940] },
+      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [16830, 16520, 14910, 13110, 17510, 18780] },
       { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', color: '#B45309', v: [26670, 26370, 23920, 21150, 27750, 28200] },
-      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [6400, 6570, 5750, 4750, 6450, 6720] },
-      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [6070, 6360, 5590, 4950, 6240, 6480] },
-      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [6240, 6120, 5710, 5060, 6420, 6660] },
+      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [6400, 6570, 5740, 4750, 6440, 6720] },
+      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [6070, 6360, 5580, 4950, 6230, 6720] },
+      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [6240, 6120, 5700, 5060, 6410, 6660] },
       { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [2510, 2610, 2270, 1980, 2610, 2700] },
-      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, 2640] }
+      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, 3000] }
     ];
     const TL = { 'Dr Aya Turkieh': [35400, 4100, 0.6], 'Dr Mohamed Bochouari': [33500, 5300, 1], 'Dr Abde-Ssadic Bochouari': [13400, 2200, 0.6], 'Dr Daoud Bouchouari': [12800, 1600, 0.6], 'Dr Julien Cabaz': [13200, 2100, 0.6], 'Dr Nabila Touil': [6500, 1100, 0.5], '7e praticien (à confirmer)': [6300, 1300, 0.6] };
     const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - t[1] / t[0]) * t[2])); });
@@ -348,7 +370,54 @@ class Component extends DCLogic {
       const mx = Math.max.apply(null, vals.map((v) => v.mut + v.pl));
       cash = vals.map((v) => ({ label: v.m, total: eur(v.mut + v.pl), mut: eur(v.mut), plan: eur(v.pl), bar: 'height:100%; background:#0F766E; width:' + Math.max(2, (v.mut + v.pl) / mx * 100) + '%' }));
     }
-    return Object.assign({ series: series, yTicks: yTicks, viewPills: viewPills, viewNote: viewNote, cards: cards, payments: payments, calc: calc, tot: tot, cash: cash }, donut);
+    // ---- Suivi des versements aux praticiens ----
+    const setStateV = (o) => this.setState(o);
+    const VM = ['Mai 2026', 'Juin 2026', 'Juillet 2026', 'Août 2026', 'Septembre 2026', 'Octobre 2026'];
+    const VDATE = ['2026-07-01', '2026-08-01', '2026-09-01', '2026-10-01', '', ''];
+    const RATE = { 'Dr Mohamed Bochouari': 1, 'Dr Nabila Touil': 0.5 };
+    const vm = S.vm === undefined ? 5 : S.vm;
+    const VP = S.vp || {};
+    const defOf = (m, i) => { if (m <= 3) { return { paid: data[i].v[m], date: VDATE[m] }; } if (m === 4 && i === 0) { return { paid: 8000, date: '2026-10-15' }; } if (m === 4 && i === 2) { return { paid: 3000, date: '2026-10-15' }; } return { paid: 0, date: '' }; };
+    const cur = (m, i) => Object.assign(defOf(m, i), (VP[m] || {})[i] || {});
+    const saveV = (m, i, o) => { const n = JSON.parse(JSON.stringify(VP)); n[m] = n[m] || {}; n[m][i] = Object.assign({}, cur(m, i), o); try { localStorage.setItem('lk-versements', JSON.stringify(n)); } catch (e) {} setStateV({ vp: n, vmsg: '' }); };
+    const eu2 = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const chipV = (fg, bg) => 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; color:' + fg + '; background:' + bg + ';';
+    const vStatus = (due, paid) => paid >= due ? ['Payé', '#0B6B3A', '#E3F4EA'] : (paid > 0 ? ['Payé en partie', '#1B3F73', '#D6E6FA'] : ['Non payé', '#8A4B08', '#FDF0DC']);
+    const rowsV = data.map((d, i) => { const c = cur(vm, i); const due = d.v[vm]; const paid = Math.min(Number(c.paid) || 0, due); const st = vStatus(due, paid); return {
+      name: d.name, rate: Math.round((RATE[d.name] || 0.6) * 100) + ' %', due: eu2(due), paid: String(Number(c.paid) || 0), date: c.date || '', rest: eu2(due - paid), restStyle: due - paid > 0 ? 'color:#A3231A;' : 'color:#0B6B3A;',
+      st: st[0], stStyle: chipV(st[1], st[2]), aria: 'Déjà versé à ' + d.name,
+      allStyle: 'border:0; background:none; color:#0F766E; font:inherit; font-size:12px; font-weight:700; cursor:pointer; padding:0;' + (paid >= due ? ' visibility:hidden;' : ''),
+      payAll: () => saveV(vm, i, { paid: due, date: c.date || '2026-10-19' }),
+      setPaid: (e) => saveV(vm, i, { paid: Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)) }),
+      setDate: (e) => saveV(vm, i, { date: e && e.target ? e.target.value : '' }) }; });
+    const totDue = data.reduce((a, d) => a + d.v[vm], 0);
+    const totPaid = data.reduce((a, d, i) => a + Math.min(Number(cur(vm, i).paid) || 0, d.v[vm]), 0);
+    const nFull = data.filter((d, i) => (Number(cur(vm, i).paid) || 0) >= d.v[vm]).length;
+    const nPart = data.filter((d, i) => { const p = Number(cur(vm, i).paid) || 0; return p > 0 && p < d.v[vm]; }).length;
+    const tlv = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:5px solid ' + c + '; border-radius:12px; padding:14px 16px;';
+    const vBtnMain = 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:40px; padding:0 14px; font-size:13.5px; font-weight:700; cursor:pointer;';
+    const vBtnSide = 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:40px; padding:0 14px; font-size:13.5px; font-weight:600; cursor:pointer;';
+    const fdv = (iso) => { const p = String(iso || '').split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : ''; };
+    const vLines = () => [['Mois', 'Praticien', 'Taux', 'Dû', 'Déjà versé', 'Versé le', 'Reste à verser', 'Statut']].concat(data.map((d, i) => { const c = cur(vm, i); const due = d.v[vm]; const paid = Math.min(Number(c.paid) || 0, due); return [VM[vm], d.name, Math.round((RATE[d.name] || 0.6) * 100) + ' %', due, paid, fdv(c.date), due - paid, vStatus(due, paid)[0]]; }));
+    const vSave = (fn, data2, type, okMsg) => { (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: fn, data: data2 }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data2], { type: type })); a.download = fn; document.body.appendChild(a); a.click(); a.remove(); return true; }).then(() => setStateV({ vmsg: okMsg, vok: true })).catch(() => setStateV({ vmsg: 'Le téléchargement n\'est pas disponible dans cet affichage.', vok: false })); };
+    const vCsv = () => { const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; }; vSave('versements-praticiens-' + VM[vm].toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.csv', '﻿' + vLines().map((r) => r.map(cell).join(';')).join('\r\n'), 'text/csv;charset=utf-8', 'Suivi exporté.'); };
+    const vPrint = () => {
+      const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      const L = vLines(); const html = '<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Versements ' + esc(VM[vm]) + '</title><style>body{font-family:Helvetica,Arial,sans-serif;color:#14201D;margin:24px}h1{font-family:Georgia,serif;font-size:22px;margin:0 0 4px}p{color:#4A5B57;margin:0 0 16px}table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;font-size:11px;text-transform:uppercase;color:#4A5B57;border-bottom:1px solid #C9D6D2;padding:6px}td{padding:7px 6px;border-bottom:1px solid #EEF2F1}td.n{text-align:right}tfoot td{font-weight:700;border-top:2px solid #14201D}</style></head><body><h1>Dental Clinic Laeken · Versements aux praticiens</h1><p>Prestations de ' + esc(VM[vm]) + ' · imprimé le 19/10/2026</p><table><thead><tr>' + L[0].slice(1).map((h) => '<th>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>' + L.slice(1).map((r) => '<tr>' + r.slice(1).map((c, k) => '<td' + ((k >= 2 && k <= 3) || k === 5 ? ' class="n"' : '') + '>' + esc(typeof c === 'number' ? eu2(c) : c) + '</td>').join('') + '</tr>').join('') + '</tbody><tfoot><tr><td>Total</td><td></td><td class="n">' + eu2(totDue) + '</td><td class="n">' + eu2(totPaid) + '</td><td></td><td class="n">' + eu2(totDue - totPaid) + '</td><td></td></tr></tfoot></table><script>setTimeout(function(){window.print()},400)<\/script></body></html>';
+      let w = null; try { w = window.open('', '_blank'); } catch (e) { w = null; }
+      if (w && w.document) { w.document.open(); w.document.write(html); w.document.close(); return; }
+      vSave('versements-' + VM[vm].toLowerCase().replace(/[^a-z0-9]+/g, '-') + '.html', html, 'text/html;charset=utf-8', 'Document enregistré : ouvrez-le puis imprimez-le.');
+    };
+    const pbv = 'display:inline-flex; align-items:center; min-height:34px; box-sizing:border-box; border-radius:999px; padding:6px 12px; font-size:13px; cursor:pointer; ';
+    const vals = {
+      vMonths: VM.map((l, m) => ({ label: l, style: pbv + (m === vm ? 'background:#14201D; color:#fff; border:1px solid #14201D; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #C9D6D2; font-weight:500;'), pick: () => setStateV({ vm: m, vmsg: '' }) })),
+      vKpis: [{ label: 'Total dû', value: eu2(totDue), note: VM[vm], style: tlv('#0F766E') }, { label: 'Déjà versé', value: eu2(totPaid), note: Math.round(totPaid / totDue * 100) + ' % du total', style: tlv('#15803D') }, { label: 'Reste à verser', value: eu2(totDue - totPaid), note: (data.length - nFull) + ' praticien(s) concerné(s)', style: tlv('#B42318') }, { label: 'Statut', value: nFull + ' / ' + data.length, note: 'payés en totalité · ' + nPart + ' en partie', style: tlv('#5B3FA8') }],
+      vRows: rowsV, vTotLabel: 'Total ' + VM[vm] + ' : dû ' + eu2(totDue) + ' · versé ' + eu2(totPaid), vTotVal: 'Reste ' + eu2(totDue - totPaid),
+      vBtnMain: vBtnMain, vBtnSide: vBtnSide, vCsv: vCsv, vPrint: vPrint,
+      vReset: () => { try { localStorage.removeItem('lk-versements'); } catch (e) {} setStateV({ vp: {}, vmsg: 'Versements de démonstration rétablis.', vok: true }); },
+      vHasMsg: !!S.vmsg, vMsg: S.vmsg || '', vMsgStyle: 'padding:10px 12px; border-radius:10px; font-size:13.5px; ' + (S.vok !== false ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
+    };
+    return Object.assign(vals, { series: series, yTicks: yTicks, viewPills: viewPills, viewNote: viewNote, cards: cards, payments: payments, calc: calc, tot: tot, cash: cash }, donut);
   }
 }
 </script>
