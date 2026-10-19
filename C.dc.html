@@ -112,8 +112,8 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="font-size:13px; color:#4A5B57">Les patients néerlandophones peuvent être affiliés à une mutualité flamande (par exemple CM Vlaanderen ou Helan) : à ajouter si le cabinet en facture.</div>
 <h3 style="margin:8px 0 0; font-size:15px">Ancienneté de ce qui reste à recevoir</h3>
 <div style="display:flex; flex-direction:column; gap:10px">
-<sc-for list="{{aging}}" as="a" hint-placeholder-count="3">
-<div style="display:grid; grid-template-columns:90px 1fr 90px; gap:12px; align-items:center; font-size:14px">
+<sc-for list="{{aging}}" as="a" hint-placeholder-count="4">
+<div style="display:grid; grid-template-columns:110px 1fr 90px; gap:12px; align-items:center; font-size:14px">
 <span style="color:#4A5B57">{{a.label}}</span>
 <div style="background:#E7EDEB; border-radius:999px; height:12px; overflow:hidden"><div style="{{a.bar}}"></div></div>
 <b style="text-align:right">{{a.value}}</b>
@@ -183,7 +183,11 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px">
 <h2 style="margin:0 0 4px; font-size:18px">Laboratoire : devis estimés et factures réelles, par praticien</h2>
-<div style="font-size:13px; color:#4A5B57; margin-bottom:12px">Total devis 17 200 € · total facturé 17 700 € · écart +500 €</div>
+<div style="background:#F6F9F8; border:1px solid #E2E9E6; border-radius:12px; padding:14px 16px; margin:4px 0 14px">
+<div style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56; margin-bottom:6px">Contrôle laboratoire</div>
+<sc-for list="{{labCtl}}" as="c" hint-placeholder-count="5"><div style="display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px solid #E7EDEB; font-size:14px"><span>{{c.l}}</span><b style="{{c.st}} white-space:nowrap">{{c.v}}</b></div></sc-for>
+<div style="font-size:12.5px; color:#4A5B57; margin-top:8px">{{labCtlNote}}</div>
+</div>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:560px">
 <thead>
@@ -357,7 +361,20 @@ class Component extends DCLogic {
       ['Dental Flex et Ambu Protect / Comfort', 'AG Insurance, AXA (assurance de groupe)', 'Via l\'employeur', 'Soins, prothèses, implants, couronnes, orthodontie selon le contrat', 'Selon le contrat de l\'entreprise du patient', 'Aucun en général', 60]
     ];
     const insTot = INS.reduce((a, x) => a + x[6], 0);
+    const BK = [['0 à 30 jours', 0, 30, '#0F766E'], ['31 à 60 jours', 31, 60, '#B45309'], ['61 à 90 jours', 61, 90, '#C2410C'], ['Plus de 90 jours', 91, 9999, '#B42318']];
+    const agTot = Math.max(1, solT);
+    const agingLive = BK.map((k) => { const v = open.filter((c) => c.age >= k[1] && c.age <= k[2]).reduce((x, c) => x + Math.max(0, c.amt - c.rec - c.ref), 0); return { label: k[0], value: eu(v), bar: 'background:' + k[3] + '; height:12px; width:' + Math.round(v / agTot * 100) + '%' }; });
+    const LL = window.LAEKEN; const facLab = LL ? LL.rows.reduce((x, r) => x + (r.labo || 0), 0) : 17700; const prLab = LL ? LL.PR.reduce((x, q) => x + q.LAB, 0) : 17700; const devLab = 17200;
+    const labCtl = [
+      { l: 'Factures des travaux de laboratoire', v: eu(facLab), st: '' },
+      { l: 'Frais de labo imputés aux praticiens (déduits avant rétrocession)', v: eu(prLab), st: '' },
+      { l: 'Écart de rapprochement', v: eu(facLab - prLab), st: Math.abs(facLab - prLab) < 1 ? 'color:#0B6B3A;' : 'color:#A3231A;' },
+      { l: 'Devis de laboratoire cumulés', v: eu(devLab), st: '' },
+      { l: 'Écart factures − devis', v: (facLab - devLab >= 0 ? '+ ' : '') + eu(facLab - devLab), st: 'color:#8A4B08;' }
+    ];
+    const labCtlNote = Math.abs(facLab - prLab) < 1 ? 'Rapprochement correct : chaque facture du labo est bien déduite chez un praticien.' : 'Écart à vérifier : une facture du labo n\'est pas imputée à un praticien, ou l\'inverse.';
     return Object.assign(tabVals, {
+      labCtl: labCtl, labCtlNote: labCtlNote,
       insKpis: [
         { label: 'Patients avec une assurance dentaire', value: String(insTot).replace(/\B(?=(\d{3})+(?!\d))/g, ' '), note: String(Math.round(insTot / 6400 * 1000) / 10).replace('.', ',') + ' % des 6 400 patients actifs (chiffre fictif)', style: tile },
         { label: 'Produits suivis', value: String(INS.length), note: '5 mutualités, 5 assureurs privés, 1 assurance de groupe', style: tile },
@@ -379,11 +396,7 @@ class Component extends DCLogic {
         { name: 'CAAMI (caisse auxiliaire)', filed: '6 700 €', paid: '4 800 €', pending: '1 900 €', delay: '52 jours' },
         { name: 'HR Rail (soins de santé)', filed: '3 500 €', paid: '2 500 €', pending: '1 000 €', delay: '36 jours' }
       ],
-      aging: [
-        { label: '0 à 30 jours', value: '15 300 €', bar: 'background:#0F766E; height:12px; width:51%' },
-        { label: '30 à 45 jours', value: '9 500 €', bar: 'background:#B45309; height:12px; width:33%' },
-        { label: 'Plus de 45 j', value: '4 800 €', bar: 'background:#B42318; height:12px; width:16%' }
-      ],
+      aging: agingLive,
       todo: [
         { tag: 'Relance', tact: '', chip: wait, text: 'Relancer les mutuelles pour 4 800 € en attente depuis plus de 45 jours.' },
         { tag: 'Refus', chip: bad, text: '3 prestations refusées : vérifier la nomenclature et renvoyer.' },
