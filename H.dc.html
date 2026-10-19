@@ -74,83 +74,72 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Accueil et caisse</div>
 <h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Patients et paiements</h1>
 </div>
-<div style="font-size:14px; color:#4A5B57; max-width:420px; line-height:1.4">Clique sur un onglet, un filtre, un patient ou un bouton d'action : tout se met à jour. Les patients sont identifiés par un numéro de dossier et leur date de naissance.</div>
+<div style="font-size:14px; color:#4A5B57; max-width:420px; line-height:1.4">Trois onglets : paiements, rendez-vous manqués et devis. Modes de paiement, montants reçus, états et statuts se modifient directement dans les tableaux, tout se recalcule. Patients identifiés par numéro de dossier et date de naissance.</div>
 </header>
 
 <div role="tablist" aria-label="Onglets" style="display:flex; flex-wrap:wrap; gap:8px">
-<sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
 <button role="tab" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<span style="{{t.badgeStyle}}">{{t.badge}}</span></button>
 </sc-for>
 </div>
 
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{msgStyle}}">{{msg}}</div></sc-if>
+
 <sc-if value="{{tabPay}}" hint-placeholder-val="{{ true }}">
-<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px">
 <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
-<div style="{{k.style}}">
-<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
-<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
-<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
-</div>
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:18px 20px"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="{{k.vStyle}}">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
 </sc-for>
 </section>
 
-<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
-<div><h2 style="margin:0; font-size:18px">Créances par ancienneté</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Ce que les patients doivent encore, classé selon l'âge du soin. Calcul sur les dossiers de la liste ci-dessous (impayés et étalements).</div></div>
-<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px">
-<sc-for list="{{aging}}" as="a" hint-placeholder-count="4">
-<div style="{{a.style}}"><div style="font-size:13px; font-weight:500; color:#4A5B57">{{a.label}}</div><div style="font-size:26px; font-weight:700; margin-top:4px">{{a.value}}</div><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{a.note}}</div></div>
-</sc-for>
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center">
+<label style="display:flex; align-items:center; gap:10px; font-size:14px; color:#14201D">Mode de paiement<select onChange="{{setPm}}" style="{{selStyle}}"><sc-for list="{{pmOpts}}" as="o" hint-placeholder-count="6"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<input type="search" value="{{pq}}" onInput="{{setPq}}" placeholder="Dossier D-12345 ou naissance" aria-label="Rechercher un dossier" style="{{searchStyle}}">
+<button type="button" onClick="{{payCsv}}" style="{{btnMain}}">Exporter CSV</button>
+<button type="button" onClick="{{payReset}}" style="{{btnSide}}">Réinitialiser</button>
 </div>
-</section>
-
-<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
-<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
-<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; margin-right:4px">Filtrer</span>
-<sc-for list="{{pfPills}}" as="p" hint-placeholder-count="5">
-<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
-</sc-for>
-</div>
-</section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
-<h2 style="margin:0 0 4px; font-size:18px">Paiements des patients</h2>
-<div style="font-size:13px; color:#4A5B57">Bleu : carte bancaire. Vert : liquide. Violet : étalement sur plusieurs mois. Rouge : pas encore payé. Le supplément de 50 € s'applique aux prestations du week-end et des jours fériés. Les montants viennent de la nomenclature INAMI (page K) selon l'âge et le statut du patient : honoraires, part remboursée par la mutuelle, part à payer par le patient. Clique sur le numéro de dossier d'un patient pour le détail.</div>
+<h2 style="margin:0 0 4px; font-size:22px; font-family:'Fraunces',Georgia,serif; font-weight:600">Paiements des patients</h2>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">Choisissez le mode de paiement et saisissez le montant reçu : le solde et l'échéance se recalculent. « Facturé » est la part à payer par le patient, après remboursement de la mutuelle (tarifs INAMI, page K), suppléments compris. Cliquez sur un numéro de dossier pour le détail.</div>
 </div>
 <div style="overflow-x:auto">
-<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1280px">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1120px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 12px">Date</th><th style="padding:8px">Dossier et naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Prestation (code INAMI)</th><th style="padding:8px; text-align:right">Honoraires</th><th style="padding:8px; text-align:right">Remboursé par la mutuelle</th><th style="padding:8px; text-align:right">À payer par le patient</th><th style="padding:8px">Mutuelle du patient</th><th style="padding:8px">Paiement</th><th style="padding:8px; text-align:right">Reste à payer</th>
+<th style="padding:8px 8px 8px 12px">Date</th><th style="padding:8px">Dossier</th><th style="padding:8px">Naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Prestation</th><th style="padding:8px; text-align:right">Facturé</th><th style="padding:8px">Mode</th><th style="padding:8px">Reçu (€)</th><th style="padding:8px; text-align:right">Solde</th><th style="padding:8px">Échéance</th><th style="padding:8px; text-align:right">Supplément</th>
 </tr>
 </thead>
 <tbody>
 <sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
 <tr style="{{r.trStyle}}">
 <td style="{{r.lead}}">{{r.date}}</td>
-<td style="padding:8px"><button onClick="{{r.pick}}" style="background:none; border:0; padding:8px 0; min-height:44px; font-size:14px; font-weight:700; cursor:pointer; color:#0B5D56; text-decoration:underline; text-align:left">{{r.patient}}</button><div style="font-size:12px; color:#4A5B57">{{r.pinfo}}</div></td>
-<td style="padding:12px 8px">{{r.dentist}}</td>
-<td style="padding:12px 8px"><div style="white-space:pre-line">{{r.label}}</div><div style="font-size:12px; color:#4A5B57">{{r.code}}</div><div style="{{r.suppStyle}}">{{r.suppLabel}}</div></td>
-<td style="padding:12px 8px; text-align:right">{{r.fee}}</td>
-<td style="padding:12px 8px; text-align:right; color:#0B6B3A; font-weight:700">{{r.interv}}</td>
-<td style="padding:12px 8px; text-align:right; font-weight:700">{{r.amount}}</td>
-<td style="padding:12px 8px"><div style="font-size:13px; margin-bottom:4px">{{r.mutuelle}}</div><span style="{{r.mChip}}">{{r.mStatus}}</span> <span style="{{r.stChip}}">{{r.st}}</span></td>
-<td style="padding:12px 8px"><span style="{{r.payChip}}">{{r.payLabel}}</span><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{r.payNote}}</div></td>
-<td style="padding:12px 8px; text-align:right; font-weight:700; {{r.restStyle}}">{{r.rest}}</td>
+<td style="padding:8px"><button onClick="{{r.pick}}" style="background:none; border:0; padding:8px 0; min-height:40px; font-size:14px; font-weight:700; cursor:pointer; color:#0B5D56; text-decoration:underline">{{r.patient}}</button></td>
+<td style="padding:8px; white-space:nowrap">{{r.dob}}<div style="margin-top:4px"><span style="{{r.stChip}}">{{r.st}}</span></div></td>
+<td style="padding:8px; min-width:110px">{{r.dentist}}</td>
+<td style="padding:8px; min-width:200px"><div style="white-space:pre-line; line-height:1.35">{{r.label}}</div></td>
+<td style="padding:8px; text-align:right; white-space:nowrap"><b>{{r.amount}}</b><div style="font-size:11px; color:#4A5B57; margin-top:2px">{{r.feeNote}}</div></td>
+<td style="padding:8px"><select onChange="{{r.setMode}}" aria-label="Mode de paiement" style="{{r.modeStyle}}"><sc-for list="{{r.modeOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{r.payNote}}</div></td>
+<td style="padding:8px"><input type="text" inputmode="decimal" value="{{r.recu}}" onChange="{{r.setRecu}}" aria-label="Montant reçu" style="{{cellInput}}"></td>
+<td style="padding:8px; text-align:right; white-space:nowrap; font-weight:700; {{r.soldeStyle}}">{{r.solde}}</td>
+<td style="padding:8px; white-space:nowrap; {{r.dueStyle}}">{{r.due}}</td>
+<td style="padding:8px; text-align:right; white-space:nowrap">{{r.supp}}<div style="font-size:11px; color:#8A4B08">{{r.suppNote}}</div></td>
 </tr>
 </sc-for>
 </tbody>
 </table>
 </div>
+<div style="font-size:13px; color:#4A5B57">{{payFoot}}</div>
 </section>
 
-<sc-if value="{{showDetail}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{showDetail}}" hint-placeholder-val="{{ false }}">
 <section style="{{detailStyle}}">
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px">
 <h2 style="margin:0; font-size:20px">{{detail.title}}</h2>
-<span style="{{detail.chip}}">{{detail.chipLabel}}</span>
+<div style="display:flex; gap:8px; align-items:center"><span style="{{detail.chip}}">{{detail.chipLabel}}</span><button type="button" onClick="{{closeDetail}}" style="{{btnSide}}">Fermer</button></div>
 </div>
-<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; font-size:14px">
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:14px">
 <div><div style="font-size:12px; color:#4A5B57">Prestation</div><b style="white-space:pre-line">{{detail.label}}</b></div>
 <div><div style="font-size:12px; color:#4A5B57">Praticien</div><b>{{detail.dentist}}</b></div>
 <div><div style="font-size:12px; color:#4A5B57">Mutuelle</div><b>{{detail.mutuelle}}</b></div>
@@ -172,97 +161,132 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </sc-if>
 </section>
 </sc-if>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
+<div><h2 style="margin:0; font-size:18px">Créances par ancienneté et compléments</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Soldes restant dus, classés selon l'âge du soin, puis la part des mutuelles et les suppléments.</div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px">
+<sc-for list="{{aging}}" as="a" hint-placeholder-count="7">
+<div style="{{a.style}}"><div style="font-size:13px; color:#4A5B57">{{a.label}}</div><div style="font-size:22px; font-weight:700; margin-top:4px">{{a.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{a.note}}</div></div>
+</sc-for>
+</div>
+</section>
 </sc-if>
 
 <sc-if value="{{tabFines}}" hint-placeholder-val="{{ false }}">
-<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px">
 <sc-for list="{{fkpis}}" as="k" hint-placeholder-count="4">
-<div style="{{k.style}}">
-<div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div>
-<div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div>
-<div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div>
-</div>
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:18px 20px"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="{{k.vStyle}}">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
 </sc-for>
 </section>
 
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center">
+<label style="display:flex; align-items:center; gap:10px; font-size:14px">Préavis<select onChange="{{setFk}}" style="{{selStyle}}"><sc-for list="{{fkOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<label style="display:flex; align-items:center; gap:10px; font-size:14px">État<select onChange="{{setFe}}" style="{{selStyle}}"><sc-for list="{{feOpts}}" as="o" hint-placeholder-count="6"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<input type="search" value="{{fq}}" onInput="{{setFq}}" placeholder="Dossier D-12345" aria-label="Rechercher un dossier" style="{{searchStyle}}">
+<button type="button" onClick="{{fineCsv}}" style="{{btnMain}}">Exporter CSV</button>
+<button type="button" onClick="{{fineReset}}" style="{{btnSide}}">Réinitialiser</button>
+</div>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <div>
-<h2 style="margin:0 0 4px; font-size:18px">Rendez-vous manqués : amende de 20 €</h2>
-<div style="font-size:13px; color:#4A5B57; line-height:1.5">Règle : un patient qui manque son rendez-vous sans avoir prévenu au moins 48 h avant reçoit une amende de 20 €. Prévenu 48 h ou plus à l'avance, pas de frais. Le moyen utilisé pour prévenir (en présentiel, WhatsApp, message, appel, e-mail) est noté pour chaque dossier. Les boutons à droite font avancer chaque dossier : facturer, marquer payée, ou excuser le patient.</div>
-</div>
-<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
-<span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; margin-right:4px">Filtrer</span>
-<sc-for list="{{ffPills}}" as="p" hint-placeholder-count="4">
-<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
-</sc-for>
+<h2 style="margin:0 0 4px; font-size:22px; font-family:'Fraunces',Georgia,serif; font-weight:600">Rendez-vous manqués</h2>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">Montant de démonstration : 20 € si le patient n'a pas prévenu au moins 48 h avant. Prévenu 48 h ou plus à l'avance : sans frais. Changez l'état dans la colonne de droite (à facturer, facturée, payée, excusée) : les montants se recalculent.</div>
 </div>
 <div style="overflow-x:auto">
 <table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1040px">
 <thead>
 <tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
-<th style="padding:8px 8px 8px 12px">Rendez-vous</th><th style="padding:8px">Dossier et naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Prévenu ? Comment ?</th><th style="padding:8px">Délai</th><th style="padding:8px; text-align:right">Amende</th><th style="padding:8px">Statut</th><th style="padding:8px">Action</th>
+<th style="padding:8px 8px 8px 12px">Rendez-vous</th><th style="padding:8px">Dossier</th><th style="padding:8px">Naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Prévenu par</th><th style="padding:8px">Préavis</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">État</th>
 </tr>
 </thead>
 <tbody>
-<sc-for list="{{fines}}" as="f" hint-placeholder-count="7">
+<sc-for list="{{fines}}" as="f" hint-placeholder-count="9">
 <tr style="border-top:1px solid #E7EDEB">
-<td style="padding:12px 8px 12px 12px">{{f.when}}</td>
-<td style="padding:12px 8px; font-weight:700">{{f.patient}}</td>
+<td style="padding:12px 8px 12px 12px; white-space:nowrap">{{f.when}}</td>
+<td style="padding:12px 8px; font-weight:700">{{f.doss}}</td>
+<td style="padding:12px 8px">{{f.dob}}</td>
 <td style="padding:12px 8px">{{f.dentist}}</td>
 <td style="padding:12px 8px"><span style="{{f.chChip}}">{{f.chLabel}}</span></td>
 <td style="padding:12px 8px"><span style="{{f.delayChip}}">{{f.delayLabel}}</span></td>
 <td style="padding:12px 8px; text-align:right; font-weight:700">{{f.amount}}</td>
-<td style="padding:12px 8px"><span style="{{f.chip}}">{{f.status}}</span></td>
-<td style="padding:8px">
-<div style="display:flex; flex-wrap:wrap; gap:8px">
-<button onClick="{{f.primary}}" style="{{f.primaryStyle}}">{{f.primaryLabel}}</button>
-<button onClick="{{f.secondary}}" style="{{f.secondaryStyle}}">{{f.secondaryLabel}}</button>
-</div>
-</td>
+<td style="padding:8px"><select onChange="{{f.setSt}}" aria-label="État" style="{{f.stStyle}}"><sc-for list="{{f.stOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></td>
 </tr>
 </sc-for>
 </tbody>
 </table>
 </div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">À confirmer avec ton frère : le montant des frais quand le patient prévient moins de 48 h avant (ici 20 €, comme sans prévenir), si un seul moyen de prévenir fait foi (par exemple un message écrit), et comment les patients sont informés de cette règle.</div>
+<div style="font-size:13px; color:#4A5B57">{{fineFoot}}</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Il s'agit d'une indemnité envisagée, pas d'une amende publique. À confirmer avec votre frère : le montant quand le patient prévient moins de 48 h avant, le moyen de prévenir qui fait foi (par exemple un message écrit) et la façon dont les patients sont informés de la règle.</div>
 </section>
 </sc-if>
 
 <sc-if value="{{tabQuotes}}" hint-placeholder-val="{{ false }}">
-<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px">
 <sc-for list="{{qkpis}}" as="k" hint-placeholder-count="4">
-<div style="{{k.style}}"><div style="font-size:13px; font-weight:500; color:#4A5B57">{{k.label}}</div><div style="font-size:30px; font-weight:700; line-height:1.1; margin-top:6px">{{k.value}}</div><div style="font-size:13px; color:#4A5B57; margin-top:6px">{{k.note}}</div></div>
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:18px 20px"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="{{k.vStyle}}">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
 </sc-for>
 </section>
+
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center">
+<label style="display:flex; align-items:center; gap:10px; font-size:14px">Statut<select onChange="{{setQs}}" style="{{selStyle}}"><sc-for list="{{qsOpts}}" as="o" hint-placeholder-count="5"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<label style="display:flex; align-items:center; gap:10px; font-size:14px">Praticien<select onChange="{{setQp}}" style="{{selStyle}}"><sc-for list="{{qpOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
+<input type="search" value="{{qq}}" onInput="{{setQq}}" placeholder="Dossier, référence ou soin" aria-label="Rechercher un devis" style="{{searchStyle}}">
+<button type="button" onClick="{{quoteCsv}}" style="{{btnMain}}">Exporter CSV</button>
+<button type="button" onClick="{{quoteReset}}" style="{{btnSide}}">Réinitialiser</button>
+</div>
+
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div>
+<h2 style="margin:0 0 4px; font-size:22px; font-family:'Fraunces',Georgia,serif; font-weight:600">Devis de soins</h2>
+<div style="font-size:13px; color:#4A5B57; line-height:1.5">Changez le statut d'un devis dans la colonne de droite : les indicateurs et le tableau par praticien se recalculent. Un devis proposé ou en attente depuis 7 jours ou plus est signalé « à relancer ».</div>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%; border-collapse:collapse; font-size:14px; min-width:1040px">
+<thead>
+<tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em">
+<th style="padding:8px 8px 8px 12px">Référence</th><th style="padding:8px">Dossier</th><th style="padding:8px">Naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Soin</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">Date</th><th style="padding:8px">Statut</th><th style="padding:8px">Suivi</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{qlist}}" as="r" hint-placeholder-count="10">
+<tr style="border-top:1px solid #E7EDEB">
+<td style="padding:12px 8px 12px 12px; white-space:nowrap">{{r.ref}}</td>
+<td style="padding:12px 8px; font-weight:700">{{r.doss}}</td>
+<td style="padding:12px 8px">{{r.dob}}</td>
+<td style="padding:12px 8px">{{r.dentist}}</td>
+<td style="padding:12px 8px">{{r.label}}</td>
+<td style="padding:12px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.amount}}</td>
+<td style="padding:12px 8px; white-space:nowrap">{{r.when}}</td>
+<td style="padding:8px"><select onChange="{{r.setSt}}" aria-label="Statut du devis" style="{{r.stStyle}}"><sc-for list="{{r.stOpts}}" as="o" hint-placeholder-count="4"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></td>
+<td style="padding:12px 8px"><span style="{{r.followChip}}">{{r.follow}}</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; font-size:13px; color:#4A5B57"><span>{{quoteFoot}}</span><div style="display:flex; gap:8px"><button type="button" onClick="{{qPrev}}" style="{{qPrevStyle}}">Précédent</button><button type="button" onClick="{{qNext}}" style="{{qNextStyle}}">Suivant</button></div></div>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
 <h2 style="margin:0; font-size:18px">Devis par praticien</h2>
 <div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
-<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px">Praticien</th><th style="padding:8px; text-align:right">Présentés</th><th style="padding:8px; text-align:right">Acceptés</th><th style="padding:8px; text-align:right">En attente</th><th style="padding:8px; text-align:right">Refusés</th><th style="padding:8px; text-align:right">Taux</th><th style="padding:8px; text-align:right">Valeur en attente</th></tr></thead>
+<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px">Praticien</th><th style="padding:8px; text-align:right">Devis</th><th style="padding:8px; text-align:right">Acceptés</th><th style="padding:8px; text-align:right">Proposés ou en attente</th><th style="padding:8px; text-align:right">Refusés</th><th style="padding:8px; text-align:right">Taux</th><th style="padding:8px; text-align:right">Valeur à relancer</th></tr></thead>
 <tbody>
 <sc-for list="{{qrows}}" as="r" hint-placeholder-count="7">
 <tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px"><b>{{r.name}}</b></td><td style="padding:10px 8px; text-align:right">{{r.presented}}</td><td style="padding:10px 8px; text-align:right">{{r.accepted}}</td><td style="padding:10px 8px; text-align:right">{{r.pending}}</td><td style="padding:10px 8px; text-align:right">{{r.refused}}</td><td style="padding:10px 8px; text-align:right; font-weight:700">{{r.rate}}</td><td style="padding:10px 8px; text-align:right">{{r.val}}</td></tr>
 </sc-for>
 </tbody></table></div>
-</section>
-<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:12px">
-<h2 style="margin:0; font-size:18px">Devis à relancer ou refusés</h2>
-<div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:760px">
-<thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px">Dossier et naissance</th><th style="padding:8px">Praticien</th><th style="padding:8px">Travail proposé</th><th style="padding:8px">Date</th><th style="padding:8px; text-align:right">Montant</th><th style="padding:8px">Statut</th></tr></thead>
-<tbody>
-<sc-for list="{{qlist}}" as="r" hint-placeholder-count="10">
-<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px; font-weight:700">{{r.patient}}</td><td style="padding:10px 8px">{{r.dentist}}</td><td style="padding:10px 8px">{{r.label}}</td><td style="padding:10px 8px">{{r.when}}</td><td style="padding:10px 8px; text-align:right; font-weight:700">{{r.amount}}</td><td style="padding:10px 8px"><span style="{{r.chip}}">{{r.status}}</span></td></tr>
-</sc-for>
-</tbody></table></div>
-<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">Un devis est accepté quand le patient signe ou verse un acompte. Les chiffres sont fictifs. Un devis en attente depuis plus de 30 jours mérite un appel.</div>
+<div style="font-size:13px; color:#4A5B57; background:#F3F6F5; border-radius:10px; padding:12px 14px; line-height:1.5">{{qMonth}} Un devis est accepté quand le patient signe ou verse un acompte. Les devis ne sont ajoutés aux honoraires qu'une fois les soins réalisés.</div>
 </section>
 </sc-if>
+
 
 <footer style="font-size:13px; color:#4A5B57; line-height:1.5">Maquette interactive : tous les patients, montants et dates sont fictifs.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2300}}'>
 class Component extends DCLogic {
-  state = { tab: 'pay', pf: 'all', ff: 'all', sel: -1, fs: ['À facturer', 'Facturée', 'À facturer', 'Payée', 'Facturée', 'À facturer', 'Sans frais', 'Sans frais', 'Sans frais'] };
+  state = { tab: 'pay', pm: 'all', pq: '', sel: -1, pp: null, fs: null, qo: null, fk: 'all', fe: 'all', fq: '', qs: 'all', qp: -1, qq: '', msg: '', ok: true };
 
   renderVals() {
     const S = this.state;
@@ -343,47 +367,95 @@ class Component extends DCLogic {
     const suppN = raw.filter((r) => r.supp).length;
     const suphSum = raw.reduce((a, r) => a + r.suph, 0); const suphN = raw.filter((r) => r.suph > 0).length;
     const today = new Date(2026, 9, 17);
-    const daysSince = (r) => { const p = r.d.split('/'); return Math.round((today - new Date(2026, Number(p[1]) - 1, Number(p[0]))) / 86400000); };
-    const rest = (r) => r.mode === 'unpaid' ? r.total : (r.mode === 'plan' ? r.total - r.done * (r.total / r.n) : 0);
+    const pad2 = (n) => (n < 10 ? '0' : '') + n;
+    const fdate = (dt) => pad2(dt.getDate()) + '/' + pad2(dt.getMonth() + 1) + '/' + dt.getFullYear();
+    const dOf = (r) => { const p = r.d.split('/'); return new Date(2026, Number(p[1]) - 1, Number(p[0])); };
+    const daysSince = (r) => Math.round((today - dOf(r)) / 86400000);
+    const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return isNaN(x) ? 0 : x; };
+    const ls = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } };
+    const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+    const csvDl = (name, lines, n, what) => {
+      const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const csv = '﻿' + lines.map((l) => l.map(cell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
+        if (dl) { return dl.save({ filename: name, data: csv }); }
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); return true;
+      }).then(() => setState({ msg: n + ' ' + what + ' exportés.', ok: true }))
+        .catch((e) => setState({ msg: e && e.code === 'declined' ? 'Export annulé.' : 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
+    };
+    const money = (n) => String(Math.round(n * 100) / 100).replace('.', ',');
+    const selStyle = 'min-height:44px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 34px 0 14px; font:inherit; font-size:14px; background:#fff; color:#14201D; cursor:pointer;';
+    const searchStyle = 'min-height:44px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:14px; background:#fff; color:#14201D; flex:1 1 220px; max-width:340px;';
+    const cellSel = 'min-height:40px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 28px 0 10px; font:inherit; font-size:14px; background:#fff; color:#14201D; cursor:pointer; ';
+    const cellInput = 'width:96px; min-height:40px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 10px; font:inherit; font-size:14px; font-weight:700; font-variant-numeric:tabular-nums;';
+    const btnMain = 'min-height:44px; box-sizing:border-box; border:0; border-radius:12px; padding:0 18px; font-size:14px; font-weight:700; background:#0B3B36; color:#fff; cursor:pointer;';
+    const btnSide = 'min-height:44px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 16px; font-size:14px; font-weight:600; background:#fff; color:#14201D; cursor:pointer;';
+    const vStyle = (c) => 'font-size:clamp(20px, 5.4vw, 28px); white-space:nowrap; font-weight:700; line-height:1.15; margin-top:8px; color:' + (c || '#0B3B36') + '; font-variant-numeric:tabular-nums; letter-spacing:-0.02em;';
+    const opts = (list, cur) => list.map((x) => ({ v: x[0], l: x[1], sel: cur === x[0] }));
+    const has = (q, arr) => !q || arr.join(' ').toLowerCase().indexOf(q.toLowerCase().trim()) >= 0;
 
-    const sums = { cb: 0, cash: 0, planRest: 0, planPaid: 0, planN: 0, unpaid: 0, cbN: 0, cashN: 0, unpaidN: 0 };
+    // ---------- Onglet 1 : paiements (modifiables, enregistrés dans lk-patpay) ----------
+    const PP = S.pp || ls('lk-patpay', {});
+    const savePP = (o) => { lsSet('lk-patpay', o); setState({ pp: o }); };
     raw.forEach((r) => {
-      if (r.mode === 'cb') { sums.cb += r.total; sums.cbN += 1; }
-      if (r.mode === 'cash') { sums.cash += r.total; sums.cashN += 1; }
-      if (r.mode === 'plan') { sums.planRest += rest(r); sums.planPaid += r.done * (r.total / r.n); sums.planN += 1; }
-      if (r.mode === 'unpaid') { sums.unpaid += r.total; sums.unpaidN += 1; }
+      const o = PP[r.id] || {};
+      if (o.mode) { r.mode = o.mode; }
+      if (r.mode === 'plan' && !r.n) { r.n = 6; r.done = 0; }
+      const def = (r.mode === 'cb' || r.mode === 'cash' || r.mode === 'zero') ? r.total : (r.mode === 'plan' ? Math.round(r.done * r.total / r.n * 100) / 100 : 0);
+      r.recu = o.recu != null ? Math.min(r.total, Math.max(0, o.recu)) : def;
+      if (r.mode === 'plan') { r.done = Math.min(r.n, Math.floor(r.recu / (r.total / r.n) + 0.001)); }
+      r.solde = Math.round((r.total - r.recu) * 100) / 100;
+      if (r.solde < 0.005) { r.dueD = null; }
+      else if (r.mode === 'plan') { const s = dOf(r); r.dueD = new Date(s.getFullYear(), s.getMonth() + r.done, s.getDate()); }
+      else { const s = dOf(r); r.dueD = new Date(s.getFullYear(), s.getMonth(), s.getDate() + 30); }
+      r.late = !!r.dueD && r.dueD < today;
     });
+    const rest = (r) => r.solde;
+    const MODES = [['cb', 'Carte bancaire'], ['cash', 'Liquide'], ['plan', 'Étalement'], ['unpaid', 'Non payé'], ['zero', 'Rien à payer']];
+    const ML = {}; MODES.forEach((m) => { ML[m[0]] = m[1]; });
+    const pm = S.pm || 'all'; const pq = S.pq || '';
+    const shown = raw.filter((r) => (pm === 'all' || r.mode === pm) && has(pq, [r.ini, r.dob, r.dentist, r.label]));
+    const sTot = shown.reduce((a, r) => a + r.total, 0); const sRec = shown.reduce((a, r) => a + r.recu, 0); const sSol = shown.reduce((a, r) => a + r.solde, 0);
+    const plans = shown.filter((r) => r.mode === 'plan' && r.solde > 0.005);
+    const lateN = shown.filter((r) => r.late).length;
     const kpis = [
-      { label: 'Payé par carte bancaire', value: eur(sums.cb), note: sums.cbN + ' patients', style: tile('#2F6DB5') },
-      { label: 'Payé en liquide', value: eur(sums.cash), note: sums.cashN + ' patients', style: tile('#2E8B57') },
-      { label: 'Étalement : reste à recevoir', value: eur(sums.planRest), note: sums.planN + ' plans, ' + eur(sums.planPaid) + ' déjà reçus', style: tile('#6B4BC0') },
-      { label: 'Pas encore payé', value: eur(sums.unpaid), note: sums.unpaidN + ' patients à relancer', style: tile('#B42318') },
-      { label: 'Suppléments week-end et jours fériés', value: eur(suppSum), note: suppN + ' prestations à +50 € incluses', style: tile('#B45309') },
-      { label: 'Suppléments d\'honoraires', value: eur(suphSum), note: suphN + ' prestations du dentiste non conventionné, à charge du patient (la mutuelle rembourse sur le tarif INAMI)', style: tile('#8A4B08') },
-      { label: 'Part des mutuelles (INAMI)', value: eur(intervSum), note: 'à recevoir sous 1 à 1,5 mois', style: tile('#0F766E') }
+      { label: 'Échantillon facturé', value: eur(sTot), note: shown.length + ' dossiers · part patient', vStyle: vStyle() },
+      { label: 'Encaissé', value: eur(sRec), note: sTot ? Math.round(sRec / sTot * 100) + ' % du facturé' : '—', vStyle: vStyle('#0B6B3A') },
+      { label: 'Solde à percevoir', value: eur(sSol), note: shown.filter((r) => r.solde > 0.005).length + ' dossiers · ' + lateN + ' en retard', vStyle: vStyle(sSol > 0 ? '#A3231A' : '#0B3B36') },
+      { label: 'Échéanciers actifs', value: String(plans.length), note: eur(plans.reduce((a, r) => a + r.solde, 0)) + ' restant à recevoir', vStyle: vStyle('#4B2F96') }
     ];
-
-    const counts = { all: raw.length, cb: sums.cbN, cash: sums.cashN, plan: sums.planN, unpaid: sums.unpaidN };
-    const pfDefs = [['all', 'Tous'], ['cb', 'Carte'], ['cash', 'Liquide'], ['plan', 'Étalement'], ['unpaid', 'Pas payé']];
-    const pfPills = pfDefs.map((p) => ({ label: p[1] + ' (' + counts[p[0]] + ')', style: S.pf === p[0] ? pillOn : pillOff, pick: () => setState({ pf: p[0], sel: -1 }) }));
-
-    const shown = raw.filter((r) => S.pf === 'all' || r.mode === S.pf);
+    const setMode = (r) => (e) => {
+      const v = e.target.value; const o = Object.assign({}, PP); const cur = Object.assign({}, o[r.id] || {}); cur.mode = v;
+      if (v === 'cb' || v === 'cash' || v === 'zero') { cur.recu = r.total; } else if (v === 'unpaid') { cur.recu = 0; } else if (r.mode !== 'plan') { cur.recu = 0; }
+      o[r.id] = cur; savePP(o);
+    };
+    const setRecu = (r) => (e) => {
+      const o = Object.assign({}, PP); const cur = Object.assign({}, o[r.id] || {}); const v = Math.min(r.total, Math.max(0, num(e.target.value)));
+      cur.recu = Math.round(v * 100) / 100;
+      if (r.total < 0.005) { return; }
+      if (r.mode === 'unpaid') { cur.mode = v >= r.total - 0.005 ? 'cb' : (v > 0 ? 'plan' : 'unpaid'); }
+      o[r.id] = cur; savePP(o);
+    };
     const rows = shown.map((r) => {
-      const unpaid = r.mode === 'unpaid';
-      const note = r.mode === 'plan' ? (r.done + ' / ' + r.n + ' mensualités de ' + eur(r.total / r.n)) : (unpaid ? 'en retard de ' + daysSince(r) + ' jours' : (r.mode === 'zero' ? 'rien à payer' : 'reçu'));
       const sel = r.id === S.sel;
+      const note = r.mode === 'plan' ? (r.done + ' / ' + r.n + ' mensualités de ' + eur(r.total / r.n)) : (r.solde > 0.005 ? (r.late ? 'en retard' : 'à recevoir') : (r.mode === 'zero' ? 'pris en charge' : 'réglé'));
+      const bc = { cb: '#2F6DB5', cash: '#2E8B57', plan: '#6B4BC0', unpaid: '#B42318', zero: '#9AA9A5' }[r.mode];
       return {
-        date: r.d, patient: r.ini, pinfo: 'né(e) le ' + r.dob + ' · ' + r.age + ' ans', dentist: r.dentist, label: r.label, code: r.code, fee: eur(r.fee), interv: eur(r.interv), amount: eur(r.total),
-        suppLabel: (r.supp ? '+ 50 € ' + (hol.indexOf(r.d) >= 0 ? 'jour férié' : 'week-end') : '') + (r.supp && r.suph ? ' · ' : '') + (r.suph ? 'dont ' + eur(r.suph) + ' de supplément d\'honoraires' : ''),
-        suppStyle: (r.supp || r.suph) ? chipBase + ' background:#FDF0DC; color:#8A4B08; margin-top:4px;' : 'display:none;',
-        st: r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', stChip: 'display:inline-block; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; ' + (r.reg === 'bim' ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#E7EDEB; color:#33433F;'), mutuelle: r.mut + (r.reg === 'bim' ? ' · intervention majorée' : ''), mStatus: r.ms, mChip: mChips[r.ms],
-        payChip: chip(r.mode), payLabel: r.mode === 'plan' ? 'Étalement sur ' + r.n + ' mois' : M[r.mode].label, payNote: note,
-        rest: eur(rest(r)), restStyle: unpaid ? 'color:#A3231A;' : '',
-        trStyle: 'border-top:1px solid #E7EDEB; ' + (sel ? 'background:#E3F2EF;' : (unpaid ? 'background:#FFF4F2;' : '')),
-        lead: 'padding:12px 8px 12px 12px; border-left:6px solid ' + (unpaid ? '#B42318' : M[r.mode].bd) + ';',
+        date: r.d, patient: r.ini, dob: r.dob, dentist: r.dentist.replace('Dr ', 'Dr\u00a0'), label: r.lines.map((l) => l.label).join('\n'), fee: eur(r.fee), interv: eur(r.interv), amount: eur(r.total),
+        st: r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', stChip: chipBase + (r.reg === 'bim' ? ' background:#E3F4EA; color:#0B6B3A;' : ' background:#E7EDEB; color:#33433F;'),
+        modeOpts: opts(MODES, r.mode), modeStyle: cellSel + 'border-left:4px solid ' + bc + ';', setMode: setMode(r), payNote: note,
+        recu: String(Math.round(r.recu * 100) / 100).replace('.', ','), feeNote: r.interv > 0 ? 'honoraires ' + eur(r.fee) + ' − mutuelle ' + eur(r.interv) : 'honoraires ' + eur(r.fee), setRecu: setRecu(r),
+        solde: eur(r.solde), soldeStyle: r.solde > 0.005 ? 'color:#A3231A;' : 'color:#4A5B57;',
+        due: r.dueD ? fdate(r.dueD) : 'Réglé', dueStyle: r.late ? 'color:#A3231A; font-weight:700;' : (r.dueD ? '' : 'color:#0B6B3A;'),
+        supp: eur(r.supp + r.suph), suppNote: (r.supp ? (hol.indexOf(r.d) >= 0 ? 'jour férié' : 'week-end') : '') + (r.supp && r.suph ? ' · ' : '') + (r.suph ? 'honoraires' : ''),
+        trStyle: 'border-top:1px solid #E7EDEB; ' + (sel ? 'background:#E3F2EF;' : (r.late ? 'background:#FFF6F4;' : '')),
+        lead: 'padding:12px 8px 12px 12px; white-space:nowrap; border-left:5px solid ' + bc + ';',
         pick: () => setState({ sel: r.id })
       };
     });
+    const payCsv = () => csvDl('paiements-patients-octobre-2026.csv', [['Date', 'Dossier', 'Naissance', 'Statut', 'Praticien', 'Prestation', 'Codes INAMI', 'Honoraires', 'Mutuelle', 'Facturé patient', 'Mode', 'Reçu', 'Solde', 'Échéance', 'Supplément']].concat(shown.map((r) => [r.d + '/2026', r.ini, r.dob, r.reg === 'bim' ? 'BIM/VIPO' : 'Ordinaire', r.dentist, r.lines.map((l) => l.label).join(' + '), r.lines.map((l) => l.code).join(' + '), money(r.fee), money(r.interv), money(r.total), ML[r.mode], money(r.recu), money(r.solde), r.dueD ? fdate(r.dueD) : 'Réglé', money(r.supp + r.suph)])), shown.length, 'dossiers');
+    const nChanged = Object.keys(PP).length;
+    const payFoot = shown.length + ' dossiers affichés sur ' + raw.length + (nChanged ? ' · ' + nChanged + ' modifié(s), enregistré(s) dans ce navigateur' : ' · modifications enregistrées dans ce navigateur');
 
     const cur = raw.filter((r) => r.id === S.sel)[0];
     const showDetail = !!cur;
@@ -392,42 +464,49 @@ class Component extends DCLogic {
     const schedule = [];
     if (d.mode === 'plan') {
       for (let k = 0; k < d.n; k += 1) {
-        const mo = Number(startP[1]) - 1 + k;
-        const yr = 2026 + Math.floor(mo / 12);
-        const mm = (mo % 12) + 1;
-        const paidK = k < d.done;
-        schedule.push({
-          date: startP[0] + '/' + (mm < 10 ? '0' + mm : mm) + '/' + yr,
-          amount: eur(d.total / d.n),
-          status: paidK ? 'Payé' : (k === d.done ? 'Prochaine échéance' : 'À venir'),
-          style: 'border-radius:10px; padding:10px 12px; ' + (paidK ? 'background:#E3F4EA; color:#0B6B3A;' : (k === d.done ? 'background:#E9DEF7; color:#4B2F96; border:2px solid #CDB8EC;' : 'background:#F3F6F5; color:#4A5B57;'))
-        });
+        const mo = Number(startP[1]) - 1 + k; const yr = 2026 + Math.floor(mo / 12); const mm = (mo % 12) + 1; const paidK = k < d.done;
+        schedule.push({ date: startP[0] + '/' + pad2(mm) + '/' + yr, amount: eur(d.total / d.n), status: paidK ? 'Payé' : (k === d.done ? 'Prochaine échéance' : 'À venir'),
+          style: 'border-radius:10px; padding:10px 12px; ' + (paidK ? 'background:#E3F4EA; color:#0B6B3A;' : (k === d.done ? 'background:#E9DEF7; color:#4B2F96; border:2px solid #CDB8EC;' : 'background:#F3F6F5; color:#4A5B57;')) });
       }
     }
     const notes = {
       zero: 'Rien à payer : la mutuelle prend tout en charge.',
-      cb: 'Le patient a réglé la totalité par carte bancaire. Rien à relancer.',
-      cash: 'Le patient a réglé la totalité en liquide. Pense à inscrire le montant dans la caisse du jour.',
-      plan: 'Le patient paie en plusieurs fois. Reste à recevoir : ' + eur(rest(d)) + '.',
-      unpaid: 'Aucun paiement reçu, en retard de ' + daysSince(d) + ' jours. Proposer carte, liquide ou un étalement sur plusieurs mois.'
+      cb: d.solde > 0.005 ? 'Paiement par carte partiel : il reste ' + eur(d.solde) + ' à recevoir.' : 'Le patient a réglé la totalité par carte bancaire. Rien à relancer.',
+      cash: d.solde > 0.005 ? 'Paiement en liquide partiel : il reste ' + eur(d.solde) + ' à recevoir.' : 'Le patient a réglé la totalité en liquide. Pensez à inscrire le montant dans la caisse du jour.',
+      plan: 'Le patient paie en plusieurs fois. Reste à recevoir : ' + eur(d.solde) + '.',
+      unpaid: 'Aucun paiement reçu depuis ' + daysSince(d) + ' jours. Proposer carte, liquide ou un étalement sur plusieurs mois.'
     };
     const detail = {
       title: 'Dossier ' + d.ini + ', né(e) le ' + d.dob + ' (' + d.age + ' ans)', label: d.label, dentist: d.dentist, mutuelle: d.mut + ' · ' + d.ms + (d.reg === 'bim' ? ' · intervention majorée' : ''), amount: eur(d.total), code: d.lines.map((l) => l.code).join(' · '), fee: eur(d.fee), interv: eur(d.interv),
-      chip: chip(d.mode), chipLabel: d.mode === 'plan' ? 'Étalement sur ' + d.n + ' mois' : M[d.mode].label, note: notes[d.mode] + (d.supp ? ' Le montant comprend un supplément de 50 € (week-end ou jour férié).' : '') + (d.free ? ' Acte hors nomenclature INAMI : honoraires libres, rien n\'est remboursé.' : '') + (d.lines.length > 1 ? ' Plusieurs actes dans la même visite : les règles de cumul INAMI sont à vérifier.' : '') + ((!d.free && d.interv === 0) ? ' La mutuelle n\'intervient pas tant que le patient n\'est pas en ordre : il avance la totalité des honoraires.' : '')
+      chip: chip(d.mode), chipLabel: d.mode === 'plan' ? 'Étalement sur ' + d.n + ' mois' : M[d.mode].label,
+      note: notes[d.mode] + (d.supp ? ' Le montant comprend un supplément de 50 € (week-end ou jour férié).' : '') + (d.suph ? ' Dont ' + eur(d.suph) + ' de supplément d\'honoraires (dentiste non conventionné), à charge du patient.' : '') + (d.free ? ' Acte hors nomenclature INAMI : honoraires libres, rien n\'est remboursé.' : '')
     };
     const detailStyle = 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + (d.mode === 'unpaid' ? '#B42318' : M[d.mode].fg) + '; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px;';
+    const bk = [['0 à 30 jours', 0, 30, '#2E8B57'], ['31 à 60 jours', 31, 60, '#B45309'], ['61 à 90 jours', 61, 90, '#C2410C'], ['Plus de 90 jours', 91, 9999, '#B42318']];
+    const aging = bk.map((b) => { let tot = 0; let n = 0; raw.forEach((r) => { const dd = daysSince(r); if (r.solde > 0.005 && dd >= b[1] && dd <= b[2]) { tot += r.solde; n++; } }); return { label: b[0], value: eur(tot), note: n + ' dossier' + (n > 1 ? 's' : ''), style: tile(b[3]) }; })
+      .concat([
+        { label: 'Part des mutuelles (INAMI)', value: eur(intervSum), note: 'à recevoir sous 1 à 1,5 mois', style: tile('#0F766E') },
+        { label: 'Suppléments week-end et fériés', value: eur(suppSum), note: suppN + ' prestations à +50 €', style: tile('#B45309') },
+        { label: 'Suppléments d\'honoraires', value: eur(suphSum), note: suphN + ' prestations du dentiste non conventionné', style: tile('#8A4B08') }
+      ]);
 
+    // ---------- Onglet 2 : rendez-vous manqués (lk-rdv) ----------
     const F = [
       { when: 'Ven. 16/10, 10 h 30', patient: 'D-99064 · 14/02/1991', dentist: 'Dr Nabila Touil', ch: 'Aucun', h: 0 },
       { when: 'Jeu. 15/10, 14 h 00', patient: 'D-59895 · 03/07/1964', dentist: 'Dr Mohamed Bochouari', ch: 'Message', h: 5 },
       { when: 'Mer. 14/10, 16 h 30', patient: 'D-97599 · 22/11/2005', dentist: 'Dr Aya Turkieh', ch: 'Aucun', h: 0 },
       { when: 'Mar. 13/10, 11 h 00', patient: 'D-46862 · 18/04/1980', dentist: 'Dr Abde-Ssadic Bochouari', ch: 'WhatsApp', h: 20 },
       { when: 'Lun. 12/10, 15 h 30', patient: 'D-63860 · 09/09/1996', dentist: 'Dr Abde-Ssadic Bochouari', ch: 'Appel', h: 30 },
-      { when: 'Dim. 11/10, 17 h 00', patient: 'D-81125 · 30/01/1973', dentist: 'Dr Daoud Bouchouari', ch: 'Aucun', h: 0 },
-      { when: 'Lun. 05/10, 12 h 00', patient: 'D-51483 · 12/06/1987', dentist: 'Dr Aya Turkieh', ch: 'E-mail', h: 72 },
+      { when: 'Sam. 10/10, 11 h 00', patient: 'D-81125 · 30/01/1973', dentist: 'Dr Daoud Bouchouari', ch: 'Aucun', h: 0 },
+      { when: 'Jeu. 08/10, 10 h 00', patient: 'D-29691 · 07/10/1969', dentist: 'Dr Daoud Bouchouari', ch: 'WhatsApp', h: 52 },
       { when: 'Mar. 06/10, 09 h 30', patient: 'D-99057 · 25/03/2012', dentist: 'Dr Abde-Ssadic Bochouari', ch: 'Présentiel', h: 96 },
-      { when: 'Jeu. 08/10, 10 h 00', patient: 'D-29691 · 07/10/1969', dentist: 'Dr Daoud Bouchouari', ch: 'WhatsApp', h: 52 }
+      { when: 'Lun. 05/10, 12 h 00', patient: 'D-51483 · 12/06/1987', dentist: 'Dr Aya Turkieh', ch: 'E-mail', h: 72 },
+      { when: 'Ven. 02/10, 15 h 00', patient: 'D-38214 · 19/05/1983', dentist: 'Dr Julien Cabaz', ch: 'Message', h: 10 }
     ];
+    const FS0 = ['À facturer', 'Facturée', 'À facturer', 'Payée', 'Facturée', 'À facturer', 'Sans frais', 'Sans frais', 'Sans frais', 'Excusée'];
+    const fsSaved = S.fs || ls('lk-rdv', null);
+    const FS = F.map((f, i) => { const v = fsSaved && fsSaved[i]; return v === 'Annulée' ? 'Excusée' : (v || FS0[i]); });
+    const saveFS = (a) => { lsSet('lk-rdv', a); setState({ fs: a }); };
     const chMap = {
       'Aucun': { l: 'Pas prévenu', bg: '#FBE7E5', fg: '#A3231A' },
       'Présentiel': { l: 'En présentiel', bg: '#E3F4EA', fg: '#0B6B3A' },
@@ -436,81 +515,112 @@ class Component extends DCLogic {
       'Appel': { l: 'Appel téléphonique', bg: '#D6E6FA', fg: '#1B3F73' },
       'E-mail': { l: 'E-mail', bg: '#E9DEF7', fg: '#4B2F96' }
     };
-    const fChips = {
-      'À facturer': chipBase + ' background:#FDF0DC; color:#8A4B08;',
-      'Facturée': chipBase + ' background:#D6E6FA; color:#1B3F73;',
-      'Payée': chipBase + ' background:#E3F4EA; color:#0B6B3A;',
-      'Annulée': chipBase + ' background:#E7EDEB; color:#33433F;',
-      'Sans frais': chipBase + ' background:#E7EDEB; color:#33433F;'
-    };
+    const FST = [['Sans frais', 'Sans frais'], ['À facturer', 'À facturer'], ['Facturée', 'Facturée'], ['Payée', 'Payée'], ['Excusée', 'Excusée']];
+    const fCol = { 'Sans frais': '#9AA9A5', 'À facturer': '#B45309', 'Facturée': '#2F6DB5', 'Payée': '#2E8B57', 'Excusée': '#6B7B77' };
+    const due = (st) => st === 'À facturer' || st === 'Facturée' || st === 'Payée';
     const kindOf = (f) => f.ch === 'Aucun' ? 'none' : (f.h < 48 ? 'late' : 'ok');
-    const btn = 'min-height:44px; box-sizing:border-box; border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer; ';
-    const btnMain = btn + 'background:#14201D; color:#fff; border:1px solid #14201D;';
-    const btnSide = btn + 'background:#fff; color:#14201D; border:1px solid #C9D6D2;';
-    const btnHide = 'display:none;';
-    const setFine = (i, v) => () => { const c = S.fs.slice(); c[i] = v; setState({ fs: c }); };
-    const allFines = F.map((f, i) => {
-      const st = S.fs[i];
-      const k = kindOf(f);
-      const m = chMap[f.ch];
-      const free = st === 'Annulée' || st === 'Sans frais';
-      const o = {
-        kind: k, when: f.when, patient: f.patient, dentist: f.dentist, amount: free ? '0 €' : '20 €', status: st, chip: fChips[st],
+    const fk = S.fk || 'all'; const fe = S.fe || 'all'; const fq = S.fq || '';
+    const allF = F.map((f, i) => {
+      const st = FS[i]; const k = kindOf(f); const m = chMap[f.ch]; const pp = f.patient.split(' · ');
+      return {
+        i: i, kind: k, st: st, when: f.when, doss: pp[0], dob: pp[1], dentist: f.dentist, amount: due(st) ? '20 €' : '0 €',
         chLabel: m.l, chChip: chipBase + ' background:' + m.bg + '; color:' + m.fg + ';',
-        delayLabel: k === 'none' ? 'Aucun préavis' : (f.h + ' h avant' + (k === 'late' ? ' · moins de 48 h' : ' · 48 h ou plus')),
-        delayChip: chipBase + (k === 'ok' ? ' background:#E3F4EA; color:#0B6B3A;' : (k === 'late' ? ' background:#FDF0DC; color:#8A4B08;' : ' background:#FBE7E5; color:#A3231A;'))
+        delayLabel: k === 'none' ? 'Aucun préavis' : (f.h + ' h avant' + (k === 'late' ? ' · < 48 h' : ' · ≥ 48 h')),
+        delayChip: chipBase + (k === 'ok' ? ' background:#E3F4EA; color:#0B6B3A;' : (k === 'late' ? ' background:#FDF0DC; color:#8A4B08;' : ' background:#FBE7E5; color:#A3231A;')),
+        stOpts: opts(FST, st), stStyle: cellSel + 'border-left:4px solid ' + fCol[st] + ';',
+        setSt: (e) => { const a = FS.slice(); a[i] = e.target.value; saveFS(a); }
       };
-      if (st === 'À facturer') { o.primaryLabel = 'Facturer 20 €'; o.primaryStyle = btnMain; o.primary = setFine(i, 'Facturée'); o.secondaryLabel = 'Excuser'; o.secondaryStyle = btnSide; o.secondary = setFine(i, 'Annulée'); }
-      else if (st === 'Facturée') { o.primaryLabel = 'Marquer payée'; o.primaryStyle = btnMain; o.primary = setFine(i, 'Payée'); o.secondaryLabel = 'Excuser'; o.secondaryStyle = btnSide; o.secondary = setFine(i, 'Annulée'); }
-      else if (st === 'Payée') { o.primaryLabel = 'Annuler le paiement'; o.primaryStyle = btnSide; o.primary = setFine(i, 'Facturée'); o.secondaryLabel = ''; o.secondaryStyle = btnHide; o.secondary = () => {}; }
-      else if (st === 'Sans frais') { o.primaryLabel = 'Facturer quand même'; o.primaryStyle = btnSide; o.primary = setFine(i, 'À facturer'); o.secondaryLabel = ''; o.secondaryStyle = btnHide; o.secondary = () => {}; }
-      else { o.primaryLabel = 'Rétablir l\'amende'; o.primaryStyle = btnSide; o.primary = setFine(i, 'À facturer'); o.secondaryLabel = ''; o.secondaryStyle = btnHide; o.secondary = () => {}; }
-      return o;
     });
-    const kc = { none: 0, late: 0, ok: 0 };
-    allFines.forEach((o) => { kc[o.kind] += 1; });
-    const ffDefs = [['all', 'Tous (' + allFines.length + ')'], ['none', 'Pas prévenu (' + kc.none + ')'], ['late', 'Prévenu à moins de 48 h (' + kc.late + ')'], ['ok', 'Prévenu 48 h ou plus, sans frais (' + kc.ok + ')']];
-    const ffPills = ffDefs.map((p) => ({ label: p[1], style: S.ff === p[0] ? pillOn : pillOff, pick: () => setState({ ff: p[0] }) }));
-    const fines = allFines.filter((o) => S.ff === 'all' || o.kind === S.ff);
-    const nOf = (v) => S.fs.filter((x) => x === v).length;
+    const fines = allF.filter((o) => (fk === 'all' || o.kind === fk) && (fe === 'all' || o.st === fe) && has(fq, [o.doss, o.dob, o.dentist]));
+    const nSt = (v) => FS.filter((x) => x === v).length;
+    const dueN = FS.filter(due).length;
     const LK = window.LAEKEN;
-    const pastV = LK ? LK.visits.filter((v) => v.d >= 5 && v.d <= 16).length : 500;
+    const pastV = LK ? LK.visits.filter((v) => v.d >= 2 && v.d <= 16).length : 500;
     const fkpis = [
-      { label: 'À facturer', value: eur(nOf('À facturer') * 20), note: nOf('À facturer') + ' rendez-vous manqués', style: tile('#B45309') },
-      { label: 'Facturées, pas encore payées', value: eur(nOf('Facturée') * 20), note: nOf('Facturée') + ' amendes', style: tile('#2F6DB5') },
-      { label: 'Payées', value: eur(nOf('Payée') * 20), note: nOf('Payée') + ' amendes encaissées', style: tile('#2E8B57') },
-      { label: 'Taux de rendez-vous manqués', value: (Math.round(F.length / (pastV + F.length) * 1000) / 10).toString().replace('.', ',') + ' %', note: F.length + ' manqués sur ' + (pastV + F.length) + ' rendez-vous (5 au 16 octobre). Repère étranger : moins de 8 %', style: tile('#B42318') },
-      { label: 'Sans frais ou excusés', value: String(nOf('Annulée') + nOf('Sans frais')), note: 'prévenus 48 h avant ou excusés', style: tile('#4A5B57') }
+      { label: 'Rendez-vous manqués', value: String(F.length), note: (Math.round(F.length / (pastV + F.length) * 1000) / 10).toString().replace('.', ',') + ' % des rendez-vous (2 au 16 octobre)', vStyle: vStyle() },
+      { label: 'Indemnités dues', value: eur(dueN * 20), note: nSt('À facturer') + ' à facturer · ' + nSt('Facturée') + ' facturées', vStyle: vStyle('#B45309') },
+      { label: 'Montant payé', value: eur(nSt('Payée') * 20), note: nSt('Payée') + ' indemnité(s) encaissée(s)', vStyle: vStyle('#0B6B3A') },
+      { label: 'Dossiers excusés', value: String(nSt('Excusée')), note: nSt('Sans frais') + ' sans frais (prévenus à temps)', vStyle: vStyle('#4A5B57') }
     ];
+    const fineCsv = () => csvDl('rendez-vous-manques-octobre-2026.csv', [['Rendez-vous', 'Dossier', 'Naissance', 'Praticien', 'Prévenu par', 'Préavis', 'Montant', 'État']].concat(fines.map((o) => [o.when, o.doss, o.dob, o.dentist, o.chLabel, o.delayLabel, o.amount.replace(' €', ''), o.st])), fines.length, 'rendez-vous');
+    const fineFoot = fines.length + ' rendez-vous affichés sur ' + F.length + ' · états enregistrés dans ce navigateur';
 
-    const bk = [['0 à 30 jours', 0, 30, '#2E8B57'], ['31 à 60 jours', 31, 60, '#B45309'], ['61 à 90 jours', 61, 90, '#C2410C'], ['Plus de 90 jours', 91, 9999, '#B42318']];
-    const aging = bk.map((b) => { let tot = 0; let n = 0; raw.forEach((r) => { if (r.mode !== 'unpaid' && r.mode !== 'plan') return; const dd = daysSince(r); const rs = rest(r); if (rs > 0 && dd >= b[1] && dd <= b[2]) { tot += rs; n++; } }); return { label: b[0], value: eur(tot), note: n + ' dossier' + (n > 1 ? 's' : ''), style: tile(b[3]) }; });
-    const qc = LK ? LK.quotes : null; const qp = (x) => (Math.round(x * 1000) / 10).toString().replace('.', ',') + ' %';
-    const qkpis = qc ? [
-      { label: 'Taux d\'acceptation des devis', value: qp(qc.total.rate), note: qc.total.accepted + ' acceptés sur ' + qc.total.presented + ' présentés', style: tile('#2E8B57') },
-      { label: 'Devis en attente', value: String(qc.total.pending), note: eur(qc.total.valPend) + ' de travaux à relancer', style: tile('#B45309') },
-      { label: 'Devis refusés', value: String(qc.total.refused), note: 'sur ' + qc.total.presented + ' présentés', style: tile('#B42318') },
-      { label: 'Valeur acceptée', value: eur(Math.round(qc.byPr.reduce((a, x) => a + x.valAcc, 0))), note: 'travaux planifiés ou commencés', style: tile('#0F766E') }
-    ] : [];
-    const qrows = qc ? qc.byPr.map((x) => ({ name: x.name, presented: x.presented, accepted: x.accepted, pending: x.pending, refused: x.refused, rate: qp(x.rate), val: eur(x.valPend) })) : [];
-    const qlist = qc ? qc.list.map((x) => ({ patient: x.doss + ' · ' + x.dob, dentist: LK.PR[x.p].name, label: x.label, when: x.d + '/10', amount: eur(x.amount), status: x.status, chip: chipBase + (x.status === 'En attente' ? ' background:#FDF0DC; color:#8A4B08;' : ' background:#FBE7E5; color:#A3231A;') })) : [];
-    const tabBase = 'display:inline-flex; align-items:center; gap:10px; min-height:48px; box-sizing:border-box; border-radius:12px 12px 0 0; padding:10px 20px; font-size:15px; cursor:pointer; ';
-    const tabOn = tabBase + 'background:#fff; color:#14201D; border:1px solid #DCE5E2; border-bottom:4px solid #0F766E; font-weight:700;';
-    const tabOff = tabBase + 'background:#E7EDEB; color:#33433F; border:1px solid #DCE5E2; border-bottom:4px solid transparent; font-weight:500;';
-    const badgeOn = 'background:#0F766E; color:#fff; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700;';
-    const badgeOff = 'background:#fff; color:#33433F; border-radius:999px; padding:2px 10px; font-size:12px; font-weight:700;';
-    const toBill = nOf('À facturer');
-    const tabs = [
-      { label: 'Paiements des patients', badge: String(sums.unpaidN) + ' impayés', style: S.tab === 'pay' ? tabOn : tabOff, badgeStyle: S.tab === 'pay' ? badgeOn : badgeOff, pick: () => setState({ tab: 'pay' }) },
-      { label: 'Devis', badge: qc ? qc.total.pending + ' en attente' : '', style: S.tab === 'quotes' ? tabOn : tabOff, badgeStyle: S.tab === 'quotes' ? badgeOn : badgeOff, pick: () => setState({ tab: 'quotes' }) },
-      { label: 'Rendez-vous manqués · amende 20 €', badge: toBill + ' à facturer', style: S.tab === 'fines' ? tabOn : tabOff, badgeStyle: S.tab === 'fines' ? badgeOn : badgeOff, pick: () => setState({ tab: 'fines' }) }
+    // ---------- Onglet 3 : devis (lk-devis) ----------
+    const QST = [['Proposé', 'Proposé'], ['En attente', 'En attente'], ['Accepté', 'Accepté'], ['Refusé', 'Refusé']];
+    const qCol = { 'Proposé': '#2F6DB5', 'En attente': '#B45309', 'Accepté': '#2E8B57', 'Refusé': '#B42318' };
+    let QB = [];
+    if (LK) {
+      LK.quotes.list.forEach((x) => QB.push({ p: x.p, doss: x.doss, dob: x.dob, label: x.label, amount: x.amount, d: x.d, st: x.status }));
+      LK.PR.forEach((P, pi) => {
+        const seen = {}; const big = LK.rows.filter((r) => r.p === pi && r.fee >= 150 && !seen[r.doss] && (seen[r.doss] = 1));
+        big.slice(0, 3).forEach((r) => QB.push({ p: pi, doss: r.doss, dob: r.dob, label: r.work || r.label, amount: Math.round(r.fee / 10) * 10, d: r.d, st: 'Accepté' }));
+        if (big.length > 3) { const r = big[big.length - 1]; QB.push({ p: pi, doss: r.doss, dob: r.dob, label: r.work || r.label, amount: Math.round(r.fee / 10) * 10, d: Math.min(16, r.d), st: 'Proposé' }); }
+      });
+      QB.sort((a, b) => a.d - b.d || a.p - b.p);
+      QB.forEach((q, i) => { q.ref = 'DEV-2026-' + String(i + 1).padStart(3, '0'); });
+    }
+    const QO = S.qo || ls('lk-devis', {});
+    const saveQO = (o) => { lsSet('lk-devis', o); setState({ qo: o }); };
+    QB.forEach((q) => { if (QO[q.ref]) { q.st = QO[q.ref]; } });
+    const qs = S.qs || 'all'; const qpf = S.qp == null ? -1 : S.qp; const qq = S.qq || '';
+    const qShown = QB.filter((q) => (qs === 'all' || q.st === qs) && (qpf < 0 || q.p === qpf) && has(qq, [q.ref, q.doss, q.dob, q.label])).sort((a, b) => b.d - a.d || (a.ref < b.ref ? 1 : -1));
+    const qSum = (arr) => arr.reduce((a, q) => a + q.amount, 0);
+    const acc = qShown.filter((q) => q.st === 'Accepté'); const open = qShown.filter((q) => q.st === 'Proposé' || q.st === 'En attente'); const decided = qShown.filter((q) => q.st === 'Accepté' || q.st === 'Refusé');
+    const qkpis = [
+      { label: 'Devis présentés', value: String(qShown.length), note: 'registre d\'octobre 2026', vStyle: vStyle() },
+      { label: 'Valeur des devis', value: eur(qSum(qShown)), note: 'montant total proposé', vStyle: vStyle() },
+      { label: 'Devis acceptés', value: eur(qSum(acc)), note: acc.length + ' devis · ' + (decided.length ? Math.round(acc.length / decided.length * 100) + ' % des réponses' : '—'), vStyle: vStyle('#0B6B3A') },
+      { label: 'Devis en attente', value: String(open.length), note: eur(qSum(open)) + ' à relancer', vStyle: vStyle('#B45309') }
     ];
+    const QPER = 15; const qPages = Math.max(1, Math.ceil(qShown.length / QPER)); const qpg = Math.min(S.qpg || 0, qPages - 1);
+    const qlist = qShown.slice(qpg * QPER, qpg * QPER + QPER).map((q) => {
+      const age = 17 - q.d; const isOpen = q.st === 'Proposé' || q.st === 'En attente';
+      return {
+        ref: q.ref, doss: q.doss, dob: q.dob, dentist: LK.PR[q.p].name, label: q.label, amount: eur(q.amount), when: pad2(q.d) + '/10/2026',
+        stOpts: opts(QST, q.st), stStyle: cellSel + 'border-left:4px solid ' + qCol[q.st] + ';',
+        setSt: (e) => { const o = Object.assign({}, QO); o[q.ref] = e.target.value; saveQO(o); },
+        follow: isOpen ? (age >= 7 ? 'À relancer · ' + age + ' j' : 'Récent · ' + age + ' j') : (q.st === 'Accepté' ? 'À planifier' : 'Clos'),
+        followChip: chipBase + (isOpen ? (age >= 7 ? ' background:#FDF0DC; color:#8A4B08;' : ' background:#D6E6FA; color:#1B3F73;') : (q.st === 'Accepté' ? ' background:#E3F4EA; color:#0B6B3A;' : ' background:#E7EDEB; color:#33433F;'))
+      };
+    });
+    const qrows = LK ? LK.PR.map((P, pi) => {
+      const a = QB.filter((q) => q.p === pi); const ac = a.filter((q) => q.st === 'Accepté').length; const rf = a.filter((q) => q.st === 'Refusé').length; const op = a.filter((q) => q.st === 'Proposé' || q.st === 'En attente');
+      return { name: P.name, presented: a.length, accepted: ac, pending: op.length, refused: rf, rate: (ac + rf) ? Math.round(ac / (ac + rf) * 100) + ' %' : '—', val: eur(qSum(op)) };
+    }).filter((x) => x.presented > 0) : [];
+    const qc = LK ? LK.quotes.total : null;
+    const qMonth = qc ? 'Sur l\'ensemble du mois : ' + qc.accepted + ' devis acceptés sur ' + qc.presented + ' présentés (' + Math.round(qc.rate * 100) + ' %).' : '';
+    const quoteCsv = () => csvDl('devis-octobre-2026.csv', [['Référence', 'Dossier', 'Naissance', 'Praticien', 'Soin', 'Montant', 'Date', 'Statut']].concat(qShown.map((q) => [q.ref, q.doss, q.dob, LK.PR[q.p].name, q.label, money(q.amount), pad2(q.d) + '/10/2026', q.st])), qShown.length, 'devis');
+    const quoteFoot = (qShown.length ? 'Devis ' + (qpg * QPER + 1) + ' à ' + Math.min(qShown.length, qpg * QPER + QPER) + ' sur ' + qShown.length : 'Aucun devis') + (qShown.length < QB.length ? ' (filtrés parmi ' + QB.length + ')' : '') + ' · page ' + (qpg + 1) + ' / ' + qPages + ' · statuts enregistrés dans ce navigateur';
+    const qPrev = () => { if (qpg > 0) { setState({ qpg: qpg - 1 }); } }; const qNext = () => { if (qpg < qPages - 1) { setState({ qpg: qpg + 1 }); } };
+    const qPrevStyle = btnSide + (qpg > 0 ? '' : ' opacity:0.4; cursor:default;'); const qNextStyle = btnSide + (qpg < qPages - 1 ? '' : ' opacity:0.4; cursor:default;');
+
+    // ---------- Onglets ----------
+    const tab = S.tab || 'pay';
+    const tabBase = 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 18px; font-size:15px; cursor:pointer; ';
+    const tabOn = tabBase + 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;';
+    const tabOff = tabBase + 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;';
+    const bOn = 'background:rgba(255,255,255,.18); color:#fff; border-radius:999px; padding:1px 8px; font-size:12px; font-weight:700;';
+    const bOff = 'background:#EEF3F1; color:#33433F; border-radius:999px; padding:1px 8px; font-size:12px; font-weight:700;';
+    const unpaidN = raw.filter((r) => r.solde > 0.005).length;
+    const tabs = [
+      { k: 'pay', label: 'Paiements des patients', badge: String(unpaidN) },
+      { k: 'fines', label: 'Rendez-vous manqués', badge: String(nSt('À facturer')) },
+      { k: 'quotes', label: 'Devis', badge: String(QB.filter((q) => q.st === 'Proposé' || q.st === 'En attente').length) }
+    ].map((t) => ({ label: t.label, badge: t.badge, style: tab === t.k ? tabOn : tabOff, badgeStyle: tab === t.k ? bOn : bOff, pick: () => setState({ tab: t.k, msg: '' }) }));
 
     return {
-      tabs: tabs, tabPay: S.tab === 'pay', tabFines: S.tab === 'fines', tabQuotes: S.tab === 'quotes', aging: aging, qkpis: qkpis, qrows: qrows, qlist: qlist,
-      kpis: kpis, pfPills: pfPills, rows: rows,
-      showDetail: showDetail, detail: detail, detailStyle: detailStyle, isPlan: d.mode === 'plan', schedule: schedule,
-      fkpis: fkpis, fines: fines, ffPills: ffPills
+      tabs: tabs, tabPay: tab === 'pay', tabFines: tab === 'fines', tabQuotes: tab === 'quotes',
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 14px; border-radius:12px; font-size:14px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;'),
+      selStyle: selStyle, searchStyle: searchStyle, cellInput: cellInput, btnMain: btnMain, btnSide: btnSide,
+      kpis: kpis, rows: rows, pmOpts: opts([['all', 'Tous les modes']].concat(MODES), pm), setPm: (e) => setState({ pm: e.target.value, sel: -1 }), pq: pq, setPq: (e) => setState({ pq: e.target.value }),
+      payCsv: payCsv, payReset: () => { try { localStorage.removeItem('lk-patpay'); } catch (e) {} setState({ pp: {}, pm: 'all', pq: '', sel: -1, msg: 'Paiements de démonstration rétablis.', ok: true }); }, payFoot: payFoot,
+      showDetail: showDetail, detail: detail, detailStyle: detailStyle, isPlan: d.mode === 'plan', schedule: schedule, closeDetail: () => setState({ sel: -1 }), aging: aging,
+      fkpis: fkpis, fines: fines, fkOpts: opts([['all', 'Tous'], ['none', 'Pas prévenu'], ['late', 'Prévenu à moins de 48 h'], ['ok', 'Prévenu 48 h ou plus']], fk), setFk: (e) => setState({ fk: e.target.value }),
+      feOpts: opts([['all', 'Tous les états']].concat(FST), fe), setFe: (e) => setState({ fe: e.target.value }), fq: fq, setFq: (e) => setState({ fq: e.target.value }),
+      fineCsv: fineCsv, fineReset: () => { try { localStorage.removeItem('lk-rdv'); } catch (e) {} setState({ fs: FS0.slice(), fk: 'all', fe: 'all', fq: '', msg: 'Rendez-vous de démonstration rétablis.', ok: true }); }, fineFoot: fineFoot,
+      qkpis: qkpis, qlist: qlist, qrows: qrows, qMonth: qMonth, qsOpts: opts([['all', 'Tous les statuts']].concat(QST), qs), setQs: (e) => setState({ qs: e.target.value, qpg: 0 }),
+      qpOpts: [{ v: '-1', l: 'Tous les praticiens', sel: qpf < 0 }].concat(LK ? LK.PR.map((P, pi) => ({ v: String(pi), l: P.name, sel: qpf === pi })) : []), setQp: (e) => setState({ qp: Number(e.target.value), qpg: 0 }),
+      qq: qq, setQq: (e) => setState({ qq: e.target.value, qpg: 0 }), quoteCsv: quoteCsv, quoteReset: () => { try { localStorage.removeItem('lk-devis'); } catch (e) {} setState({ qo: {}, qs: 'all', qp: -1, qq: '', qpg: 0, msg: 'Devis de démonstration rétablis.', ok: true }); }, quoteFoot: quoteFoot, qPrev: qPrev, qNext: qNext, qPrevStyle: qPrevStyle, qNextStyle: qNextStyle
     };
   }
 }
