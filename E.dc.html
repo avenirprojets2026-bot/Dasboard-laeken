@@ -292,9 +292,10 @@ class Component extends DCLogic {
     const TL = { 'Dr Aya Turkieh': [window.LAEKEN.PR[0].T, window.LAEKEN.PR[0].LAB, 0.6], 'Dr Mohamed Bochouari': [window.LAEKEN.PR[1].T, window.LAEKEN.PR[1].LAB, 1], 'Dr Abde-Ssadic Bochouari': [window.LAEKEN.PR[2].T, window.LAEKEN.PR[2].LAB, 0.6], 'Dr Daoud Bouchouari': [window.LAEKEN.PR[3].T, window.LAEKEN.PR[3].LAB, 0.6], 'Dr Julien Cabaz': [window.LAEKEN.PR[4].T, window.LAEKEN.PR[4].LAB, 0.6], 'Dr Nabila Touil': [window.LAEKEN.PR[5].T, window.LAEKEN.PR[5].LAB, 0.5], '7e praticien (à confirmer)': [window.LAEKEN.PR[6].T, window.LAEKEN.PR[6].LAB, 0.6] };
     const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - (t[0] ? t[1] / t[0] : 0)) * t[2])); });
     const isB = S.view === 'billed';
-    const top = isB ? 45000 : 22000;
+    const allV = data.reduce((m, d) => Math.max(m, Math.max.apply(null, isB ? billedV(d) : d.v)), 0);
+    const top = Math.max(4000, Math.ceil(allV / 4000) * 4000);
     const step = top / 4;
-    const yTicks = [0, 1, 2, 3, 4].map((k) => ({ style: 'position:absolute; left:0; width:7%; top:' + ((20 + k * 75) / 360 * 100) + '%; transform:translateY(-50%); text-align:right; font-size:13px; color:#4A5B57;', label: fmt(top - k * step) }));
+    const yTicks = [0, 1, 2, 3, 4].map((k) => ({ style: 'position:absolute; right:92.4%; white-space:nowrap; top:' + ((20 + k * 75) / 360 * 100) + '%; transform:translateY(-50%); text-align:right; font-size:12.5px; color:#4A5B57;', label: (top - k * step) === 0 ? '0 €' : Math.round((top - k * step) / 1000) + ' k€' }));
     const series = data.map((d) => {
       const vals = isB ? billedV(d) : d.v;
       const pts = vals.map((v, i) => (60 + 136 * i) + ',' + Math.round((320 - v * 300 / top) * 10) / 10);
