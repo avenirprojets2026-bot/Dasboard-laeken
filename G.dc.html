@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Tableau de bord interactif</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=34"></script>
-<script src="./acces.js?v=34"></script>
-<script src="./auth.js?v=34"></script>
-<script src="./nav.js?v=34"></script>
+<script src="./data.js?v=35"></script>
+<script src="./acces.js?v=35"></script>
+<script src="./auth.js?v=35"></script>
+<script src="./nav.js?v=35"></script>
 </head>
 <body>
 <x-dc>
@@ -92,10 +92,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="display:flex; flex-direction:column; gap:8px">
 <div style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em">Praticien</div>
 <div style="display:flex; flex-wrap:wrap; gap:8px">
-<button onClick="{{allPick}}" style="{{allStyle}}">Tous les praticiens</button>
-<sc-for list="{{chips}}" as="c" hint-placeholder-count="7">
-<button onClick="{{c.pick}}" style="{{c.style}}"><span style="width:10px; height:10px; border-radius:50%; background:{{c.color}}; flex:none"></span>{{c.label}}</button>
-</sc-for>
+<select onChange="{{gSel}}" aria-label="Praticien" style="min-height:44px; min-width:min(100%, 320px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{gOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
 </div>
 </div>
 <div style="display:flex; flex-direction:column; gap:8px">
@@ -350,6 +347,8 @@ class Component extends DCLogic {
 
     const setState = (o) => this.setState(o);
     const monthPills = months.map((label, i) => ({ label: label, style: i === m ? pillOn : pillOff, pick: () => setState({ month: i }) }));
+    const gOpts = [{ v: '-1', l: 'Tous les praticiens', sel: S.dentist < 0 }].concat(D.map((d, i) => ({ v: String(i), l: d.name, sel: i === S.dentist })));
+    const gSel = (e) => { const v = Number(e && e.target ? e.target.value : -1); setState(v < 0 ? { dentist: -1 } : { dentist: v, conv: 'all', pf: 'all' }); };
     const chips = D.map((d, i) => ({ label: d.label, color: d.color, style: i === S.dentist ? pillOn : pillOff, pick: () => setState({ dentist: i, conv: 'all', pf: 'all' }) }));
     const convDefs = [['all', 'Tous (7)'], ['conv', 'Conventionnés (6)'], ['non', 'Non conventionné (1)']];
     const convPills = convDefs.map((c) => ({ label: c[1], style: (S.dentist < 0 && S.conv === c[0]) ? pillOn : pillOff, pick: () => setState({ conv: c[0], dentist: -1, pf: 'all' }) }));
@@ -513,7 +512,7 @@ class Component extends DCLogic {
         xHasMsg: !!S.xmsg, xMsg: S.xmsg, xMsgStyle: 'padding:10px 12px; border-radius:10px; font-size:13px; ' + (S.xok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
       };
     })();
-    return Object.assign(X, {
+    return Object.assign(X, { gOpts: gOpts, gSel: gSel,
       monthPills: monthPills, chips: chips, convPills: convPills,
       allPick: () => setState({ dentist: -1, conv: 'all', pf: 'all' }),
       allStyle: (S.dentist < 0 && S.conv === 'all') ? pillOn : pillOff,

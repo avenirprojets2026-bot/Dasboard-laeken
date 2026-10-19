@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Suivi mutuelles et labo</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=34"></script>
-<script src="./acces.js?v=34"></script>
-<script src="./auth.js?v=34"></script>
-<script src="./nav.js?v=34"></script>
+<script src="./data.js?v=35"></script>
+<script src="./acces.js?v=35"></script>
+<script src="./auth.js?v=35"></script>
+<script src="./nav.js?v=35"></script>
 </head>
 <body>
 <x-dc>
@@ -168,7 +168,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Travaux et factures de laboratoire · octobre 2026</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Chaque travail confié au laboratoire, par praticien. Cliquez sur l'état pour le faire avancer (commandé, reçu, posé).</div></div>
 <div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{btnSide}}" onClick="{{labReset}}">Revenir à la démonstration</button><button type="button" style="{{btnMain}}" onClick="{{labCsv}}">Exporter le laboratoire (CSV)</button></div></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px"><sc-for list="{{labKpis}}" as="k" hint-placeholder-count="4"><div style="{{k.style}}"><div style="font-size:12.5px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:3px">{{k.note}}</div></div></sc-for></div>
-<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Praticien</span><sc-for list="{{labPrPills}}" as="f" hint-placeholder-count="8"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Praticien</span><select onChange="{{labPrSel}}" aria-label="Praticien" style="min-height:44px; min-width:min(100%, 320px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{labPrOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Type</span><sc-for list="{{labTyPills}}" as="f" hint-placeholder-count="6"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
 <div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
 <thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Référence</th><th style="padding:8px">Date</th><th style="padding:8px">Praticien</th><th style="padding:8px">Patient</th><th style="padding:8px">Travail</th><th style="padding:8px">Dent / arcade</th><th style="padding:8px">Labo</th><th style="padding:8px; text-align:right">Facture labo</th><th style="padding:8px">État</th></tr></thead>
@@ -293,7 +293,7 @@ class Component extends DCLogic {
       setRef: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); const n = CR.slice(); n[c.i] = Object.assign({}, n[c.i], { ref: Math.min(v, c.amt - c.rec) }); saveCr(n); } }; });
     const crSel = crl.reduce((a, c) => a + Math.max(0, c.amt - c.rec - c.ref), 0);
     // laboratoire
-    const L = window.LAEKEN; let labVals = { labKpis: [], labPrPills: [], labTyPills: [], labRows: [], labRange: '', labPrev: () => {}, labNext: () => {}, labPrevStyle: btnSide, labNextStyle: btnSide, labTotLabel: '', labTotVal: '', labReset: () => {}, labCsv: () => {} };
+    const L = window.LAEKEN; let labVals = { labKpis: [], labPrOpts: [], labPrSel: () => {}, labPrPills: [], labTyPills: [], labRows: [], labRange: '', labPrev: () => {}, labNext: () => {}, labPrevStyle: btnSide, labNextStyle: btnSide, labTotLabel: '', labTotVal: '', labReset: () => {}, labCsv: () => {} };
     if (L) {
       const TY = [['all', 'Tous'], ['cour', 'Couronnes'], ['impl', 'Implants'], ['bridge', 'Bridges'], ['proth', 'Prothèses amovibles'], ['gout', 'Gouttières et appareils']];
       const tyOf = (w) => /implant/i.test(w) ? 'impl' : (/bridge/i.test(w) ? 'bridge' : (/prothèse|amovible/i.test(w) ? 'proth' : (/gouttière|appareil|contention|facette/i.test(w) ? 'gout' : 'cour')));
@@ -311,6 +311,8 @@ class Component extends DCLogic {
       const ref = (x) => 'LAB-' + L.PR[x.r.p].short.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + String(all.filter((y) => y.r.p === x.r.p && y.k <= x.k).length).padStart(2, '0');
       labVals = {
         labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur 17 700 € pour le cabinet', style: tl('#8A4B08') }, { label: 'En attente du labo', value: String(cnt('commande')), note: 'commandés, pas encore reçus', style: tl('#B45309') }, { label: 'Reçus, à poser', value: String(cnt('recu')), note: cnt('pose') + ' déjà posés', style: tl('#2F6DB5') }],
+        labPrOpts: [{ v: '-1', l: 'Tous les praticiens', sel: S.lp < 0 }].concat(L.PR.map((p, i) => ({ v: String(i), l: p.name + ' · ' + all.filter((x) => x.r.p === i).length + ' travaux', sel: S.lp === i }))),
+        labPrSel: (e) => setState({ lp: Number(e && e.target ? e.target.value : -1), lpg: 0 }),
         labPrPills: [{ label: 'Tous les praticiens', style: S.lp < 0 ? pOn : pOff, pick: () => setState({ lp: -1, lpg: 0 }) }].concat(L.PR.map((p, i) => ({ label: p.name, style: S.lp === i ? pOn : pOff, pick: () => setState({ lp: i, lpg: 0 }) }))),
         labTyPills: TY.map((t) => ({ label: t[1], style: S.lt === t[0] ? pOn : pOff, pick: () => setState({ lt: t[0], lpg: 0 }) })),
         labRows: ll.slice(pg * per, pg * per + per).map((x) => { const s = lst(x); return { ref: ref(x), when: x.r.when, prat: L.PR[x.r.p].name, doss: x.r.doss, dob: x.r.dob, work: x.w.replace(/,\s*(dent|implant)\s+\d{2}/i, ''), where: whereOf(x.w), lab: x.lab, cost: eu(x.r.labo), st: LST[s][0], stStyle: 'border:0; cursor:pointer; ' + chip(LST[s][1], LST[s][2]), cycle: () => { const ns = Object.assign({}, S.ls || {}); ns[x.k] = nxt[s]; try { localStorage.setItem('lk-labo-etat', JSON.stringify(ns)); } catch (e) {} setState({ ls: ns }); } }; }),

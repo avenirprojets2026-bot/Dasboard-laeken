@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=34"></script>
-<script src="./acces.js?v=34"></script>
-<script src="./auth.js?v=34"></script>
-<script src="./nav.js?v=34"></script>
+<script src="./data.js?v=35"></script>
+<script src="./acces.js?v=35"></script>
+<script src="./auth.js?v=35"></script>
+<script src="./nav.js?v=35"></script>
 </head>
 <body>
 <x-dc>
@@ -106,7 +106,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div><h2 style="margin:0; font-size:18px">Répartition des soins</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">{{donutCaption}}</div></div>
 <div style="display:flex; gap:6px; background:#F1F5F4; border-radius:999px; padding:4px"><sc-for list="{{byPills}}" as="b" hint-placeholder-count="2"><button type="button" style="{{b.style}}" onClick="{{b.pick}}">{{b.label}}</button></sc-for></div>
 </div>
-<div style="display:flex; flex-wrap:wrap; gap:8px"><sc-for list="{{whoPills}}" as="w" hint-placeholder-count="8"><button type="button" style="{{w.style}}" onClick="{{w.pick}}">{{w.label}}</button></sc-for></div>
+<div style="display:flex; flex-wrap:wrap; gap:8px"><select onChange="{{whoSel}}" aria-label="Praticien" style="min-height:44px; min-width:min(100%, 320px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{whoOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></div>
 <div style="display:flex; flex-wrap:wrap; gap:32px; align-items:center">
 <div style="{{donutStyle}}"><div style="position:absolute; inset:38px; background:#fff; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; box-shadow:inset 0 0 0 1px #E7EDEB"><div style="font-size:12px; color:#4A5B57; letter-spacing:0.04em; text-transform:uppercase">{{donutLabel}}</div><div style="font-size:26px; font-weight:700; margin-top:2px">{{donutValue}}</div><div style="font-size:12px; color:#4A5B57; margin-top:2px">{{donutSub}}</div></div></div>
 <div style="flex:1 1 320px; min-width:0; display:flex; flex-direction:column; gap:10px">
@@ -194,7 +194,7 @@ class Component extends DCLogic {
         trend: H.map((h, i) => { const v = h[tm]; const neg = v < 0; return { l: h.label.replace(' 20', " '"), v: tdef[2] ? (Math.abs(v) >= 1000 ? (neg ? '−' : '') + String(Math.round(Math.abs(v) / 100) / 10).replace('.', ',') + ' k' : (neg ? '−' : '') + Math.abs(v)) : String(v), bar: 'width:100%; max-width:34px; border-radius:6px 6px 2px 2px; height:' + Math.max(3, Math.round(Math.abs(v) / mx * 100)) + 'px; background:' + (neg ? '#B42318' : (i === 12 ? '#0F766E' : (i === 11 || i === 0 ? '#7FB8AF' : '#C9DDD8'))) + ';' }; })
       };
     }
-    let donut = { donutStyle: 'display:none', legend: [], whoPills: [], byPills: [], donutLabel: '', donutValue: '', donutSub: '', donutCaption: 'Données non chargées' };
+    let donut = { donutStyle: 'display:none', legend: [], whoOpts: [], whoSel: () => {}, whoPills: [], byPills: [], donutLabel: '', donutValue: '', donutSub: '', donutCaption: 'Données non chargées' };
     if (D && D.families) {
       const lines = S.who < 0 ? D.rows : D.PR[S.who].rows;
       const fam = D.families(lines); const by = S.by;
@@ -208,6 +208,8 @@ class Component extends DCLogic {
         donutValue: by === 'fee' ? eurS(totF) : String(totN),
         donutSub: S.who < 0 ? 'tout le cabinet' : D.PR[S.who].short,
         donutCaption: (S.who < 0 ? 'Tout le cabinet' : D.PR[S.who].name) + ' · octobre 2026 · ' + totN + ' actes, ' + eurS(totF) + ' d\'honoraires',
+        whoOpts: [{ v: '-1', l: 'Tout le cabinet', sel: S.who < 0 }].concat(D.PR.map((p, i) => ({ v: String(i), l: p.name, sel: S.who === i }))),
+        whoSel: (e) => this.setState({ who: Number(e && e.target ? e.target.value : -1) }),
         whoPills: [{ label: 'Tout le cabinet', style: pill(S.who < 0), pick: () => this.setState({ who: -1 }) }].concat(D.PR.map((p, i) => ({ label: p.short, style: pill(S.who === i), pick: () => this.setState({ who: i }) }))),
         byPills: [{ label: 'Honoraires', style: seg(by === 'fee'), pick: () => this.setState({ by: 'fee' }) }, { label: 'Nombre d\'actes', style: seg(by === 'n'), pick: () => this.setState({ by: 'n' }) }]
       };
