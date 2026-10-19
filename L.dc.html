@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Patients vus par praticien</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=33"></script>
-<script src="./auth.js?v=33"></script>
-<script src="./nav.js?v=33"></script>
-<script src="./data.js?v=33"></script>
+<script src="./acces.js?v=34"></script>
+<script src="./auth.js?v=34"></script>
+<script src="./nav.js?v=34"></script>
+<script src="./data.js?v=34"></script>
 </head>
 <body>
 <x-dc>
@@ -80,9 +80,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:14px">
 <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
 <span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Praticien</span>
-<sc-for list="{{prPills}}" as="p" hint-placeholder-count="7">
-<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
-</sc-for>
+<select onChange="{{prSel}}" aria-label="Praticien" style="min-height:46px; min-width:min(100%, 340px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{prOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select>
 </div>
 <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
 <span style="font-size:13px; font-weight:700; color:#4A5B57; text-transform:uppercase; letter-spacing:0.05em; width:90px">Statut</span>
@@ -180,7 +178,7 @@ class Component extends DCLogic {
     const setState = (o) => this.setState(o);
     const D = window.LAEKEN;
     if (!D) {
-      return { prPills: [], moPills: [], stPills: [], who: 'Données non chargées', spec: '', daysTxt: '', kpis: [], actBars: [], rows: [], hours: [], works: [], hasWorks: false, noWorks: false, onCsv: () => {}, btnSide: '', range: '', onPrev: () => {}, onNext: () => {}, prevStyle: '', nextStyle: '', hasMsg: true, msg: 'Le fichier de données data.js n\'est pas chargé.', msgStyle: 'padding:12px; background:#FDF0DC; color:#8A4B08; border-radius:10px;' };
+      return { prOpts: [], prSel: () => {}, prPills: [], moPills: [], stPills: [], who: 'Données non chargées', spec: '', daysTxt: '', kpis: [], actBars: [], rows: [], hours: [], works: [], hasWorks: false, noWorks: false, onCsv: () => {}, btnSide: '', range: '', onPrev: () => {}, onNext: () => {}, prevStyle: '', nextStyle: '', hasMsg: true, msg: 'Le fichier de données data.js n\'est pas chargé.', msgStyle: 'padding:12px; background:#FDF0DC; color:#8A4B08; border-radius:10px;' };
     }
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const pillBase = 'display:inline-flex; align-items:center; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 16px; font-size:14px; cursor:pointer; ';
@@ -239,6 +237,8 @@ class Component extends DCLogic {
     const disabled = 'opacity:0.4; cursor:default;';
     const moPills = [{ label: D.MONTH.label, style: pillOn, pick: () => {} }];
 
+    const prOpts = (lockPr >= 0 ? [] : [{ v: '-1', l: 'Tous les praticiens · ' + nf(D.visits.length) + ' patients', sel: !P }]).concat(PR.map((p, i) => ({ v: String(i), l: p.name + ' · ' + p.visits.length + ' patients', sel: i === pi })).filter((x, i) => lockPr < 0 || i === lockPr));
+    const prSel = (e) => setState({ pr: Number(e && e.target ? e.target.value : 0), page: 0, msg: '' });
     const prPills = (lockPr >= 0 ? [] : [{ label: 'Tous (' + nf(D.visits.length) + ')', style: !P ? pillOn : pillOff, pick: () => setState({ pr: -1, page: 0, msg: '' }) }]).concat(PR.map((p, i) => ({ label: p.short + ' (' + p.visits.length + ')', style: i === pi ? pillOn : pillOff, pick: () => setState({ pr: i, page: 0, msg: '' }) })).filter((x, i) => lockPr < 0 || i === lockPr));
     const kpis = [
       { label: 'Statut BIM/VIPO', value: nfx(nBim), note: Math.round(nBim / Math.max(1, allBase.length) * 100) + ' % des patients · intervention majorée de la mutuelle, ordinaire : ' + nfx(allBase.length - nBim), style: tile('#0B6B3A') },
@@ -251,7 +251,7 @@ class Component extends DCLogic {
       { label: 'Pas encore payé', value: eur(unpaid.reduce((a, r) => a + r.share, 0)), note: unpaid.length + ' patients à relancer', style: tile('#B42318') }
     ];
     return {
-      prPills: prPills, moPills: moPills, stPills: stPills, who: P ? P.name : 'Tous les praticiens', spec: P ? P.spec : 'Total du cabinet, identique à la vue cabinet et au résultat du gérant',
+      prOpts: prOpts, prSel: prSel, prPills: prPills, moPills: moPills, stPills: stPills, who: P ? P.name : 'Tous les praticiens', spec: P ? P.spec : 'Total du cabinet, identique à la vue cabinet et au résultat du gérant',
       daysTxt: P ? 'présent le ' + P.days.map((d) => DAYSN[d]).join(', ') + (pi === 1 ? ' · orthodontiste, début à 9 h' : '') : '963 patients · 121 100 € d\'honoraires · 17 700 € de labo (octobre 2026, mois complet)',
       kpis: kpis, actBars: actBars, rows: rows, onCsv: onCsv, btnSide: btnSide,
       range: (all.length ? (page * PAGE + 1) : 0) + ' à ' + Math.min(all.length, page * PAGE + PAGE) + ' sur ' + nf(all.length),
