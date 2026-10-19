@@ -97,6 +97,7 @@ Honoraires, patients, rémunérations, résultat et relevés des praticiens sont
 <div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Le fichier s'ouvre dans Excel. Le modèle d'import montre les colonnes attendues, à remplir ou à faire correspondre avec votre logiciel.</div>
 </div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px">
+<sc-if value="{{mgr}}" hint-placeholder-val="{{ true }}">
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:12px">
 <div><b style="font-size:16px">Synthèse par praticien</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Patients, facturé, frais de labo, base et net à payer (60 %, ou 50 % pour Nabila Touil) des 7 praticiens.</div></div>
 <div style="display:flex; flex-wrap:wrap; gap:8px">
@@ -104,6 +105,7 @@ Honoraires, patients, rémunérations, résultat et relevés des praticiens sont
 <button onClick="{{onSynXlsx}}" style="{{btnSide}}">Exporter en Excel</button>
 </div>
 </div>
+</sc-if>
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:12px">
 <div><b style="font-size:16px">Modèle d'import</b><div style="font-size:13px; color:#4A5B57; margin-top:4px">Les colonnes attendues : date, patient, praticien, acte, montant, frais de labo, mode de paiement, statut mutuelle.</div></div>
 <div style="display:flex; flex-wrap:wrap; gap:8px">
@@ -153,9 +155,9 @@ Honoraires, patients, rémunérations, résultat et relevés des praticiens sont
 <sc-if value="{{hasImp}}" hint-placeholder-val="{{ false }}">
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px">
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Mois détecté</div><b style="font-size:18px">{{impMonth}}</b></div>
-<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Honoraires</div><b style="font-size:18px">{{impCa}}</b></div>
-<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Frais de labo</div><b style="font-size:18px">{{impLabo}}</b></div>
-<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Rémunérations</div><b style="font-size:18px">{{impRem}}</b></div>
+<sc-if value="{{mgr}}" hint-placeholder-val="{{ true }}"><div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Honoraires</div><b style="font-size:18px">{{impCa}}</b></div></sc-if>
+<sc-if value="{{mgr}}" hint-placeholder-val="{{ true }}"><div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Frais de labo</div><b style="font-size:18px">{{impLabo}}</b></div></sc-if>
+<sc-if value="{{mgr}}" hint-placeholder-val="{{ true }}"><div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Rémunérations</div><b style="font-size:18px">{{impRem}}</b></div></sc-if>
 <div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Patients (visites)</div><b style="font-size:18px">{{impPat}}</b></div>
 </div>
 <sc-if value="{{hasWarn}}" hint-placeholder-val="{{ false }}">
@@ -186,6 +188,7 @@ Honoraires, patients, rémunérations, résultat et relevés des praticiens sont
 <div style="font-size:13px; color:#4A5B57">{{rowCount}} lignes lues. Vert : colonne trouvée. Gris : colonne absente, la valeur est ignorée.</div>
 </div>
 
+<sc-if value="{{mgr}}" hint-placeholder-val="{{ true }}">
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px">
 <sc-for list="{{kpis}}" as="k" hint-placeholder-count="6">
 <div style="{{k.style}}">
@@ -233,6 +236,7 @@ Honoraires, patients, rémunérations, résultat et relevés des praticiens sont
 </div>
 </div>
 
+</sc-if>
 <div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
 <h3 style="margin:0; font-size:18px">Aperçu des premières lignes du fichier</h3>
 <div style="overflow-x:auto">
@@ -553,6 +557,7 @@ class Component extends DCLogic {
 
     return {
       btnMain: btnMain, btnSide: btnSide,
+      mgr: window.LKAUTH && window.LKAUTH.user && window.LKAUTH.user() ? (window.LKAUTH.user().role === 'admin' || window.LKAUTH.user().role === 'gerant') : true,
       stActive: !!st.active, stName: st.name || '', stAt: st.at || '', stLabel: st.label || '', stLines: st.lines || 0, stVisits: st.visits || 0, stSkipped: st.skipped || 0,
       hasImp: hasImp, hasUnmatched: unmatched.length > 0, unmatched: unmatched, impMonth: impInfo.month, impLines: impInfo.lines, impWarn: impInfo.warn.map((w) => ({ w: w })), hasWarn: impInfo.warn.length > 0,
       impCa: impInfo.tot ? eur(impInfo.tot.ca) : '', impLabo: impInfo.tot ? eur(impInfo.tot.labo) : '', impRem: impInfo.tot ? eur(impInfo.tot.rem) : '', impPat: impInfo.tot ? String(impInfo.tot.pat) : '',
