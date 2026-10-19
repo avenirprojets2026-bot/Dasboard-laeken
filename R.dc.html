@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
+<link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="manifest" href="manifest.webmanifest">
+<meta charset="utf-8">
+<title>Contrôles de cohérence</title>
+<script src="./support.js"></script>
+<script src="./acces.js?v=40"></script>
+<script src="./auth.js?v=40"></script>
+<script src="./nav.js?v=40"></script>
+<script src="./data.js?v=40"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&amp;family=Fraunces:opsz,wght@9..144,500;9..144,600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F4F6F5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:#0B5D56;transition:color .15s ease} a:hover{color:#063B37}
+button,select,input{font-family:inherit}
+::selection{background:#CFE8E3;color:#0A2622}
+h1{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-0.02em;font-optical-sizing:auto}
+h2{letter-spacing:-0.01em}
+table{font-variant-numeric:tabular-nums}
+[style*="font-size:26px"],[style*="font-size:28px"],[style*="font-size:30px"],[style*="font-size:34px"],[style*="font-size:36px"]{font-variant-numeric:tabular-nums;letter-spacing:-0.02em}
+div[style*="background:#F3F6F5; color:#14201D"]{background:radial-gradient(1100px 380px at 12% -8%,rgba(15,118,110,.10),transparent 70%),linear-gradient(180deg,#EDF3F1 0,#F4F6F5 360px)!important}
+[style*="background:#fff"][style*="border-radius:14px"],[style*="background:#fff"][style*="border-radius:12px"]{border-color:#E2E9E6!important;box-shadow:0 1px 2px rgba(16,32,28,.04),0 10px 30px -18px rgba(16,32,28,.22);transition:box-shadow .2s ease,transform .2s ease}
+[style*="background:#fff"][style*="border-radius:14px"]:hover{box-shadow:0 1px 2px rgba(16,32,28,.05),0 18px 40px -20px rgba(16,32,28,.30)}
+thead th{font-weight:600}
+tbody tr{transition:background-color .12s ease}
+tbody tr:hover{background:#F5F9F8}
+nav[aria-label="Vues"] a{transition:border-color .15s,color .15s,transform .15s}
+nav[aria-label="Vues"] a:hover{border-color:#0F766E!important;transform:translateY(-1px)}
+button{transition:transform .12s ease,filter .15s ease,box-shadow .15s ease}
+button:hover{filter:brightness(1.04)} button:active{transform:translateY(1px)}
+:focus-visible{outline:2px solid #0F766E;outline-offset:2px}
+section{animation:lk-in .5s cubic-bezier(.2,.7,.2,1) both}
+section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-delay:.1s} section:nth-of-type(4){animation-delay:.15s} section:nth-of-type(n+5){animation-delay:.2s}
+@keyframes lk-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+*{scrollbar-width:thin;scrollbar-color:#C5D3CF transparent}
+@media print{section{animation:none!important;box-shadow:none!important}nav{display:none!important}}
+</style>
+</helmet>
+<div style="font-family:'DM Sans',sans-serif; background:#F3F6F5; color:#14201D; box-sizing:border-box; padding:32px; display:flex; flex-direction:column; gap:24px; min-height:2600px">
+<nav aria-label="Vues" style="display:flex; flex-wrap:wrap; gap:8px">
+<a href="Accueil.dc.html" style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700; text-decoration:none">Accueil</a>
+<a href="Main.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Vue cabinet</a>
+<a href="B.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Casier praticien</a>
+<a href="C.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Mutuelles et labo</a>
+<a href="D.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Résultat du gérant</a>
+<a href="E.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Rémunérations et paiements</a>
+<a href="F.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Fauteuils et coût par patient</a>
+<a href="G.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Tableau interactif</a>
+<a href="H.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients et paiements</a>
+<a href="I.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Actes par praticien</a>
+<a href="J.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Import et export</a>
+<a href="K.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Nomenclature INAMI</a>
+<a href="L.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Patients vus par praticien</a>
+<a href="M.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Espace praticien</a>
+<a href="N.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Envoi aux praticiens</a>
+<a href="O.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Corilus</a>
+<a href="P.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Accès et rôles</a>
+<a href="Q.dc.html" style="background:#fff; border:1px solid #DCE5E2; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:500; text-decoration:none">Factures fournisseurs</a>
+<span style="background:#14201D; color:#fff; border-radius:999px; padding:10px 18px; font-size:14px; font-weight:700">Contrôles de cohérence</span>
+</nav>
+<header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:16px">
+<div>
+<div style="font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Dental Clinic Laeken · Gérant</div>
+<h1 style="margin:4px 0 0; font-size:32px; line-height:1.15">Contrôles de cohérence</h1>
+</div>
+<div style="font-size:14px; color:#4A5B57; max-width:460px; line-height:1.5">Vérification automatique, à chaque ouverture, que les chiffres des différentes pages concordent, que les saisies sont plausibles et que chaque rôle ne voit que ses pages.</div>
+</header>
+
+<section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px">
+<sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
+<div style="background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:18px 20px"><div style="font-size:13px; color:#4A5B57">{{k.label}}</div><div style="{{k.vStyle}}">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:4px">{{k.note}}</div></div>
+</sc-for>
+</section>
+
+<div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4"><button type="button" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}} <span style="opacity:.7">{{f.n}}</span></button></sc-for>
+<span style="flex:1"></span>
+<button type="button" onClick="{{csv}}" style="{{btnMain}}">Exporter le rapport CSV</button>
+</div>
+<sc-if value="{{hasMsg}}" hint-placeholder-val="{{ false }}"><div style="{{msgStyle}}">{{msg}}</div></sc-if>
+
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:6px 22px 10px">
+<h2 style="margin:14px 0 4px; font-size:20px; font-family:'Fraunces',Georgia,serif; font-weight:600">{{g.title}}</h2>
+<div style="font-size:13px; color:#4A5B57; margin-bottom:6px">{{g.note}}</div>
+<sc-for list="{{g.rows}}" as="r" hint-placeholder-count="5">
+<div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-top:1px solid #EEF2F1">
+<span style="{{r.chip}}">{{r.status}}</span>
+<div style="flex:1; min-width:0"><div style="font-weight:600; font-size:14.5px">{{r.name}}</div><div style="font-size:13px; color:#4A5B57; margin-top:2px; line-height:1.45">{{r.detail}}</div></div>
+<a href="{{r.href}}" style="{{r.linkStyle}}">Ouvrir</a>
+</div>
+</sc-for>
+</section>
+</sc-for>
+
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Les contrôles portent sur les données fictives du modèle (octobre 2026) et sur les saisies enregistrées dans ce navigateur. Ils ne remplacent pas un contrôle comptable. La sécurité du site reste un contrôle côté navigateur : avant toute donnée réelle, il faudra de vrais comptes sur un serveur.</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  state = { f: 'all', msg: '', ok: true };
+  renderVals() {
+    const S = this.state; const setState = (o) => this.setState(o);
+    const L = window.LAEKEN; const A = window.LKAUTH; const AC = window.LKACCES;
+    const eu = (n) => (n < 0 ? '−' : '') + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+    const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const ls = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
+    const sum = (a, f) => a.reduce((x, y) => x + (f(y) || 0), 0);
+    const C = []; // [groupe, nom, état ok|warn|ko|na, détail, lien]
+    const add = (g, n, st, d, h) => C.push({ g: g, n: n, st: st, d: d, h: h || '' });
+    let part = 30620; let res = 0; let chg = 33615;
+    try { const t = Number(localStorage.getItem('lk-charges-tot')); if (t > 0) { chg = t; } } catch (e) {}
+    if (L) {
+      const P = L.PR;
+      const T = sum(P, (p) => p.T); const fr = Math.round(sum(L.rows, (r) => r.fee));
+      add('d', 'Honoraires du mois', T === fr ? 'ok' : 'ko', 'Actes détaillés ' + eu(fr) + ' · total des praticiens ' + eu(T) + ' (attendu 121 100 €)', 'Main.dc.html');
+      const LB = sum(P, (p) => p.LAB); const lr = sum(L.rows, (r) => r.labo);
+      add('d', 'Frais de laboratoire', LB === lr ? 'ok' : 'ko', 'Travaux de laboratoire ' + eu(lr) + ' · frais déduits chez les praticiens ' + eu(LB), 'C.dc.html');
+      const N = sum(P, (p) => p.N); const dos = {}; L.rows.forEach((r) => { dos[r.doss] = 1; });
+      add('d', 'Patients du mois', N === L.visits.length ? 'ok' : 'ko', nf(L.visits.length) + ' rendez-vous · ' + nf(N) + ' patients chez les praticiens · ' + nf(Object.keys(dos).length) + ' dossiers distincts (certains patients sont venus deux fois)', 'L.dc.html');
+      const R = Math.round(sum(P, (p) => p.retro));
+      add('d', 'Rémunérations des praticiens', R === 72780 ? 'ok' : 'ko', eu(R) + ' calculés sur le modèle · ' + eu(72780) + ' sur la page Rémunérations', 'E.dc.html');
+      part = Math.round(T - LB - R);
+      add('d', 'Part du cabinet', part === Math.round(sum(P, (p) => p.cab)) ? 'ok' : 'ko', 'Honoraires − labo − rémunérations = ' + eu(part), 'D.dc.html');
+      const okRate = P.every((p) => p.rate === (p.short === 'Mohamed Bochouari' ? 1 : (p.short === 'Nabila Touil' ? 0.5 : 0.6)));
+      add('d', 'Taux de rétrocession', okRate ? 'ok' : 'ko', 'Gérant Dr Mohamed Bochouari 100 %, Dr Touil 50 % (départ le 01/12/2026), autres praticiens 60 %', 'E.dc.html');
+      const H = L.HIST; const bad = H.filter((h) => h.ben !== h.ca - h.labo - h.rem - h.chg);
+      add('d', 'Historique sur 13 mois', bad.length ? 'ko' : 'ok', bad.length ? bad.length + ' mois où le résultat ne correspond pas au calcul' : 'Chaque mois : résultat = honoraires − labo − rémunérations − charges', 'Main.dc.html');
+      res = part - chg; const last = H[H.length - 1];
+      add('d', 'Résultat d\'octobre', last.chg === chg ? 'ok' : 'warn', 'Part du cabinet ' + eu(part) + ' − charges ' + eu(chg) + ' = ' + eu(res) + (last.chg === chg ? ' · identique à l\'historique' : ' · charges modifiées par le gérant : l\'historique reste à ' + eu(last.chg)), 'D.dc.html');
+    } else { add('d', 'Données du modèle', 'ko', 'Le fichier de données ne s\'est pas chargé.', ''); }
+    // saisies
+    const ch = ls('lk-charges') || {}; const chNeg = Object.keys(ch).filter((k) => !(Number(ch[k]) >= 0));
+    add('s', 'Charges modifiées', chNeg.length ? 'ko' : 'ok', Object.keys(ch).length + ' ligne(s) modifiée(s)' + (chNeg.length ? ', dont ' + chNeg.length + ' négative(s) ou vide(s)' : ', aucune valeur négative'), 'D.dc.html');
+    const bu = ls('lk-budget') || {}; const buNeg = Object.keys(bu).filter((k) => !(Number(bu[k]) >= 0));
+    add('s', 'Budget prévu', buNeg.length ? 'ko' : 'ok', Object.keys(bu).length ? Object.keys(bu).length + ' poste(s) saisi(s)' + (buNeg.length ? ', ' + buNeg.length + ' négatif(s)' : ', aucun négatif') : 'Budget de démonstration, aucune saisie', 'D.dc.html#budget');
+    const fa = ls('lk-factures'); const faBad = fa ? fa.filter((x) => !(Number(x[4]) >= 0)) : [];
+    add('s', 'Factures fournisseurs', faBad.length ? 'ko' : 'ok', fa ? fa.length + ' facture(s) enregistrée(s)' + (faBad.length ? ', ' + faBad.length + ' montant(s) invalide(s)' : ', montants valides') : 'Registre de démonstration, aucune saisie', 'Q.dc.html');
+    const cr = ls('lk-creances'); const crBad = cr ? cr.filter((c) => c.rec < 0 || c.ref < 0 || c.rec + c.ref > c.amt) : [];
+    add('s', 'Créances des mutualités', crBad.length ? 'ko' : 'ok', cr ? cr.length + ' envoi(s) · ' + (crBad.length ? crBad.length + ' où reçu + refusé dépasse la créance' : 'reçu + refusé ne dépasse jamais la créance') : 'Registre de démonstration, aucune saisie', 'C.dc.html#suivi');
+    const pp = ls('lk-patpay') || {}; const ppBad = Object.keys(pp).filter((k) => pp[k].recu != null && !(pp[k].recu >= 0));
+    add('s', 'Paiements des patients', ppBad.length ? 'ko' : 'ok', Object.keys(pp).length ? Object.keys(pp).length + ' paiement(s) modifié(s)' + (ppBad.length ? ', ' + ppBad.length + ' montant(s) invalide(s)' : ', aucun trop-perçu ni montant négatif') : 'Paiements de démonstration, aucune saisie', 'H.dc.html');
+    const DUE = [[16830, 16520, 14910, 13110, 17510, 18780], [26670, 26370, 23920, 21150, 27750, 28200], [6400, 6570, 5740, 4750, 6440, 6720], [6070, 6360, 5580, 4950, 6230, 6720], [6240, 6120, 5700, 5060, 6410, 6660], [2510, 2610, 2270, 1980, 2610, 2700], [2450, 2500, 2250, 1960, 2550, 3000]];
+    const vp = ls('lk-versements') || {}; const vBad = [];
+    Object.keys(vp).forEach((m) => Object.keys(vp[m] || {}).forEach((i) => { const v = Number(vp[m][i].paid); const d = DUE[i] ? DUE[i][m] : 0; if (!(v >= 0) || v > d) { vBad.push(m + '/' + i); } }));
+    const okDue = L ? L.PR.every((p, i) => Math.round(p.retro) === DUE[i][5]) : false;
+    add('s', 'Versements aux praticiens', vBad.length ? 'ko' : 'ok', (vBad.length ? vBad.length + ' versement(s) supérieur(s) au montant dû' : 'Aucun versement supérieur au montant dû') + (okDue ? ' · montants d\'octobre identiques au modèle' : ''), 'E.dc.html#versements');
+    // accès
+    if (A && A.roles) {
+      const PG = A.roles(); const forb = (role, list) => { const l = PG[role]; return l === null ? list : list.filter((p) => l.indexOf(p) >= 0); };
+      const f1 = forb('praticien', ['Main', 'D', 'E', 'Q', 'F', 'C', 'N', 'O', 'P', 'G', 'B', 'I', 'H', 'J', 'R']);
+      add('a', 'Praticiens limités à leurs pages', f1.length ? 'ko' : 'ok', f1.length ? 'Accès en trop : ' + f1.join(', ') : 'Accueil, Espace praticien, Mes patients vus et Tarifs INAMI uniquement · ni charges, ni vue cabinet, ni rémunérations des autres', 'P.dc.html');
+      const f2 = forb('secretaire', ['Main', 'D', 'E', 'Q', 'N', 'O', 'P', 'G', 'R', 'M', 'L']);
+      add('a', 'Secrétariat sans données financières', f2.length ? 'ko' : 'ok', f2.length ? 'Accès en trop : ' + f2.join(', ') : 'Patients et paiements, Import et export, Tarifs INAMI · pas de rémunérations ni de charges', 'P.dc.html');
+      add('a', 'Gestion des accès réservée', PG.praticien.indexOf('P') < 0 && PG.secretaire.indexOf('P') < 0 ? 'ok' : 'ko', 'La page Accès et rôles n\'est ouverte qu\'au gérant et à l\'administrateur', 'P.dc.html');
+    } else { add('a', 'Contrôle des accès', 'na', 'Disponible uniquement sur le site en ligne, avec connexion (la maquette laisse toutes les pages ouvertes).', ''); }
+    if (AC && AC.comptes) {
+      const plain = AC.comptes.filter((c) => Object.keys(c).some((k) => /code|pin|pass|mail/i.test(k)) || !/^[0-9a-f]{64}$/.test(c.h || ''));
+      add('a', 'Aucun code ni e-mail en clair', plain.length ? 'ko' : 'ok', AC.comptes.length + ' comptes · seules des empreintes chiffrées sont stockées (PBKDF2, ' + nf(AC.iter) + ' itérations)', 'P.dc.html');
+    }
+    const ST = { ok: ['Conforme', '#0B6B3A', '#E3F4EA'], warn: ['À vérifier', '#8A4B08', '#FDF0DC'], ko: ['Anomalie', '#A3231A', '#FBE7E5'], na: ['Non applicable', '#33433F', '#E7EDEB'] };
+    const GR = [['d', 'Cohérence des chiffres', 'Les totaux de chaque page sont recalculés et comparés entre eux.'], ['s', 'Saisies enregistrées', 'Valeurs modifiées dans ce navigateur : charges, budget, factures, créances, paiements, versements.'], ['a', 'Accès et sécurité', 'Pages autorisées par rôle et stockage des codes d\'accès.']];
+    const shown = C.filter((c) => S.f === 'all' || (S.f === 'pb' ? (c.st === 'ko' || c.st === 'warn') : c.g === S.f));
+    const nOk = C.filter((c) => c.st === 'ok').length; const nTest = C.filter((c) => c.st !== 'na').length; const nPb = C.filter((c) => c.st === 'ko' || c.st === 'warn').length;
+    const pill = 'display:inline-flex; align-items:center; gap:6px; min-height:40px; box-sizing:border-box; border-radius:999px; padding:6px 14px; font-size:14px; cursor:pointer; ';
+    const vS = (c) => 'font-size:clamp(22px, 5.6vw, 30px); font-weight:700; line-height:1.15; margin-top:8px; white-space:nowrap; letter-spacing:-0.02em; color:' + c + ';';
+    const csv = () => {
+      const cell = (v) => { const t = String(v == null ? '' : v); return /[;"\n\r]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const rows = [['Groupe', 'Contrôle', 'Résultat', 'Détail']].concat(C.map((c) => [GR.filter((g) => g[0] === c.g)[0][1], c.n, ST[c.st][0], c.d]));
+      const data = '﻿' + rows.map((r) => r.map(cell).join(';')).join('\r\n');
+      (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'controles-coherence-octobre-2026.csv', data: data }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=utf-8' })); a.download = 'controles-coherence-octobre-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; })
+        .then(() => setState({ msg: 'Rapport exporté (' + C.length + ' contrôles).', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
+    };
+    return {
+      kpis: [
+        { label: 'Contrôles conformes', value: nOk + ' / ' + nTest, note: nPb ? nPb + ' point(s) à regarder' : 'aucune anomalie', vStyle: vS(nPb ? '#B45309' : '#0B6B3A') },
+        { label: 'Part du cabinet', value: eu(part), note: 'après labo et rémunérations', vStyle: vS('#0B3B36') },
+        { label: 'Charges du mois', value: eu(chg), note: chg === 33615 ? 'valeurs du modèle' : 'modifiées par le gérant', vStyle: vS('#0B3B36') },
+        { label: 'Résultat du mois', value: eu(res), note: 'octobre 2026', vStyle: vS(res < 0 ? '#A3231A' : '#0B6B3A') }
+      ],
+      filters: [['all', 'Tous', C.length], ['pb', 'À regarder', nPb], ['d', 'Chiffres', C.filter((c) => c.g === 'd').length], ['s', 'Saisies', C.filter((c) => c.g === 's').length], ['a', 'Accès', C.filter((c) => c.g === 'a').length]].map((x) => ({ label: x[1], n: String(x[2]), style: pill + (S.f === x[0] ? 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;'), pick: () => setState({ f: x[0] }) })),
+      groups: GR.map((g) => ({ title: g[1], note: g[2], rows: shown.filter((c) => c.g === g[0]).map((c) => ({ name: c.n, detail: c.d, status: ST[c.st][0], chip: 'flex:none; min-width:104px; text-align:center; display:inline-block; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; color:' + ST[c.st][1] + '; background:' + ST[c.st][2] + ';', href: c.h || '#', linkStyle: c.h ? 'flex:none; font-size:13px; font-weight:600; color:#0B5D56; padding:4px 2px;' : 'display:none;' })) })).filter((g) => g.rows.length),
+      csv: csv, btnMain: 'min-height:44px; border:0; border-radius:12px; padding:0 18px; font-size:14px; font-weight:700; background:#0B3B36; color:#fff; cursor:pointer;',
+      hasMsg: !!S.msg, msg: S.msg, msgStyle: 'padding:10px 14px; border-radius:12px; font-size:14px; ' + (S.ok ? 'background:#E3F4EA; color:#0B6B3A;' : 'background:#FDF0DC; color:#8A4B08;')
+    };
+  }
+}
+</script>
+</body>
+</html>

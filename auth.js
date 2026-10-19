@@ -28,6 +28,7 @@
 
   window.LKAUTH = {
     allowed: allowed,
+    roles: function () { return JSON.parse(JSON.stringify(PAGES)); },
     user: function () { return acc; },
     prIndex: function () { return acc && acc.role === 'praticien' ? acc.pr : -1; },
     logout: function () { clearS(); location.href = 'Accueil.dc.html'; }

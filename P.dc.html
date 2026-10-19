@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Accès et rôles</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=39"></script>
-<script src="./auth.js?v=39"></script>
-<script src="./nav.js?v=39"></script>
-<script src="./data.js?v=39"></script>
+<script src="./acces.js?v=40"></script>
+<script src="./auth.js?v=40"></script>
+<script src="./nav.js?v=40"></script>
+<script src="./data.js?v=40"></script>
 </head>
 <body>
 <x-dc>
@@ -126,7 +126,7 @@ class Component extends DCLogic {
     // [page, admin, gérant, praticien, secrétariat] : 2 = tout, 1 = ses données, 0 = aucun accès
     const P = [
       ['Accueil', 2, 2, 2, 2], ['Vue cabinet', 2, 2, 0, 0], ['Casier praticien', 2, 2, 0, 0], ['Mutuelles et labo', 2, 2, 0, 0],
-      ['Résultat du gérant (charges, bénéfice, voitures)', 2, 2, 0, 0], ['Factures fournisseurs', 2, 2, 0, 0], ['Rémunérations et paiements', 2, 2, 0, 0], ['Fauteuils et coût par patient', 2, 2, 0, 0],
+      ['Résultat du gérant (charges, bénéfice, voitures)', 2, 2, 0, 0], ['Factures fournisseurs', 2, 2, 0, 0], ['Contrôles de cohérence', 2, 2, 0, 0], ['Rémunérations et paiements', 2, 2, 0, 0], ['Fauteuils et coût par patient', 2, 2, 0, 0],
       ['Tableau interactif', 2, 2, 0, 0], ['Patients et paiements', 2, 2, 0, 2], ['Actes par praticien', 2, 2, 0, 0], ['Import et export', 2, 2, 0, 2],
       ['Nomenclature INAMI', 2, 2, 2, 2], ['Patients vus par praticien', 2, 2, 1, 0], ['Espace praticien', 2, 2, 1, 0],
       ['Envoi aux praticiens', 2, 2, 0, 0], ['Corilus (logiciels et prix)', 2, 2, 0, 0], ['Accès et rôles', 2, 2, 0, 0]
