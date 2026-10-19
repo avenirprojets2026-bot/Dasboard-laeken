@@ -10,7 +10,7 @@ ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 COMPTES = [
     ('Dr Mohamed Bochouari (gérant)', 'orthobochouari@gmail.com', 'gerant', -1),
     ('Karim (administrateur de la maquette)', 'avenir.projets2026@gmail.com', 'admin', -1),
-    ('Dr Aya Turkieh', 'aya.turkieh@dentalclinic.com', 'praticien', 0),
+    ('Dr Aya Turkieh', 'adresse personnelle (voir emails-prives.json)', 'praticien', 0),
     ('Dr Abde-Ssadic Bochouari', 'abde-ssadic.bochouari@dentalclinic.com', 'praticien', 2),
     ('Dr Daoud Bouchouari', 'daoud.bouchouari@dentalclinic.com', 'praticien', 3),
     ('Dr Julien Cabaz', 'julien.cabaz@dentalclinic.com', 'praticien', 4),
@@ -20,6 +20,12 @@ COMPTES = [
     ('Secrétaire 2', 'secretaire2@dental-laeken.be', 'secretaire', -1),
     ('Secrétaire 3', 'secretaire3@dental-laeken.be', 'secretaire', -1),
 ]
+
+# Adresses personnelles : jamais dans le dépôt public. Fichier local outils/emails-prives.json
+# au format {"Dr Aya Turkieh": "adresse@exemple.com"} (ignoré par git).
+_pf = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'emails-prives.json')
+PRIVES = json.load(open(_pf, encoding='utf-8')) if os.path.exists(_pf) else {}
+COMPTES = [(n, PRIVES.get(n, e), r, p) for (n, e, r, p) in COMPTES]
 
 def code():
     return ''.join(secrets.choice(ALPHA) for _ in range(6))
