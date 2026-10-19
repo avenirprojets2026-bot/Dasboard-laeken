@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -289,7 +289,7 @@ class Component extends DCLogic {
       const qt = D.quotes.total; const T = (c, lbl, v, n) => ({ label: lbl, value: v, note: n, style: tile(c) });
       pilotKpis = [
         T('#5B3FA8', 'Taux de charges sur le chiffre d\'affaires', pc(CH0 / ca * 100), eur(CH0) + ' de charges sur ' + eur(ca)),
-        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(CH0 / 30620 * 100), 'sur 30 620 € après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
+        T('#5B3FA8', 'Taux de charges sur la part du cabinet', pc(CH0 / window.LAEKEN.TOT.part * 100), 'sur ' + window.LAEKEN.fm(window.LAEKEN.TOT.part) + ' après frais de labo et rémunérations des praticiens. Les repères étrangers de 50 à 60 % incluent la rémunération des dentistes : ne pas les comparer tels quels'),
         T('#0F766E', 'Valeur moyenne par visite', eur(ca / nV), nV + ' visites, ' + (D.rows.length / nV).toFixed(2).replace('.', ',') + ' actes par visite'),
         T('#2F6DB5', 'Occupation des fauteuils', pc(D.occAll * 100), 'heures occupées sur ' + (3 * D.MONTH.days * 8.5) + ' h ouvertes (3 box, 7 jours sur 7)'),
         T('#B45309', 'Acceptation des devis', pc(qt.rate * 100), qt.accepted + ' acceptés sur ' + qt.presented + ' présentés, ' + qt.pending + ' en attente (' + eur(qt.valPend) + ')'),
@@ -395,10 +395,10 @@ class Component extends DCLogic {
     const BDEF = { ca: 125000, labo: 17500, rem: 74500, exp: 16000, exc: 4200, rare: 1000, org: 6000, veh: 5900, imp: 0 };
     const BV = Object.assign({}, BDEF, S.bud || {});
     const saveB = (o) => { const nb = Object.assign({}, S.bud || {}, o); try { localStorage.setItem('lk-budget', JSON.stringify(nb)); } catch (e) {} setState({ bud: nb }); };
-    const realOf = { ca: 121100, labo: 17700, rem: 72780, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh'), imp: sumCat('imp') };
+    const realOf = { ca: window.LAEKEN.TOT.ca, labo: window.LAEKEN.TOT.labo, rem: window.LAEKEN.TOT.rem, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh'), imp: sumCat('imp') };
     const bRows = [['ca', "Chiffre d'affaires", 'honoraires facturés', true], ['labo', 'Frais de laboratoire', 'factures des labos', false], ['rem', 'Rémunérations des praticiens', '(honoraires − labo) × rétrocession', false]].concat(CAT.map((c) => [c.id, c.label, 'famille de charges', false]));
     const budBen = BV.ca - BV.labo - BV.rem - BV.exp - BV.exc - BV.rare - BV.org - BV.veh - BV.imp;
-    const realBen = 30620 - TOT;
+    const realBen = window.LAEKEN.TOT.part - TOT;
     const bLine = (id, label, hint, up, bud, real, edit) => {
       const gap = real - bud; const good = gap === 0 ? null : ((gap > 0) === up);
       const pctv = bud ? real / bud * 100 : 0;
@@ -452,21 +452,21 @@ class Component extends DCLogic {
       carTabs: carTabs, carSubs: carSubs, carRows: carRows, carKpis: carKpis, carDesc: carDesc,
       pilotKpis: pilotKpis, pilotRows: pilotRows,
       kpis: [
-        { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus', style: tile('#0F766E') },
-        { label: 'Rémunération des praticiens', value: '72 780 €', note: '(honoraires − 17 700 € de labo) × 60 % ; 100 % pour Dr Mohamed Bochouari (gérant), ou 50 % pour Nabila Touil', style: tile('#B45309') },
+        { label: "Chiffre d'affaires", value: window.LAEKEN.fm(window.LAEKEN.TOT.ca), note: window.LAEKEN.TOT.pat + ' patients vus', style: tile('#0F766E') },
+        { label: 'Rémunération des praticiens', value: window.LAEKEN.fm(window.LAEKEN.TOT.rem), note: '(honoraires − ' + window.LAEKEN.fm(window.LAEKEN.TOT.labo) + ' de labo) × 60 % ; 100 % pour Dr Mohamed Bochouari (gérant), ou 50 % pour Nabila Touil', style: tile('#B45309') },
         { label: 'Charges du cabinet', value: eur(TOT), note: (nMod ? nMod + ' montant(s) modifié(s) · ' : '') + 'dont ' + eur(sumCat('org')) + ' de personnel et d\'organisation, ' + eur(sumCat('veh')) + ' pour les 3 véhicules et ' + eur(sumCat('exc') + sumCat('rare')) + ' de charges moins visibles ou peu fréquentes', style: tile('#5B3FA8') },
-        { label: 'Bénéfice du cabinet', value: (30620 - TOT < 0 ? '− ' : '') + eur(Math.abs(30620 - TOT)), note: pc((30620 - TOT) / 121100 * 100) + ' du chiffre d\'affaires', style: tile((30620 - TOT) < 0 ? '#B42318' : '#15803D') }
+        { label: 'Bénéfice du cabinet', value: (window.LAEKEN.TOT.part - TOT < 0 ? '− ' : '') + eur(Math.abs(window.LAEKEN.TOT.part - TOT)), note: pc((window.LAEKEN.TOT.part - TOT) / window.LAEKEN.TOT.ca * 100) + ' du chiffre d\'affaires', style: tile((window.LAEKEN.TOT.part - TOT) < 0 ? '#B42318' : '#15803D') }
       ],
       flow: [
-        { label: "Chiffre d'affaires", value: '121 100 €', bar: bar('#0F766E', 0, 100) },
-        { label: 'Frais de laboratoire', value: '− 17 700 €', bar: bar('#8A4B08', 85.4, 14.6) },
-        { label: 'Rémunération des praticiens', value: '− 72 780 €', bar: bar('#B45309', 25.3, 60.1) },
-        { label: 'Part du cabinet', value: '30 620 €', bar: bar('#0F766E', 0, 25.3) },
-        { label: 'Charges du cabinet', value: '− ' + eur(TOT), bar: bar('#5B3FA8', Math.max(0, (30620 - TOT) / 1211), Math.min(25.3, TOT / 1211)) },
-        { label: 'Bénéfice', value: (30620 - TOT < 0 ? '− ' : '') + eur(Math.abs(30620 - TOT)), bar: bar((30620 - TOT) < 0 ? '#B42318' : '#15803D', 0, Math.abs(30620 - TOT) / 1211) }
+        { label: "Chiffre d'affaires", value: window.LAEKEN.fm(window.LAEKEN.TOT.ca), bar: bar('#0F766E', 0, 100) },
+        { label: 'Frais de laboratoire', value: '− ' + window.LAEKEN.fm(window.LAEKEN.TOT.labo), bar: bar('#8A4B08', 100 - window.LAEKEN.TOT.labo / window.LAEKEN.TOT.ca * 100, window.LAEKEN.TOT.labo / window.LAEKEN.TOT.ca * 100) },
+        { label: 'Rémunération des praticiens', value: '− ' + window.LAEKEN.fm(window.LAEKEN.TOT.rem), bar: bar('#B45309', window.LAEKEN.TOT.part / window.LAEKEN.TOT.ca * 100, window.LAEKEN.TOT.rem / window.LAEKEN.TOT.ca * 100) },
+        { label: 'Part du cabinet', value: window.LAEKEN.fm(window.LAEKEN.TOT.part), bar: bar('#0F766E', 0, window.LAEKEN.TOT.part / window.LAEKEN.TOT.ca * 100) },
+        { label: 'Charges du cabinet', value: '− ' + eur(TOT), bar: bar('#5B3FA8', Math.max(0, (window.LAEKEN.TOT.part - TOT) / (window.LAEKEN.TOT.ca / 100)), Math.min(window.LAEKEN.TOT.part / window.LAEKEN.TOT.ca * 100, TOT / (window.LAEKEN.TOT.ca / 100))) },
+        { label: 'Bénéfice', value: (window.LAEKEN.TOT.part - TOT < 0 ? '− ' : '') + eur(Math.abs(window.LAEKEN.TOT.part - TOT)), bar: bar((window.LAEKEN.TOT.part - TOT) < 0 ? '#B42318' : '#15803D', 0, Math.abs(window.LAEKEN.TOT.part - TOT) / (window.LAEKEN.TOT.ca / 100)) }
       ],
       budget: budget, bReset: 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:600; cursor:pointer;', bResetFn: () => { try { localStorage.removeItem('lk-budget'); } catch (e) {} setState({ bud: {} }); },
-      flowTitle: 'D\'où vient le bénéfice : de 121 100 € à ' + (30620 - TOT < 0 ? '− ' : '') + eur(Math.abs(30620 - TOT)),
+      flowTitle: 'D\'où vient le bénéfice : de ' + window.LAEKEN.fm(window.LAEKEN.TOT.ca) + ' à ' + (window.LAEKEN.TOT.part - TOT < 0 ? '− ' : '') + eur(Math.abs(window.LAEKEN.TOT.part - TOT)),
       chNote: (nMod ? nMod + ' montant(s) modifié(s). ' : '') + 'Modifiez un montant puis validez (Entrée) : les familles, le disque, le total des charges, le bénéfice et le budget se recalculent. Les montants sont enregistrés dans ce navigateur uniquement.',
       chBtnSide: 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:600; cursor:pointer;' + (nMod ? '' : ' opacity:0.5;'),
       chBtnMain: 'border:0; background:#0F766E; color:#fff; border-radius:10px; min-height:38px; padding:0 14px; font-size:13px; font-weight:700; cursor:pointer;',
@@ -475,13 +475,13 @@ class Component extends DCLogic {
       cDonut: cDonut, cDonutTotal: eur(TOT), cLegend: cLegend,
       charges: charges, cTabs: cTabs, catCards: [], showCards: ctab === 'all', cDesc: curCat ? curCat.desc : 'Les six familles de charges. Cliquez sur une famille (ici ou dans le menu) pour voir ses sous-onglets et le détail de chaque ligne.', cTotal: eur(shownTotal), cTotalLabel: curCat ? (stab === 'all' ? 'Total : ' + curCat.short.toLowerCase() : 'Total : ' + subDefs.filter((d) => d[0] === stab)[0][1].toLowerCase()) : 'Total des charges', subTabs: subTabs, showSub: ctab !== 'all',
       dentists: [
-        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: '35 400 €', labo: '4 100 €', retro: '18 780 €', share: '12 520 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: '13 400 €', labo: '2 200 €', retro: '6 720 €', share: '4 480 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', billed: '33 500 €', labo: '5 300 €', retro: '28 200 €', share: '0 €', rate: '100 %', conv: 'Non conventionné', convStyle: ns },
-        { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: '6 500 €', labo: '1 100 €', retro: '2 700 €', share: '2 700 €', rate: '50 %', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: '13 200 €', labo: '2 100 €', retro: '6 660 €', share: '4 440 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: '12 800 €', labo: '1 600 €', retro: '6 720 €', share: '4 480 €', rate: '60 %', conv: 'Conventionné', convStyle: cs },
-        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', billed: '6 300 €', labo: '1 300 €', retro: '3 000 €', share: '2 000 €', rate: '60 %', conv: 'Conventionné', convStyle: cs }
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', billed: window.LAEKEN.fm(window.LAEKEN.PR[0].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[0].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[0].net), share: window.LAEKEN.fm(window.LAEKEN.PR[0].cab), rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', billed: window.LAEKEN.fm(window.LAEKEN.PR[2].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[2].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[2].net), share: window.LAEKEN.fm(window.LAEKEN.PR[2].cab), rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', billed: window.LAEKEN.fm(window.LAEKEN.PR[1].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[1].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[1].net), share: window.LAEKEN.fm(window.LAEKEN.PR[1].cab), rate: '100 %', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Nabila Touil', role: '1 jour par semaine', billed: window.LAEKEN.fm(window.LAEKEN.PR[5].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[5].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[5].net), share: window.LAEKEN.fm(window.LAEKEN.PR[5].cab), rate: '50 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', billed: window.LAEKEN.fm(window.LAEKEN.PR[4].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[4].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[4].net), share: window.LAEKEN.fm(window.LAEKEN.PR[4].cab), rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', billed: window.LAEKEN.fm(window.LAEKEN.PR[3].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[3].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[3].net), share: window.LAEKEN.fm(window.LAEKEN.PR[3].cab), rate: '60 %', conv: 'Conventionné', convStyle: cs },
+        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', billed: window.LAEKEN.fm(window.LAEKEN.PR[6].T), labo: window.LAEKEN.fm(window.LAEKEN.PR[6].LAB), retro: window.LAEKEN.fm(window.LAEKEN.PR[6].net), share: window.LAEKEN.fm(window.LAEKEN.PR[6].cab), rate: '60 %', conv: 'Conventionné', convStyle: cs }
       ]
     };
   }

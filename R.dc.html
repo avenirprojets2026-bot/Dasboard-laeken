@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Contrôles de cohérence</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -132,18 +132,18 @@ class Component extends DCLogic {
     const sum = (a, f) => a.reduce((x, y) => x + (f(y) || 0), 0);
     const C = []; // [groupe, nom, état ok|warn|ko|na, détail, lien]
     const add = (g, n, st, d, h) => C.push({ g: g, n: n, st: st, d: d, h: h || '' });
-    let part = 30620; let res = 0; let chg = 33615;
+    let part = window.LAEKEN.TOT.part; let res = 0; let chg = 33615;
     try { const t = Number(localStorage.getItem('lk-charges-tot')); if (t > 0) { chg = t; } } catch (e) {}
     if (L) {
       const P = L.PR;
       const T = sum(P, (p) => p.T); const fr = Math.round(sum(L.rows, (r) => r.fee));
-      add('d', 'Honoraires du mois', T === fr ? 'ok' : 'ko', 'Actes détaillés ' + eu(fr) + ' · total des praticiens ' + eu(T) + ' (attendu 121 100 €)', 'Main.dc.html');
+      add('d', 'Honoraires du mois', T === fr ? 'ok' : 'ko', 'Actes détaillés ' + eu(fr) + ' · total des praticiens ' + eu(T) + ' (attendu ' + eu(window.LAEKEN.TOT.ca) + ')', 'Main.dc.html');
       const LB = sum(P, (p) => p.LAB); const lr = sum(L.rows, (r) => r.labo);
       add('d', 'Frais de laboratoire', LB === lr ? 'ok' : 'ko', 'Travaux de laboratoire ' + eu(lr) + ' · frais déduits chez les praticiens ' + eu(LB), 'C.dc.html');
       const N = sum(P, (p) => p.N); const dos = {}; L.rows.forEach((r) => { dos[r.doss] = 1; });
       add('d', 'Patients du mois', N === L.visits.length ? 'ok' : 'ko', nf(L.visits.length) + ' rendez-vous · ' + nf(N) + ' patients chez les praticiens · ' + nf(Object.keys(dos).length) + ' dossiers distincts (certains patients sont venus deux fois)', 'L.dc.html');
       const R = Math.round(sum(P, (p) => p.retro));
-      add('d', 'Rémunérations des praticiens', R === 72780 ? 'ok' : 'ko', eu(R) + ' calculés sur le modèle · ' + eu(72780) + ' sur la page Rémunérations', 'E.dc.html');
+      add('d', 'Rémunérations des praticiens', R === Math.round(window.LAEKEN.TOT.rem) ? 'ok' : 'ko', eu(R) + ' calculés sur le modèle · ' + eu(window.LAEKEN.TOT.rem) + ' sur la page Rémunérations', 'E.dc.html');
       part = Math.round(T - LB - R);
       add('d', 'Part du cabinet', part === Math.round(sum(P, (p) => p.cab)) ? 'ok' : 'ko', 'Honoraires − labo − rémunérations = ' + eu(part), 'D.dc.html');
       const okRate = P.every((p) => p.rate === (p.short === 'Mohamed Bochouari' ? 1 : (p.short === 'Nabila Touil' ? 0.5 : 0.6)));

@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Espace praticien</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -236,9 +236,9 @@ class Component extends DCLogic {
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
     const DAYSN = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
     const PR = D.PR; const pad = D.pad;
-    const chips = { cb: chipBase + 'background:#D6E6FA; color:#1B3F73;', cash: chipBase + 'background:#D5F0DF; color:#1E5A3A;', plan: chipBase + 'background:#E9DEF7; color:#4B2F96;', unpaid: chipBase + 'background:#FBE0DC; color:#A3231A;', zero: chipBase + 'background:#E7EDEB; color:#33433F;', planned: chipBase + 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;' };
+    const chips = { cb: chipBase + 'background:#D6E6FA; color:#1B3F73;', cash: chipBase + 'background:#D5F0DF; color:#1E5A3A;', plan: chipBase + 'background:#E9DEF7; color:#4B2F96;', unpaid: chipBase + 'background:#FBE0DC; color:#A3231A;', zero: chipBase + 'background:#E7EDEB; color:#33433F;', planned: chipBase + 'background:#fff; color:#4A5B57; border:1px dashed #9FB1AC;', unk: chipBase + 'background:#E7EDEB; color:#5A6B67;' };
     const msChips = { 'En ordre': chipBase + 'background:#E3F4EA; color:#0B6B3A;', 'À vérifier': chipBase + 'background:#FDF0DC; color:#8A4B08;', 'Non en ordre': chipBase + 'background:#FBE7E5; color:#A3231A;' };
-    const payLabel = { cb: 'Payé par carte', cash: 'Payé en liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
+    const payLabel = { cb: 'Payé par carte', cash: 'Payé en liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir', unk: 'Paiement non fourni' };
     const lockPr = window.LKAUTH ? window.LKAUTH.prIndex() : -1;
     const pi = lockPr >= 0 ? lockPr : Math.min(S.pr, PR.length - 1);
     const P = pi >= 0 ? PR[pi] : null;
@@ -281,7 +281,7 @@ class Component extends DCLogic {
     const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
     const onCsv = () => {
       const head = ['Date', 'Heure', 'Praticien', 'N° de dossier', 'Date de naissance', 'Âge', 'Code INAMI', 'Acte', 'Honoraires', 'Remboursé mutuelle', 'Supplément', 'Part patient', 'Statut patient', 'Mutuelle', 'Statut mutuelle', 'Paiement'];
-      const lines = [head].concat(all.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/10/2026', v.time, PR[v.p].short, v.doss, v.dob, v.age, l.code, l.label, String(l.fee).replace('.', ','), String(l.interv).replace('.', ','), String(l.supp).replace('.', ','), String(l.share).replace('.', ','), stLabel[v.reg], v.mut, v.ms, payLabel[v.pay]])), []));
+      const lines = [head].concat(all.reduce((acc, v) => acc.concat(v.lines.map((l) => [pad(v.d) + '/' + String(window.LAEKEN.MONTH.m + 1).padStart(2, '0') + '/' + window.LAEKEN.MONTH.y, v.time, PR[v.p].short, v.doss, v.dob, v.age, l.code, l.label, String(l.fee).replace('.', ','), String(l.interv).replace('.', ','), String(l.supp).replace('.', ','), String(l.share).replace('.', ','), stLabel[v.reg], v.mut, v.ms, payLabel[v.pay]])), []));
       const csv = '\ufeff' + lines.map((l) => l.map(csvCell).join(';')).join('\r\n');
       (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => {
         if (!dl) { throw { code: 'unavailable' }; }

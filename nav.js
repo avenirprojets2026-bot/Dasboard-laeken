@@ -73,6 +73,32 @@
     '#lk-side{top:62px!important}#lk-side .lk-t{display:none}body{padding-top:62px!important}' +
     '@media(min-width:1000px){body{padding-left:256px!important;transition:padding-left .2s}#lk-side{transition:transform .2s}html.lk-sideoff body{padding-left:0!important}html.lk-sideoff #lk-side{transform:translateX(-100%)}}' +
     '@media(max-width:999px){#lk-side{display:none;width:100%;max-width:340px;box-shadow:12px 0 40px rgba(0,0,0,.4)}#lk-side.open{display:block}#lk-bar img{display:none}}';
+
+  function lkRewrite(L) {
+    var esc = function (s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '[ \u00a0\u202f]'); };
+    var pairs = [];
+    var add = function (a, b) { if (a !== b) { pairs.push([new RegExp('(?<![\\d.,])' + esc(a) + '(?![\\d])', 'g'), b]); } };
+    [33615, 33702].forEach(function (c) { add(L.fm(L.TOT0.part - c), L.fm(L.TOT.part - c)); });
+    add(L.fm(L.TOT0.ca), L.fm(L.TOT.ca)); add(L.fm(L.TOT0.labo), L.fm(L.TOT.labo)); add(L.fm(L.TOT0.rem), L.fm(L.TOT.rem)); add(L.fm(L.TOT0.part), L.fm(L.TOT.part));
+    add(String(L.TOT0.pat), String(L.TOT.pat));
+    var lab = L.MONTH.label;
+    if (lab !== 'Octobre 2026') { pairs.push([/Octobre 2026/g, lab]); pairs.push([/octobre 2026/g, lab.toLowerCase()]); pairs.push([/Oct\. 2026/g, lab.slice(0, 4) + '. ' + lab.slice(-4)]); }
+    var busy = false, timer = null;
+    var walk = function () {
+      busy = true;
+      var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null); var n;
+      while ((n = w.nextNode())) {
+        var p = n.parentNode; if (!p || /^(SCRIPT|STYLE|TEXTAREA)$/.test(p.nodeName) || (p.closest && p.closest('#lk-bar,#lk-side,[data-noimp]'))) { continue; }
+        var v = n.nodeValue; var o = v;
+        for (var i = 0; i < pairs.length; i += 1) { v = v.replace(pairs[i][0], pairs[i][1]); }
+        if (v !== o) { n.nodeValue = v; }
+      }
+      busy = false;
+    };
+    var mo = new MutationObserver(function () { if (busy) { return; } clearTimeout(timer); timer = setTimeout(walk, 80); });
+    mo.observe(document.body, { childList: true, subtree: true, characterData: true });
+    walk();
+  }
   function init() {
     var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
     var side = document.createElement('aside'); side.id = 'lk-side'; side.innerHTML = '<div class="lk-t"><img src="icon-512.png?v=2" alt=""><div><b>Dental Clinic Laeken</b><small>Comptabilité du cabinet</small></div></div>' + html;
@@ -80,6 +106,16 @@
     var pageT = (document.title || '').replace(/'\s*\+.*$/, '');
     bar.innerHTML = '<button type="button" class="lk-mb" aria-label="Ouvrir ou fermer le menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><img src="icon-512.png?v=2" alt=""><div class="lk-bt"><b>Dental Clinic Laeken</b><small>' + (pageT || curName) + '</small></div><button type="button" class="lk-tb" aria-label="Mode clair ou sombre"></button>';
     try { if (localStorage.getItem('lk-side') === 'off') { document.documentElement.classList.add('lk-sideoff'); } } catch (e) {}
+
+    // pastille « données importées » et remplacement des chiffres du modèle par ceux de l'import
+    var L = window.LAEKEN;
+    if (L && L.IMPORT && L.IMPORT.active) {
+      var chip = document.createElement('a'); chip.id = 'lk-imp'; chip.href = 'J.dc.html';
+      chip.textContent = 'Données importées · ' + L.MONTH.label;
+      chip.style.cssText = 'flex:none;background:#F3DDA6;color:#3B2A06;border-radius:999px;padding:7px 12px;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap';
+      bar.insertBefore(chip, bar.querySelector('.lk-tb'));
+      lkRewrite(L);
+    }
     var mb = bar.querySelector('.lk-mb');
     mb.onclick = function (ev) {
       ev.stopPropagation();

@@ -7,9 +7,10 @@
 <meta charset="utf-8">
 <title>Casier comptable par praticien</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -168,17 +169,17 @@ class Component extends DCLogic {
     const info = chipBase + ' background:#E7EDEB; color:#33433F;';
     return {
       nav: [
-        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 j/sem', billed: '35 400 €', pending: '8 700 €', conv: 'Conventionné', convStyle: cs, style: idle },
-        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 j/sem', billed: '13 400 €', pending: '3 300 €', conv: 'Conventionné', convStyle: cs, style: idle },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 j/sem + mardi administratif', billed: '33 500 €', pending: '8 300 €', conv: 'Non conventionné', convStyle: ns, style: active },
-        { name: 'Dr Nabila Touil', role: '1 j/sem · départ le 01/12', billed: '6 500 €', pending: '1 600 €', conv: 'Conventionné', convStyle: cs, style: idle },
-        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 j/sem', billed: '13 200 €', pending: '3 200 €', conv: 'Conventionné', convStyle: cs, style: idle },
-        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 j/sem', billed: '12 800 €', pending: '3 200 €', conv: 'Conventionné', convStyle: cs, style: idle },
-        { name: '7e praticien (à confirmer)', role: 'à confirmer', billed: '6 300 €', pending: '1 500 €', conv: 'Conventionné', convStyle: cs, style: idle }
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 j/sem', billed: window.LAEKEN.fm(window.LAEKEN.PR[0].T), pending: '8 700 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 j/sem', billed: window.LAEKEN.fm(window.LAEKEN.PR[2].T), pending: '3 300 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 j/sem + mardi administratif', billed: window.LAEKEN.fm(window.LAEKEN.PR[1].T), pending: '8 300 €', conv: 'Non conventionné', convStyle: ns, style: active },
+        { name: 'Dr Nabila Touil', role: '1 j/sem · départ le 01/12', billed: window.LAEKEN.fm(window.LAEKEN.PR[5].T), pending: '1 600 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 j/sem', billed: window.LAEKEN.fm(window.LAEKEN.PR[4].T), pending: '3 200 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 j/sem', billed: window.LAEKEN.fm(window.LAEKEN.PR[3].T), pending: '3 200 €', conv: 'Conventionné', convStyle: cs, style: idle },
+        { name: '7e praticien (à confirmer)', role: 'à confirmer', billed: window.LAEKEN.fm(window.LAEKEN.PR[6].T), pending: '1 500 €', conv: 'Conventionné', convStyle: cs, style: idle }
       ],
       kpis: [
-        { label: 'Patients vus', value: '210' },
-        { label: 'Facturé', value: '33 500 €' },
+        { label: 'Patients vus', value: String(window.LAEKEN.PR[1].N) },
+        { label: 'Facturé', value: window.LAEKEN.fm(window.LAEKEN.PR[1].T) },
         { label: 'Remboursé', value: '25 200 €' },
         { label: 'Frais de labo', value: '5 300 €' }
       ],

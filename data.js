@@ -158,6 +158,89 @@
     P.maxDay = 0; P.dates.forEach(function (d) { var c = myVisits.filter(function (r) { return r.d === d; }).length; if (c > P.maxDay) { P.maxDay = c; } });
   });
 
+
+  // ---- Totaux du modèle, puis import permanent d'un export (Corilus ou autre) enregistré dans le navigateur ----
+  var r2 = function (x) { return Math.round(x * 100) / 100; };
+  function totals() {
+    var t = { ca: 0, labo: 0, rem: 0, pat: 0, dos: 0 }; var seen = {};
+    PR.forEach(function (P) { t.ca += P.T; t.labo += P.LAB; t.rem += P.net; t.pat += P.visits.length; P.visits.forEach(function (v) { seen[v.doss] = 1; }); });
+    t.ca = r2(t.ca); t.labo = r2(t.labo); t.rem = r2(t.rem); t.part = r2(t.ca - t.labo - t.rem); t.dos = Object.keys(seen).length;
+    return t;
+  }
+  var TOT0 = totals();
+  var MNAMES = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+  var IMP = null;
+  try { var rawImp = localStorage.getItem('lk-import'); if (rawImp) { IMP = JSON.parse(rawImp); if (!IMP || IMP.v !== 1 || !IMP.lines || !IMP.lines.length || (IMP.y * 12 + IMP.m) < (2026 * 12 + 9)) { IMP = null; } } } catch (eImp) { IMP = null; }
+  var IMPSTAT = { active: false };
+  var norm0 = function (s) { return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); };
+  // famille d'un acte importé : d'abord le code de la nomenclature connu, sinon des mots du libellé
+  var KEYRULES = [
+    [/blanch/, 'blanch'], [/goutti/, 'goutt'], [/facette/, 'facette'], [/couronne.*implant|implant.*couronne|supra.?implant/, 'couronneImpl'], [/couronne|onlay|inlay/, 'couronne'],
+    [/bridge/, 'bridge'], [/greffe|osseu|sinus|comblement/, 'greffe'], [/implant/, 'implant'], [/prothese|dentier|chassis|reparation de prothese/, 'prothese'],
+    [/appareil|bracket|multi.?attache|aligneur|contention|retenue/, 'appareil'], [/orthodon|ortho\b|controle ortho/, 'ortho'], [/canal|endodon|pulpe|pulpot|devital/, 'canal'],
+    [/chirurg|dent de sagesse|incision|apicect/, 'extrS'], [/extract|avuls/, 'extr'], [/obtur|composite|plombage|carie|restaur|reconstitution/, 'obt'],
+    [/tartr|prophyl|polissage|hygien|detart/, 'detart'], [/panoram|radio|rx\b|cbct|cliche|retro.?alveol|scanner/, 'pano'], [/examen|bilan|check/, 'exam'], [/consult|avis|urgence|visite/, 'consult']
+  ];
+  var keyOf = function (label) { var n = norm0(label); for (var i = 0; i < KEYRULES.length; i += 1) { if (KEYRULES[i][0].test(n)) { return KEYRULES[i][1]; } } return 'autre'; };
+  if (IMP) {
+    var iNow = new Date(); var iDim = new Date(IMP.y, IMP.m + 1, 0).getDate(); var iIsNow = iNow.getFullYear() === IMP.y && iNow.getMonth() === IMP.m;
+    MONTH.y = IMP.y; MONTH.m = IMP.m; MONTH.days = iDim; MONTH.label = MNAMES[IMP.m] + ' ' + IMP.y; MONTH.today = iIsNow ? iNow.getDate() : iDim; MONTH.imported = true;
+    var CODE = {};
+    Object.keys(ACT).forEach(function (k) { [10, 40].forEach(function (age) { var tt = ACT[k](age); CODE[tt[0]] = { key: k, tarif: tt[2], ib: tt[3], io: tt[4] }; }); });
+    var SLOTMAX = {};
+    PR.forEach(function (P) { P.rows0 = P.rows; P.visits0 = P.visits; P.rows = []; P.visits = []; });
+    rows = []; visits = [];
+    var byKey = {}; var skipped = 0;
+    IMP.lines.forEach(function (a, ai) {
+      // a = [praticien, jour, heure, dossier, naissance, code, libellé, honoraires, labo, intervention, mutualité, statut mutuelle, bim|ord, paiement]
+      var p = a[0]; var P = PR[p]; if (!P) { skipped += 1; return; }
+      var d = a[1]; var doss = a[3] || ('D-x' + ai);
+      var vk = p + '|' + d + '|' + doss;
+      var vis = byKey[vk];
+      if (!vis) {
+        var wd = new Date(MONTH.y, MONTH.m, d).getDay(); var dstr = pad(d) + '/' + pad(MONTH.m + 1);
+        var dob = a[4] || ''; var age = null;
+        var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(dob);
+        if (m) { age = MONTH.y - Number(m[3]); if (MONTH.m + 1 < Number(m[2]) || (MONTH.m + 1 === Number(m[2]) && d < Number(m[1]))) { age -= 1; } }
+        vis = { vi: visits.length, p: p, d: d, wd: wd, off: wd === 0 || wd === 6 || HOL.indexOf(dstr) >= 0, time: a[2] || '', when: WD[wd] + ' ' + dstr, doss: doss, dob: dob || '—', age: age == null ? '—' : age,
+          mut: a[10] || '—', ms: a[11] || 'En ordre', reg: a[12] === 'bim' ? 'bim' : 'ord', rp: 0.5, future: d > MONTH.today, lines: [], pay: a[13] || 'unk' };
+        byKey[vk] = vis; visits.push(vis); P.visits.push(vis);
+      }
+      var code = String(a[5] || ''); var fee = r2(Number(a[7]) || 0); var labo = r2(Number(a[8]) || 0);
+      var cd = CODE[code]; var key = cd ? cd.key : keyOf(a[6]);
+      var interv = a[9] != null && a[9] !== '' ? Number(a[9]) : (cd && vis.ms !== 'Non en ordre' ? (vis.reg === 'bim' ? cd.ib : cd.io) : 0);
+      interv = Math.min(fee, Math.max(0, r2(interv || 0)));
+      var L = { key: key, labo: labo, code: code || 'hors nomenclature', label: a[6] || 'Acte', tarif: cd ? cd.tarif : fee, suph: 0, fee: fee, ib: cd ? cd.ib : 0, io: cd ? cd.io : 0, free: !/^\d{6}$/.test(code), vi: vis.vi, first: vis.lines.length === 0, interv: interv, supp: 0, share: r2(fee - interv), pay: vis.pay };
+      ['p', 'd', 'wd', 'off', 'time', 'when', 'doss', 'dob', 'age', 'mut', 'ms', 'reg', 'rp', 'future'].forEach(function (f) { L[f] = vis[f]; });
+      if (L.free && labo > 0) { L.work = L.label; }
+      vis.lines.push(L); P.rows.push(L); rows.push(L);
+    });
+    PR.forEach(function (P, pi) {
+      P.dates = [];
+      for (var dd = 1; dd <= MONTH.days; dd += 1) { if (P.days.indexOf(new Date(MONTH.y, MONTH.m, dd).getDay()) >= 0) { P.dates.push(dd); } }
+      var byDay = {};
+      P.visits.forEach(function (v) { (byDay[v.d] = byDay[v.d] || []).push(v); });
+      Object.keys(byDay).forEach(function (dk) {
+        var vs = byDay[dk]; var n = vs.length; var SL = P.slotsFor(new Date(MONTH.y, MONTH.m, Number(dk)).getDay());
+        vs.forEach(function (v, i) {
+          if (!v.time) { var mins = SL.length ? SL[Math.min(SL.length - 1, Math.floor(i * SL.length / n))] : 540 + i * P.step; v.time = pad(Math.floor(mins / 60)) + ' h ' + pad(mins % 60); }
+          else { var tm = /^(\d{1,2})[:h]\s*(\d{0,2})$/.exec(String(v.time).trim()); if (tm) { v.time = pad(Number(tm[1])) + ' h ' + pad(Number(tm[2] || 0)); } }
+          v.lines.forEach(function (L) { L.time = v.time; });
+        });
+      });
+      P.visits.forEach(function (v) {
+        var fee = 0; var iv = 0; var free = false;
+        v.lines.forEach(function (L) { fee += L.fee; iv += L.interv; if (L.free) { free = true; } });
+        v.fee = r2(fee); v.interv = r2(iv); v.supp = 0; v.share = r2(v.fee - v.interv); v.nact = v.lines.length; v.free = free;
+      });
+      P.T = r2(P.rows.reduce(function (a, r) { return a + r.fee; }, 0)); P.LAB = r2(P.rows.reduce(function (a, r) { return a + r.labo; }, 0)); P.N = P.visits.length;
+      P.suph = 0; P.base = r2(P.T - P.LAB); P.retro = r2(P.base * P.rate); P.net = P.retro; P.cab = r2(P.base - P.retro);
+      P.maxDay = 0; Object.keys(byDay).forEach(function (dk) { if (byDay[dk].length > P.maxDay) { P.maxDay = byDay[dk].length; } });
+    });
+    IMPSTAT = { active: true, name: IMP.name || '', at: IMP.at || '', label: MONTH.label, lines: IMP.lines.length, visits: visits.length, skipped: skipped, note: IMP.note || '' };
+  }
+  var TOT = totals();
+
   // ---- Box (fauteuils) : occupation et marge ----
   var BOXNAMES = { ped: 'Box pédiatrique', mic: 'Box microscope', b3: 'Box 3' };
   // Mohamed : lundi, jeudi, dimanche (mardi administratif, sans box). Vendredi : Aya (pédiatrique), Nabila de 9 h à 15 h puis Julien de 15 h à 20 h dans le Box 3 (polyvalent)
@@ -183,7 +266,7 @@
   var rq = mul(424242);
   var quotes = { byPr: [], list: [] };
   PR.forEach(function (P, pi) {
-    var acc = P.rows.filter(function (r) { return QK.indexOf(r.key) >= 0; });
+    var acc = (P.rows0 || P.rows).filter(function (r) { return QK.indexOf(r.key) >= 0; });
     var accepted = acc.length; var presented = Math.round(accepted / RATE[pi]);
     var refused = Math.round((presented - accepted) * 0.55); var pending = presented - accepted - refused;
     var valAcc = acc.reduce(function (a, r) { return a + r.fee; }, 0); var avg = accepted ? valAcc / accepted : 0;
@@ -208,14 +291,35 @@
     var rem = [57300, 56800, 47200, 52900, 54100, 57600, 55200, 56500, 56500, 50800, 44500, 58400, 61500];
     var chg = [37900, 37900, 38600, 38200, 38200, 38200, 38300, 38500, 38500, 38500, 38400, 38720, 38720].map(function (x) { return x + 1165 - 6270; }); // + camionnette Ford ; secrétaires à tiers temps (3 000 € brut pour les trois)
     var R = 61500 / 121100; var LR = 17700 / 121100; var PP = 963 / 121100;
-    return lab.map(function (l, i) {
-      var ca = i === 12 ? 121100 : Math.round(rem[i] / R / 100) * 100;
-      var REM2 = { 7: 67170, 8: 67050, 9: 60370, 10: 52960, 11: 69500, 12: 72780 }; // gérant à 100 % (= page Rémunérations)
+    var H0 = lab.map(function (l, i) {
+      var ca = i === 12 ? TOT0.ca : Math.round(rem[i] / R / 100) * 100;
+      var REM2 = { 7: 67170, 8: 67050, 9: 60370, 10: 52960, 11: 69500, 12: TOT0.rem }; // gérant à 100 % (= page Rémunérations)
       var rem2 = REM2[i] || Math.round(rem[i] * 72780 / 61500 / 100) * 100;
-      var labo = i === 12 ? 17700 : Math.round(ca * LR / 100) * 100;
-      var pat = i === 12 ? 963 : Math.round(ca * PP);
+      var labo = i === 12 ? TOT0.labo : Math.round(ca * LR / 100) * 100;
+      var pat = i === 12 ? TOT0.pat : Math.round(ca * PP);
       return { label: l, ca: ca, labo: labo, rem: rem2, chg: chg[i], ben: ca - labo - rem2 - chg[i], pat: pat };
     });
+    // mois réels importés : l'export du mois en cours et les résumés des mois précédents (lk-hist)
+    var MSH = ['Janv.', 'Févr.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'];
+    var over = {}; try { over = JSON.parse(localStorage.getItem('lk-hist') || '{}') || {}; } catch (eH) { over = {}; }
+    if (IMP) { over[IMP.y + '-' + (IMP.m + 1)] = { ca: TOT.ca, labo: TOT.labo, rem: TOT.rem, pat: TOT.pat }; }
+    var num = function (k) { var q = k.split('-'); return Number(q[0]) * 12 + Number(q[1]); };
+    Object.keys(over).sort(function (a, b) { return num(a) - num(b); }).forEach(function (k) {
+      var q = k.split('-'); var lb = MSH[Number(q[1]) - 1] + ' ' + q[0]; var o = over[k]; var idx = -1;
+      H0.forEach(function (h, i) { if (h.label === lb) { idx = i; } });
+      if (idx < 0) {
+        if (num(k) <= 2026 * 12 + 10) { return; }
+        var guard = 0;
+        while (idx < 0 && guard < 24) {
+          var last = H0[H0.length - 1]; var lq = null; MSH.forEach(function (m, mi) { if (last.label.indexOf(m + ' ') === 0) { lq = [Number(last.label.slice(-4)), mi]; } });
+          var nm = (lq[1] + 1) % 12; var ny = lq[0] + (lq[1] === 11 ? 1 : 0);
+          H0.shift(); H0.push({ label: MSH[nm] + ' ' + ny, ca: last.ca, labo: last.labo, rem: last.rem, chg: last.chg, ben: last.ben, pat: last.pat, est: true });
+          if (H0[H0.length - 1].label === lb) { idx = H0.length - 1; } guard += 1;
+        }
+      }
+      var h = H0[idx]; h.ca = o.ca; h.labo = o.labo; h.rem = o.rem; h.pat = o.pat; h.ben = Math.round((o.ca - o.labo - o.rem - h.chg) * 100) / 100; h.real = true; h.est = false;
+    });
+    return H0;
   })();
 
   // ---- Occupation des box par jour de semaine et par heure (octobre 2026) ----
@@ -257,5 +361,5 @@
       return { name: f[0], color: f[1], n: ls.length, fee: ls.reduce(function (a, l) { return a + l.fee; }, 0) };
     }).filter(function (x) { return x.n > 0; });
   }
-    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad, FAMS: FAMS, families: families, HIST: HIST, heat: heat, BOXNAMES: BOXNAMES };
+    window.LAEKEN = { MONTH: MONTH, PR: PR, rows: rows, visits: visits, boxes: boxes, occAll: occAll, quotes: quotes, pilot: pilot, CHG: CHG, ACT: ACT, FREE: FREE, WD: WD, pad: pad, FAMS: FAMS, families: families, HIST: HIST, heat: heat, BOXNAMES: BOXNAMES, TOT: TOT, TOT0: TOT0, IMPORT: IMPSTAT, fm: function (n) { var x = Math.round(n); return (x < 0 ? '\u2212 ' : '') + String(Math.abs(x)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'; } };
 })();

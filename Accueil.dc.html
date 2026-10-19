@@ -4,13 +4,13 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
 <meta charset="utf-8">
 <title>Accueil</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=45"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -95,17 +95,17 @@ class Component extends DCLogic {
     } else if (role === 'secretaire') {
       space = 'accueil, caisse et rendez-vous';
       kpis = [
-        { label: 'Patients vus', value: '963', note: 'octobre 2026', vStyle: v(), href: 'H.dc.html' },
+        { label: 'Patients vus', value: String(window.LAEKEN.TOT.pat), note: window.LAEKEN.MONTH.label, vStyle: v(), href: 'H.dc.html' },
         { label: 'Solde patients à percevoir', value: '2 089 €', note: 'paiements de l\'échantillon', vStyle: v('#A3231A'), href: 'H.dc.html' },
         { label: 'Devis en attente', value: '28', note: 'proposés ou en attente', vStyle: v('#B45309'), href: 'H.dc.html' },
         { label: 'Rendez-vous manqués', value: '10', note: 'du 2 au 16 octobre', vStyle: v('#A3231A'), href: 'H.dc.html' }
       ];
     } else {
-      const res = 121100 - 17700 - 72780 - tot;
+      const res = window.LAEKEN.TOT.ca - window.LAEKEN.TOT.labo - window.LAEKEN.TOT.rem - tot;
       kpis = [
-        { label: 'Honoraires facturés', value: '121 100 €', note: 'octobre 2026', vStyle: v(), href: 'Main.dc.html' },
-        { label: 'Patients vus', value: '963', note: '7 praticiens', vStyle: v(), href: 'Main.dc.html' },
-        { label: 'Rémunérations', value: '72 780 €', note: 'dont 28 200 € pour le gérant', vStyle: v(), href: 'E.dc.html' },
+        { label: 'Honoraires facturés', value: window.LAEKEN.fm(window.LAEKEN.TOT.ca), note: window.LAEKEN.MONTH.label, vStyle: v(), href: 'Main.dc.html' },
+        { label: 'Patients vus', value: String(window.LAEKEN.TOT.pat), note: '7 praticiens', vStyle: v(), href: 'Main.dc.html' },
+        { label: 'Rémunérations', value: window.LAEKEN.fm(window.LAEKEN.TOT.rem), note: 'dont ' + window.LAEKEN.fm(window.LAEKEN.PR[1].net) + ' pour le gérant', vStyle: v(), href: 'E.dc.html' },
         { label: 'Résultat du cabinet', value: eur(res), note: 'après ' + eur(tot) + ' de charges', vStyle: v(res < 0 ? '#A3231A' : '#0B6B3A'), href: 'D.dc.html' }
       ];
     }

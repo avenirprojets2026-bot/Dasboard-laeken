@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Suivi mutuelles et labo</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=45"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
+<script src="./data.js?v=46"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -332,7 +332,7 @@ class Component extends DCLogic {
       const cnt = (s) => ll.filter((x) => lst(x) === s).length;
       const ref = (x) => 'LAB-' + L.PR[x.r.p].short.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + String(all.filter((y) => y.r.p === x.r.p && y.k <= x.k).length).padStart(2, '0');
       labVals = {
-        labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur 17 700 € pour le cabinet', style: tl('#8A4B08') }, { label: 'Labos de dentisterie', value: eu(totCat('dent')), note: all.filter((x) => x.cat === 'dent').length + ' travaux · 6 praticiens', style: tl('#2F6DB5') }, { label: 'Labos d\'orthodontie', value: eu(totCat('ortho')), note: all.filter((x) => x.cat === 'ortho').length + ' travaux · Dr Mohamed Bochouari', style: tl('#9D174D') }, { label: 'En attente du labo', value: String(cnt('commande')), note: cnt('recu') + ' reçus à poser · ' + cnt('pose') + ' posés', style: tl('#B45309') }],
+        labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur ' + window.LAEKEN.fm(window.LAEKEN.TOT.labo) + ' pour le cabinet', style: tl('#8A4B08') }, { label: 'Labos de dentisterie', value: eu(totCat('dent')), note: all.filter((x) => x.cat === 'dent').length + ' travaux · 6 praticiens', style: tl('#2F6DB5') }, { label: 'Labos d\'orthodontie', value: eu(totCat('ortho')), note: all.filter((x) => x.cat === 'ortho').length + ' travaux · Dr Mohamed Bochouari', style: tl('#9D174D') }, { label: 'En attente du labo', value: String(cnt('commande')), note: cnt('recu') + ' reçus à poser · ' + cnt('pose') + ' posés', style: tl('#B45309') }],
         labCatOpts: [['all', 'Toutes les catégories'], ['dent', 'Dentisterie'], ['ortho', 'Orthodontie']].map((o) => ({ v: o[0], l: o[1], sel: S.lc === o[0] })), labCatSel: (e) => setState({ lc: e && e.target ? e.target.value : 'all', lpg: 0 }),
         labDent: labList('dent'), labOrtho: labList('ortho'), addDent: () => addLn('dent'), addOrtho: () => addLn('ortho'), lnReset: () => { try { localStorage.removeItem('lk-labos'); } catch (e) {} setState({ ln: null, msg: 'Noms des laboratoires rétablis.', ok: true }); },
         labPrOpts: [{ v: '-1', l: 'Tous les praticiens', sel: S.lp < 0 }].concat(L.PR.map((p, i) => ({ v: String(i), l: p.name + ' · ' + all.filter((x) => x.r.p === i).length + ' travaux', sel: S.lp === i }))),

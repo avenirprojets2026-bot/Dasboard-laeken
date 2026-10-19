@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Rémunérations et paiements</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -286,16 +286,16 @@ class Component extends DCLogic {
     const ns = 'display:inline-block; margin-top:6px; border-radius:999px; padding:3px 10px; font-size:12px; font-weight:700; white-space:nowrap; background:#EFEAF8; color:#4B2F96;';
     const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const data = [
-      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [16830, 16520, 14910, 13110, 17510, 18780] },
-      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', color: '#B45309', v: [26670, 26370, 23920, 21150, 27750, 28200] },
-      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [6400, 6570, 5740, 4750, 6440, 6720] },
-      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [6070, 6360, 5580, 4950, 6230, 6720] },
-      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [6240, 6120, 5700, 5060, 6410, 6660] },
-      { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [2510, 2610, 2270, 1980, 2610, 2700] },
-      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, 3000] }
+      { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', color: '#0F766E', v: [16830, 16520, 14910, 13110, 17510, Math.round(window.LAEKEN.PR[0].net)] },
+      { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', color: '#B45309', v: [26670, 26370, 23920, 21150, 27750, Math.round(window.LAEKEN.PR[1].net)] },
+      { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', color: '#5B3FA8', v: [6400, 6570, 5740, 4750, 6440, Math.round(window.LAEKEN.PR[2].net)] },
+      { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', color: '#1D4ED8', v: [6070, 6360, 5580, 4950, 6230, Math.round(window.LAEKEN.PR[3].net)] },
+      { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', color: '#15803D', v: [6240, 6120, 5700, 5060, 6410, Math.round(window.LAEKEN.PR[4].net)] },
+      { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', color: '#B42318', v: [2510, 2610, 2270, 1980, 2610, Math.round(window.LAEKEN.PR[5].net)] },
+      { name: '7e praticien (à confirmer)', role: 'jours à confirmer', color: '#4A5B57', v: [2450, 2500, 2250, 1960, 2550, Math.round(window.LAEKEN.PR[6].net)] }
     ];
-    const TL = { 'Dr Aya Turkieh': [35400, 4100, 0.6], 'Dr Mohamed Bochouari': [33500, 5300, 1], 'Dr Abde-Ssadic Bochouari': [13400, 2200, 0.6], 'Dr Daoud Bouchouari': [12800, 1600, 0.6], 'Dr Julien Cabaz': [13200, 2100, 0.6], 'Dr Nabila Touil': [6500, 1100, 0.5], '7e praticien (à confirmer)': [6300, 1300, 0.6] };
-    const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - t[1] / t[0]) * t[2])); });
+    const TL = { 'Dr Aya Turkieh': [window.LAEKEN.PR[0].T, window.LAEKEN.PR[0].LAB, 0.6], 'Dr Mohamed Bochouari': [window.LAEKEN.PR[1].T, window.LAEKEN.PR[1].LAB, 1], 'Dr Abde-Ssadic Bochouari': [window.LAEKEN.PR[2].T, window.LAEKEN.PR[2].LAB, 0.6], 'Dr Daoud Bouchouari': [window.LAEKEN.PR[3].T, window.LAEKEN.PR[3].LAB, 0.6], 'Dr Julien Cabaz': [window.LAEKEN.PR[4].T, window.LAEKEN.PR[4].LAB, 0.6], 'Dr Nabila Touil': [window.LAEKEN.PR[5].T, window.LAEKEN.PR[5].LAB, 0.5], '7e praticien (à confirmer)': [window.LAEKEN.PR[6].T, window.LAEKEN.PR[6].LAB, 0.6] };
+    const billedV = (d) => d.v.map((x) => { const t = TL[d.name]; return Math.round(x / ((1 - (t[0] ? t[1] / t[0] : 0)) * t[2])); });
     const isB = S.view === 'billed';
     const top = isB ? 45000 : 22000;
     const step = top / 4;
@@ -336,13 +336,13 @@ class Component extends DCLogic {
       { month: 'Octobre 2026', recv: '12 %', bar: bar(12, '#B45309'), date: 'prévu le 01/12/2026', total: '72 780 €', status: 'En attente des mutuelles', chip: wait }
     ];
     const cd = [
-      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', 35400, 4100, 0.6],
-      ['Dr Mohamed Bochouari', 'Orthodontiste · gérant, rémunéré à 100 %', 33500, 5300, 1],
-      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', 13400, 2200, 0.6],
-      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', 12800, 1600, 0.6],
-      ['Dr Julien Cabaz', 'Implantologue', 13200, 2100, 0.6],
-      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer) · départ le 1er décembre 2026', 6500, 1100, 0.5],
-      ['7e praticien (à confirmer)', 'jours à confirmer', 6300, 1300, 0.6]
+      ['Dr Aya Turkieh', 'Chirurgienne dentaire, implantologue et chirurgie orale', window.LAEKEN.PR[0].T, window.LAEKEN.PR[0].LAB, 0.6],
+      ['Dr Mohamed Bochouari', 'Orthodontiste · gérant, rémunéré à 100 %', window.LAEKEN.PR[1].T, window.LAEKEN.PR[1].LAB, 1],
+      ['Dr Abde-Ssadic Bochouari', 'Chirurgien dentaire', window.LAEKEN.PR[2].T, window.LAEKEN.PR[2].LAB, 0.6],
+      ['Dr Daoud Bouchouari', 'Endodontiste et chirurgie orale', window.LAEKEN.PR[3].T, window.LAEKEN.PR[3].LAB, 0.6],
+      ['Dr Julien Cabaz', 'Implantologue', window.LAEKEN.PR[4].T, window.LAEKEN.PR[4].LAB, 0.6],
+      ['Dr Nabila Touil', 'Praticienne (spécialité à confirmer) · départ le 1er décembre 2026', window.LAEKEN.PR[5].T, window.LAEKEN.PR[5].LAB, 0.5],
+      ['7e praticien (à confirmer)', 'jours à confirmer', window.LAEKEN.PR[6].T, window.LAEKEN.PR[6].LAB, 0.6]
     ];
     const eur = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const net = (x) => (x[2] - x[3]) * x[4];

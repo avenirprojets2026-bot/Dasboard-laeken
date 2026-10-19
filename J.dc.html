@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Import et export</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -77,6 +77,20 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="font-size:14px; color:#4A5B57; max-width:480px; line-height:1.5">Importez l'export du logiciel de facturation : les colonnes sont reconnues toutes seules et les montants sont recalculés par praticien (rétrocession de 60 %, frais de labo, net à payer).</div>
 </header>
 
+<section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:12px">
+<h2 style="margin:0; font-size:20px">Données affichées dans le tableau de bord</h2>
+<sc-if value="{{stActive}}" hint-placeholder-val="{{ false }}">
+<div style="background:#E3F4EA; color:#0B6B3A; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.55">
+<b>Données importées : {{stLabel}}</b> · fichier « {{stName}} » du {{stAt}} · {{stLines}} lignes d'actes, {{stVisits}} visites<small> (lignes ignorées : {{stSkipped}})</small>.<br>
+Honoraires, patients, rémunérations, résultat et relevés des praticiens sont recalculés à partir de ce fichier. Les devis, les rendez-vous manqués et les charges ne viennent pas de l'export des actes et restent ceux saisis dans l'application.
+</div>
+<div><button onClick="{{onReset}}" style="{{btnSide}}">Revenir aux données du modèle</button></div>
+</sc-if>
+<sc-if value="{{!stActive}}" hint-placeholder-val="{{ true }}">
+<div style="background:#FDF0DC; color:#8A4B08; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.55">Aucun fichier importé : le tableau de bord affiche les données du modèle. Importez l'export du mois ci-dessous.</div>
+</sc-if>
+</section>
+
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:16px">
 <div>
 <h2 style="margin:0; font-size:20px">1 · Exporter</h2>
@@ -110,7 +124,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center">
 <label style="{{btnMain}}">Choisir un fichier<input id="fileIn" type="file" accept=".csv,.txt,.xlsx,.xls" onChange="{{onFile}}" style="position:absolute; width:1px; height:1px; opacity:0"></label>
-<button onClick="{{onSample}}" style="{{btnSide}}">Charger octobre 2026 (exemple)</button>
+<button onClick="{{onSample}}" style="{{btnSide}}">Charger un exemple (mois du modèle)</button>
 <sc-if value="{{hasData}}" hint-placeholder-val="{{ false }}">
 <button onClick="{{onClear}}" style="{{btnSide}}">Effacer</button>
 </sc-if>
@@ -120,6 +134,43 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 <sc-if value="{{hasErr}}" hint-placeholder-val="{{ false }}">
 <div style="background:#FBE7E5; color:#A3231A; border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.5">{{err}}</div>
+</sc-if>
+</section>
+
+<section style="background:#fff; border:2px solid #0F766E; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
+<div><h2 style="margin:0; font-size:20px">3 · Appliquer à tout le tableau de bord</h2>
+<div style="font-size:14px; color:#4A5B57; margin-top:4px; line-height:1.5">Une fois par mois : déposez l'export du mois. Les noms des patients ne sont jamais conservés : seuls le numéro de dossier et la date de naissance sont gardés (un nom est remplacé par un code).</div></div>
+<sc-if value="{{hasUnmatched}}" hint-placeholder-val="{{ false }}">
+<div style="background:#FDF0DC; border-radius:10px; padding:14px 16px; font-size:14px; line-height:1.5; color:#5C3A06">
+<b>Des praticiens du fichier ne sont pas reconnus.</b> Associez chacun à un praticien du cabinet (ou ignorez ses lignes) :
+<sc-for list="{{unmatched}}" as="u" hint-placeholder-count="1">
+<div style="margin-top:10px"><b>« {{u.name}} »</b> →
+<sc-for list="{{u.pick}}" as="o" hint-placeholder-count="7"><button onClick="{{o.go}}" style="{{btnSide}} min-height:34px; padding:4px 10px; margin:3px 4px 0 0; font-size:13px">{{o.short}}</button></sc-for>
+<button onClick="{{u.skip}}" style="{{btnSide}} min-height:34px; padding:4px 10px; margin:3px 0 0; font-size:13px">Ignorer ces lignes</button></div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{hasImp}}" hint-placeholder-val="{{ false }}">
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px">
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Mois détecté</div><b style="font-size:18px">{{impMonth}}</b></div>
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Honoraires</div><b style="font-size:18px">{{impCa}}</b></div>
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Frais de labo</div><b style="font-size:18px">{{impLabo}}</b></div>
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Rémunérations</div><b style="font-size:18px">{{impRem}}</b></div>
+<div style="border:1px solid #DCE5E2; border-radius:12px; padding:12px 14px"><div style="font-size:12px; color:#4A5B57">Patients (visites)</div><b style="font-size:18px">{{impPat}}</b></div>
+</div>
+<sc-if value="{{hasWarn}}" hint-placeholder-val="{{ false }}">
+<div style="background:#FDF0DC; color:#5C3A06; border-radius:10px; padding:12px 14px; font-size:13.5px; line-height:1.55">
+<sc-for list="{{impWarn}}" as="w" hint-placeholder-count="2"><div>• {{w.w}}</div></sc-for>
+</div>
+</sc-if>
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center">
+<button onClick="{{onApply}}" style="{{btnMain}}">{{applyLabel}}</button>
+<sc-if value="{{conf}}" hint-placeholder-val="{{ false }}"><button onClick="{{onCancelConf}}" style="{{btnSide}}">Annuler</button></sc-if>
+<span style="font-size:13px; color:#4A5B57">Le mois importé remplace les données affichées. Les mois précédents sont conservés dans l'historique.</span>
+</div>
+</sc-if>
+<sc-if value="{{!hasImp}}" hint-placeholder-val="{{ true }}">
+<div style="font-size:14px; color:#4A5B57">Importez d'abord un fichier ci-dessus : la vérification apparaît ici.</div>
 </sc-if>
 </section>
 
@@ -208,12 +259,12 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </section>
 </sc-if>
 
-<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Les chiffres des autres pages restent fictifs. Cette page recalcule uniquement à partir du fichier que vous importez ; le branchement permanent des autres pages sur vos données sera la prochaine étape.</footer>
+<footer style="font-size:13px; color:#4A5B57; line-height:1.5">Une fois appliqué (étape 3), l'import alimente toutes les pages. Les données restent dans ce navigateur : sur un autre ordinateur, importez de nouveau le fichier.</footer>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
 class Component extends DCLogic {
-  state = { fileName: '', rows: null, err: '', msg: '', msgKind: 'ok' };
+  state = { fileName: '', rows: null, err: '', msg: '', msgKind: 'ok', pmap: {}, conf: false };
 
   renderVals() {
     const S = this.state;
@@ -236,13 +287,13 @@ class Component extends DCLogic {
     const tile = (c) => 'background:#fff; border:1px solid #DCE5E2; border-top:6px solid ' + c + '; border-radius:14px; padding:18px 20px;';
 
     const PRACT = [
-      { name: 'Dr Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', keys: ['aya', 'turkieh'], pat: 325, billed: 35400, labo: 4100 },
-      { name: 'Dr Mohamed Bochouari', spec: 'Orthodontiste', keys: ['mohamed'], pat: 210, billed: 33500, labo: 5300 },
-      { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: 116, billed: 13400, labo: 2200 },
-      { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: 130, billed: 12800, labo: 1600 },
-      { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: 70, billed: 13200, labo: 2100 },
-      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: 46, billed: 6500, labo: 1100, rate: 0.5 },
-      { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: 66, billed: 6300, labo: 1300 }
+      { name: 'Dr Aya Turkieh', spec: 'Chirurgienne dentaire, implantologue et chirurgie orale', keys: ['aya', 'turkieh'], pat: window.LAEKEN.PR[0].N, billed: window.LAEKEN.PR[0].T, labo: window.LAEKEN.PR[0].LAB },
+      { name: 'Dr Mohamed Bochouari', spec: 'Orthodontiste', keys: ['mohamed'], pat: window.LAEKEN.PR[1].N, billed: window.LAEKEN.PR[1].T, labo: window.LAEKEN.PR[1].LAB },
+      { name: 'Dr Abde-Ssadic Bochouari', spec: 'Chirurgien dentaire', keys: ['ssadic', 'ssadick', 'sadic', 'abde'], pat: window.LAEKEN.PR[2].N, billed: window.LAEKEN.PR[2].T, labo: window.LAEKEN.PR[2].LAB },
+      { name: 'Dr Daoud Bouchouari', spec: 'Endodontiste et chirurgie orale', keys: ['daoud'], pat: window.LAEKEN.PR[3].N, billed: window.LAEKEN.PR[3].T, labo: window.LAEKEN.PR[3].LAB },
+      { name: 'Dr Julien Cabaz', spec: 'Implantologue', keys: ['julien', 'cabaz'], pat: window.LAEKEN.PR[4].N, billed: window.LAEKEN.PR[4].T, labo: window.LAEKEN.PR[4].LAB },
+      { name: 'Dr Nabila Touil', spec: 'Praticienne (spécialité à confirmer)', keys: ['nabila', 'touil'], pat: window.LAEKEN.PR[5].N, billed: window.LAEKEN.PR[5].T, labo: window.LAEKEN.PR[5].LAB, rate: 0.5 },
+      { name: '7e praticien (à confirmer)', spec: 'jours à confirmer', keys: ['7e'], pat: window.LAEKEN.PR[6].N, billed: window.LAEKEN.PR[6].T, labo: window.LAEKEN.PR[6].LAB }
     ];
 
     const csvCell = (v) => { const s = String(v == null ? '' : v); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
@@ -250,9 +301,9 @@ class Component extends DCLogic {
     const loadXlsx = () => new Promise((res, rej) => {
       if (window.XLSX) { res(window.XLSX); return; }
       const sc = document.createElement('script');
-      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+      sc.src = 'vendor/xlsx.full.min.js';
       sc.onload = () => { if (window.XLSX) { res(window.XLSX); } else { rej(new Error('xlsx')); } };
-      sc.onerror = () => rej(new Error('xlsx'));
+      sc.onerror = () => { const s2 = document.createElement('script'); s2.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s2.onload = () => { if (window.XLSX) { res(window.XLSX); } else { rej(new Error('xlsx')); } }; s2.onerror = () => rej(new Error('xlsx')); document.head.appendChild(s2); };
       document.head.appendChild(sc);
     });
     const save = (filename, data) => window.claude.use('downloads').then((dl) => {
@@ -303,11 +354,16 @@ class Component extends DCLogic {
     };
     const FIELDS = [
       ['labo', 'Frais de labo', ['frais de labo', 'frais labo', 'laboratoire', 'labo', 'prothese']],
-      ['paymode', 'Mode de paiement', ['mode de paiement', 'moyen de paiement', 'mode paiement']],
+      ['paymode', 'Mode de paiement', ['mode de paiement', 'moyen de paiement', 'mode paiement', 'paiement']],
+      ['mut', 'Mutualité', ['mutualite', 'organisme assureur', 'assureur', 'caisse']],
       ['mutuelle', 'Statut mutuelle', ['statut mutuelle', 'mutuelle']],
       ['dentist', 'Praticien', ['praticien', 'dentiste', 'docteur', 'medecin', 'practitioner', 'dentist']],
-      ['patient', 'Patient', ['patient', 'dossier']],
+      ['doss', 'N° de dossier', ['numero de dossier', 'n de dossier', 'n dossier', 'dossier', 'numero patient', 'n patient']],
+      ['dob', 'Naissance', ['date de naissance', 'naissance', 'ne le']],
+      ['patient', 'Patient', ['patient', 'nom']],
       ['date', 'Date', ['date']],
+      ['time', 'Heure', ['heure']],
+      ['code', 'Code INAMI', ['code inami', 'code nomenclature', 'nomenclature', 'code']],
       ['act', 'Acte', ['acte', 'prestation', 'soin', 'traitement', 'libelle', 'description', 'nature']],
       ['amount', 'Montant', ['montant', 'honoraires', 'facture', 'total', 'prix', 'tarif', 'amount']]
     ];
@@ -364,11 +420,11 @@ class Component extends DCLogic {
       const pl = { cb: 'Carte bancaire', cash: 'Liquide', plan: 'Étalement', unpaid: 'Pas payé', zero: 'Rien à payer', planned: 'À venir' };
       const rows = [['Date', 'N° de dossier · naissance', 'Praticien', 'Acte', 'Montant', 'Frais de labo', 'Mode de paiement', 'Statut mutuelle']];
       D.rows.slice().sort((x, y) => (x.d - y.d) || x.time.localeCompare(y.time)).forEach((r) => {
-        rows.push([String(r.d).padStart(2, '0') + '/10/2026', r.doss + ' · ' + r.dob, D.PR[r.p].name, r.label, r.fee, r.labo, pl[r.pay], r.ms]);
+        rows.push([String(r.d).padStart(2, '0') + '/' + String(D.MONTH.m + 1).padStart(2, '0') + '/' + D.MONTH.y, r.doss + ' · ' + r.dob, D.PR[r.p].name, r.label, r.fee, r.labo, pl[r.pay], r.ms]);
       });
       setState({ rows: rows, fileName: 'octobre-2026-exemple.csv', err: '', msg: '' });
     };
-    const onClear = () => setState({ rows: null, fileName: '', err: '', msg: '' });
+    const onClear = () => setState({ rows: null, fileName: '', err: '', msg: '', pmap: {}, conf: false });
 
     // ---- aggregation ----
     let hasData = false; let table = []; let tot = {}; let kpis = []; let mapChips = []; let preview = []; let previewHead = []; let rowCount = 0; let resAoa = [];
@@ -422,8 +478,85 @@ class Component extends DCLogic {
         .concat(list.map((x) => [x.name, map.patient !== undefined ? Object.keys(x.pats).length : x.acts, x.acts, x.det, x.bla, x.pan, Math.round(x.billed), Math.round(x.labo), Math.round(x.billed - x.labo), Math.round((x.billed - x.labo) * x.rate)]));
     }
 
+
+    // ---- préparation de l'import permanent (appliqué à tout le tableau de bord) ----
+    const LK = window.LAEKEN;
+    const r2 = (x) => Math.round(x * 100) / 100;
+    const pd = (v) => {
+      if (typeof v === 'number' && v > 20000 && v < 80000) { const dt = new Date(Math.round((v - 25569) * 86400000)); return { y: dt.getUTCFullYear(), m: dt.getUTCMonth(), d: dt.getUTCDate() }; }
+      const s = String(v == null ? '' : v).trim(); let m = /^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/.exec(s);
+      if (m) { const y = Number(m[3]) < 100 ? 2000 + Number(m[3]) : Number(m[3]); return { y: y, m: Number(m[2]) - 1, d: Number(m[1]) }; }
+      m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s); if (m) { return { y: Number(m[1]), m: Number(m[2]) - 1, d: Number(m[3]) }; }
+      return null;
+    };
+    const pad2 = (n) => String(n).padStart(2, '0');
+    const hash = (s) => { let h = 5381; for (let i = 0; i < s.length; i += 1) { h = ((h << 5) + h + s.charCodeAt(i)) | 0; } return Math.abs(h).toString(36).toUpperCase().slice(0, 5); };
+    const payOf = (v) => { const n = norm(v); if (!n) { return 'unk'; } if (/etal|plan|echelonn/.test(n)) { return 'plan'; } if (/non pay|impay|pas pay|a payer|du\b|solde/.test(n)) { return 'unpaid'; } if (/rien|gratuit|zero|0 a payer/.test(n)) { return 'zero'; } if (/liquide|espece|cash/.test(n)) { return 'cash'; } if (/carte|bancontact|cb\b|visa|master|maestro|virement|pay/.test(n)) { return 'cb'; } return 'unk'; };
+    const msOf = (v) => { const n = norm(v); if (!n) { return 'En ordre'; } if (/non en ordre|pas en ordre|refus/.test(n)) { return 'Non en ordre'; } if (/verif/.test(n)) { return 'À vérifier'; } if (/sans|aucune|pas de mut/.test(n)) { return 'Pas de mutuelle'; } return 'En ordre'; };
+    let imp = null; let unmatched = []; let impInfo = { ok: false, lines: 0, drop: 0, noP: 0, month: '', tot: null, warn: [] };
+    if (S.rows && LK) {
+      const head = S.rows[0]; const map = detect(head); const body = S.rows.slice(1);
+      const names = {}; const resolve = (raw) => { const n = norm(raw); if (!n) { return -1; } const k = matchP(raw); if (k >= 0) { return k; } return S.pmap[n] !== undefined ? S.pmap[n] : -1; };
+      const cell = (r, k) => (map[k] === undefined || r[map[k]] == null) ? '' : r[map[k]];
+      const all = []; const cnt = {}; let noDate = 0;
+      body.forEach((r) => {
+        const raw = String(cell(r, 'dentist')).trim(); if (!raw) { return; }
+        const p = resolve(raw); if (p === -2 || (p < 0 && S.pmap[norm(raw)] === -2)) { return; }
+        if (p < 0) { names[norm(raw)] = raw; return; }
+        const dt = pd(cell(r, 'date')); if (!dt) { noDate += 1; return; }
+        const ym = dt.y + '-' + dt.m; cnt[ym] = (cnt[ym] || 0) + 1; all.push({ r: r, p: p, dt: dt, ym: ym });
+      });
+      unmatched = Object.keys(names).map((k) => ({ key: k, name: names[k], pick: PRACT.map((pp, i) => ({ short: pp.name.replace(/^Dr /, ''), go: () => setState({ pmap: Object.assign({}, S.pmap, { [k]: i }) }) })), skip: () => setState({ pmap: Object.assign({}, S.pmap, { [k]: -2 }) }) }));
+      const months = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]); const best = months[0];
+      if (best && !unmatched.length) {
+        const [by, bm] = best.split('-').map(Number); const lines = []; let drop = 0;
+        all.forEach((o) => {
+          if (o.ym !== best) { drop += 1; return; }
+          const r = o.r; let dossRaw = String(cell(r, 'doss')).trim(); let dobRaw = cell(r, 'dob');
+          if (dossRaw.indexOf('·') >= 0) { const q = dossRaw.split('·'); dossRaw = q[0].trim(); if (!dobRaw) { dobRaw = q[1].trim(); } }
+          if (!dossRaw) { dossRaw = String(cell(r, 'patient')).trim(); }
+          const doss = !dossRaw ? '' : (/\d/.test(dossRaw) && dossRaw.length <= 14 ? dossRaw : 'P-' + hash(norm(dossRaw)));
+          const bd = pd(dobRaw); const dob = bd ? pad2(bd.d) + '/' + pad2(bd.m + 1) + '/' + bd.y : '';
+          const code = String(cell(r, 'code')).replace(/\D/g, '');
+          lines.push([o.p, o.dt.d, String(cell(r, 'time')).trim(), doss, dob, code.length === 6 ? code : '', String(cell(r, 'act')).trim() || 'Acte', r2(num(cell(r, 'amount'))), r2(num(cell(r, 'labo'))), null, String(cell(r, 'mut')).trim() || 'Non précisée', msOf(cell(r, 'mutuelle')), 'ord', payOf(cell(r, 'paymode'))]);
+        });
+        const T = {}; const B = {}; lines.forEach((l) => { T[l[0]] = (T[l[0]] || 0) + l[7]; B[l[0]] = (B[l[0]] || 0) + l[8]; });
+        let ca = 0; let lab = 0; let rem = 0; const seen = {}; let npat = 0;
+        Object.keys(T).forEach((k) => { ca += T[k]; lab += B[k]; rem += r2((T[k] - B[k]) * LK.PR[Number(k)].rate); });
+        lines.forEach((l) => { const kk = l[0] + '|' + l[1] + '|' + l[3]; if (!seen[kk]) { seen[kk] = 1; npat += 1; } });
+        const warn = [];
+        if (map.date === undefined) { warn.push('Aucune colonne de date reconnue : impossible de déterminer le mois.'); }
+        if (map.doss === undefined && map.patient === undefined) { warn.push('Aucune colonne dossier / patient : les patients ne pourront pas être comptés.'); }
+        if (map.code === undefined) { warn.push('Pas de colonne « code INAMI » : les actes seront classés d\'après leur libellé.'); }
+        if (map.paymode === undefined) { warn.push('Pas de colonne « paiement » : les statuts de paiement seront affichés « non fournis ».'); }
+        if (drop) { warn.push(drop + ' ligne(s) d\'un autre mois ignorée(s) : un seul mois est importé à la fois.'); }
+        if (noDate) { warn.push(noDate + ' ligne(s) sans date lisible ignorée(s).'); }
+        imp = { v: 1, y: by, m: bm, name: S.fileName, at: new Date().toISOString().slice(0, 16).replace('T', ' '), lines: lines, tot: { ca: r2(ca), labo: r2(lab), rem: r2(rem), pat: npat } };
+        impInfo = { ok: lines.length > 0 && map.date !== undefined, lines: lines.length, drop: drop, month: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'][bm] + ' ' + by, tot: imp.tot, warn: warn };
+      }
+    }
+    const onApply = () => {
+      if (!imp) { return; }
+      if (!S.conf) { setState({ conf: true }); return; }
+      try {
+        const old = JSON.parse(localStorage.getItem('lk-import') || 'null');
+        if (old && old.tot && (old.y !== imp.y || old.m !== imp.m)) { const h = JSON.parse(localStorage.getItem('lk-hist') || '{}') || {}; h[old.y + '-' + (old.m + 1)] = old.tot; localStorage.setItem('lk-hist', JSON.stringify(h)); }
+        localStorage.setItem('lk-import', JSON.stringify(imp));
+        setState({ msg: 'Import appliqué : ' + impInfo.lines + ' lignes, ' + impInfo.month + '. Rechargement…', msgKind: 'ok', conf: false });
+        setTimeout(() => { location.reload(); }, 600);
+      } catch (e) { setState({ msg: 'Impossible d\'enregistrer l\'import dans ce navigateur (espace plein ou stockage bloqué).', msgKind: 'bad', conf: false }); }
+    };
+    const onReset = () => { try { localStorage.removeItem('lk-import'); } catch (e) {} setState({ msg: 'Retour aux données du modèle. Rechargement…', msgKind: 'ok' }); setTimeout(() => { location.reload(); }, 400); };
+    const onCancelConf = () => setState({ conf: false });
+    const st = LK && LK.IMPORT ? LK.IMPORT : { active: false };
+    const hasImp = !!(imp && impInfo.ok);
+
     return {
       btnMain: btnMain, btnSide: btnSide,
+      stActive: !!st.active, stName: st.name || '', stAt: st.at || '', stLabel: st.label || '', stLines: st.lines || 0, stVisits: st.visits || 0, stSkipped: st.skipped || 0,
+      hasImp: hasImp, hasUnmatched: unmatched.length > 0, unmatched: unmatched, impMonth: impInfo.month, impLines: impInfo.lines, impWarn: impInfo.warn.map((w) => ({ w: w })), hasWarn: impInfo.warn.length > 0,
+      impCa: impInfo.tot ? eur(impInfo.tot.ca) : '', impLabo: impInfo.tot ? eur(impInfo.tot.labo) : '', impRem: impInfo.tot ? eur(impInfo.tot.rem) : '', impPat: impInfo.tot ? String(impInfo.tot.pat) : '',
+      onApply: onApply, onReset: onReset, onCancelConf: onCancelConf, conf: S.conf, applyLabel: S.conf ? 'Oui, remplacer les données du tableau de bord' : 'Appliquer à tout le tableau de bord',
       onSynCsv: exportCsv('synthese-praticiens', synAoa), onSynXlsx: exportXlsx('synthese-praticiens', synAoa),
       onTplCsv: exportCsv('modele-import', tplAoa), onTplXlsx: exportXlsx('modele-import', tplAoa),
       onResCsv: exportCsv('resultat-import', resAoa), onResXlsx: exportXlsx('resultat-import', resAoa),

@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Factures et justificatifs</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
-<script src="./data.js?v=45"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
+<script src="./data.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -135,7 +135,13 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:16px; padding:22px; display:flex; flex-direction:column; gap:12px">
 <div><h2 style="margin:0; font-size:18px">Ajouter une facture</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Elle rejoint le registre et s'enregistre dans ce navigateur.</div></div>
+<div style="background:#F3F9F7; border:1px dashed #9CC9C0; border-radius:12px; padding:14px 16px; display:flex; flex-direction:column; gap:8px">
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center"><label style="{{btnSide}} position:relative; cursor:pointer">Lire une facture PDF<input id="pdfIn" type="file" accept="application/pdf,.pdf" onChange="{{onPdf}}" style="position:absolute; width:1px; height:1px; opacity:0"></label><span style="font-size:13px; color:#4A5B57">La lecture se fait dans votre navigateur : le fichier n'est envoyé nulle part et n'est pas conservé. Vérifiez les champs avant d'ajouter.</span></div>
+<sc-if value="{{hasPdfInfo}}" hint-placeholder-val="{{ false }}"><div style="font-size:13.5px; color:#0B6B3A; font-weight:700">{{pdfInfo}}</div></sc-if>
+<sc-for list="{{pdfWarn}}" as="w" hint-placeholder-count="0"><div style="background:#FDF0DC; color:#5C3A06; border-radius:8px; padding:8px 12px; font-size:13px; line-height:1.5">{{w.w}}</div></sc-for>
+</div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px; align-items:end">
+<label style="{{lab}}">N° de facture<input type="text" value="{{dRef}}" onChange="{{setRef}}" style="{{field}}"></label>
 <label style="{{lab}}">Fournisseur<input type="text" value="{{dSup}}" onChange="{{setSup}}" style="{{field}}"></label>
 <label style="{{lab}}">Objet<input type="text" value="{{dObj}}" onChange="{{setObj}}" style="{{field}}"></label>
 <label style="{{lab}}">Famille<select onChange="{{setDFam}}" style="{{field}}"><sc-for list="{{dFamOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></label>
@@ -157,7 +163,7 @@ class Component extends DCLogic {
     let add = null; try { add = JSON.parse(localStorage.getItem('lk-factures2') || 'null'); } catch (e) { add = null; }
     let st = null; try { st = JSON.parse(localStorage.getItem('lk-factures2-st') || 'null'); } catch (e) { st = null; }
     let md = null; try { md = JSON.parse(localStorage.getItem('lk-factures2-mod') || 'null'); } catch (e) { md = null; }
-    return { add: add || [], stv: st || {}, mod: md || {}, tab: 'fam', sub: 'all', sort: 'date-desc', q: '', dSup: '', dObj: '', dFam: 'exp', dNat: 'ponc', dAmt: '', dDate: '2026-10-19', msg: '', ok: true };
+    return { add: add || [], stv: st || {}, mod: md || {}, tab: 'fam', sub: 'all', sort: 'date-desc', q: '', dSup: '', dObj: '', dFam: 'exp', dNat: 'ponc', dAmt: '', dDate: '2026-10-19', dRef: '', pdfName: '', pdfWarn: [], pdfInfo: '', msg: '', ok: true };
   })();
 
   renderVals() {
@@ -221,12 +227,71 @@ class Component extends DCLogic {
       (window.claude && window.claude.use ? window.claude.use('downloads') : Promise.resolve(null)).then((dl) => { if (dl) { return dl.save({ filename: 'factures-cabinet-2026.csv', data: csv }); } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'factures-cabinet-2026.csv'; document.body.appendChild(a); a.click(); a.remove(); return true; })
         .then(() => setState({ msg: list.length + ' factures exportées.', ok: true })).catch(() => setState({ msg: 'Le téléchargement n\'est pas disponible dans cet affichage.', ok: false }));
     };
+
+    // ---- lecture automatique d'une facture PDF (dans le navigateur, sans serveur) ----
+    const loadPdfjs = () => new Promise((res, rej) => {
+      if (window.pdfjsLib) { res(window.pdfjsLib); return; }
+      const sc = document.createElement('script'); sc.src = 'vendor/pdf.min.js';
+      sc.onload = () => { if (window.pdfjsLib) { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js'; res(window.pdfjsLib); } else { rej(new Error('pdf')); } };
+      sc.onerror = () => rej(new Error('pdf')); document.head.appendChild(sc);
+    });
+    const pdfText = (buf) => loadPdfjs().then((lib) => lib.getDocument({ data: buf }).promise).then((doc) => {
+      const pages = []; for (let i = 1; i <= Math.min(doc.numPages, 6); i += 1) { pages.push(doc.getPage(i).then((pg) => pg.getTextContent()).then((c) => { let last = null; let s = ''; c.items.forEach((it) => { const y = Math.round(it.transform[5]); if (last !== null && Math.abs(y - last) > 2) { s += '\n'; } else if (s && !/\s$/.test(s)) { s += ' '; } s += it.str; last = y; }); return s; })); }
+      return Promise.all(pages).then((a) => a.join('\n'));
+    });
+    const MOISFR = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'decembre'];
+    const nrm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const amountsOf = (line) => (line.match(/\d{1,3}(?:[ . ]\d{3})*[,.]\d{2}(?!\d)|\d+[,.]\d{2}(?!\d)/g) || []).map((s) => { const k = s.replace(/[  ]/g, ''); const c = k.lastIndexOf(','); const d = k.lastIndexOf('.'); const dec = Math.max(c, d); return parseFloat(k.slice(0, dec).replace(/[.,]/g, '') + '.' + k.slice(dec + 1)); }).filter((v) => !isNaN(v));
+    const parseInvoice = (txt) => {
+      const lines = txt.split('\n').map((l) => l.replace(/\s+/g, ' ').trim()).filter(Boolean); const low = nrm(txt); const out = { warn: [] };
+      // montant TVAC
+      let best = null; const pri = /(total\s*(ttc|tvac|general|à payer|a payer)|net a payer|montant (ttc|tvac|total|a payer|du)|a payer|total ttc|tvac)/i;
+      lines.forEach((l, i) => { if (pri.test(nrm(l))) { const a = amountsOf(l).concat(amountsOf(lines[i + 1] || '')); a.forEach((v) => { if (best === null || v >= best) { best = v; } }); } });
+      if (best === null) { lines.forEach((l) => { if (/total/i.test(l)) { amountsOf(l).forEach((v) => { if (best === null || v > best) { best = v; } }); } }); }
+      if (best === null) { amountsOf(txt).forEach((v) => { if (best === null || v > best) { best = v; } }); }
+      out.amt = best;
+      // date
+      let m = /(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{4})/.exec(txt);
+      if (m) { out.date = m[3] + '-' + String(m[2]).padStart(2, '0') + '-' + String(m[1]).padStart(2, '0'); }
+      else { const r = new RegExp('(\\d{1,2})(?:er)?\\s+(' + MOISFR.join('|') + ')\\s+(\\d{4})').exec(low); if (r) { out.date = r[3] + '-' + String(MOISFR.indexOf(r[2]) + 1).padStart(2, '0') + '-' + String(r[1]).padStart(2, '0'); } }
+      // numéro
+      let rf = null; const rr = /(?:facture|invoice|factuur|piece|pro.?forma)\s*(?:n[°o]|num[ée]ro|nr\.?|no\.?)?\s*[:#]?\s*([A-Z0-9][A-Z0-9\-\/.]{2,})/gi; let mm;
+      while ((mm = rr.exec(txt)) !== null) { if (/\d/.test(mm[1]) && !/^\d{1,2}[\/.\-]\d{1,2}[\/.\-]\d{2,4}$/.test(mm[1])) { rf = mm[1].replace(/[.\-\/]+$/, ''); break; } }
+      out.ref = rf;
+      // fournisseur : déjà connu dans le registre, sinon première ligne utile
+      const known = Array.from(new Set(all.map((f) => f.sup))).filter((s) => s && s.length > 2);
+      const kn = known.filter((s) => low.indexOf(nrm(s)) >= 0).sort((a, b) => b.length - a.length)[0];
+      const first = lines.find((l) => l.length > 2 && l.length < 60 && /[A-Za-z]{3}/.test(l) && !/facture|invoice|date|page|tva|btw|www\.|@|^\d/i.test(l));
+      out.sup = kn || first || '';
+      // famille d'après les mots
+      const w = low; out.fam = /formation|congres|cours |stage|seminaire|atelier/.test(w) ? 'org' : (/laborato|prothes|couronne|bridge|empreinte/.test(w) ? 'labo' : (/leasing|loyer|electricite|gaz|telecom|internet|assurance|abonnement/.test(w) ? 'exp' : 'exp'));
+      out.obj = (lines.find((l) => /formation|stage|cours|abonnement|assurance|loyer|leasing|commande|materiel|prestation|laborat/i.test(l) && l.length < 90) || '').slice(0, 90);
+      // contrôles
+      if (!/(bochouari dental|dental clinic laeken|0558[ .]?832[ .]?143|bockstael)/.test(low)) { out.warn.push('Cette facture ne semble pas adressée à Bochouari Dental SRL / Dental Clinic Laeken : vérifiez le destinataire avant de l\'ajouter.'); }
+      if (/b ?& ?b dental/.test(low)) { out.warn.push('Facture au nom de B&B Dental Clinic (autre structure) : ne pas l\'ajouter aux charges de ce cabinet.'); }
+      if (/pro.?forma|proforma|devis|offre de prix/.test(w)) { out.warn.push('Ce document ressemble à un devis ou une pro forma, pas à une facture définitive.'); }
+      if (rf && all.some((f) => nrm(f.ref) === nrm(rf))) { out.warn.push('Une facture portant le numéro ' + rf + ' existe déjà dans le registre (doublon possible).'); }
+      else if (best && out.sup && all.some((f) => nrm(f.sup) === nrm(out.sup) && Math.abs(f.ttc - best) < 0.01)) { out.warn.push('Une facture du même fournisseur et du même montant existe déjà (doublon possible).'); }
+      if (best === null) { out.warn.push('Le montant n\'a pas pu être lu : saisissez-le à la main.'); }
+      return out;
+    };
+    const onPdf = (e) => {
+      const input = (e && e.target && e.target.files) ? e.target : document.getElementById('pdfIn'); const f = input && input.files && input.files[0]; if (!f) { return; }
+      setState({ pdfInfo: 'Lecture de « ' + f.name + ' »…', pdfWarn: [] });
+      const rd = new FileReader();
+      rd.onload = () => pdfText(new Uint8Array(rd.result)).then((txt) => {
+        if (!txt || txt.replace(/\s/g, '').length < 30) { setState({ pdfInfo: '', pdfWarn: [{ w: 'Ce PDF ne contient pas de texte (document scanné ou photo) : la lecture automatique est impossible, saisissez la facture à la main.' }] }); return; }
+        const o = parseInvoice(txt);
+        setState({ dSup: o.sup || S.dSup, dObj: o.obj || '', dFam: o.fam, dNat: S.dNat, dAmt: o.amt != null ? String(o.amt).replace('.', ',') : S.dAmt, dDate: o.date || S.dDate, dRef: o.ref || '', pdfInfo: 'Facture lue : vérifiez les champs ci-dessous puis cliquez sur « Ajouter ».', pdfWarn: o.warn.map((x) => ({ w: x })) });
+      }).catch(() => setState({ pdfInfo: '', pdfWarn: [{ w: 'Le module de lecture PDF n\'a pas pu être chargé ou le fichier est protégé : saisissez la facture à la main.' }] }));
+      rd.readAsArrayBuffer(f);
+    };
     const onAdd = () => {
       const amt = num(S.dAmt); const sup = String(S.dSup || '').trim();
       if (!sup || !(amt > 0)) { setState({ msg: 'Indiquez au moins le fournisseur et un montant.', ok: false }); return; }
-      const n = S.add.concat([{ ent: nowIso(), ref: 'saisie ' + (S.add.length + 1), date: S.dDate || '2026-10-19', sup: sup, obj: S.dObj || '', fam: S.dFam, nat: S.dNat, p: null, ht: Math.round(amt / 1.21 * 100) / 100, tva: Math.round((amt - amt / 1.21) * 100) / 100, ttc: amt, due: S.dDate || '2026-10-19', st: 'apayer', men: S.dNat === 'mens' ? amt : (S.dNat === 'ann' ? Math.round(amt / 12 * 100) / 100 : 0) }]);
+      const n = S.add.concat([{ ent: nowIso(), ref: String(S.dRef || '').trim() || 'saisie ' + (S.add.length + 1), date: S.dDate || '2026-10-19', sup: sup, obj: S.dObj || '', fam: S.dFam, nat: S.dNat, p: null, ht: Math.round(amt / 1.21 * 100) / 100, tva: Math.round((amt - amt / 1.21) * 100) / 100, ttc: amt, due: S.dDate || '2026-10-19', st: 'apayer', men: S.dNat === 'mens' ? amt : (S.dNat === 'ann' ? Math.round(amt / 12 * 100) / 100 : 0) }]);
       try { localStorage.setItem('lk-factures2', JSON.stringify(n)); } catch (e) {}
-      setState({ add: n, dSup: '', dObj: '', dAmt: '', msg: 'Facture de ' + sup + ' ajoutée.', ok: true });
+      setState({ add: n, dSup: '', dObj: '', dAmt: '', dRef: '', pdfInfo: '', pdfWarn: [], msg: 'Facture de ' + sup + ' ajoutée.', ok: true });
     };
     const tabSt = (on) => 'display:inline-flex; align-items:center; gap:8px; min-height:44px; box-sizing:border-box; border-radius:999px; padding:10px 18px; font-size:15px; cursor:pointer; ' + (on ? 'background:#0B3B36; color:#fff; border:1px solid #0B3B36; font-weight:700;' : 'background:#fff; color:#14201D; border:1px solid #DCE5E2; font-weight:500;');
     const subSt = (on) => 'flex:none; display:inline-flex; align-items:center; gap:6px; min-height:36px; box-sizing:border-box; border-radius:10px; padding:6px 12px; font-size:13.5px; cursor:pointer; white-space:nowrap; ' + (on ? 'background:#E3F2EF; color:#0B3B36; border:1px solid #0F766E; font-weight:700;' : 'background:#fff; color:#33433F; border:1px solid #E2E9E6; font-weight:500;');
@@ -242,7 +307,7 @@ class Component extends DCLogic {
       listTitle: sub === 'all' ? (S.tab === 'all' ? 'Toutes les factures' : 'Toutes les factures · ' + TABS.filter((t) => t[0] === S.tab)[0][1].toLowerCase()) : subLabel(sub),
       q: S.q, setQ: (e) => setState({ q: e.target.value }), onCsv: onCsv, onAdd: onAdd,
       onReset: () => { try { localStorage.removeItem('lk-factures2'); localStorage.removeItem('lk-factures2-st'); localStorage.removeItem('lk-factures2-mod'); } catch (e) {} setState({ add: [], stv: {}, mod: {}, msg: 'Registre rétabli.', ok: true }); },
-      dSup: S.dSup, dObj: S.dObj, dAmt: S.dAmt, dDate: S.dDate,
+      dSup: S.dSup, dObj: S.dObj, dAmt: S.dAmt, dDate: S.dDate, dRef: S.dRef, setRef: (e) => setState({ dRef: e.target.value }), onPdf: onPdf, pdfInfo: S.pdfInfo, hasPdfInfo: !!S.pdfInfo, pdfWarn: S.pdfWarn || [],
       setSup: (e) => setState({ dSup: e.target.value }), setObj: (e) => setState({ dObj: e.target.value }), setAmt: (e) => setState({ dAmt: e.target.value }), setDate: (e) => setState({ dDate: e.target.value }),
       dFamOpts: Object.keys(FAM).map((k) => ({ v: k, l: FAM[k][0], sel: S.dFam === k })), setDFam: (e) => setState({ dFam: e.target.value }),
       dNatOpts: Object.keys(NAT).map((k) => ({ v: k, l: NAT[k][0], sel: S.dNat === k })), setDNat: (e) => setState({ dNat: e.target.value }),

@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Vue cabinet par cartes</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=45"></script>
-<script src="./acces.js?v=45"></script>
-<script src="./auth.js?v=45"></script>
-<script src="./nav.js?v=45"></script>
+<script src="./data.js?v=46"></script>
+<script src="./acces.js?v=46"></script>
+<script src="./auth.js?v=46"></script>
+<script src="./nav.js?v=46"></script>
 </head>
 <body>
 <x-dc>
@@ -150,7 +150,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <h3 style="margin:0; font-size:18px">Total cabinet</h3>
 <div style="font-size:13px; color:#C9D6D2">7 praticiens (6 à partir de décembre) · temps plein et partiel</div>
 </div>
-<div style="font-size:30px; font-weight:700">− 2 995 €</div>
+<div style="font-size:30px; font-weight:700">{{totBen}}</div>
 <div style="font-size:13px; color:#C9D6D2">bénéfice après frais de labo, rémunérations des praticiens et charges (dont 2 BMW et 1 utilitaire) · environ 52 900 € de part mutuelles à recevoir pour octobre</div>
 </article>
 </div>
@@ -216,24 +216,25 @@ class Component extends DCLogic {
     }
     const chTot = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 ? t : 0; } catch (e) { return 0; } })();
     const R = Object.assign(cmp, donut, {
+      totBen: window.LAEKEN.fm(window.LAEKEN.TOT.part - 33615),
       kpis: [
-        { label: "Chiffre d'affaires", value: '121 100 €', note: '963 patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
-        { label: 'Rémunération des praticiens', value: '72 780 €', note: '(honoraires − labo) × 60 % ; 100 % pour le gérant, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
+        { label: "Chiffre d'affaires", value: window.LAEKEN.fm(window.LAEKEN.TOT.ca), note: window.LAEKEN.TOT.pat + ' patients vus, environ 13 par journée de praticien, pause de midi de 12 h à 13 h' },
+        { label: 'Rémunération des praticiens', value: window.LAEKEN.fm(window.LAEKEN.TOT.rem), note: '(honoraires − labo) × 60 % ; 100 % pour le gérant, 50 % pour Nabila Touil · 6 praticiens nommés + 1 à confirmer' },
         { label: 'Charges du cabinet', value: '33 615 €', note: 'personnel et ONSS, loyer, leasing, 3 véhicules, énergie, consommables et autres charges (détail dans Résultat du gérant)' },
-        { label: 'Bénéfice du cabinet', value: '− 2 995 €', note: 'gérant rémunéré à 100 % de ses honoraires ; après frais de labo, rémunérations et charges' }
+        { label: 'Bénéfice du cabinet', value: window.LAEKEN.fm(window.LAEKEN.TOT.part - 33615), note: 'gérant rémunéré à 100 % de ses honoraires ; après frais de labo, rémunérations et charges' }
       ],
       dentists: [
-        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', patients: '325', billed: '35 400 €', retro: '18 780 €', paidPct: '75 %', paidW: '75%', pending: '8 700 €', labo: '4 100 €', devis: '5', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', patients: '116', billed: '13 400 €', retro: '6 720 €', paidPct: '76 %', paidW: '76%', pending: '3 300 €', labo: '2 200 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', patients: '210', billed: '33 500 €', retro: '28 200 €', paidPct: '75 %', paidW: '75%', pending: '8 300 €', labo: '5 300 €', devis: '5', conv: 'Non conventionné', convStyle: ns },
-        { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', patients: '46', billed: '6 500 €', retro: '2 700 €', paidPct: '75 %', paidW: '75%', pending: '1 600 €', labo: '1 100 €', devis: '1', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', patients: '70', billed: '13 200 €', retro: '6 660 €', paidPct: '76 %', paidW: '76%', pending: '3 200 €', labo: '2 100 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', patients: '130', billed: '12 800 €', retro: '6 720 €', paidPct: '75 %', paidW: '75%', pending: '3 200 €', labo: '1 600 €', devis: '2', conv: 'Conventionné', convStyle: cs },
-        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: '66', billed: '6 300 €', retro: '3 000 €', paidPct: '77 %', paidW: '77%', pending: '1 500 €', labo: '1 300 €', devis: '1', conv: 'Conventionné', convStyle: cs }
+        { name: 'Dr Aya Turkieh', role: 'Chirurgienne dentaire, implantologue et chirurgie orale · 5 jours par semaine', patients: String(window.LAEKEN.PR[0].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[0].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[0].net), paidPct: '75 %', paidW: '75%', pending: '8 700 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[0].LAB), devis: '5', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Abde-Ssadic Bochouari', role: 'Chirurgien dentaire · 2 jours par semaine', patients: String(window.LAEKEN.PR[2].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[2].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[2].net), paidPct: '76 %', paidW: '76%', pending: '3 300 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[2].LAB), devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Mohamed Bochouari', role: 'Orthodontiste · 3 jours par semaine (lundi, jeudi, dimanche), mardi administratif', patients: String(window.LAEKEN.PR[1].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[1].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[1].net), paidPct: '75 %', paidW: '75%', pending: '8 300 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[1].LAB), devis: '5', conv: 'Non conventionné', convStyle: ns },
+        { name: 'Dr Nabila Touil', role: '1 jour par semaine · quitte le cabinet le 1er décembre 2026', patients: String(window.LAEKEN.PR[5].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[5].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[5].net), paidPct: '75 %', paidW: '75%', pending: '1 600 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[5].LAB), devis: '1', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Julien Cabaz', role: 'Implantologue · 2 jours par semaine', patients: String(window.LAEKEN.PR[4].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[4].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[4].net), paidPct: '76 %', paidW: '76%', pending: '3 200 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[4].LAB), devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: 'Dr Daoud Bouchouari', role: 'Endodontiste et chirurgie orale · 2 jours par semaine', patients: String(window.LAEKEN.PR[3].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[3].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[3].net), paidPct: '75 %', paidW: '75%', pending: '3 200 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[3].LAB), devis: '2', conv: 'Conventionné', convStyle: cs },
+        { name: '7e praticien (à confirmer)', role: 'jours à confirmer', patients: String(window.LAEKEN.PR[6].N), billed: window.LAEKEN.fm(window.LAEKEN.PR[6].T), retro: window.LAEKEN.fm(window.LAEKEN.PR[6].net), paidPct: '77 %', paidW: '77%', pending: '1 500 €', labo: window.LAEKEN.fm(window.LAEKEN.PR[6].LAB), devis: '1', conv: 'Conventionné', convStyle: cs }
       ]
     });
     if (chTot) {
-      const ben = 30620 - chTot;
+      const ben = window.LAEKEN.TOT.part - chTot; R.totBen = (ben < 0 ? '− ' : '') + window.LAEKEN.fm(Math.abs(ben));
       R.kpis = R.kpis.map((k) => k.label === 'Charges du cabinet' ? Object.assign({}, k, { value: eurS(chTot), note: 'montants modifiés par le gérant (Résultat du gérant), au lieu de 33 615 €' }) : (k.label === 'Bénéfice du cabinet' ? Object.assign({}, k, { value: (ben < 0 ? '− ' : '') + eurS(Math.abs(ben)), note: 'recalculé avec les charges modifiées' }) : k));
     }
     return R;
