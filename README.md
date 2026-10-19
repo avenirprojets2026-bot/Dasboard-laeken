@@ -1,6 +1,28 @@
 # Dashboard Dental Clinic Laeken
 
-Maquette interactive (données fictives). Ouvrir index.html.
+Maquette interactive (données fictives, octobre 2026). Site : https://avenirprojets2026-bot.github.io/Dasboard-laeken/
+
+## Version premium (19/10/2026)
+
+Version de démonstration complète, en attente du retour du gérant.
+
+| Page | Contenu |
+|---|---|
+| Accueil | Bandeau, 4 chiffres clés selon le rôle, accès rapides |
+| Main · Vue cabinet | Indicateurs, comparaison des périodes, répartition des soins |
+| D · Résultat du gérant | Charges modifiables (6 familles, véhicules), budget et réel, cascade, projection |
+| Q · Factures fournisseurs | Registre, échéances, prévu / facturé |
+| E · Rémunérations | Calculs (gérant 100 %, Touil 50 %, autres 60 %), suivi des versements |
+| F · Fauteuils | Occupation, carte de chaleur, coût par patient |
+| C · Mutuelles et labo | Créances (ancienneté en 4 tranches), travaux de labo, contrôle labo, assurances complémentaires |
+| H · Patients et paiements | Paiements, rendez-vous manqués, devis (tableaux modifiables, CSV) |
+| K · Tarifs INAMI | Tarif officiel au 01/06/2026, 258 prestations ambulatoires, simulation |
+| G, I, B, L, M, N, J, O, P | Tableau interactif, actes, casiers, patients vus, espace praticien, relevés, import/export, Corilus, accès |
+| R · Contrôles de cohérence | 19 contrôles automatiques, points à finaliser, parcours de test en 8 étapes |
+
+Chiffres du modèle : honoraires 121 100 €, labo 17 700 €, rémunérations 72 780 €, part du cabinet 30 620 €, charges 33 615 €, résultat −2 995 € par mois, 963 patients.
+
+Avant toute donnée réelle : authentification et droits côté serveur, conformité RGPD, export Corilus, confirmation des hypothèses (ONSS, salaires des secrétaires, véhicules, supplément d'honoraires).
 
 ## Accès sécurisé (e-mail + code secret)
 
@@ -19,7 +41,7 @@ Une fois connecté, le bouton « Mon code » (en bas à droite) permet de choisi
 |---|---|
 | Administrateur | toutes, y compris « Accès et rôles » |
 | Gérant | toutes, y compris « Accès et rôles » |
-| Praticien | Accueil, Espace praticien et Patients vus (ses données), Nomenclature |
-| Secrétariat | Accueil, Patients et paiements, Import et export, Nomenclature |
+| Praticien | Accueil, Espace praticien et Patients vus (ses données), Tarifs INAMI |
+| Secrétariat | Accueil, Patients et paiements, Import et export, Tarifs INAMI |
 
 Détail dans la page P (« Accès et rôles »). Contrôle côté navigateur uniquement (maquette).
