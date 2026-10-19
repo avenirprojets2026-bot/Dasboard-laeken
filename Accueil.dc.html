@@ -4,13 +4,13 @@
 <link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
-<script src="./acces.js?v=37"></script>
-<script src="./auth.js?v=37"></script>
-<script src="./nav.js?v=37"></script>
+<script src="./acces.js?v=38"></script>
+<script src="./auth.js?v=38"></script>
+<script src="./nav.js?v=38"></script>
 <meta charset="utf-8">
 <title>Accueil</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=37"></script>
+<script src="./data.js?v=38"></script>
 </head>
 <body>
 <x-dc>
@@ -81,7 +81,7 @@ class Component extends DCLogic {
     const eur = (n) => (n < 0 ? '−' : '') + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
     const nf = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     const v = (c) => 'font-size:clamp(22px, 5.6vw, 30px); font-weight:700; line-height:1.15; margin-top:8px; white-space:nowrap; font-variant-numeric:tabular-nums; letter-spacing:-0.02em; color:' + (c || '#0B3B36') + ';';
-    let tot = 39885; try { const t = Number(localStorage.getItem('lk-charges-tot')); if (t > 0) { tot = t; } } catch (e) {}
+    let tot = 33615; try { const t = Number(localStorage.getItem('lk-charges-tot')); if (t > 0) { tot = t; } } catch (e) {}
     const first = u && u.n ? u.n.replace(/\s*\(.*\)$/, '') : '';
     let kpis; let space = 'pilotage financier et opérationnel';
     if (role === 'praticien' && L && L.PR[u.pr]) {

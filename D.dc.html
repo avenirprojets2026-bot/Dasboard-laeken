@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Résultat du gérant</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=37"></script>
-<script src="./auth.js?v=37"></script>
-<script src="./nav.js?v=37"></script>
-<script src="./data.js?v=37"></script>
+<script src="./acces.js?v=38"></script>
+<script src="./auth.js?v=38"></script>
+<script src="./nav.js?v=38"></script>
+<script src="./data.js?v=38"></script>
 </head>
 <body>
 <x-dc>
@@ -96,7 +96,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 
 <section style="background:#FDF0DC; border:1px solid #EBCB9A; border-radius:14px; padding:20px 24px; display:flex; flex-direction:column; gap:8px">
 <h2 style="margin:0; font-size:18px; color:#5C3A06">À partir de décembre : départ de Dr Nabila Touil</h2>
-<div style="font-size:14px; line-height:1.6; color:#5C3A06">Dr Touil (1 jour par semaine, 50 % de rétrocession) quitte le cabinet le 1er décembre 2026. Il reste 6 praticiens. Sa dernière rémunération porte sur les prestations de novembre, payée le 01/01/2027. Projection mensuelle si personne ne la remplace et si les charges restent identiques : chiffre d'affaires − 6 500 €, frais de labo − 1 100 €, part du cabinet − 2 700 €, soit un <b>résultat de − 11 965 € par mois</b> (contre − 9 265 €). Le vendredi redevient moins chargé : le conflit de box du vendredi disparaît.</div>
+<div style="font-size:14px; line-height:1.6; color:#5C3A06">Dr Touil (1 jour par semaine, 50 % de rétrocession) quitte le cabinet le 1er décembre 2026. Il reste 6 praticiens. Sa dernière rémunération porte sur les prestations de novembre, payée le 01/01/2027. Projection mensuelle si personne ne la remplace et si les charges restent identiques : chiffre d'affaires − 6 500 €, frais de labo − 1 100 €, part du cabinet − 2 700 €, soit un <b>résultat de − 5 695 € par mois</b> (contre − 2 995 €). Le vendredi redevient moins chargé : le conflit de box du vendredi disparaît.</div>
 </section>
 
 <section style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:24px; display:flex; flex-direction:column; gap:14px">
@@ -280,7 +280,7 @@ class Component extends DCLogic {
     const eur = (n) => { const r = Math.round(n * 100) / 100; const t = (r % 1 === 0 ? String(r) : r.toFixed(2)).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return t.join(',') + ' €'; };
     const pc = (x) => (Math.round(x * 10) / 10).toString().replace('.', ',') + ' %';
     const cbar = (w) => 'background:#5B3FA8; height:10px; width:' + w + '%;';
-    const CH0 = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 && Object.keys(S.ch || {}).length ? t : 39885; } catch (e) { return 39885; } })();
+    const CH0 = (() => { try { const t = Number(localStorage.getItem('lk-charges-tot')); return t > 0 && Object.keys(S.ch || {}).length ? t : 33615; } catch (e) { return 33615; } })();
     const D = window.LAEKEN; let pilotKpis = []; let pilotRows = [];
     if (D) {
       const nV = D.visits.length; const ca = D.rows.reduce((a, r) => a + r.fee, 0);
@@ -322,9 +322,9 @@ class Component extends DCLogic {
       ['veh', 'Entretien BMW Série 5 électrique', 60, 'Révisions, pneus et contrôle technique', 'b5'],
       ['veh', 'Taxe de circulation BMW Série 5 électrique', 0, 'Exonération possible pour un véhicule électrique, à confirmer selon la Région', 'b5'],
       ['veh', 'Recharge électrique BMW Série 5 électrique', 190, 'Électricité à domicile et bornes publiques', 'b5'],
-      ['org', 'Rémunération brute des 3 secrétaires salariées', 7200, 'Salariées sous contrat, réparties dans la journée', 'sal'],
-      ['org', 'Cotisations patronales ONSS (environ 25 %)', 1800, 'Taux à confirmer avec le secrétariat social', 'sal'],
-      ['org', 'Pécule de vacances et prime de fin d\'année (provision)', 1750, 'Provision mensuelle pour les montants versés une fois par an', 'obl'],
+      ['org', 'Rémunération brute des 3 secrétaires salariées', 3000, 'Trois secrétaires à tiers temps, environ 1 000 € brut chacune', 'sal'],
+      ['org', 'Cotisations patronales ONSS (environ 25 %)', 750, 'Taux à confirmer avec le secrétariat social', 'sal'],
+      ['org', 'Pécule de vacances et prime de fin d\'année (provision)', 730, 'Provision mensuelle pour les montants versés une fois par an', 'obl'],
       ['org', 'Assurance accidents du travail, médecine du travail, secrétariat social', 450, 'Obligations de l\'employeur', 'obl'],
       ['org', 'Chèques-repas et frais de déplacement du personnel', 500, 'Selon les avantages accordés', 'ava'],
       ['org', 'Remplacement du personnel (congés, maladie)', 600, 'Intérim ou remplaçante quand une secrétaire est absente', 'ava'],
@@ -392,7 +392,7 @@ class Component extends DCLogic {
     const cTabs = [{ id: 'all', label: 'Vue d\'ensemble', n: TOT }].concat(CAT.map((c) => ({ id: c.id, label: c.label, n: sumCat(c.id) }))).map((t) => ({ label: t.label, amount: eur(t.n), style: ctab === t.id ? tOn : tOff, pick: () => setState({ ct: t.id, st: 'all' }) }));
 
     // ---- Budget et réel ----
-    const BDEF = { ca: 125000, labo: 17500, rem: 74500, exp: 16000, exc: 4200, rare: 1000, org: 12000, veh: 5900, imp: 0 };
+    const BDEF = { ca: 125000, labo: 17500, rem: 74500, exp: 16000, exc: 4200, rare: 1000, org: 6000, veh: 5900, imp: 0 };
     const BV = Object.assign({}, BDEF, S.bud || {});
     const saveB = (o) => { const nb = Object.assign({}, S.bud || {}, o); try { localStorage.setItem('lk-budget', JSON.stringify(nb)); } catch (e) {} setState({ bud: nb }); };
     const realOf = { ca: 121100, labo: 17700, rem: 72780, exp: sumCat('exp'), exc: sumCat('exc'), rare: sumCat('rare'), org: sumCat('org'), veh: sumCat('veh'), imp: sumCat('imp') };

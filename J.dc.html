@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Import et export</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=37"></script>
-<script src="./auth.js?v=37"></script>
-<script src="./nav.js?v=37"></script>
-<script src="./data.js?v=37"></script>
+<script src="./acces.js?v=38"></script>
+<script src="./auth.js?v=38"></script>
+<script src="./nav.js?v=38"></script>
+<script src="./data.js?v=38"></script>
 </head>
 <body>
 <x-dc>
@@ -403,14 +403,14 @@ class Component extends DCLogic {
       });
       const tb = sum((x) => x.billed); const tl = sum((x) => x.labo); const tn = sum((x) => (x.billed - x.labo) * x.rate);
       tot = { patients: String(sum((x) => (map.patient !== undefined ? Object.keys(x.pats).length : x.acts))), acts: String(sum((x) => x.acts)), det: String(sum((x) => x.det)), bla: String(sum((x) => x.bla)), pan: String(sum((x) => x.pan)), billed: eur(tb), labo: eur(tl), base: eur(tb - tl), net: eur(tn) };
-      const CH = 39885;
+      const CH = 33615;
       kpis = [
         { label: 'Chiffre d\'affaires facturé', value: eur(tb), note: rowCount + ' lignes', style: tile('#0F766E') },
         { label: 'Frais de labo', value: eur(tl), note: map.labo === undefined ? 'colonne absente' : 'déduits des honoraires', style: tile('#8A4B08') },
         { label: 'Base de calcul', value: eur(tb - tl), note: 'facturé − labo', style: tile('#B45309') },
         { label: 'Net à payer aux praticiens', value: eur(tn), note: 'base × 60 % (50 % pour Touil)', style: tile('#15803D') },
         { label: 'Part du cabinet', value: eur(tb - tl - tn), note: 'avant charges', style: tile('#5B3FA8') },
-        { label: 'Bénéfice estimé', value: eur(tb - tl - tn - CH), note: 'après 39 885 € de charges mensuelles', style: tile('#15803D') }
+        { label: 'Bénéfice estimé', value: eur(tb - tl - tn - CH), note: 'après 33 615 € de charges mensuelles', style: tile('#15803D') }
       ];
       mapChips = FIELDS.map((f) => {
         const ok = map[f[0]] !== undefined;
