@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Suivi mutuelles et labo</title>
 <script src="./support.js"></script>
-<script src="./data.js?v=41"></script>
-<script src="./acces.js?v=41"></script>
-<script src="./auth.js?v=41"></script>
-<script src="./nav.js?v=41"></script>
+<script src="./data.js?v=42"></script>
+<script src="./acces.js?v=42"></script>
+<script src="./auth.js?v=42"></script>
+<script src="./nav.js?v=42"></script>
 </head>
 <body>
 <x-dc>
@@ -167,13 +167,23 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 <div style="display:flex; flex-direction:column; gap:14px">
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:12px"><div><h2 style="margin:0; font-size:18px">Travaux et factures de laboratoire · octobre 2026</h2><div style="font-size:13px; color:#4A5B57; margin-top:4px">Chaque travail confié au laboratoire, par praticien. Cliquez sur l'état pour le faire avancer (commandé, reçu, posé).</div></div>
 <div style="display:flex; gap:8px; flex-wrap:wrap"><button type="button" style="{{btnSide}}" onClick="{{labReset}}">Revenir à la démonstration</button><button type="button" style="{{btnMain}}" onClick="{{labCsv}}">Exporter le laboratoire (CSV)</button></div></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px">
+<div style="background:#F6F9F8; border:1px solid #E2E9E6; border-top:4px solid #2F6DB5; border-radius:12px; padding:14px 16px"><div style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#2F6DB5">Labos de dentisterie</div><div style="font-size:12.5px; color:#4A5B57; margin:3px 0 8px">Couronnes, implants, bridges, facettes, prothèses · 6 praticiens</div>
+<sc-for list="{{labDent}}" as="l" hint-placeholder-count="4"><div style="display:flex; gap:8px; align-items:center; padding:5px 0"><input type="text" value="{{l.name}}" onChange="{{l.set}}" aria-label="Nom du laboratoire" style="flex:1; min-width:0; min-height:38px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 10px; font:inherit; font-size:14px; font-weight:600"><span style="font-size:12px; color:#4A5B57; white-space:nowrap">{{l.n}}</span><b style="font-size:13.5px; white-space:nowrap; min-width:70px; text-align:right">{{l.tot}}</b></div></sc-for>
+<button type="button" onClick="{{addDent}}" style="margin-top:6px; min-height:34px; border:1px dashed #9DB8B1; border-radius:10px; background:#fff; font:inherit; font-size:13px; font-weight:600; padding:0 12px; cursor:pointer">+ Ajouter un labo</button></div>
+<div style="background:#F6F9F8; border:1px solid #E2E9E6; border-top:4px solid #9D174D; border-radius:12px; padding:14px 16px"><div style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#9D174D">Labos d'orthodontie</div><div style="font-size:12.5px; color:#4A5B57; margin:3px 0 8px">Appareils fixes et amovibles (Orthocant), aligneurs et gouttières · Dr Mohamed Bochouari</div>
+<sc-for list="{{labOrtho}}" as="l" hint-placeholder-count="5"><div style="display:flex; gap:8px; align-items:center; padding:5px 0"><input type="text" value="{{l.name}}" onChange="{{l.set}}" aria-label="Nom du laboratoire" style="flex:1; min-width:0; min-height:38px; box-sizing:border-box; border:1px solid #C9D6D2; border-radius:10px; padding:0 10px; font:inherit; font-size:14px; font-weight:600"><span style="font-size:12px; color:#4A5B57; white-space:nowrap">{{l.n}}</span><b style="font-size:13.5px; white-space:nowrap; min-width:70px; text-align:right">{{l.tot}}</b></div></sc-for>
+<button type="button" onClick="{{addOrtho}}" style="margin-top:6px; min-height:34px; border:1px dashed #9DB8B1; border-radius:10px; background:#fff; font:inherit; font-size:13px; font-weight:600; padding:0 12px; cursor:pointer">+ Ajouter un labo</button></div>
+</div>
+<div style="font-size:12.5px; color:#4A5B57">Laboratoires indiqués par Dr Mohamed Bochouari. Un nom peut être corrigé en cliquant dessus : la correction s'enregistre dans ce navigateur et s'affiche partout. <button type="button" onClick="{{lnReset}}" style="border:0; background:none; color:#0B5D56; font:inherit; font-size:12.5px; font-weight:700; text-decoration:underline; cursor:pointer; padding:0">Rétablir les noms</button></div>
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px"><sc-for list="{{labKpis}}" as="k" hint-placeholder-count="4"><div style="{{k.style}}"><div style="font-size:12.5px; color:#4A5B57">{{k.label}}</div><div style="font-size:24px; font-weight:700; margin-top:4px">{{k.value}}</div><div style="font-size:12px; color:#4A5B57; margin-top:3px">{{k.note}}</div></div></sc-for></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Praticien</span><select onChange="{{labPrSel}}" aria-label="Praticien" style="min-height:44px; min-width:min(100%, 320px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{labPrOpts}}" as="o" hint-placeholder-count="8"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></div>
+<div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Catégorie</span><select onChange="{{labCatSel}}" aria-label="Catégorie de laboratoire" style="min-height:44px; min-width:min(100%, 260px); box-sizing:border-box; border:1px solid #C9D6D2; border-radius:12px; padding:0 14px; font:inherit; font-size:15px; font-weight:600; background:#fff; color:#14201D; cursor:pointer"><sc-for list="{{labCatOpts}}" as="o" hint-placeholder-count="3"><option value="{{o.v}}" selected="{{o.sel}}">{{o.l}}</option></sc-for></select></div>
 <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center"><span style="font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#4A5B57; min-width:90px">Type</span><sc-for list="{{labTyPills}}" as="f" hint-placeholder-count="6"><button type="button" style="{{f.style}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div>
 <div style="overflow-x:auto"><table style="width:100%; border-collapse:collapse; font-size:14px; min-width:940px">
 <thead><tr style="text-align:left; color:#4A5B57; font-size:12px; text-transform:uppercase; letter-spacing:0.05em"><th style="padding:8px 8px 8px 0">Référence</th><th style="padding:8px">Date</th><th style="padding:8px">Praticien</th><th style="padding:8px">Patient</th><th style="padding:8px">Travail</th><th style="padding:8px">Dent / arcade</th><th style="padding:8px">Labo</th><th style="padding:8px; text-align:right">Facture labo</th><th style="padding:8px">État</th></tr></thead>
 <tbody><sc-for list="{{labRows}}" as="r" hint-placeholder-count="12">
-<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700; white-space:nowrap">{{r.ref}}</td><td style="padding:10px 8px; white-space:nowrap">{{r.when}}</td><td style="padding:10px 8px">{{r.prat}}</td><td style="padding:10px 8px; white-space:nowrap"><b>{{r.doss}}</b><div style="font-size:12px; color:#4A5B57">{{r.dob}}</div></td><td style="padding:10px 8px">{{r.work}}</td><td style="padding:10px 8px">{{r.where}}</td><td style="padding:10px 8px">{{r.lab}}</td><td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.cost}}</td><td style="padding:10px 8px"><button type="button" title="Cliquer pour faire avancer" style="{{r.stStyle}}" onClick="{{r.cycle}}">{{r.st}}</button></td></tr>
+<tr style="border-top:1px solid #E7EDEB"><td style="padding:10px 8px 10px 0; font-weight:700; white-space:nowrap">{{r.ref}}</td><td style="padding:10px 8px; white-space:nowrap">{{r.when}}</td><td style="padding:10px 8px">{{r.prat}}</td><td style="padding:10px 8px; white-space:nowrap"><b>{{r.doss}}</b><div style="font-size:12px; color:#4A5B57">{{r.dob}}</div></td><td style="padding:10px 8px">{{r.work}}</td><td style="padding:10px 8px">{{r.where}}</td><td style="padding:10px 8px">{{r.lab}}<div><span style="{{r.catStyle}}">{{r.cat}}</span></div></td><td style="padding:10px 8px; text-align:right; font-weight:700; white-space:nowrap">{{r.cost}}</td><td style="padding:10px 8px"><button type="button" title="Cliquer pour faire avancer" style="{{r.stStyle}}" onClick="{{r.cycle}}">{{r.st}}</button></td></tr>
 </sc-for></tbody></table></div>
 <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; font-size:13px; color:#4A5B57"><span>{{labRange}}</span><div style="display:flex; gap:8px"><button type="button" style="{{labPrevStyle}}" onClick="{{labPrev}}">Précédent</button><button type="button" style="{{labNextStyle}}" onClick="{{labNext}}">Suivant</button></div></div>
 <div style="display:flex; justify-content:space-between; border-top:2px solid #14201D; padding-top:12px; font-size:15px; font-weight:700"><span>{{labTotLabel}}</span><span>{{labTotVal}}</span></div>
@@ -260,7 +270,8 @@ class Component extends DCLogic {
     ].map((x) => ({ ref0: x[0], mut: x[1], age: x[2], amt: x[3], rec: x[4], ref: x[5] }));
     let cr = null; try { cr = JSON.parse(localStorage.getItem('lk-creances') || 'null'); } catch (e) { cr = null; }
     let ls = {}; try { ls = JSON.parse(localStorage.getItem('lk-labo-etat') || 'null') || {}; } catch (e) { ls = {}; }
-    return { tab: 'cr', cr: cr && cr.length ? cr : D0, crDef: D0, cm: '', cs: 'all', lp: -1, lt: 'all', lpg: 0, ls: ls, msg: '', ok: true };
+    let ln = null; try { ln = JSON.parse(localStorage.getItem('lk-labos') || 'null'); } catch (e) { ln = null; }
+    return { tab: 'cr', cr: cr && cr.length ? cr : D0, crDef: D0, cm: '', cs: 'all', lp: -1, lt: 'all', lc: 'all', lpg: 0, ls: ls, ln: ln, msg: '', ok: true };
   })();
   renderVals() {
     // ---- Onglets : créances des mutualités et travaux de laboratoire ----
@@ -297,35 +308,44 @@ class Component extends DCLogic {
       setRef: (e) => { const v = Math.max(0, Math.round(Number(e && e.target ? e.target.value : 0) || 0)); const n = CR.slice(); n[c.i] = Object.assign({}, n[c.i], { ref: Math.min(v, c.amt - c.rec) }); saveCr(n); } }; });
     const crSel = crl.reduce((a, c) => a + Math.max(0, c.amt - c.rec - c.ref), 0);
     // laboratoire
-    const L = window.LAEKEN; let labVals = { labKpis: [], labPrOpts: [], labPrSel: () => {}, labPrPills: [], labTyPills: [], labRows: [], labRange: '', labPrev: () => {}, labNext: () => {}, labPrevStyle: btnSide, labNextStyle: btnSide, labTotLabel: '', labTotVal: '', labReset: () => {}, labCsv: () => {} };
+    const L = window.LAEKEN; let labVals = { labCatOpts: [], labCatSel: () => {}, labDent: [], labOrtho: [], addDent: () => {}, addOrtho: () => {}, lnReset: () => {}, labKpis: [], labPrOpts: [], labPrSel: () => {}, labPrPills: [], labTyPills: [], labRows: [], labRange: '', labPrev: () => {}, labNext: () => {}, labPrevStyle: btnSide, labNextStyle: btnSide, labTotLabel: '', labTotVal: '', labReset: () => {}, labCsv: () => {} };
     if (L) {
       const TY = [['all', 'Tous'], ['cour', 'Couronnes'], ['impl', 'Implants'], ['bridge', 'Bridges'], ['proth', 'Prothèses amovibles'], ['gout', 'Gouttières et appareils']];
       const tyOf = (w) => /implant/i.test(w) ? 'impl' : (/bridge/i.test(w) ? 'bridge' : (/prothèse|amovible/i.test(w) ? 'proth' : (/gouttière|appareil|contention|facette/i.test(w) ? 'gout' : 'cour')));
       const whereOf = (w) => { const m = /(dent|implant)\s+(\d{2})/i.exec(w); if (m) { return (m[1].toLowerCase() === 'implant' ? 'Implant ' : 'Dent ') + m[2]; } if (/supérieur/i.test(w)) { return 'Arcade supérieure'; } if (/inférieur/i.test(w)) { return 'Arcade inférieure'; } return '—'; };
-      const LABS = ['Laboratoire A', 'Laboratoire B', 'Laboratoire C'];
-      const all = L.rows.filter((r) => r.labo > 0).map((r, k) => ({ k: k, r: r, w: r.work || r.label, ty: tyOf(r.work || r.label), lab: LABS[(r.d + r.p + k) % 3] }));
+      const LN0 = { dent: ['Belgium Dental Lab', 'Labo Brys', 'Labdent', 'Dental Smile'], ortho: ['Orthocant', 'Angel (aligneurs)', 'ClearCorrect (aligneurs)', 'Real Smile (aligneurs)', 'Smartee (aligneurs)'] };
+      const LN = { dent: (S.ln && S.ln.dent) || LN0.dent, ortho: (S.ln && S.ln.ortho) || LN0.ortho };
+      const CAT = { dent: ['Dentisterie', '#2F6DB5', '#E4EEFA'], ortho: ['Orthodontie', '#9D174D', '#FBE7F0'] };
+      const catOf = (r) => r.p === 1 ? 'ortho' : 'dent';
+      const all = L.rows.filter((r) => r.labo > 0).map((r, k) => { const c = catOf(r); const w0 = r.work || r.label; const li = c === 'ortho' ? (/appareil/i.test(w0) || LN.ortho.length < 2 ? 0 : 1 + (r.d + k) % (LN.ortho.length - 1)) : (r.d + r.p + k) % LN.dent.length; return { k: k, r: r, w: r.work || r.label, ty: tyOf(r.work || r.label), cat: c, li: li, lab: LN[c][li] }; });
+      const saveLn = (c, i, v) => { const n = { dent: LN.dent.slice(), ortho: LN.ortho.slice() }; n[c][i] = (v || '').trim() || LN0[c][i]; try { localStorage.setItem('lk-labos', JSON.stringify(n)); } catch (e) {} setState({ ln: n, msg: '' }); };
+      const addLn = (c) => { const n = { dent: LN.dent.slice(), ortho: LN.ortho.slice() }; n[c].push((c === 'dent' ? 'Labo dentaire ' : 'Labo d\'orthodontie ') + (n[c].length + 1)); try { localStorage.setItem('lk-labos', JSON.stringify(n)); } catch (e) {} setState({ ln: n }); };
+      const labList = (c) => LN[c].map((nm, i) => { const xs = all.filter((x) => x.cat === c && x.li === i); return { name: nm, n: xs.length + ' travaux', tot: eu(xs.reduce((a, x) => a + x.r.labo, 0)), set: (e) => saveLn(c, i, e && e.target ? e.target.value : '') }; });
       const defSt = (x) => x.r.d <= 9 ? 'pose' : (x.r.d <= 15 ? 'recu' : 'commande');
       const LST = { commande: ['Commandé', '#8A4B08', '#FDF0DC'], recu: ['Reçu', '#1B3F73', '#D6E6FA'], pose: ['Posé', '#0B6B3A', '#E3F4EA'] };
       const nxt = { commande: 'recu', recu: 'pose', pose: 'commande' };
       const lst = (x) => (S.ls && S.ls[x.k]) || defSt(x);
-      let ll = all.filter((x) => (S.lp < 0 || x.r.p === S.lp) && (S.lt === 'all' || x.ty === S.lt));
+      let ll = all.filter((x) => (S.lp < 0 || x.r.p === S.lp) && (S.lt === 'all' || x.ty === S.lt) && (S.lc === 'all' || x.cat === S.lc));
+      const totCat = (c) => all.filter((x) => x.cat === c).reduce((a, x) => a + x.r.labo, 0);
       const per = 15; const pages = Math.max(1, Math.ceil(ll.length / per)); const pg = Math.min(S.lpg, pages - 1);
       const tot = ll.reduce((a, x) => a + x.r.labo, 0);
       const cnt = (s) => ll.filter((x) => lst(x) === s).length;
       const ref = (x) => 'LAB-' + L.PR[x.r.p].short.split(' ')[0].toLowerCase().replace(/[^a-z0-9]/g, '') + '-' + String(all.filter((y) => y.r.p === x.r.p && y.k <= x.k).length).padStart(2, '0');
       labVals = {
-        labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur 17 700 € pour le cabinet', style: tl('#8A4B08') }, { label: 'En attente du labo', value: String(cnt('commande')), note: 'commandés, pas encore reçus', style: tl('#B45309') }, { label: 'Reçus, à poser', value: String(cnt('recu')), note: cnt('pose') + ' déjà posés', style: tl('#2F6DB5') }],
+        labKpis: [{ label: 'Travaux', value: String(ll.length), note: S.lp < 0 ? 'tous les praticiens' : L.PR[S.lp].name, style: tl('#0F766E') }, { label: 'Factures du labo', value: eu(tot), note: 'sur 17 700 € pour le cabinet', style: tl('#8A4B08') }, { label: 'Labos de dentisterie', value: eu(totCat('dent')), note: all.filter((x) => x.cat === 'dent').length + ' travaux · 6 praticiens', style: tl('#2F6DB5') }, { label: 'Labos d\'orthodontie', value: eu(totCat('ortho')), note: all.filter((x) => x.cat === 'ortho').length + ' travaux · Dr Mohamed Bochouari', style: tl('#9D174D') }, { label: 'En attente du labo', value: String(cnt('commande')), note: cnt('recu') + ' reçus à poser · ' + cnt('pose') + ' posés', style: tl('#B45309') }],
+        labCatOpts: [['all', 'Toutes les catégories'], ['dent', 'Dentisterie'], ['ortho', 'Orthodontie']].map((o) => ({ v: o[0], l: o[1], sel: S.lc === o[0] })), labCatSel: (e) => setState({ lc: e && e.target ? e.target.value : 'all', lpg: 0 }),
+        labDent: labList('dent'), labOrtho: labList('ortho'), addDent: () => addLn('dent'), addOrtho: () => addLn('ortho'), lnReset: () => { try { localStorage.removeItem('lk-labos'); } catch (e) {} setState({ ln: null, msg: 'Noms des laboratoires rétablis.', ok: true }); },
         labPrOpts: [{ v: '-1', l: 'Tous les praticiens', sel: S.lp < 0 }].concat(L.PR.map((p, i) => ({ v: String(i), l: p.name + ' · ' + all.filter((x) => x.r.p === i).length + ' travaux', sel: S.lp === i }))),
         labPrSel: (e) => setState({ lp: Number(e && e.target ? e.target.value : -1), lpg: 0 }),
         labPrPills: [{ label: 'Tous les praticiens', style: S.lp < 0 ? pOn : pOff, pick: () => setState({ lp: -1, lpg: 0 }) }].concat(L.PR.map((p, i) => ({ label: p.name, style: S.lp === i ? pOn : pOff, pick: () => setState({ lp: i, lpg: 0 }) }))),
         labTyPills: TY.map((t) => ({ label: t[1], style: S.lt === t[0] ? pOn : pOff, pick: () => setState({ lt: t[0], lpg: 0 }) })),
-        labRows: ll.slice(pg * per, pg * per + per).map((x) => { const s = lst(x); return { ref: ref(x), when: x.r.when, prat: L.PR[x.r.p].name, doss: x.r.doss, dob: x.r.dob, work: x.w.replace(/,\s*(dent|implant)\s+\d{2}/i, ''), where: whereOf(x.w), lab: x.lab, cost: eu(x.r.labo), st: LST[s][0], stStyle: 'border:0; cursor:pointer; ' + chip(LST[s][1], LST[s][2]), cycle: () => { const ns = Object.assign({}, S.ls || {}); ns[x.k] = nxt[s]; try { localStorage.setItem('lk-labo-etat', JSON.stringify(ns)); } catch (e) {} setState({ ls: ns }); } }; }),
+        labRows: ll.slice(pg * per, pg * per + per).map((x) => { const s = lst(x); return { ref: ref(x), when: x.r.when, prat: L.PR[x.r.p].name, doss: x.r.doss, dob: x.r.dob, work: x.w.replace(/,\s*(dent|implant)\s+\d{2}/i, ''), where: whereOf(x.w), lab: x.lab, cat: CAT[x.cat][0], catStyle: 'display:inline-block; margin-top:3px; border-radius:999px; padding:1px 8px; font-size:11px; font-weight:700; color:' + CAT[x.cat][1] + '; background:' + CAT[x.cat][2] + ';', cost: eu(x.r.labo), st: LST[s][0], stStyle: 'border:0; cursor:pointer; ' + chip(LST[s][1], LST[s][2]), cycle: () => { const ns = Object.assign({}, S.ls || {}); ns[x.k] = nxt[s]; try { localStorage.setItem('lk-labo-etat', JSON.stringify(ns)); } catch (e) {} setState({ ls: ns }); } }; }),
         labRange: ll.length ? 'Travaux ' + (pg * per + 1) + ' à ' + Math.min(ll.length, pg * per + per) + ' sur ' + ll.length + ' · page ' + (pg + 1) + ' / ' + pages : 'Aucun travail pour ce filtre.',
         labPrev: () => { if (pg > 0) { setState({ lpg: pg - 1 }); } }, labNext: () => { if (pg < pages - 1) { setState({ lpg: pg + 1 }); } },
         labPrevStyle: btnSide + (pg > 0 ? '' : ' opacity:0.4; cursor:default;'), labNextStyle: btnSide + (pg < pages - 1 ? '' : ' opacity:0.4; cursor:default;'),
         labTotLabel: 'Total des factures de laboratoire (' + ll.length + ' travaux)', labTotVal: eu(tot),
         labReset: () => { try { localStorage.removeItem('lk-labo-etat'); } catch (e) {} setState({ ls: {}, msg: 'États de démonstration rétablis.', ok: true }); },
-        labCsv: () => csvSave('travaux-laboratoire-octobre-2026.csv', [['Référence', 'Date', 'Praticien', 'N° de dossier', 'Date de naissance', 'Travail', 'Dent / arcade', 'Laboratoire', 'Facture labo', 'Honoraires de l\'acte', 'État']].concat(ll.map((x) => [ref(x), x.r.when, L.PR[x.r.p].name, x.r.doss, x.r.dob, x.w, whereOf(x.w), x.lab, String(x.r.labo).replace('.', ','), String(x.r.fee).replace('.', ','), LST[lst(x)][0]])), 'Liste du laboratoire exportée.')
+        labCsv: () => csvSave('travaux-laboratoire-octobre-2026.csv', [['Référence', 'Date', 'Praticien', 'N° de dossier', 'Date de naissance', 'Travail', 'Dent / arcade', 'Catégorie', 'Laboratoire', 'Facture labo', 'Honoraires de l\'acte', 'État']].concat(ll.map((x) => [ref(x), x.r.when, L.PR[x.r.p].name, x.r.doss, x.r.dob, x.w, whereOf(x.w), CAT[x.cat][0], x.lab, String(x.r.labo).replace('.', ','), String(x.r.fee).replace('.', ','), LST[lst(x)][0]])), 'Liste du laboratoire exportée.')
       };
     }
     const tabBase = 'border:0; background:none; padding:10px 14px; font:inherit; font-size:15px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; margin-bottom:-1px; border-bottom:3px solid ';
@@ -369,6 +389,8 @@ class Component extends DCLogic {
       { l: 'Factures des travaux de laboratoire', v: eu(facLab), st: '' },
       { l: 'Frais de labo imputés aux praticiens (déduits avant rétrocession)', v: eu(prLab), st: '' },
       { l: 'Écart de rapprochement', v: eu(facLab - prLab), st: Math.abs(facLab - prLab) < 1 ? 'color:#0B6B3A;' : 'color:#A3231A;' },
+      { l: 'dont labos de dentisterie (6 praticiens)', v: eu(LL ? LL.rows.filter((r) => r.p !== 1).reduce((x, r) => x + (r.labo || 0), 0) : 0), st: 'color:#2F6DB5;' },
+      { l: 'dont labos d\'orthodontie (Dr Mohamed Bochouari)', v: eu(LL ? LL.rows.filter((r) => r.p === 1).reduce((x, r) => x + (r.labo || 0), 0) : 0), st: 'color:#9D174D;' },
       { l: 'Devis de laboratoire cumulés', v: eu(devLab), st: '' },
       { l: 'Écart factures − devis', v: (facLab - devLab >= 0 ? '+ ' : '') + eu(facLab - devLab), st: 'color:#8A4B08;' }
     ];
