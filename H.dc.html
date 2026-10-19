@@ -7,10 +7,10 @@
 <meta charset="utf-8">
 <title>Patients et paiements</title>
 <script src="./support.js"></script>
-<script src="./acces.js?v=38"></script>
-<script src="./auth.js?v=38"></script>
-<script src="./nav.js?v=38"></script>
-<script src="./data.js?v=38"></script>
+<script src="./acces.js?v=39"></script>
+<script src="./auth.js?v=39"></script>
+<script src="./nav.js?v=39"></script>
+<script src="./data.js?v=39"></script>
 </head>
 <body>
 <x-dc>
@@ -335,7 +335,7 @@ class Component extends DCLogic {
       detart: (a) => a < 19 ? ['372153', 'Détartrage, 4 quadrants', 71.92, 71.92, 71.92] : ['302153', 'Détartrage, 4 quadrants', 71.92, 71.92, 55.92],
       canal: (a) => a < 19 ? ['374555', 'Traitement de canal, 3 canaux', 201.84, 201.84, 201.84] : ['304555', 'Traitement de canal, 3 canaux', 201.84, 201.84, 189.34],
       extr: (a) => a < 19 ? ['374975', 'Extraction simple', 68.82, 68.82, 68.82] : ['304975', 'Extraction simple', 68.82, 68.82, 61.32],
-      pano: (a) => a < 19 ? ['377311', 'Panoramique numérique', 67.8, 67.8, 67.8] : ['307311', 'Panoramique numérique', 67.8, 67.8, 67.8]
+      pano: (a) => a < 19 ? ['377311', 'Panoramique numérique', 67.8, 67.8, 67.8] : ['307311', 'Panoramique numérique', 67.8, 63.8, 53.3]
     };
     const LIBRE = { couronne: 'Couronne céramique', bridge: 'Bridge 3 éléments', facette: 'Facette', goutt: 'Gouttière' };
     const key = (r) => { const p = r.d.split('/'); return Number(p[1]) * 100 + Number(p[0]); };
