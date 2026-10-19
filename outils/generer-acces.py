@@ -14,7 +14,7 @@ COMPTES = [
     ('Dr Abde-Ssadic Bochouari', 'adresse personnelle (voir emails-prives.json)', 'praticien', 2),
     ('Dr Daoud Bouchouari', 'adresse personnelle (voir emails-prives.json)', 'praticien', 3),
     ('Dr Julien Cabaz', 'adresse personnelle (voir emails-prives.json)', 'praticien', 4),
-    ('Dr Nabila Touil', 'nabila.touil@dentalclinic.com', 'praticien', 5),
+    ('Dr Nabila Touil', 'adresse personnelle (voir emails-prives.json)', 'praticien', 5),
     ('7e praticien (à confirmer)', 'nouveau.praticien@dentalclinic.com', 'praticien', 6),
     ('Secrétaire 1', 'secretaire1@dental-laeken.be', 'secretaire', -1),
     ('Secrétaire 2', 'secretaire2@dental-laeken.be', 'secretaire', -1),
