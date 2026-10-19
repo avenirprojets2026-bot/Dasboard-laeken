@@ -69,25 +69,25 @@ window.LKACCES = {
    "n": "Secrétaire 1",
    "role": "secretaire",
    "pr": -1,
-   "e": "c2a020a9c7c2",
-   "s": "81e1b1a148eb933199bcb9ad6345e079",
-   "h": "97ec4f13d97f83b4463f065cad5e04ed36e44aa75d0fe14305b75abac2f15c19"
+   "e": "acaeb3afa196",
+   "s": "d44c95c0d1ba3c2086f1bbeac684779a",
+   "h": "a2113837cb7b8b2bfbe45ec751c66aa328df7b2f808972bdb5711fc384e609a2"
   },
   {
    "n": "Secrétaire 2",
    "role": "secretaire",
    "pr": -1,
-   "e": "3abe854c75e8",
-   "s": "9e3afa5963538375e7f20b730cff9392",
-   "h": "867abff9f8080bf0bb6a58677c55e942360b55de197f377faf9047ca001f64ea"
+   "e": "2a2c45fdb265",
+   "s": "8ce0b7f5bca23d2aea51e1e11e973a68",
+   "h": "82e711d7cdcddd985124d9161756b06f60227bbcbbcc086d3ba38256b67d8478"
   },
   {
    "n": "Secrétaire 3",
    "role": "secretaire",
    "pr": -1,
-   "e": "ce5c6a77b801",
-   "s": "bbcfcfd938e6e8fed9aa0c44c37d0b50",
-   "h": "9fae7ded60fc7bdb78abe2c159459e082b3059a16f2c6b65fee63a23c8de43e7"
+   "e": "fd6a437d47de",
+   "s": "6073194bed2c7aafcdccbe0ecbf5476b",
+   "h": "fed03ffde0944557f74e6044cbc1c73a3b99a7189cdcee30da2f57686bda6820"
   },
   {
    "n": "Dr Aya Turkieh",
