@@ -77,12 +77,21 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </div>
 </header>
 
+<section style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:12px; background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:14px 18px">
+<div style="min-width:0"><div style="font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#0B5D56">Période</div><div style="font-size:13px; color:#4A5B57; margin-top:2px">{{perSub}}</div></div>
+<div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center">
+<div style="display:flex; flex-wrap:wrap; gap:2px; background:#F1F5F4; border-radius:999px; padding:4px"><sc-for list="{{perPills}}" as="b" hint-placeholder-count="5"><button type="button" style="{{b.style}}" onClick="{{b.pick}}">{{b.label}}</button></sc-for></div>
+<div style="display:flex; align-items:center; gap:6px"><button type="button" style="{{perPrevSt}}" onClick="{{perPrev}}" aria-label="Période précédente">‹</button><span style="min-width:170px; text-align:center; font-weight:700; font-size:14px">{{perLabel}}</span><button type="button" style="{{perNextSt}}" onClick="{{perNext}}" aria-label="Période suivante">›</button></div>
+</div>
+<div style="width:100%; font-size:12px; color:#4A5B57">{{perNote}}</div>
+</section>
+
 <section style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px">
 <sc-for list="{{kpis}}" as="k" hint-placeholder-count="4">
 <div style="background:#fff; border:1px solid #DCE5E2; border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:6px">
 <div style="font-size:13px; color:#4A5B57; font-weight:500">{{k.label}}</div>
-<div style="font-size:30px; font-weight:700; line-height:1.1">{{k.value}}</div>
-<div style="font-size:13px; color:#4A5B57">{{k.note}}</div>
+<div style="{{k.vs}}">{{k.value}}</div>
+<div style="{{k.ds}}">{{k.delta}}</div>
 </div>
 </sc-for>
 </section>
@@ -161,7 +170,7 @@ section:nth-of-type(2){animation-delay:.05s} section:nth-of-type(3){animation-de
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1120}}'>
 class Component extends DCLogic {
-  state = { who: -1, by: 'fee', tm: 'ca' };
+  state = { who: -1, by: 'fee', tm: 'ca', pk: 'mois', pi: null };
   renderVals() {
     const S = this.state; const D = window.LAEKEN;
     const eurS = (v) => String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
@@ -236,6 +245,63 @@ class Component extends DCLogic {
     if (chTot) {
       const ben = window.LAEKEN.TOT.part - chTot; R.totBen = (ben < 0 ? '− ' : '') + window.LAEKEN.fm(Math.abs(ben));
       R.kpis = R.kpis.map((k) => k.label === 'Charges du cabinet' ? Object.assign({}, k, { value: eurS(chTot), note: 'montants modifiés par le gérant (Résultat du gérant), au lieu de 33 615 €' }) : (k.label === 'Bénéfice du cabinet' ? Object.assign({}, k, { value: (ben < 0 ? '− ' : '') + eurS(Math.abs(ben)), note: 'recalculé avec les charges modifiées' }) : k));
+    }
+
+    // ---- Période : jour, semaine, mois, trimestre, année (les chiffres suivent la période choisie) ----
+    if (D && D.HIST && D.rows && D.visits) {
+      const H = D.HIST; const MN = D.MONTH; const nH = H.length;
+      const MS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+      const MF = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+      const DW = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+      const eu = (v) => (v < 0 ? '− ' : '') + String(Math.abs(Math.round(v))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+      const curCh = chTot > 0 ? chTot : H[nH - 1].chg;
+      const ymOf = (h) => [Number(h.label.slice(-4)), MS.findIndex((x) => h.label.toLowerCase().indexOf(x + ' ') === 0)];
+      const monthM = (i) => { const h = H[i]; const chg = i === nH - 1 ? curCh : h.chg; return { ca: h.ca, pat: h.pat, labo: h.labo, rem: h.rem, chg: chg, ben: h.ca - h.labo - h.rem - chg, est: !!h.est }; };
+      const dayM = (a, b) => {
+        const ls = D.rows.filter((r) => r.d >= a && r.d <= b); const vs = D.visits.filter((v) => v.d >= a && v.d <= b);
+        const ca = ls.reduce((s, r) => s + r.fee, 0); const labo = ls.reduce((s, r) => s + (r.labo || 0), 0);
+        const rem = ls.reduce((s, r) => s + (r.fee - (r.labo || 0)) * ((D.PR[r.p] && D.PR[r.p].rate) || 0.6), 0);
+        const chg = curCh * (b - a + 1) / MN.days;
+        return { ca: ca, pat: vs.length, labo: labo, rem: rem, chg: chg, ben: ca - labo - rem - chg, est: false };
+      };
+      const sum = (arr) => { const t = { ca: 0, pat: 0, labo: 0, rem: 0, chg: 0, ben: 0, est: false }; arr.forEach((x) => { t.ca += x.ca; t.pat += x.pat; t.labo += x.labo; t.rem += x.rem; t.chg += x.chg; t.ben += x.ben; t.est = t.est || x.est; }); return t; };
+      const weeks = []; { let s = 1; for (let d = 1; d <= MN.days; d += 1) { const wd = new Date(MN.y, MN.m, d).getDay(); if (d === MN.days || wd === 0) { weeks.push([s, d]); s = d + 1; } } }
+      const quarters = []; H.forEach((h, i) => { const ym = ymOf(h); const key = ym[0] * 4 + Math.floor(ym[1] / 3); let q = quarters.filter((x) => x.key === key)[0]; if (!q) { q = { key: key, y: ym[0], q: Math.floor(ym[1] / 3) + 1, idx: [] }; quarters.push(q); } q.idx.push(i); });
+      const mShort = MS[MN.m]; const dLbl = (d) => DW[new Date(MN.y, MN.m, d).getDay()] + ' ' + d + ' ' + mShort + ' ' + MN.y;
+      const yrIdx = []; for (let i = Math.max(0, nH - 12); i < nH; i += 1) { yrIdx.push(i); }
+      const todayD = Math.min(MN.today || MN.days, MN.days);
+      const wkToday = Math.max(0, weeks.findIndex((w) => todayD >= w[0] && todayD <= w[1]));
+      const KINDS = {
+        jour: { n: MN.days, def: todayD - 1, m: (i) => dayM(i + 1, i + 1), lab: (i) => dLbl(i + 1), prevLab: (i) => dLbl(i + 1), future: (i) => i + 1 > MN.today },
+        semaine: { n: weeks.length, def: wkToday, m: (i) => dayM(weeks[i][0], weeks[i][1]), lab: (i) => 'Du ' + weeks[i][0] + ' au ' + weeks[i][1] + ' ' + mShort, prevLab: (i) => 'du ' + weeks[i][0] + ' au ' + weeks[i][1] + ' ' + mShort, future: (i) => weeks[i][1] > MN.today },
+        mois: { n: nH, def: nH - 1, m: (i) => monthM(i), lab: (i) => H[i].label, prevLab: (i) => H[i].label.toLowerCase(), future: () => false },
+        trimestre: { n: quarters.length, def: (quarters[quarters.length - 1].idx.length < 3 && quarters.length > 1) ? quarters.length - 2 : quarters.length - 1, m: (i) => sum(quarters[i].idx.map(monthM)), lab: (i) => 'T' + quarters[i].q + ' ' + quarters[i].y, prevLab: (i) => 'T' + quarters[i].q + ' ' + quarters[i].y, full: (i) => quarters[i].idx.length === 3, future: () => false },
+        annee: { n: 1, def: 0, m: () => sum(yrIdx.map(monthM)), lab: () => '12 derniers mois', prevLab: () => '', future: () => false }
+      };
+      const pk = KINDS[S.pk] ? S.pk : 'mois'; const K = KINDS[pk];
+      let pi = (S.pi === null || S.pi === undefined) ? K.def : Math.max(0, Math.min(K.n - 1, S.pi));
+      const cur = K.m(pi);
+      const hasPrev = pi > 0 && pk !== 'annee' && !(pk === 'trimestre' && !(K.full(pi) && K.full(pi - 1)));
+      const prv = hasPrev ? K.m(pi - 1) : null;
+      const sgn = (diff, money, upGood, pct, lbl) => { const good = diff === 0 ? null : ((diff > 0) === upGood); return [(diff > 0 ? '▲ ' : (diff < 0 ? '▼ ' : '= ')) + (money ? eu(Math.abs(diff)).replace('− ', '') : String(Math.abs(Math.round(diff)))) + (pct !== null ? ' (' + (pct > 0 ? '+' : '') + String(Math.round(pct * 10) / 10).replace('.', ',') + ' %)' : '') + ' vs ' + lbl, 'font-size:12.5px; font-weight:600; color:' + (good === null ? '#4A5B57' : (good ? '#0B6B3A' : '#A3231A')) + ';']; };
+      const CARDS = [['ca', "Chiffre d'affaires", true, true], ['pat', 'Patients vus', false, true], ['labo', 'Frais de laboratoire', true, false], ['rem', 'Rémunération des praticiens', true, false], ['chg', 'Charges du cabinet', true, false], ['ben', 'Résultat du cabinet', true, true]];
+      const plab = hasPrev ? K.prevLab(pi - 1) : '';
+      R.kpis = CARDS.map((c) => {
+        const v = cur[c[0]]; let delta = 'Pas de période précédente à comparer'; let ds = 'font-size:12.5px; color:#4A5B57;';
+        if (prv) { const b = prv[c[0]]; const df = v - b; const r = sgn(df, c[2], c[3], b !== 0 ? df / Math.abs(b) * 100 : null, plab); delta = r[0]; ds = r[1]; }
+        const col = c[0] === 'ben' ? (v < 0 ? '#A3231A' : '#0B6B3A') : '#14201D';
+        return { label: c[1], value: c[2] ? eu(v) : String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ' '), note: '', delta: delta, ds: ds, vs: 'font-size:30px; font-weight:700; line-height:1.1; font-variant-numeric:tabular-nums; color:' + col + ';' };
+      });
+      const segb = (on) => 'border:0; background:' + (on ? '#fff' : 'transparent') + '; color:#14201D; border-radius:999px; padding:8px 14px; font-size:13.5px; font-weight:' + (on ? '700' : '500') + '; cursor:pointer; min-height:36px; box-shadow:' + (on ? '0 1px 3px rgba(16,32,28,.15)' : 'none') + ';';
+      const nav = (ok) => 'border:1px solid #C9D6D2; background:#fff; color:#14201D; border-radius:10px; width:38px; height:38px; font-size:20px; line-height:1; cursor:' + (ok ? 'pointer' : 'default') + '; opacity:' + (ok ? '1' : '0.35') + ';';
+      R.perPills = [['jour', 'Jour'], ['semaine', 'Semaine'], ['mois', 'Mois'], ['trimestre', 'Trimestre'], ['annee', 'Année']].map((x) => ({ label: x[1], style: segb(pk === x[0]), pick: () => this.setState({ pk: x[0], pi: null }) }));
+      R.perLabel = K.lab(pi);
+      R.perPrevSt = nav(pi > 0); R.perNextSt = nav(pi < K.n - 1);
+      R.perPrev = () => { if (pi > 0) { this.setState({ pi: pi - 1 }); } };
+      R.perNext = () => { if (pi < K.n - 1) { this.setState({ pi: pi + 1 }); } };
+      const fut = K.future(pi); const part = pk === 'trimestre' && !K.full(pi);
+      R.perSub = pk === 'jour' || pk === 'semaine' ? (fut ? 'Inclut des rendez-vous planifiés après le ' + MN.today + ' ' + MF[MN.m] + ' (agenda)' : 'Journées réalisées de ' + MF[MN.m] + ' ' + MN.y) : (pk === 'mois' ? 'Historique mensuel' : (pk === 'trimestre' ? (part ? 'Trimestre en cours : ' + quarters[pi].idx.length + ' mois sur 3' : 'Trimestre complet') : 'De ' + H[yrIdx[0]].label.toLowerCase() + ' à ' + H[nH - 1].label.toLowerCase()));
+      R.perNote = pk === 'jour' || pk === 'semaine' ? 'Honoraires et patients : agenda du mois. Rémunération : (honoraires − labo) × taux du praticien. Charges : montant mensuel réparti au prorata des jours calendaires.' : (cur.est ? 'Mois estimé : pas encore d\'export Corilus pour cette période.' : 'Les mois, trimestres et l\'année suivent l\'historique du cabinet ; ' + (pk === 'annee' ? 'pas d\'historique avant octobre 2025 pour comparer.' : 'la comparaison se fait avec la période précédente.'));
     }
     return R;
   }
